@@ -1,0 +1,20 @@
+{
+  "name": "homepage-front",
+  "version": "1.0.0",
+  "description": "키퍼 홈페이지 프론트엔드",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KEEPER31337/Homepage-Front.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KEEPER31337/Homepage-Front/issues"
+  },
+  "homepage": "https://github.com/KEEPER31337/Homepage-Front#readme"
+}
