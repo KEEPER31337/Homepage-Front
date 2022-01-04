@@ -4,6 +4,7 @@ const App = () => {
     return (
         <div>
             Webpack App!
+            Auto Save
         </div>
     );
 };
