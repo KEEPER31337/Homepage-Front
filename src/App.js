@@ -1,12 +1,12 @@
-import React from 'react';
+import React from 'react'
 
-const App = () => {
-    return (
-        <div>
-            Webpack App!
-            Auto Save
-        </div>
-    );
-};
+const App = props => {
+  return (
+    <div>
+      <h1>Prettier Test</h1>
+      Webpack App! Auto Save?!
+    </div>
+  )
+}
 
-export default App;
+export default App
