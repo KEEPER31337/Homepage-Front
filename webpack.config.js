@@ -22,6 +22,11 @@ module.exports = {
           minimize: true,
         },
       },
+      {
+        test: /.css?$/,
+        exclude: [],
+        use: ["style-loader", "css-loader", "postcss-loader"],
+      },
     ],
   },
   plugins: [
