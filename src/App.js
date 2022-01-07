@@ -2,9 +2,10 @@ import React from 'react';
 
 const App = (props) => {
   return (
-    <div>
-      <h1>Prettier Test</h1>
-      Webpack App! Auto Save?!
+    <div className="bg-red-300">
+      <h1 className="text-3xl font-bold underline text-center">
+        TailWind Test
+      </h1>
     </div>
   );
 };
