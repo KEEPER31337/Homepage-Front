@@ -31,6 +31,7 @@ module.exports = {
     ],
   },
   resolve: {
+    extensions: ['.js', '.jsx', '.ts', 'tsx'],
     modules: [path.join(__dirname, 'src'), 'node_modules'],
   },
   plugins: [
