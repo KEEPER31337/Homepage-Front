@@ -3,10 +3,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        mainBlack: '#0f172a',
+        mainBlack: '#000000',
         mainWhite: '#ffffff',
-        pointYellow: '#fbbf24',
-        backGray: '#f8fafc',
+        pointYellow: '#ffd400',
+        backGray: '#efefef',
       },
     },
   },
