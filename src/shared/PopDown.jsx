@@ -16,7 +16,7 @@ export default function PopDown(props) {
           <Popover.Button
             className={classNames(
               open ? 'text-mainYellow' : 'text-mainYellow',
-              'group rounded-md inline-flex items-center text-lg font-semibold hover:text-mainYellow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mainYellow'
+              'group rounded-md inline-flex items-center text-base font-semibold hover:text-mainYellow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mainYellow'
             )}
           >
             <span>{props.category.name}</span>
