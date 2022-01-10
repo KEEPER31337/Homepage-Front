@@ -3,10 +3,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        mainBlack: '#0f172a',
+        mainHeader: 'rgb(255,255,255,0)',
+        mainBlack: '#000000',
         mainWhite: '#ffffff',
-        pointYellow: '#fbbf24',
-        backGray: '#f8fafc',
+        mainYellow: '#fbbf24',
+        pointYellow: '#f59e0b',
+        backGray: '#efefef',
+        divisionGray: '#e0e0e0'
       },
     },
   },
