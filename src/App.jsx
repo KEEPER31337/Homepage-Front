@@ -16,7 +16,7 @@ import SignUp from 'page/SignUp/SignUp';
 
 const App = (props) => {
   return (
-    <div className="content-center bg-mainWhite">
+    <div className="content-center">
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
