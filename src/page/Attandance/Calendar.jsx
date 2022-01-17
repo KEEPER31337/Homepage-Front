@@ -19,7 +19,7 @@ export default function Calendar() {
   const header = dayOfWeeks.map((dayOfWeek, index) => (
     <th key={index}>
       <div className="w-full flex justify-center">
-        <p className="text-md font-medium text-center text-gray-800 dark:text-gray-100">
+        <p className="text-lg font-medium text-center text-gray-800 dark:text-gray-100">
           {dayOfWeek}
         </p>
       </div>
@@ -33,15 +33,15 @@ export default function Calendar() {
           <td key={day}>
             {day == today ? (
               <div className="w-full h-full">
-                <div className="flex items-center justify-center w-full rounded-full cursor-pointer">
-                  <p className="text-md w-14 h-14 flex items-center justify-center font-medium text-white bg-mainYellow rounded-full">
+                <div className="flex items-center justify-center w-full rounded-full">
+                  <p className="text-lg w-14 h-14 flex items-center justify-center font-medium text-white bg-mainYellow rounded-full">
                     {day}
                   </p>
                 </div>
               </div>
             ) : (
               <div className="px-4 py-4 cursor-pointer flex w-full justify-center">
-                <p className="text-md text-gray-500 dark:text-gray-100 font-medium">
+                <p className="text-lg text-gray-500 dark:text-gray-100 font-medium">
                   {day}
                 </p>
               </div>
@@ -55,10 +55,10 @@ export default function Calendar() {
   return (
     <>
       <div className="flex items-center justify-center py-8 px-4">
-        <div className="w-full max-w-lg shadow-lg rounded-lg">
+        <div className="w-full max-w-2xl shadow-lg rounded-lg">
           <div className="md:p-12 md:pb-12 p-5 dark:bg-gray-800 bg-white rounded-lg">
             <div className="px-4 flex items-center justify-between ">
-              <h1 className="text-md font-bold dark:text-gray-100 text-gray-800">
+              <h1 className="text-lg font-bold dark:text-gray-100 text-gray-800">
                 October 2021
               </h1>
               <div className="flex items-center text-gray-800 dark:text-gray-100">

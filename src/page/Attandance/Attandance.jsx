@@ -22,7 +22,7 @@ const Attandance = () => {
           <Box />
           <Box />
         </div>
-        <div className="container grid grid-flow-col justify-center content-center gap-10 py-6">
+        <div className="container py-6">
           <AttandanceTable />
         </div>
       </LayoutContainer>
