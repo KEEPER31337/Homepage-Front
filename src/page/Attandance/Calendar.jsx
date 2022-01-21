@@ -1,21 +1,38 @@
-import React, { useEffect } from 'react';
-
-const dayOfWeeks = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
-
-const today = 5;
-const weekDays = [
-  [1, 2, 3, 4, 5, 6, 7],
-  [8, 9, 10, 11, 12, 13, 14],
-  [15, 16, 17, 18, 19, 20, 21],
-  [22, 23, 24, 25, 26, 27, 28],
-  [29, 30, 31],
-];
-
-// TODO : 오늘 날짜 가져오기
-// TODO : 이달의 최대 날짜 가져오기
-// TODO : 요일 맞추기
+import React, { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
 
 export default function Calendar() {
+  // TODO: prev/next month
+  // TODO: 출석
+  const dayOfWeeks = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+  const [now, setNow] = useState(dayjs());
+  const [firstDay, setFirstDay] = useState(now.startOf('month'));
+  const [lastDay, setLastDay] = useState(now.endOf('month'));
+
+  const checkRange = (day) => {
+    return 1 <= day && day <= lastDay.date();
+  };
+
+  const getCalendar = () => {
+    // NOTE : Need to refactoring
+    const calendar = [];
+    let day = -firstDay.day();
+    while (true) {
+      calendar.push(
+        Array(7)
+          .fill(1)
+          .map((first, index) => {
+            day++;
+            if (checkRange(day)) return day;
+            return '';
+          })
+      );
+      if (day > lastDay.date()) break;
+    }
+    return calendar;
+  };
+  const calendar = getCalendar();
+
   const header = dayOfWeeks.map((dayOfWeek, index) => (
     <th key={index}>
       <div className="w-full flex justify-center">
@@ -26,12 +43,12 @@ export default function Calendar() {
     </th>
   ));
 
-  const jsxweekDays = weekDays.map((week) => {
+  const jsxCalendar = calendar.map((week, index) => {
     return (
-      <tr key={week}>
-        {week.map((day) => (
-          <td key={day}>
-            {day == today ? (
+      <tr key={(week, index)}>
+        {week.map((day, index) => (
+          <td key={(day, index)}>
+            {day == now.date() ? (
               <div className="w-full h-full">
                 <div className="flex items-center justify-center w-full rounded-full">
                   <p className="text-lg w-14 h-14 flex items-center justify-center font-medium text-white bg-mainYellow rounded-full">
@@ -51,6 +68,8 @@ export default function Calendar() {
       </tr>
     );
   });
+
+  useEffect(() => {}, []);
 
   return (
     <>
@@ -99,7 +118,7 @@ export default function Calendar() {
                 <thead>
                   <tr>{header}</tr>
                 </thead>
-                <tbody>{jsxweekDays}</tbody>
+                <tbody>{jsxCalendar}</tbody>
               </table>
             </div>
           </div>
