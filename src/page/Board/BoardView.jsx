@@ -1,6 +1,6 @@
 import React from 'react';
-import BoardInfo from 'page/Board/BoardInfo';
-import BoardTable from 'page/Board/BoardTable';
+import Info from 'page/Board/Info';
+import Table from 'page/Board/Table';
 import Content from 'page/Board/Content';
 import Comments from 'page/Board/Comments';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -19,10 +19,10 @@ const BoardView = () => {
   return (
     <div>
       <div className="inline-block m-5 w-4/5">
-        <BoardInfo />
+        <Info />
         <Content board={board} />
         <Comments comments={board.comments} />
-        <BoardTable />
+        <Table />
       </div>
 
       <button

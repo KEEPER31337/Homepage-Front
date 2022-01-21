@@ -1,12 +1,12 @@
 import React from 'react';
-import BoardInfo from 'page/Board/BoardInfo';
-import BoardTable from 'page/Board/BoardTable';
+import Info from 'page/Board/Info';
+import Table from 'page/Board/Table';
 import Editer from 'page/Board/Editer';
 
 const BoardWrite = () => {
   return (
     <div className="m-5 w-4/5">
-      <BoardInfo />
+      <Info />
       <div>
         <Editer />
       </div>

@@ -1,6 +1,6 @@
 import React from 'react';
-import BoardInfo from 'page/Board/BoardInfo';
-import BoardTable from 'page/Board/BoardTable';
+import Info from 'page/Board/Info';
+import Table from 'page/Board/Table';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const Board = () => {
@@ -8,8 +8,8 @@ const Board = () => {
   return (
     <div>
       <div className="inline-block m-5 w-4/5">
-        <BoardInfo />
-        <BoardTable />
+        <Info />
+        <Table />
       </div>
       <button
         className="border-2 border-mainYellow rounded-lg shadow-lg"
