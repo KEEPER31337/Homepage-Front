@@ -75,7 +75,9 @@ export default function Calendar() {
       <tr key={(week, index)}>
         {week.map((day, index) => (
           <td key={(day, index)}>
-            {day === now.date() && firstDay.month() === now.month() ? (
+            {day === now.date() &&
+            firstDay.month() === now.month() &&
+            firstDay.year() === now.year() ? (
               <div className="w-full h-full">
                 <div className="flex items-center justify-center w-full rounded-full">
                   <p className="text-lg w-14 h-14 flex items-center justify-center font-medium text-white bg-mainYellow rounded-full">
