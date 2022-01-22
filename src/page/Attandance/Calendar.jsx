@@ -1,10 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 
+const months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+const dayOfWeeks = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+
 export default function Calendar() {
-  // TODO: prev/next month
   // TODO: 출석
-  const dayOfWeeks = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
   const [now, setNow] = useState(dayjs());
   const [firstDay, setFirstDay] = useState(now.startOf('month'));
   const [lastDay, setLastDay] = useState(now.endOf('month'));
@@ -31,9 +45,22 @@ export default function Calendar() {
     }
     return calendar;
   };
+
+  const goPrevMonth = () => {
+    const updateDay = firstDay.month(firstDay.month() - 1);
+    setFirstDay(updateDay.startOf('month'));
+    setLastDay(updateDay.endOf('month'));
+  };
+
+  const goNextMonth = () => {
+    const updateDay = firstDay.month(firstDay.month() + 1);
+    setFirstDay(updateDay.startOf('month'));
+    setLastDay(updateDay.endOf('month'));
+  };
+
   const calendar = getCalendar();
 
-  const header = dayOfWeeks.map((dayOfWeek, index) => (
+  const jsxHeader = dayOfWeeks.map((dayOfWeek, index) => (
     <th key={index}>
       <div className="w-full flex justify-center">
         <p className="text-lg font-medium text-center text-gray-800 dark:text-gray-100">
@@ -48,7 +75,7 @@ export default function Calendar() {
       <tr key={(week, index)}>
         {week.map((day, index) => (
           <td key={(day, index)}>
-            {day == now.date() ? (
+            {day === now.date() && firstDay.month() === now.month() ? (
               <div className="w-full h-full">
                 <div className="flex items-center justify-center w-full rounded-full">
                   <p className="text-lg w-14 h-14 flex items-center justify-center font-medium text-white bg-mainYellow rounded-full">
@@ -78,45 +105,55 @@ export default function Calendar() {
           <div className="md:p-12 md:pb-12 p-5 dark:bg-gray-800 bg-white rounded-lg">
             <div className="px-4 flex items-center justify-between ">
               <h1 className="text-lg font-bold dark:text-gray-100 text-gray-800">
-                October 2021
+                {months[firstDay.month()]} {firstDay.year()}
               </h1>
               <div className="flex items-center text-gray-800 dark:text-gray-100">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="icon icon-tabler icon-tabler-chevron-left"
-                  width={24}
-                  height={24}
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                <button
+                  className="rounded-md hover:ring-2 hover:ring-mainYellow"
+                  onClick={goPrevMonth}
                 >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                  <polyline points="15 6 9 12 15 18" />
-                </svg>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="icon icon-tabler ml-3 icon-tabler-chevron-right"
-                  width={24}
-                  height={24}
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="icon icon-tabler icon-tabler-chevron-left m-1"
+                    width={24}
+                    height={24}
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <polyline points="15 6 9 12 15 18" />
+                  </svg>
+                </button>
+                <button
+                  className="rounded-md hover:ring-2 hover:ring-mainYellow"
+                  onClick={goNextMonth}
                 >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                  <polyline points="9 6 15 12 9 18" />
-                </svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="icon icon-tabler icon-tabler-chevron-right m-1"
+                    width={24}
+                    height={24}
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <polyline points="9 6 15 12 9 18" />
+                  </svg>
+                </button>
               </div>
             </div>
             <div className="flex items-center justify-between pt-12 overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr>{header}</tr>
+                  <tr>{jsxHeader}</tr>
                 </thead>
                 <tbody>{jsxCalendar}</tbody>
               </table>
