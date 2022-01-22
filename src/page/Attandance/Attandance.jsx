@@ -9,6 +9,11 @@ import Calendar from './Calendar';
 import Box from './Box';
 import AttandanceTable from './AttandanceTable';
 
+// img
+import LeafIcon from 'assets/img/leaf.png';
+import PrizeIcon from 'assets/img/prize.png';
+import CoinIcon from 'assets/img/coin.png';
+
 const Attandance = () => {
   return (
     <PageContainer>
@@ -17,9 +22,9 @@ const Attandance = () => {
           <Calendar />
         </div>
         <div className="container grid grid-flow-col justify-center content-center gap-10 py-6">
-          <Box />
-          <Box />
-          <Box />
+          <Box icon={LeafIcon} text="개근 5일차" />
+          <Box icon={PrizeIcon} text="1등" />
+          <Box icon={CoinIcon} text="1800 pt" />
           <Box />
         </div>
         <div className="container py-6">
