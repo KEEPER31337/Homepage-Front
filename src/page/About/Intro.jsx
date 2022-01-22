@@ -1,12 +1,5 @@
 import React from 'react';
 //import AboutBgImg from 'assets/img/AboutBgImg.png';
-/* This example requires Tailwind CSS v2.0+ */
-import {
-  AnnotationIcon,
-  GlobeAltIcon,
-  LightningBoltIcon,
-  ScaleIcon,
-} from '@heroicons/react/outline';
 
 export default function Intro() {
   // TODO 내용 DB에서 끌어오기
