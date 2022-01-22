@@ -1,33 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { board_read, board_remove } from './App_reducer';
+import { testText } from 'page/Board/testText';
+import marked from 'marked';
 
-class BoardItem extends Component {
-  handleUpdateForm = (brdno) => {
-    this.props.dispatch(board_read(brdno));
-  };
-  render() {
-    const row = this.props.row;
-    return (
-      <tr>
-        {' '}
-        <td>{row.brdno}</td>{' '}
-        <td>
-          <a onClick={() => this.handleUpdateForm(row.brdno)}>{row.brdtitle}</a>
-        </td>{' '}
-        <td>{row.brdwriter}</td>{' '}
-        <td>{row.brddate.toLocaleDateString('ko-KR')}</td>{' '}
-        <td>
-          <a
-            onClick={() => {
-              this.props.dispatch(board_remove(row.brdno));
-            }}
-          >
-            X
-          </a>
-        </td>{' '}
-      </tr>
-    );
-  }
-}
-export default connect()(BoardItem);
+const renderText = (text) => {
+  const __html = marked(text, { sanitize: true });
+  return { __html };
+};
+
+const Item = () => {
+  //현재 작성된 상황 저장(입력 내용, 체크박스 등)
+  const [text, setText] = useState(testText);
+  console.log(EditerState);
+
+  useEffect(() => {
+    console.log(test);
+  }, [test]);
+
+  return <div></div>;
+};
+
+export default Editer;

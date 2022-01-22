@@ -7,10 +7,9 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import testData from 'page/Board/testData';
 
 const BoardView = () => {
-  const { pathname } = useLocation();
+  //const { pathname } = useLocation();
   const { no } = useParams();
   const navigate = useNavigate(); //다른 페이지로 이동시키기 위함
-
   //console.log(pathname); //현재 path url
   //console.log(no); //게시글 번호
 
