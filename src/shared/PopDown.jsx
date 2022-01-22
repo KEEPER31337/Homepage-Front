@@ -8,7 +8,6 @@ function classNames(...classes) {
 }
 
 export default function PopDown(props) {
-  console.log(props.category.subs);
   return (
     <Popover className="relative">
       {({ open }) => (
