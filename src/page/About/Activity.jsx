@@ -1,4 +1,4 @@
-// FIXME 화면 중간정도?로 줄이면 2번째 요소 사진과 내용 곂쳐짐
+// TODO 화면 크기 조정 시 단어 단위로 줄바꿈 되도록 하기
 // ANCHOR aspect-ratio 뭔지 살펴보기
 /*
   This example requires Tailwind CSS v2.0+ 
@@ -75,7 +75,7 @@ function classNames(...classes) {
 
 export default function Example() {
   return (
-    <div className="bg-white">
+    <div className="my-10 bg-white">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="py-10 px-16 text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">
           정기 활동
@@ -90,7 +90,7 @@ export default function Example() {
                 className={classNames(
                   featureIdx % 2 === 0
                     ? 'lg:col-start-1'
-                    : 'lg:col-start-6 xl:col-start-7',
+                    : 'lg:col-start-8 xl:col-start-7',
                   'mt-6 lg:mt-0 lg:row-start-1 lg:col-span-4 xl:col-span-5'
                 )}
               >

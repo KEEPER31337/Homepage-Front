@@ -4,7 +4,7 @@ import React from 'react';
 export default function Intro() {
   // TODO 내용 DB에서 끌어오기
   return (
-    <div className="py-12 bg-white">
+    <div className="my-10 py-5 bg-white">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="-my-6 divide-y divide-gray-300">
           <h1 className="my-10 text-5xl leading-8 font-extrabold tracking-normal text-gray-900 text-center">
