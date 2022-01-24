@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 
 // local
-import App from 'App';
-import 'tailwind.css';
+import './tailwind.css';
+import App from './App';
 
 ReactDOM.render(
   <BrowserRouter>

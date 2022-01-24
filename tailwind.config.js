@@ -9,7 +9,7 @@ module.exports = {
         mainYellow: '#fbbf24',
         pointYellow: '#f59e0b',
         backGray: '#efefef',
-        divisionGray: '#e0e0e0'
+        divisionGray: '#e0e0e0',
       },
     },
   },
