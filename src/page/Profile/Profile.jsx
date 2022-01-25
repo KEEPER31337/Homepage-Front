@@ -34,81 +34,77 @@ const Profile = () => {
     },
   };
   return (
-    <div>
+    <div className="mt-20 mx-auto h-full w-[900px] bg-backGray rounded-3xl shadow-2xl">
       {/*profile head*/}
-      <div className="mt-20 mx-auto h-full w-[900px] bg-backGray rounded-3xl shadow-2xl">
-        {/*profile head*/}
-        <div className="w-full h-1/4">
-          <div className="px-10 pt-10 pb-7 w-full h-full flex float-left">
-            {/*profile image*/}
-            <div className="px-2 w-3/12 object-cover">
-              <img className="w-full h-full rounded-2xl" src={user.img} />
+      {/*profile head*/}
+      <div className="w-full h-1/4">
+        <div className="px-10 pt-10 pb-7 w-full h-full flex float-left">
+          {/*profile image*/}
+          <div className="px-2 w-3/12 object-cover">
+            <img className="w-full h-full rounded-2xl" src={user.img} />
+          </div>
+          {/*profile head info*/}
+          <div className="pt-3 w-5/12 h-full">
+            <div className="text-center text-4xl w-1/2 h-1/5">{user.name}</div>
+            <div className="text-center text-lg w-1/2 h-1/5">
+              {user.nickName + ' ' + user.loginId}
             </div>
-            {/*profile head info*/}
-            <div className="pt-3 w-5/12 h-full">
-              <div className="text-center text-4xl w-1/2 h-1/5">
-                {user.name}
+            <div className="pt-6 pr-2 w-full h-3/5">
+              <button className="bg-divisionGray rounded-2xl w-1/4 h-full p-3 mr-4 hover:bg-[#c0c0c0] float-left">
+                <img className="w-full h-full object-cover" src={Home} />
+              </button>
+              <button className="bg-divisionGray rounded-2xl w-1/4 h-full p-3 mr-4 hover:bg-[#c0c0c0] float-left">
+                <div className="text-center text-5xl ">B</div>
+              </button>
+              <button className="bg-divisionGray rounded-2xl w-1/4 h-full p-3 mr-4 hover:bg-[#c0c0c0] float-left">
+                <div className="text-center text-5xl ">G</div>
+              </button>
+            </div>
+          </div>
+          {/*profile level type rank job*/}
+          <div className="w-4/12 pl-5">
+            {/*profile level*/}
+            <div className="w-full h-1/4">
+              <div className="pl-2 pt-3 text-center float-left text-3xl">
+                Level
               </div>
-              <div className="text-center text-lg w-1/2 h-1/5">
-                {user.nickName + ' ' + user.loginId}
-              </div>
-              <div className="pt-6 pr-2 w-full h-3/5">
-                <button className="bg-divisionGray rounded-2xl w-1/4 h-full p-3 mr-4 hover:bg-[#c0c0c0] float-left">
-                  <img className="w-full h-full object-cover" src={Home} />
-                </button>
-                <button className="bg-divisionGray rounded-2xl w-1/4 h-full p-3 mr-4 hover:bg-[#c0c0c0] float-left">
-                  <div className="text-center text-5xl ">B</div>
-                </button>
-                <button className="bg-divisionGray rounded-2xl w-1/4 h-full p-3 mr-4 hover:bg-[#c0c0c0] float-left">
-                  <div className="text-center text-5xl ">G</div>
-                </button>
+              <div className="pl-5 w-1/2 h-full float-left flex">
+                <CircularGauge
+                  inRad={20}
+                  outRad={24}
+                  parcent={user.point / LevelUp}
+                  text={user.level}
+                />
               </div>
             </div>
-            {/*profile level type rank job*/}
-            <div className="w-4/12 pl-5">
-              {/*profile level*/}
-              <div className="w-full h-1/4">
-                <div className="pl-2 pt-3 text-center float-left text-3xl">
-                  Level
-                </div>
-                <div className="pl-5 w-1/2 h-full float-left flex">
-                  <CircularGauge
-                    inRad={20}
-                    outRad={24}
-                    parcent={user.point / LevelUp}
-                    text={user.level}
-                  />
-                </div>
-              </div>
-              {/* profile betchis */}
-              <div className="w-full h-3/4 pt-3">
-                <div className="w-full h-full bg-divisionGray rounded-2xl">
-                  {/*profile type*/}
-                  <Group group={userGroups.type} />
-                  {/*profile rank*/}
-                  <Group group={userGroups.rank} />
-                  {/*profile job*/}
-                  <Group group={userGroups.job} />
-                </div>
+            {/* profile betchis */}
+            <div className="w-full h-3/4 pt-3">
+              <div className="w-full h-full bg-divisionGray rounded-2xl">
+                {/*profile type*/}
+                <Group group={userGroups.type} />
+                {/*profile rank*/}
+                <Group group={userGroups.rank} />
+                {/*profile job*/}
+                <Group group={userGroups.job} />
               </div>
             </div>
           </div>
         </div>
-        {/*profile body*/}
-        <div className="w-full h-3/4">
-          <InfoBox>
-            <div className="text-center">infoBox1</div>
-          </InfoBox>
-          <InfoBox>
-            <div className="text-center">infoBox2</div>
-          </InfoBox>
-          <InfoBox>
-            <div className="text-center">infoBox3</div>
-          </InfoBox>
-          <InfoBox>
-            <div className="text-center">infoBox4</div>
-          </InfoBox>
-        </div>
+      </div>
+      {/*profile body*/}
+      <div className="w-full h-3/4">
+        <InfoBox>
+          <div className="text-center">infoBox1</div>
+        </InfoBox>
+        <InfoBox>
+          <div className="text-center">infoBox2</div>
+        </InfoBox>
+        <InfoBox>
+          <div className="text-center">infoBox3</div>
+        </InfoBox>
+        <InfoBox>
+          <div className="text-center">infoBox4</div>
+        </InfoBox>
       </div>
       {/*profile footer*/}
       <footer className="w-full h-1/6">
