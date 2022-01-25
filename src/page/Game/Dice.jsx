@@ -48,7 +48,7 @@ const DiceGame = () => {
       });
     }
     if (rollNum > 2) {
-      document.getElementById('rollDice').disabled;
+      document.getElementById('rollDice').disabled = true;
       document.getElementById('rollDice').style.backgroundColor =
         'rgb(255,80,80)';
       document.getElementById('rollDice').style.color = 'rgb(80,80,80)';
