@@ -4,7 +4,7 @@ import { MenuIcon, ViewGridIcon, XIcon } from '@heroicons/react/outline';
 
 // local
 import PopDown from './PopDown';
-import Logo from 'assets/img/logo.png';
+import Logo from 'assets/img/keeper_logo.png';
 
 const categories = [
   {
