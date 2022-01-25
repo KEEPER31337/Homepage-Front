@@ -1,7 +1,9 @@
 import React from 'react';
 import Header from 'shared/Header.jsx';
 import { Route, Routes } from 'react-router-dom';
+import { connect } from 'react-redux';
 
+// local
 import Home from 'page/Home/Home';
 import About from 'page/About/About';
 import Attandance from 'page/Attandance/Attandance';
@@ -15,6 +17,7 @@ import Profile from 'page/Profile/Profile';
 import Schedule from 'page/Schedule/Schedule';
 import SignIn from 'page/SignIn/SignIn';
 import SignUp from 'page/SignUp/SignUp';
+import { actions } from './store';
 
 const App = (props) => {
   return (
@@ -39,4 +42,15 @@ const App = (props) => {
   );
 };
 
-export default App;
+const mapStateToProps = (state, OwnProps) => {
+  return { state };
+};
+const mapDispatchToProps = (dispatch, OwnProps) => {
+  return {
+    darkModeToggle: () => {
+      dispatch(actions.darkModeToggle());
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
