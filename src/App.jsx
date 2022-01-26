@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Header from 'shared/Header.jsx';
 import { Route, Routes } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -17,27 +17,31 @@ import Profile from 'page/Profile/Profile';
 import Schedule from 'page/Schedule/Schedule';
 import SignIn from 'page/SignIn/SignIn';
 import SignUp from 'page/SignUp/SignUp';
-import { actions } from './store';
+import { actions } from 'store';
+import DarkModeSwitch from './shared/DarkModeSwitch';
 
 const App = (props) => {
+  const darkMode = props.state.darkMode;
   return (
-    <div className="content-center">
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/attandance" element={<Attandance />} />
-        <Route path="/board" element={<BoardMain />} />
-        <Route path="/board/:no" element={<BoardView />} />
-        <Route path="/board/write" element={<BoardWrite />} />
-        <Route path="/event" element={<Event />} />
-        <Route path="/game" element={<Game />} />
-        <Route path="/library" element={<Library />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/schedule" element={<Schedule />} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
-      </Routes>
+    <div className={darkMode ? 'dark' : 'light'}>
+      <>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/attandance" element={<Attandance />} />
+          <Route path="/board" element={<BoardMain />} />
+          <Route path="/board/:no" element={<BoardView />} />
+          <Route path="/board/write" element={<BoardWrite />} />
+          <Route path="/event" element={<Event />} />
+          <Route path="/game" element={<Game />} />
+          <Route path="/library" element={<Library />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/schedule" element={<Schedule />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Routes>
+      </>
     </div>
   );
 };
