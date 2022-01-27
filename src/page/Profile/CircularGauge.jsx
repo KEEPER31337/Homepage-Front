@@ -26,7 +26,7 @@ export default function CircularGauge(props) {
           cy={props.outRad}
         />
       </svg>
-      <div className="p-2.5 absolute text-center object-cover">
+      <div className="p-2.5 absolute text-center object-cover text-mainYellow text-lg">
         {props.text}
       </div>
     </div>
