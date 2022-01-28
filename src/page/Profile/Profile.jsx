@@ -21,11 +21,24 @@ const dummyUser = {
   github: 'zune2222',
 };
 const LevelUp = 100;
+const isMe = false;
+const isFriend = false;
+
+const myBtns = ['수정', '비밀번호 변경', '탈퇴'];
+const otherBtns = ['쪽지', '친구 등록', '선물 하기'];
+const friendBtns = ['쪽지', '친구 삭제', '선물 하기'];
 
 const Profile = () => {
   const user = dummyUser;
 
   const [gitMd, setGitMd] = useState(null);
+  const [btns, setBtns] = useState(new Array());
+
+  useEffect(async () => {
+    if (isMe) setBtns(myBtns);
+    else if (isFriend) setBtns(friendBtns);
+    else setBtns(otherBtns);
+  }, [isMe, isFriend]);
 
   useEffect(async () => {
     try {
@@ -66,36 +79,29 @@ const Profile = () => {
   };
 
   return (
-    <div>
-      {/*profile head*/}
-      <div className="mt-20 mx-auto h-full w-[800px] bg-backGray rounded-3xl shadow-2xl">
+    <div className="bg-mainWhite dark:bg-mainBlack pt-20">
+      <div className="mx-auto h-full w-[900px] bg-backGray dark:bg-darkPoint rounded-3xl shadow-2xl">
         {/*profile head*/}
-        <div className="w-full h-1/4">
+        <div className="w-full h-[265px]">
           <div className="px-10 pt-10 pb-7 w-full h-full flex float-left">
             {/*profile image*/}
-            <div className="px-2 w-3/12 object-cover">
+            <div className="pr-2 w-3/12 object-cover">
               <img className="w-full h-full rounded-2xl" src={user.img} />
             </div>
             {/*profile head info*/}
             <div className="pt-3 w-5/12 h-full">
-              <div className="text-left text-4xl w-2/3 h-1/5">{user.name}</div>
-              <div className="text-left text-lg w-2/3 h-1/5">
+              <div className="text-left text-4xl h-1/5 dark:text-pointYellow">
+                {user.name}
+              </div>
+              <div className="mt-3 text-left text-lg h-1/5 dark:text-mainYellow">
                 {user.nickName + ' ' + user.loginId}
               </div>
-              <div className="pt-6 pr-2 w-full h-3/5">
-                <InfoRouteBtn img={Home} />
-                <InfoRouteBtn />
-                <InfoRouteBtn />
-              </div>
-            </div>
-            {/*profile level type rank job*/}
-            <div className="w-4/12 pl-5">
-              {/*profile level*/}
-              <div className="w-full h-1/4">
-                <div className="pl-2 pt-3 text-center float-left text-3xl">
+              {/*profile Level*/}
+              <div className="mt-10 pr-2 w-full h-2/6">
+                <div className="pt-2 text-center float-left text-3xl dark:text-pointYellow">
                   Level
                 </div>
-                <div className="pl-5 w-1/2 h-full float-left flex">
+                <div className="pl-5 h-full float-left flex">
                   <CircularGauge
                     inRad={20}
                     outRad={24}
@@ -104,9 +110,18 @@ const Profile = () => {
                   />
                 </div>
               </div>
+            </div>
+            {/*profile level type rank job*/}
+            <div className="w-4/12 pl-5">
+              {/*profile level*/}
+              <div className="w-full h-1/4 flex justify-center items-center">
+                {btns.map((btn) => (
+                  <InfoRouteBtn text={btn} />
+                ))}
+              </div>
               {/* profile betchis */}
               <div className="w-full h-3/4 pt-3">
-                <div className="w-full h-full bg-divisionGray rounded-2xl">
+                <div className="w-full h-full bg-divisionGray dark:bg-darkComponent dark:text-mainWhite rounded-2xl">
                   {/*profile type*/}
                   <Group group={userGroups.type} />
                   {/*profile rank*/}
@@ -119,17 +134,17 @@ const Profile = () => {
           </div>
         </div>
         {/*profile body*/}
-        <div className="w-full h-3/4">
+        <div className="w-full h-[900px]">
           <InfoBox type="github" params={{ gitId: user.github }} />
           <InfoBox />
           <InfoBox />
           <InfoBox />
         </div>
+        {/*profile footer*/}
+        <footer className="w-full h-[50px]">
+          <div className="text-center dark:text-mainWhite">Profile footer</div>
+        </footer>
       </div>
-      {/*profile footer*/}
-      <footer className="w-full h-1/6">
-        <div className="text-center">Profile footer</div>
-      </footer>
     </div>
   );
 };

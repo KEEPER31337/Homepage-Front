@@ -10,8 +10,11 @@ module.exports = {
         pointYellow: '#f59e0b',
         backGray: '#efefef',
         divisionGray: '#e0e0e0',
+        darkComponent: '#1f2937',
+        darkPoint: '#111827',
       },
     },
   },
   plugins: [],
+  darkMode: 'class',
 };
