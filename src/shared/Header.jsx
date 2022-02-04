@@ -310,7 +310,7 @@ export default function Header() {
           </Popover.Panel>
         </Transition>
       </Popover>
-      <div className="absolute right-1">
+      <div className="absolute right-1 z-40">
         <DarkModeSwitch />
       </div>
     </>

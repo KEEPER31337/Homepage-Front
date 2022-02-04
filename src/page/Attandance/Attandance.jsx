@@ -11,6 +11,7 @@ import AttandanceTable from './Component/AttandanceTable';
 import ContinuousModal from './Component/ContinuousModal';
 import RankModal from './Component/RankModal';
 import PointModal from './Component/PointModal';
+import NavigationLayout from '../../shared/NavigationLayout';
 
 // img
 import LeafIcon from 'assets/img/leaf.png';
@@ -23,8 +24,8 @@ const Attandance = () => {
   const pointModalRef = useRef({});
 
   return (
-    <PageContainer>
-      <LayoutContainer>
+    <div>
+      <NavigationLayout>
         <div className="container">
           <Calendar />
         </div>
@@ -58,8 +59,8 @@ const Attandance = () => {
         <div className="container py-6">
           <AttandanceTable />
         </div>
-      </LayoutContainer>
-    </PageContainer>
+      </NavigationLayout>
+    </div>
   );
 };
 

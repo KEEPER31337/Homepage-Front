@@ -3,7 +3,7 @@ import React from 'react';
 const Box = ({ icon, text, ...rest }) => {
   return (
     <div
-      className="w-36 h-auto m- rounded-lg shadow-lg p-2 cursor-point bg-white dark:bg-darkComponent hover:bg-green-50"
+      className="w-36 h-auto m- rounded-lg shadow-lg p-2 cursor-point bg-white hover:bg-green-50 dark:bg-darkComponent dark:hover:bg-teal-800"
       {...rest}
     >
       <div className="m-2">
