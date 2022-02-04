@@ -1,28 +1,12 @@
 // TODO 화면 크기 조정 시 단어 단위로 줄바꿈 되도록 하기
-// ANCHOR aspect-ratio 뭔지 살펴보기
-/*
-  This example requires Tailwind CSS v2.0+ 
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/aspect-ratio'),
-    ],
-  }
-  ```
-*/
+
 import React from 'react';
 
-const features = [
+const articles = [
   // TODO 이미지 넣기
   {
-    name: '세미나',
-    description: (
+    subtitle: '세미나',
+    content: (
       <ul>
         {/* FIXME ul적용 왜 안 되는 지는 살펴봐야겠음 */}
         <li>매주 금요일 마다 정기적으로 운영</li>
@@ -35,8 +19,8 @@ const features = [
     imageAlt: 'Seminar',
   },
   {
-    name: '스터디 & 멘토링',
-    description: (
+    subtitle: '스터디 & 멘토링',
+    content: (
       <ul>
         {/* ul적용 왜 안 되는 지는 살펴봐야겠음 */}
         <li>매학기 활동 시작 전 원하는 스터디 개설 및 스터디원 구성</li>
@@ -52,8 +36,8 @@ const features = [
     imageAlt: 'Study & Mentoring',
   },
   {
-    name: '기술문서',
-    description: (
+    subtitle: '기술문서',
+    content: (
       <ul>
         {/* ul적용 왜 안 되는 지는 살펴봐야겠음 */}
         <li>
@@ -73,52 +57,47 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function Example() {
+export default function Activity() {
+  const sectionTitle = '정기 활동';
   return (
-    <div className="my-10 bg-white">
+    <div className="bg-white my-5">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="py-10 px-16 text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">
-          정기 활동
-        </h2>
-        <div className="px-20 space-y-16">
-          {features.map((feature, featureIdx) => (
-            <div
-              key={feature.name}
-              className="flex flex-col-reverse lg:grid lg:grid-cols-12 lg:gap-x-8 lg:items-center"
-            >
+        <div className="py-6 lg:py-10 px-12 lg:px-16">
+          <h2 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black">
+            {sectionTitle}
+          </h2>
+          <div className="px-2 lg:px-4 space-y-16 text-black">
+            {articles.map((article, articleIdx) => (
               <div
-                className={classNames(
-                  featureIdx % 2 === 0
-                    ? 'lg:col-start-1'
-                    : 'lg:col-start-8 xl:col-start-7',
-                  'mt-6 lg:mt-0 lg:row-start-1 lg:col-span-4 xl:col-span-5'
-                )}
+                key={article.subtitle}
+                className="flex flex-col-reverse lg:grid lg:grid-cols-6 lg:gap-x-16 lg:items-center"
               >
-                <h3 className="text-lg font-bold text-gray-900">
-                  {feature.name}
-                </h3>
-                <p className="mt-2 text-1xl text-black">
-                  {feature.description}
-                </p>
-              </div>
-              <div
-                className={classNames(
-                  featureIdx % 2 === 0
-                    ? 'lg:col-start-8 xl:col-start-7'
-                    : 'lg:col-start-1',
-                  'flex-auto lg:row-start-1 lg:col-span-6 xl:col-span-5'
-                )}
-              >
-                <div className="aspect-w-5 aspect-h-2 rounded-lg bg-gray-100 overflow-hidden">
-                  <img
-                    src={feature.imageSrc}
-                    alt={feature.imageAlt}
-                    className="object-center object-cover"
-                  />
+                <div
+                  className={classNames(
+                    articleIdx % 2 === 0 ? 'lg:col-start-1' : 'lg:col-start-4',
+                    'mt-6 lg:mt-0 lg:row-start-1 lg:col-span-3'
+                  )}
+                >
+                  <h3 className="text-lg font-bold">{article.subtitle}</h3>
+                  <div className="mt-2 text-base">{article.content}</div>
+                </div>
+                <div
+                  className={classNames(
+                    articleIdx % 2 === 0 ? 'lg:col-start-4' : 'lg:col-start-1',
+                    'flex-auto lg:row-start-1 lg:col-span-3'
+                  )}
+                >
+                  <div className="rounded-xl overflow-hidden">
+                    <img
+                      src={article.imageSrc}
+                      alt={article.imageAlt}
+                      className="object-center object-cover"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>

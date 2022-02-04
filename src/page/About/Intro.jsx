@@ -2,7 +2,10 @@ import React from 'react';
 //import AboutBgImg from 'assets/img/AboutBgImg.png';
 
 export default function Intro() {
+  const pageTitle = 'KEEPER';
+  const sectionTitle = '키퍼(KEEPER) 소개글';
   // ANCHOR 내용 받아와보고 content 형식 정할 예정
+  // ANCHOR 반응형으로 할 때 개행 처리
   /* const content =
     "'지키다'라는 의미를 가진 단어 'KEEP'에서 착안하여, 정보보호에 관한 \
 연구를 진행하고 \n그 성과를 공유하기 위해 만들어진 동아리입니다. \
@@ -34,36 +37,27 @@ KEEPER에 가입하시면 선배, 후배, 동기들과 다 같이 정보보안�
 지도 교수님 : 김호원 교수님`;
 
   return (
-    <div className="my-10 py-5 bg-white">
+    // TODO 배경 이미지 넣기
+    <div className="bg-white py-4 lg:py-5">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="-my-6 divide-y divide-gray-300">
-          <h1 className="my-10 text-5xl leading-8 font-extrabold tracking-normal text-gray-900 text-center">
-            KEEPER
+          <h1 className="py-6 lg:py-10 text-4xl lg:text-5xl leading-8 tracking-normal font-extrabold text-black text-center">
+            {pageTitle}
           </h1>
-          <div>
-            <h2 className="py-10 px-16 text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">
-              키퍼(KEEPER) 소개글
+          <div className="py-6 lg:py-10 px-12 lg:px-16">
+            <h2 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black">
+              {sectionTitle}
             </h2>
-            <p
+            <div
               style={{ whiteSpace: 'pre-wrap' }}
-              className="px-20 text-1xl text-black"
+              className="px-2 lg:px-4 text-base text-black"
             >
               {content}
               <br />
               {supervisors}
-            </p>
+            </div>
           </div>
         </div>
-        {
-          // TODO 이미지 넣고 css 적용하기
-          /*
-          <img
-          className=""
-          src={AboutBgImg}
-          alt="AboutBgImg"
-          />
-          */
-        }
       </div>
     </div>
   );
