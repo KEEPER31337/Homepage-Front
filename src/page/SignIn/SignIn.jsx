@@ -3,8 +3,8 @@ import Logo from 'assets/img/keeper_logo.png';
 
 const SignIn = () => {
   return (
-    <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full ">
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 dark:text-mainWhite dark:bg-mainBlack">
+      <div className="max-w-md w-screen ">
         <div>
           <img className="mx-auto h-35 w-auto" src={Logo} alt="" />
         </div>
@@ -22,8 +22,8 @@ const SignIn = () => {
                 className="appearance-none rounded-md  
               
               relative block w-full px-3 py-4 border border-gray-300 
-              placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none 
-              focus:bg-backGray focus:border-backGray 
+              placeholder-gray-500  rounded-t-md focus:outline-none 
+              focus:bg-backGray focus:border-backGray  dark:bg-darkPoint dark:outline-white  dark:border-transparent
               "
                 placeholder="아이디"
               />
@@ -39,8 +39,8 @@ const SignIn = () => {
                 className="appearance-none rounded-lg 
               relative block w-full px-3 py-4 border 
               border-gray-300 placeholder-gray-500 
-              text-gray-900 rounded-b-md focus:outline-none 
-              focus:bg-backGray focus:border-backGray 
+               rounded-b-md focus:outline-none 
+              focus:bg-backGray focus:border-backGray  dark:bg-darkPoint dark:outline-white  dark:border-transparent
 
               focus:z-10 sm:text-sm"
                 placeholder="비밀번호"
