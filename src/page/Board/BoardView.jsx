@@ -1,8 +1,8 @@
 import React from 'react';
-import Info from 'page/Board/Info';
-import Table from 'page/Board/Table';
-import Content from 'page/Board/Content';
-import Comments from 'page/Board/Comments';
+import Info from 'page/Board/Components/Info';
+import Table from 'page/Board/Components/Table';
+import Content from 'page/Board/Components/Content';
+import Comments from 'page/Board/Components/Comments';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import testData from 'page/Board/testData';
 

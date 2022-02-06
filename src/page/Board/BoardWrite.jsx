@@ -1,6 +1,6 @@
 import React from 'react';
-import Info from 'page/Board/Info';
-import TextEditer from 'page/Board/TextEditer';
+import Info from 'page/Board/Components/Info';
+import TextEditer from 'page/Board/Components/TextEditer';
 
 const BoardWrite = () => {
   return (
