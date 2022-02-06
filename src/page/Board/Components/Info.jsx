@@ -16,14 +16,16 @@ const Info = () => {
   }, [font, style]);
 
   return (
-    <div className="border-4 border-black">
-      <p className="text-3xl">공지사항</p>
-      <p className="text-gray-400 inline-block w-3/5">공지사항입니다.</p>
+    <div className="border-4 border-black dark:text-mainWhite">
+      <p className="text-3xl dark:text-mainWhite">공지사항</p>
+      <p className="text-gray-400 inline-block w-3/5 dark:text-divisionGray">
+        공지사항입니다.
+      </p>
       <div className="border-2 inline-block">
         <p className="text-center">Font</p>
         <select
           name="font"
-          className="border"
+          className="border dark:text-mainBlack"
           onChange={(e) => {
             setOption({ font: e.target.value, style });
           }}

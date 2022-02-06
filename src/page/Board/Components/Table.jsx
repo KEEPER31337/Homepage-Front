@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+
+//local
 import testData from 'page/Board/testData';
 
 const MAX_POSTS = 3; //한 페이지당 노출시킬 최대 게시글 수
@@ -7,7 +9,7 @@ const pageN = Math.ceil(testData.maxNo / MAX_POSTS); //페이지 수
 
 const setPageButton = (currentPage, page) => {
   if (currentPage == page) return 'text-mainYellow';
-  else return 'text-black';
+  else return 'text-mainBlack dark:text-mainWhite';
 };
 
 const Table = (selected = null) => {
@@ -24,7 +26,7 @@ const Table = (selected = null) => {
   }, [currentPage]); //currentPage 값이 변경될 때마다
 
   return (
-    <div className="border-4 border-black ">
+    <div className="border-4 border-black dark:bg-mainBlack dark:text-mainWhite ">
       <p>
         Total <span className="text-mainYellow">{testData.maxNo}</span>
       </p>
@@ -52,7 +54,7 @@ const Table = (selected = null) => {
                     state: { test: 'test' },
                   }}
                 >
-                  <p className="bg-pink-200">
+                  <p className="">
                     {board.title + (board.file ? ' (F) ' : '')}
                   </p>
                 </Link>
@@ -74,7 +76,7 @@ const Table = (selected = null) => {
 
       <div name="bottom" className="border border-red-400">
         <div name="search">
-          <select className="border" name="search rule">
+          <select className="border text-mainBlack" name="search rule">
             <option value="제목+내용">제목+내용</option>
             <option value="제목">제목</option>
             <option value="내용">내용</option>

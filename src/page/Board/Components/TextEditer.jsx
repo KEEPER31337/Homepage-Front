@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { testText } from 'page/Board/testText';
-import '@toast-ui/editor/dist/toastui-editor.css'; //마크다운 편집기 에디터
+import { connect } from 'react-redux';
+
+//마크다운 편집기 에디터
+import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
 
 //마크다운 편집기 플러그인
@@ -13,9 +15,12 @@ import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 import tableMergedCell from '@toast-ui/editor-plugin-table-merged-cell';
 import uml from '@toast-ui/editor-plugin-uml';
 
-const isDark = false; //Dark모드 여부
+//local
+import { actions } from 'store';
+import { testText } from 'page/Board/testText';
 
-const TextEditer = () => {
+const TextEditer = (props) => {
+  const isDark = props.state.darkMode; //Dark모드 여부
   //현재 작성된 상황 저장(입력 내용, 체크박스 등)
   const [EditerState, setEditerState] = useState([]);
   const [text, setText] = useState({
@@ -89,7 +94,10 @@ const TextEditer = () => {
         </div>
       </div>
 
-      <div name="option" className="border border-red-400 inline-block">
+      <div
+        name="option"
+        className="border border-red-400 inline-block dark:text-mainWhite"
+      >
         <input type="checkbox" value="댓글 허용" checked />
         댓글 허용
         <br />
@@ -106,7 +114,7 @@ const TextEditer = () => {
         비밀글
         <br />
       </div>
-      <div className="inline-block border border-blue-400">
+      <div className="inline-block border border-blue-400 dark:text-mainWhite">
         <button className="border-2 border-mainYellow rounded-lg shadow-lg">
           게시하기
         </button>
@@ -124,5 +132,14 @@ const TextEditer = () => {
     </div>
   );
 };
-
-export default TextEditer;
+const mapStateToProps = (state, OwnProps) => {
+  return { state };
+};
+const mapDispatchToProps = (dispatch, OwnProps) => {
+  return {
+    darkModeToggle: () => {
+      dispatch(actions.darkModeToggle());
+    },
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(TextEditer);
