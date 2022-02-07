@@ -42,12 +42,12 @@ export default function PostList(props) {
   }, []);
 
   return (
-    <div className="w-full h-full inline-block rounded-lg overflow-hidden">
+    <div className="w-full h-full inline-block rounded-lg overflow-hidden dark:text-mainWhite">
       <table className="w-full">
         <thead>
           <tr className="h-10">
             {theadList.map((thead) => (
-              <th className="bg-[#c0c0c0]">{thead}</th>
+              <th className="bg-[#c0c0c0] dark:bg-[#3f4957]">{thead}</th>
             ))}
           </tr>
         </thead>
