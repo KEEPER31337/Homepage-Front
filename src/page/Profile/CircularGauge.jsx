@@ -6,7 +6,7 @@ export default function CircularGauge(props) {
     <div className="w-full h-full">
       <svg className="absolute transform --rotate-90 w-[100px] h-[63px]">
         <circle
-          className="text-divisionGray"
+          className="text-divisionGray dark:text-darkComponent"
           strokeWidth="5"
           stroke="currentColor"
           fill="transparent"
@@ -26,7 +26,7 @@ export default function CircularGauge(props) {
           cy={props.outRad}
         />
       </svg>
-      <div className="p-2.5 absolute text-center object-cover">
+      <div className="p-2.5 absolute text-center object-cover text-mainYellow text-lg">
         {props.text}
       </div>
     </div>

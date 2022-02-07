@@ -15,6 +15,8 @@
     "@toast-ui/editor-plugin-table-merged-cell": "^3.0.1",
     "@toast-ui/editor-plugin-uml": "^3.0.1",
     "@toast-ui/react-editor": "^3.1.2",
+    "axios": "^0.25.0",
+    "babel-polyfill": "^6.26.0",
     "dayjs": "^1.10.7",
     "highlight.js": "^11.4.0",
     "marked": "^4.0.10",
@@ -27,6 +29,7 @@
     "react-scripts": "5.0.0",
     "react-scroll-horizontal": "^1.6.6",
     "redux": "^4.1.2",
+    "rehype-raw": "^6.1.1",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
