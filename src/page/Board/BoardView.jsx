@@ -20,20 +20,21 @@ const BoardView = (props) => {
   const board = testData.boards[no - 1]; //해당 게시글 관련 정보
 
   return (
-    <div className="flex justify-between dark:bg-mainBlack">
-      <div className="inline-block m-5 w-4/5">
+    <div className="flex justify-center dark:bg-mainBlack">
+      <div className="inline-block m-5 w-3/5">
         <Info />
         <Content board={board} />
         <Comments comments={board.comments} />
         <Table />
       </div>
-
-      <button
-        className="border-2 border-mainYellow rounded-lg shadow-lg m-5 w-1/6"
-        onClick={() => navigate('/board/write')}
-      >
-        글 쓰기
-      </button>
+      <div name="left-sideBar" className="m-5 w-1/6">
+        <button
+          className="border-2 border-mainYellow rounded-lg shadow-lg w-full dark:text-mainWhite active:mt-1 active:ml-1 active:shadow-none"
+          onClick={() => navigate('/board/write')}
+        >
+          글 쓰기
+        </button>
+      </div>
     </div>
   );
 };

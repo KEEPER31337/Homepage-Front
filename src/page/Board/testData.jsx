@@ -44,7 +44,7 @@ const testData = {
       file: true,
       image: false,
       secret: false,
-      content: '게시글내용222입니다~~~~~~',
+      content: '## 게시글내용222입니다!\naaa',
       goodN: 5,
       badN: 4,
       commentN: 2,

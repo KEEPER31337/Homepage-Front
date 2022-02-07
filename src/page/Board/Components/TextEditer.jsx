@@ -25,7 +25,7 @@ const TextEditer = (props) => {
   const [EditerState, setEditerState] = useState([]);
   const [text, setText] = useState({
     title: '',
-    content: testText,
+    content: '', //testText
   });
   const { title, content } = text;
 
@@ -46,16 +46,20 @@ const TextEditer = (props) => {
     setText({ title, content: getContent_md });
   };
 
+  const postContent = () => {
+    //게시하기
+  };
+
   return (
     <div className="border-4 border-black">
       <div name="input" className="border border-black ">
         <div name="title_box" className="my-5">
-          <p className="inline-block text-center w-1/12 bg-mainYellow rounded-r-full">
+          <p className="text-center w-1/12 bg-mainYellow rounded-r-full">
             제목
           </p>
           <input
             type="text"
-            className="border-2 w-4/5"
+            className="border-2 m-2 w-4/5 dark:bg-darkComponent active:border-mainYellow dark:border-darkComponent dark:text-white"
             onChange={updateTitle}
           ></input>
           {/*필수 입력 조건 아이콘 표시(임시)*/}
@@ -64,10 +68,10 @@ const TextEditer = (props) => {
           </span>
         </div>
         <div name="content_box" className="my-5">
-          <p className="inline-block text-center w-1/12 bg-mainYellow rounded-r-full">
+          <p className="text-center w-1/12 bg-mainYellow rounded-r-full">
             내용
           </p>
-          <div className="border-2 w-4/5 h-screen inline-block">
+          <div className="m-2 w-4/5 h-screen inline-block">
             <Editor
               initialValue={content}
               usageStatistics={false}
@@ -85,49 +89,59 @@ const TextEditer = (props) => {
               ref={editorRef}
             />
           </div>
+          {/*필수 입력 조건 아이콘 표시(임시)*/}
+          <span className={'text-red-400' + (content == '' ? '' : ' hidden')}>
+            필수
+          </span>
         </div>
         <div name="file_box" className="my-5">
-          <p className="inline-block text-center w-1/12 bg-mainYellow rounded-r-full">
+          <p className="text-center w-1/12 bg-mainYellow rounded-r-full">
             파일 첨부
           </p>
-          <input type="textArea" className="border-2 w-4/5"></input>
+          <input type="textArea" className="border-2 m-2 w-4/5"></input>
         </div>
       </div>
+      <div className="flex justify-between">
+        <div
+          name="option"
+          className="border border-red-400 inline-block dark:text-mainWhite"
+        >
+          <input type="checkbox" value="댓글 허용" checked="checked" />
+          댓글 허용
+          <br />
+          <input type="checkbox" value="엮인글 허용" checked />
+          엮인글 허용
+          <br />
+          <input type="checkbox" value="알림" />
+          알림
+          <br />
+          <input type="checkbox" value="공지" checked />
+          공지
+          <br />
+          <input type="checkbox" value="비밀글" />
+          비밀글
+          <br />
+        </div>
+        <div className="inline-block border border-blue-400 dark:text-mainWhite">
+          <button
+            className="border-4 float-right w-4/5 border-mainYellow rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none"
+            onClick={postContent()}
+          >
+            게시하기
+          </button>
 
-      <div
-        name="option"
-        className="border border-red-400 inline-block dark:text-mainWhite"
-      >
-        <input type="checkbox" value="댓글 허용" checked />
-        댓글 허용
-        <br />
-        <input type="checkbox" value="엮인글 허용" checked />
-        엮인글 허용
-        <br />
-        <input type="checkbox" value="알림" />
-        알림
-        <br />
-        <input type="checkbox" value="공지" checked />
-        공지
-        <br />
-        <input type="checkbox" value="비밀글" />
-        비밀글
-        <br />
-      </div>
-      <div className="inline-block border border-blue-400 dark:text-mainWhite">
-        <button className="border-2 border-mainYellow rounded-lg shadow-lg">
-          게시하기
-        </button>
-        <br />
-        <button className="border-2 border-divisionGray rounded-lg shadow-lg">
-          임시저장
-        </button>
-        <button className="border-2 border-divisionGray rounded-lg shadow-lg">
-          불러오기
-        </button>
-        <button className="border-2 border-divisionGray rounded-lg shadow-lg">
-          미리보기
-        </button>
+          <br />
+
+          <button className="border-4 border-divisionGray rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none">
+            임시저장
+          </button>
+          <button className="border-4 border-divisionGray rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none">
+            불러오기
+          </button>
+          <button className="border-4 border-divisionGray rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none">
+            미리보기
+          </button>
+        </div>
       </div>
     </div>
   );

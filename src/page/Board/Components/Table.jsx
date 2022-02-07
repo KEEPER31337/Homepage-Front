@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 //local
 import testData from 'page/Board/testData';
@@ -8,7 +8,7 @@ const MAX_POSTS = 3; //한 페이지당 노출시킬 최대 게시글 수
 const pageN = Math.ceil(testData.maxNo / MAX_POSTS); //페이지 수
 
 const setPageButton = (currentPage, page) => {
-  if (currentPage == page) return 'text-mainYellow';
+  if (currentPage == page) return 'text-mainYellow border-mainYellow';
   else return 'text-mainBlack dark:text-mainWhite';
 };
 
@@ -16,6 +16,12 @@ const Table = (selected = null) => {
   const [boardContent, setBoardContent] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   //console.log(currentPage); //현재 페이지
+  const { no } = useParams();
+
+  const getCurrentBoard = (no, currentNo) => {
+    if (no == currentNo) return 'border-2 border-mainYellow';
+    return;
+  };
 
   useEffect(() => {
     var end = 0;
@@ -42,7 +48,7 @@ const Table = (selected = null) => {
         </thead>
         <tbody>
           {boardContent.map((board) => (
-            <tr key={board.no}>
+            <tr key={board.no} className={getCurrentBoard(board.no, no)}>
               <td className="border border-slate-300 text-center">
                 {board.no}
               </td>
@@ -83,7 +89,7 @@ const Table = (selected = null) => {
             <option value="작성자">작성자</option>
           </select>
           <input type="text" className="border" placeholder="검색어"></input>
-          <button className="border-2 border-mainYellow rounded-lg">
+          <button className="border-2 border-mainYellow rounded-lg  m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none ">
             검색
           </button>
         </div>
@@ -91,7 +97,10 @@ const Table = (selected = null) => {
           {[...Array(pageN).keys()].map((pageNum) => (
             <button
               key={pageNum}
-              className={setPageButton(currentPage, pageNum + 1)}
+              className={
+                'border-2 text-2xl m-1 rounded-lg px-1  ' +
+                setPageButton(currentPage, pageNum + 1)
+              }
               onClick={() => {
                 setCurrentPage(pageNum + 1);
               }}

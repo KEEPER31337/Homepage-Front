@@ -25,17 +25,17 @@ const Content = ({ state, board }) => {
       </div>
       <div className="w-full p-5 dark:bg-mainBlack">
         <Viewer
-          initialValue={testText}
+          initialValue={board.content}
           theme={isDark ? 'dark' : 'light'}
           height="100%"
         />
       </div>
 
-      <div className="text-center">
-        <button className="border-2 border-white rounded-lg shadow-lg bg-blue-400">
+      <div className="border-2 text-center">
+        <button className=" border-2 m-2 border-white rounded-lg shadow-lg p-2 bg-blue-400 active:mr-1 active:ml-3 active:shadow-none ">
           추천
         </button>
-        <button className="border-2 border-white rounded-lg shadow-lg bg-red-400">
+        <button className=" border-2 m-2 border-white rounded-lg shadow-lg p-2 bg-red-400 active:mr-1 active:ml-3 active:shadow-none ">
           비추천
         </button>
       </div>
