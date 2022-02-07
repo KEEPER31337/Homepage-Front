@@ -3,12 +3,9 @@ import CircularGauge from './CircularGauge';
 import Group from './Group';
 import InfoBox from './InfoBox';
 import InfoRouteBtn from './InfoRouteBtn';
-import Home from 'assets/img/home.png';
-import ReactMarkdown from 'react-markdown';
-import rehypeRaw from 'rehype-raw';
-import axios from 'axios';
 
 const dummyUser = {
+  userId: '1',
   img: 'https://cdn.akamai.steamstatic.com/steamcommunity/public/images/avatars/ad/ad3763fd50aff9d64b8f2a5619b2db9f43420ae2_full.jpg',
   name: '이름',
   nickName: '닉네임',
@@ -18,7 +15,7 @@ const dummyUser = {
   type: '정회원',
   rank: '우수회원',
   job: '무직',
-  github: 'zune2222',
+  github: 'jasper200207',
 };
 const LevelUp = 100;
 const isMe = false;
@@ -31,7 +28,6 @@ const friendBtns = ['쪽지', '친구 삭제', '선물 하기'];
 const Profile = () => {
   const user = dummyUser;
 
-  const [gitMd, setGitMd] = useState(null);
   const [btns, setBtns] = useState(new Array());
 
   useEffect(async () => {
@@ -39,29 +35,6 @@ const Profile = () => {
     else if (isFriend) setBtns(friendBtns);
     else setBtns(otherBtns);
   }, [isMe, isFriend]);
-
-  useEffect(async () => {
-    try {
-      await axios
-        .get(
-          'https://api.github.com/repos/' +
-            user.github +
-            '/' +
-            user.github +
-            '/readme'
-        )
-        .then((res) => {
-          const base64 = res.data.content;
-          setGitMd(
-            decodeURIComponent(
-              escape(window.atob(base64.replace('\n', '').replace(/\s/g, '')))
-            )
-          );
-        });
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
 
   const userGroups = {
     type: {
@@ -136,7 +109,7 @@ const Profile = () => {
         {/*profile body*/}
         <div className="w-full h-[900px]">
           <InfoBox type="github" params={{ gitId: user.github }} />
-          <InfoBox />
+          <InfoBox type="postlist" params={{ userId: user.userId }} />
           <InfoBox />
           <InfoBox />
         </div>
