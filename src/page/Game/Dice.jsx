@@ -36,19 +36,18 @@ const DiceGame = () => {
   }
 
   function rollDiceOnClick() {
-    if (rollNum < 3 && socreFlag == 1) {
+    if (rollNum < 3 && socreFlag === 1) {
       console.log('flag : ', socreFlag, ' rollNum : ', rollNum);
       rollNum++;
       const dice = [...document.querySelectorAll('.die-list')];
       dice.forEach((die) => {
-        if (die.dataset.fix != 'true') {
+        if (die.dataset.fix !== 'true') {
           toggleClasses(die);
           die.dataset.roll = getRandomNumber(1, 6);
         }
       });
     }
     if (rollNum > 2) {
-      document.getElementById('rollDice').disabled = true;
       document.getElementById('rollDice').style.backgroundColor =
         'rgb(255,80,80)';
       document.getElementById('rollDice').style.color = 'rgb(80,80,80)';
@@ -58,7 +57,7 @@ const DiceGame = () => {
     }
   }
   function result() {
-    if (socreFlag == 1 && rollNum > 0) {
+    if (socreFlag === 1 && rollNum > 0) {
       socreFlag = 0;
       console.log('scoreFlag : ', socreFlag, ' rollNum : ', rollNum);
       var user = [];
@@ -86,7 +85,7 @@ const DiceGame = () => {
         console.log(item);
       });
       if (userScore > cValue) alert('축축!');
-      else if (userScore == cValue) alert('동점..ㅋ');
+      else if (userScore === cValue) alert('동점..ㅋ');
       else alert('ㅋ');
       setFixed(true);
     }
@@ -118,17 +117,17 @@ const DiceGame = () => {
       if (a < b) return -1;
     });
     if (
-      items[0] == items[1] &&
-      items[1] == items[2] &&
-      items[2] == items[3] &&
-      items[3] != items[4]
+      items[0] === items[1] &&
+      items[1] === items[2] &&
+      items[2] === items[3] &&
+      items[3] !== items[4]
     )
       return 10;
     else if (
-      items[0] != items[1] &&
-      items[1] == items[2] &&
-      items[2] == items[3] &&
-      items[3] == items[4]
+      items[0] !== items[1] &&
+      items[1] === items[2] &&
+      items[2] === items[3] &&
+      items[3] === items[4]
     )
       return 10;
     else return 0;
@@ -142,17 +141,17 @@ const DiceGame = () => {
       if (a < b) return -1;
     });
     if (
-      items[0] == items[1] &&
-      items[1] != items[2] &&
-      items[2] == items[3] &&
-      items[3] == items[4]
+      items[0] === items[1] &&
+      items[1] !== items[2] &&
+      items[2] === items[3] &&
+      items[3] === items[4]
     )
       return 15;
     else if (
-      items[0] == items[1] &&
-      items[1] == items[2] &&
-      items[2] != items[3] &&
-      items[3] == items[4]
+      items[0] === items[1] &&
+      items[1] === items[2] &&
+      items[2] !== items[3] &&
+      items[3] === items[4]
     )
       return 15;
     else return 0;
@@ -166,17 +165,17 @@ const DiceGame = () => {
       if (a < b) return -1;
     });
     if (
-      items[0] == items[1] - 1 &&
-      items[1] == items[2] - 1 &&
-      items[2] == items[3] - 1 &&
-      items[3] != items[4] - 1
+      items[0] === items[1] - 1 &&
+      items[1] === items[2] - 1 &&
+      items[2] === items[3] - 1 &&
+      items[3] !== items[4] - 1
     )
       return 20;
     if (
-      items[0] != items[1] - 1 &&
-      items[1] == items[2] - 1 &&
-      items[2] == items[3] - 1 &&
-      items[3] == items[4] - 1
+      items[0] !== items[1] - 1 &&
+      items[1] === items[2] - 1 &&
+      items[2] === items[3] - 1 &&
+      items[3] === items[4] - 1
     )
       return 20;
     else return 0;
@@ -192,8 +191,8 @@ const DiceGame = () => {
     var ui = items.filter((c, index) => {
       return items.indexOf(c) === index;
     });
-    if (ui.length == 5 && ui[0] == 1 && ui[4] == 5) return 25;
-    else if (ui.length == 5 && ui[0] == 2 && ui[4] == 6) return 25;
+    if (ui.length === 5 && ui[0] === 1 && ui[4] === 5) return 25;
+    else if (ui.length === 5 && ui[0] === 2 && ui[4] === 6) return 25;
     else return 0;
   }
 
@@ -207,12 +206,12 @@ const DiceGame = () => {
     var ui = items.filter((c, index) => {
       return items.indexOf(c) === index;
     });
-    if (ui.length == 1) return 30;
+    if (ui.length === 1) return 30;
     else return 0;
   }
 
   return (
-    <div className="bg-divisionGray h-full w-1/2 items-center m-10">
+    <div className="bg-divisionGray h-full w-1/2 items-center m-2">
       <div className="dice">
         <ol
           className="die-list odd-roll"
@@ -296,8 +295,6 @@ const DiceGame = () => {
             <span className="dot"></span>
           </li>
         </ol>
-      </div>
-      <div className="dice">
         <ol
           className="die-list even-roll"
           data-roll="1"
@@ -339,6 +336,8 @@ const DiceGame = () => {
             <span className="dot"></span>
           </li>
         </ol>
+      </div>
+      <div className="dice  flex flex-row">
         <ol
           className="die-list odd-roll"
           data-roll="1"
@@ -426,14 +425,14 @@ const DiceGame = () => {
         <button
           id="rollDice"
           onClick={rollDiceOnClick}
-          className="mx-3 my-10 bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded"
+          className="mx-8 my-3 bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded"
         >
           start
         </button>
         <button
           id="chooseDice"
           onClick={result}
-          className="mx-3 my-10 bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded"
+          className="my-3 bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded"
         >
           확정
         </button>
@@ -441,7 +440,7 @@ const DiceGame = () => {
           <button
             id="chooseDice"
             onClick={refresh}
-            className="mx-3 my-10 bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded"
+            className="mx-8 my-3 bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded"
           >
             reset
           </button>
@@ -480,7 +479,7 @@ const Information = () => {
     if (0 < betting && betting <= 10000) setConfirm(false);
   };
   return (
-    <div className="h-1/5 w-1/4 p-2 flex flex-col justify-center">
+    <div className="h-1/5 w-1/4 p-2 flex flex-col justify-center flex-initial">
       <div className="big">
         현재 포인트 : 1000??????
         <br />
