@@ -2,8 +2,14 @@ import React from 'react';
 import './dice.css';
 import { useState } from 'react';
 
+// audio
+import rollDiceA from './sound/WoodHitMetalCrash.mp3';
+import winA from './sound/win.mp3';
+import equalA from './sound/equal.mp3';
+import loseA from './sound/lose.mp3';
+
 var rollNum = 0;
-var socreFlag = 1;
+var scoreFlag = 1;
 
 const DiceGame = () => {
   const [fixed, setFixed] = useState(false);
@@ -36,8 +42,9 @@ const DiceGame = () => {
   }
 
   function rollDiceOnClick() {
-    if (rollNum < 3 && socreFlag === 1) {
-      console.log('flag : ', socreFlag, ' rollNum : ', rollNum);
+    if (rollNum < 3 && scoreFlag === 1) {
+      console.log("rollNum : ", rollNum, " scoreFlag : ", scoreFlag);
+      new Audio(rollDiceA).play();
       rollNum++;
       const dice = [...document.querySelectorAll('.die-list')];
       dice.forEach((die) => {
@@ -57,9 +64,9 @@ const DiceGame = () => {
     }
   }
   function result() {
-    if (socreFlag === 1 && rollNum > 0) {
-      socreFlag = 0;
-      console.log('scoreFlag : ', socreFlag, ' rollNum : ', rollNum);
+    if (scoreFlag === 1 && rollNum > 0) {
+      scoreFlag = 0;
+      console.log('scoreFlag : ', scoreFlag, ' rollNum : ', rollNum);
       var user = [];
       const dice = [...document.querySelectorAll('.die-list')];
       dice.forEach((die) => {
@@ -84,9 +91,16 @@ const DiceGame = () => {
       computer.forEach((item) => {
         console.log(item);
       });
-      if (userScore > cValue) alert('축축!');
-      else if (userScore === cValue) alert('동점..ㅋ');
-      else alert('ㅋ');
+      if (userScore > cValue) {
+        new Audio(winA).play();
+        // alert('축축!');
+      } else if (userScore === cValue) {
+        new Audio(equalA).play();
+        // alert('동점..ㅋ');
+      } else {
+        new Audio(loseA).play();
+        // alert('ㅋ');
+      }
       setFixed(true);
     }
   }
@@ -211,7 +225,7 @@ const DiceGame = () => {
   }
 
   return (
-    <div className="bg-divisionGray h-full w-1/2 items-center m-2">
+    <div className="bg-red-700 w-1/2 items-center m-2 flex-initial rounded-md border-[16px] border-mainBlack dark:border-divisionGray">
       <div className="dice">
         <ol
           className="die-list odd-roll"
@@ -425,14 +439,14 @@ const DiceGame = () => {
         <button
           id="rollDice"
           onClick={rollDiceOnClick}
-          className="mx-8 my-3 bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded"
+          className="ml-3 mr-5 my-3 bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded dark:bg-divisionGray dark:text-mainBlack dark:hover:bg-slate-400"
         >
           start
         </button>
         <button
           id="chooseDice"
           onClick={result}
-          className="my-3 bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded"
+          className="my-3 bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded dark:bg-divisionGray dark:text-mainBlack dark:hover:bg-slate-400"
         >
           확정
         </button>
@@ -440,7 +454,7 @@ const DiceGame = () => {
           <button
             id="chooseDice"
             onClick={refresh}
-            className="mx-8 my-3 bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded"
+            className="mx-5 my-3 bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded dark:bg-divisionGray dark:text-mainBlack dark:hover:bg-slate-400"
           >
             reset
           </button>
@@ -452,8 +466,8 @@ const DiceGame = () => {
 
 const RuleOfDice = () => {
   return (
-    <div className="flex justify-center items-center">
-      <div className="w-3/5 my-5 p-5 border-2 border-divisionGray">
+    <div className="flex justify-center items-center ">
+      <div className="w-3/5 my-5 p-5 border-2 border-divisionGray rounded-md dark:border-pointYellow">
         게임 규칙
         <br />
         총 3번 주사위를 굴릴 수 있습니다.
@@ -479,31 +493,40 @@ const Information = () => {
     if (0 < betting && betting <= 10000) setConfirm(false);
   };
   return (
-    <div className="h-1/5 w-1/4 p-2 flex flex-col justify-center flex-initial">
-      <div className="big">
-        현재 포인트 : 1000??????
-        <br />
+    <div className="ml-4 w-1/5 p-2 flex flex-col justify-center border-2 border-divisionGray rounded-md dark:border-mainYellow">
+      <div className="flex justify-between my-1">
+        <strong className="big dark:text-mainWhite">현재 포인트 :</strong>
+        <div className="text-mainYellow">10000000</div>
       </div>
-      <div>
-        걸 포인트 :{' '}
+      <div className="flex justify-between my-1">
+        <strong className="big dark:text-mainWhite">배팅 포인트 :</strong>
         {confirm ? (
           <input
             id="point"
             value={betting}
+            className="big border-2 border-divisionGray rounded-md text-mainYellow"
             onChange={onChange}
             style={{ width: '6vw', textAlign: 'right' }}
           ></input>
         ) : (
-          betting
+          <div className='text-mainYellow'>
+          {betting}
+          </div>
         )}
-        <br />
       </div>
-      <div>점수 : </div>
-      <div>오늘 한 횟수 : ???</div>
+      <div className="flex justify-between my-1">
+        <strong className="big dark:text-mainWhite">점수 :</strong>
+        <div className="big text-mainYellow">22</div>
+      </div>
+      <div className="flex justify-between my-1">
+        <strong className="big dark:text-mainWhite">오늘 한 횟수 :</strong>
+        <div className="big text-mainYellow">1</div>
+      </div>
+
       <button
         id="chooseDice"
         onClick={onClick}
-        className="mx-3 my-10 bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded"
+        className="mx-3 mt-10 mb-3 bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded-md"
       >
         확정!!
       </button>
