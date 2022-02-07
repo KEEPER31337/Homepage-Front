@@ -13,7 +13,7 @@ import RankModal from './Component/RankModal';
 import PointModal from './Component/PointModal';
 import NavigationLayout from '../../shared/NavigationLayout';
 
-// img
+// asset
 import LeafIcon from 'assets/img/leaf.png';
 import PrizeIcon from 'assets/img/prize.png';
 import CoinIcon from 'assets/img/coin.png';
