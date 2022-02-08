@@ -11,13 +11,13 @@ const Board = () => {
   const navigate = useNavigate();
   return (
     <div className="flex justify-center h-screen dark:bg-mainBlack">
-      <img
-        src={require('assets/img/icons/b_gallary.png')}
-        className="h-5 w-5"
-      ></img>
-      <ArchiveIcon className="h-5 w-5 text-mainYellow" />
       <div className="inline-block m-5 w-3/5">
         <Info />
+        <img
+          src={require('assets/img/icons/b_gallary.png')}
+          className="h-5 w-5"
+        ></img>
+        <ArchiveIcon className="h-5 w-5 text-mainYellow" />
         <Table />
       </div>
       <div name="left-sideBar" className="m-5 w-1/6">
