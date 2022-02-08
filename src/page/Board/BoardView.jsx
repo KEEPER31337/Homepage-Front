@@ -7,7 +7,6 @@ import Info from 'page/Board/Components/Info';
 import Table from 'page/Board/Components/Table';
 import Content from 'page/Board/Components/Content';
 import Comments from 'page/Board/Components/Comments';
-import { actions } from 'store';
 import testData from 'page/Board/testData';
 
 const BoardView = (props) => {
@@ -42,12 +41,5 @@ const BoardView = (props) => {
 const mapStateToProps = (state, OwnProps) => {
   return { state };
 };
-const mapDispatchToProps = (dispatch, OwnProps) => {
-  return {
-    darkModeToggle: () => {
-      dispatch(actions.darkModeToggle());
-    },
-  };
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(BoardView);
+export default connect(mapStateToProps)(BoardView);

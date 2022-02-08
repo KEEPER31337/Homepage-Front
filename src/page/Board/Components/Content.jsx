@@ -5,7 +5,6 @@ import { Viewer } from '@toast-ui/react-editor';
 import { connect } from 'react-redux';
 
 //local
-import { actions } from 'store';
 import { useEffect } from 'react';
 
 const Content = ({ state, board }) => {
@@ -53,12 +52,5 @@ const Content = ({ state, board }) => {
 const mapStateToProps = (state, OwnProps) => {
   return { state };
 };
-const mapDispatchToProps = (dispatch, OwnProps) => {
-  return {
-    darkModeToggle: () => {
-      dispatch(actions.darkModeToggle());
-    },
-  };
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Content);
+export default connect(mapStateToProps)(Content);

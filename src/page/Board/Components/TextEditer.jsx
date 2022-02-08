@@ -16,7 +16,6 @@ import tableMergedCell from '@toast-ui/editor-plugin-table-merged-cell';
 import uml from '@toast-ui/editor-plugin-uml';
 
 //local
-import { actions } from 'store';
 import { testText } from 'page/Board/testText';
 
 const TextEditer = (props) => {
@@ -152,11 +151,4 @@ const TextEditer = (props) => {
 const mapStateToProps = (state, OwnProps) => {
   return { state };
 };
-const mapDispatchToProps = (dispatch, OwnProps) => {
-  return {
-    darkModeToggle: () => {
-      dispatch(actions.darkModeToggle());
-    },
-  };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(TextEditer);
+export default connect(mapStateToProps)(TextEditer);

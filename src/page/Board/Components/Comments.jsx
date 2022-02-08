@@ -1,9 +1,6 @@
 import React, { createRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 
-//local
-import { actions } from 'store';
-
 const Comments = ({ comments, state }) => {
   const commentRef = createRef();
   const isDark = state.darkMode;
@@ -48,12 +45,5 @@ const Comments = ({ comments, state }) => {
 const mapStateToProps = (state, OwnProps) => {
   return { state };
 };
-const mapDispatchToProps = (dispatch, OwnProps) => {
-  return {
-    darkModeToggle: () => {
-      dispatch(actions.darkModeToggle());
-    },
-  };
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Comments);
+export default connect(mapStateToProps)(Comments);
