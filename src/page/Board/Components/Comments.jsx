@@ -7,6 +7,7 @@ import { actions } from 'store';
 const Comments = ({ comments, state }) => {
   const commentRef = createRef();
   const isDark = state.darkMode;
+
   useEffect(() => {
     const isComment = commentRef.current.firstChild;
     if (isComment) {
@@ -29,7 +30,7 @@ const Comments = ({ comments, state }) => {
     });
 
     commentRef.current.appendChild(utterances);
-  }, [isDark]);
+  }, [isDark, comments]);
   return (
     <div
       className="border-4 border-black dark:bg-mainBlack"
