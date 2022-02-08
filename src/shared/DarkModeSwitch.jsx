@@ -2,7 +2,7 @@ import { Switch } from '@headlessui/react';
 import { connect } from 'react-redux';
 
 // local
-import { actions } from 'store';
+import { actionDarkMode } from 'redux/reducerDarkMode';
 
 const DarkModeSwitch = ({ state, darkModeToggle }) => {
   const darkMode = state.darkMode;
@@ -33,8 +33,7 @@ const mapStateToProps = (state, OwnProps) => {
 const mapDispatchToProps = (dispatch, OwnProps) => {
   return {
     darkModeToggle: () => {
-      console.log('hi');
-      dispatch(actions.darkModeToggle());
+      dispatch(actionDarkMode.toggle());
     },
   };
 };
