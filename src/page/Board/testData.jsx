@@ -14,7 +14,7 @@ const testData = {
       content: '게시글내용입니다~~~~~~\n두번째 줄입니다~',
       goodN: 5, //추천 수
       badN: 4, //비추천 수
-      commentN: 3, //댓글 개수
+      commentN: 6, //댓글 개수
       comments: [
         { no: 1, user: '아무개', content: '댓글1 내용입니다.', parent: null },
         { no: 2, user: '김무개', content: '댓글2 내용입니다.', parent: null },
@@ -36,13 +36,13 @@ const testData = {
     },
     {
       no: 2,
-      title: '게시글2',
+      title: '게시글2222222222222222222222222222222222222222',
       user: '김무개',
       date: '2022-01-15',
       time: '16:00',
       watch: '10',
       file: true,
-      image: false,
+      image: true,
       secret: false,
       content: '## 게시글내용222입니다!\naaa',
       goodN: 5,
