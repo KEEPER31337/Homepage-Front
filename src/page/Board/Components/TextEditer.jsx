@@ -54,12 +54,12 @@ const TextEditer = (props) => {
     <div className="border-4 border-black">
       <div name="input" className="border border-black ">
         <div name="title_box" className="my-5">
-          <p className="text-center w-1/12 bg-mainYellow rounded-r-full">
+          <p className="text-center p-1 w-1/12 bg-mainYellow rounded-r-full">
             제목
           </p>
           <input
             type="text"
-            className="border-2 m-2 w-4/5 dark:bg-darkComponent active:border-mainYellow dark:border-darkComponent dark:text-white"
+            className="border-2 m-2 p-1 w-4/5 rounded-md dark:bg-darkComponent focus:outline-mainYellow dark:border-darkComponent dark:text-white"
             onChange={updateTitle}
           ></input>
           {/*필수 입력 조건 아이콘 표시(임시)*/}
@@ -68,7 +68,7 @@ const TextEditer = (props) => {
           </span>
         </div>
         <div name="content_box" className="my-5">
-          <p className="text-center w-1/12 bg-mainYellow rounded-r-full">
+          <p className="text-center p-1 w-1/12 bg-mainYellow rounded-r-full">
             내용
           </p>
           <div className="m-2 w-4/5 h-screen inline-block">
@@ -95,10 +95,13 @@ const TextEditer = (props) => {
           </span>
         </div>
         <div name="file_box" className="my-5">
-          <p className="text-center w-1/12 bg-mainYellow rounded-r-full">
+          <p className="text-center p-1 w-1/12 bg-mainYellow rounded-r-full">
             파일 첨부
           </p>
-          <input type="textArea" className="border-2 m-2 w-4/5"></input>
+          <input
+            type="textArea"
+            className="border-2 m-2 w-4/5 rounded-md"
+          ></input>
         </div>
       </div>
       <div className="flex justify-between">

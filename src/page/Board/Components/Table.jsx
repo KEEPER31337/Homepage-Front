@@ -38,22 +38,28 @@ const Table = (selected = null) => {
       </p>
       <table className="border-collaps border border-slate-400 w-full mb-5">
         <thead>
-          <tr className="bg-mainYellow">
-            <th className="border border-slate-300">No.</th>
+          <tr className="bg-mainYellow ">
+            <th className="p-1 border border-slate-300 rounded-tl-xl">No.</th>
             <th className="border border-slate-300 w-3/5">제목</th>
             <th className="border border-slate-300">글쓴이</th>
             <th className="border border-slate-300">날짜</th>
-            <th className="border border-slate-300">조회수</th>
+            <th className="border border-slate-300 rounded-tr-xl">조회수</th>
           </tr>
         </thead>
         <tbody>
           {boardContent.map((board) => (
-            <tr key={board.no} className={getCurrentBoard(board.no, no)}>
+            <tr
+              key={board.no}
+              className={
+                'hover:text-mainYellow hover:shadow-lg ' +
+                getCurrentBoard(board.no, no)
+              }
+            >
               <td className="border border-slate-300 text-center">
                 {board.no}
               </td>
 
-              <td className="border border-slate-300 ">
+              <td className="p-2 border border-slate-300 ">
                 <Link
                   to={{
                     pathname: `/board/${board.no}`,
