@@ -3,7 +3,7 @@ import { Popover, Transition } from '@headlessui/react';
 import { MenuIcon, ViewGridIcon, XIcon } from '@heroicons/react/outline';
 
 // local
-import PopDown from './PopDown';
+import HeaderPopDown from './HeaderPopDown';
 import Logo from 'assets/img/keeper_logo.png';
 import DarkModeSwitch from 'shared/DarkModeSwitch';
 
@@ -220,7 +220,7 @@ export default function Header() {
             </div>
             <Popover.Group as="nav" className="hidden md:flex space-x-10">
               {categories.map((category, index) => (
-                <PopDown key={index} category={category} />
+                <HeaderPopDown key={index} category={category} />
               ))}
             </Popover.Group>
             <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
