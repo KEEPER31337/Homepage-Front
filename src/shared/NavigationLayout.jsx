@@ -21,8 +21,11 @@ const NavigationLayout = (props) => {
                       {navigatoinSub.title}
                     </h1>
                     <div className="text-2xl">
-                      {navigatoinSub.menuList.map((menu) => (
-                        <div className="p-1 cursor-pointer hover:underline">
+                      {navigatoinSub.menuList.map((menu, index) => (
+                        <div
+                          key={index}
+                          className="p-1 cursor-pointer hover:underline"
+                        >
                           {menu}
                         </div>
                       ))}

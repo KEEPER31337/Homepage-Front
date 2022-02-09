@@ -18,10 +18,24 @@ import LeafIcon from 'assets/img/leaf.png';
 import PrizeIcon from 'assets/img/prize.png';
 import CoinIcon from 'assets/img/coin.png';
 
+// API
+import attendanceAPI from 'API/v1/attendance';
+import { useEffect } from 'react';
+
 const Attandance = () => {
   const continuousModalRef = useRef({});
   const rankModalRef = useRef({});
   const pointModalRef = useRef({});
+
+  useEffect(() => {
+    attendanceAPI
+      .getAttendDate({
+        startDate: '2020-01-01',
+        endDate: '2020-01-31',
+        token: '',
+      })
+      .then((data) => console.log(data));
+  }, []);
 
   return (
     <div>
@@ -29,7 +43,7 @@ const Attandance = () => {
         <div className="container">
           <Calendar />
         </div>
-        <div className="container grid grid-flow-col justify-center content-center gap-10 py-6">
+        <div className="container grid grid-cols-2 m-auto lg:grid-cols-4 justify-center justify-items-center  gap-10 py-6">
           <Box
             icon={LeafIcon}
             text="개근 5일차"
