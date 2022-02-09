@@ -18,10 +18,24 @@ import LeafIcon from 'assets/img/leaf.png';
 import PrizeIcon from 'assets/img/prize.png';
 import CoinIcon from 'assets/img/coin.png';
 
+// API
+import attendanceAPI from 'API/v1/attendance';
+import { useEffect } from 'react';
+
 const Attandance = () => {
   const continuousModalRef = useRef({});
   const rankModalRef = useRef({});
   const pointModalRef = useRef({});
+
+  useEffect(() => {
+    attendanceAPI
+      .getAttendDate({
+        startDate: '2020-01-01',
+        endDate: '2020-01-31',
+        token: '',
+      })
+      .then((data) => console.log(data));
+  }, []);
 
   return (
     <div>
