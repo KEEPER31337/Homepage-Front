@@ -43,7 +43,7 @@ const Attandance = () => {
         <div className="container">
           <Calendar />
         </div>
-        <div className="container grid grid-flow-col justify-center content-center gap-10 py-6">
+        <div className="container grid grid-cols-2 m-auto lg:grid-cols-4 justify-center justify-items-center  gap-10 py-6">
           <Box
             icon={LeafIcon}
             text="개근 5일차"
