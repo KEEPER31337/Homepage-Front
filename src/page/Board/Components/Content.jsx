@@ -21,7 +21,7 @@ const Content = ({ state, board }) => {
 
   return (
     <div className="my-5">
-      <div className="flex justify-between bg-mainYellow rounded-t-2xl p-3 px-5">
+      <div className="justify-between bg-mainYellow rounded-t-2xl p-3 px-5 sm:flex">
         <p className="break-all text-2xl">
           <strong>{board.title}</strong>
         </p>
@@ -46,12 +46,12 @@ const Content = ({ state, board }) => {
         />
       </div>
 
-      <div className="border-y-2 text-center bg-backGray shadow-lg">
-        <button className=" border-4 m-2 border-white rounded-xl shadow-lg p-2 bg-blue-400 active:mr-1 active:ml-3 active:shadow-none ">
-          <ThumbUpIcon className="inline-block h-5 w-5 m-1 text-mainWhite dark:text-mainBlack" />
+      <div className="border-y-2 text-center bg-backGray shadow-lg dark:bg-darkPoint dark:border-darkComponent">
+        <button className=" border-4 m-2 border-white rounded-xl shadow-lg p-2 bg-blue-400 active:mr-1 active:ml-3 active:shadow-none dark:border-darkComponent">
+          <ThumbUpIcon className="inline-block h-5 w-5 m-1 text-mainWhite dark:text-mainBlack " />
           추천
         </button>
-        <button className=" border-4 m-2 border-white rounded-xl shadow-lg p-2 bg-red-400 active:mr-1 active:ml-3 active:shadow-none ">
+        <button className=" border-4 m-2 border-white rounded-xl shadow-lg p-2 bg-red-400 active:mr-1 active:ml-3 active:shadow-none dark:border-darkComponent">
           <ThumbDownIcon className="inline-block h-5 w-5 m-1 text-mainWhite dark:text-mainBlack" />
           비추천
         </button>

@@ -61,16 +61,16 @@ const Table = (selected = null) => {
             <th className="border-x border-mainWhite p-1 rounded-tl-xl dark:border-mainBlack">
               No.
             </th>
-            <th className="border-x border-mainWhite p-1  w-3/5 dark:border-mainBlack">
+            <th className="border-x border-mainWhite p-1 rounded-tr-xl sm:rounded-none dark:border-mainBlack ">
               제목
             </th>
-            <th className="border-x border-mainWhite p-1 dark:border-mainBlack">
+            <th className="border-x border-mainWhite p-1 hidden sm:table-cell dark:border-mainBlack">
               글쓴이
             </th>
-            <th className="border-x border-mainWhite p-1 dark:border-mainBlack">
-              날짜
+            <th className="border-x border-mainWhite p-1 hidden sm:table-cell dark:border-mainBlack ">
+              작성 일시
             </th>
-            <th className="border-x border-mainWhite p-1 rounded-tr-xl dark:border-mainBlack">
+            <th className="border-x border-mainWhite p-1 rounded-tr-xl hidden sm:table-cell dark:border-mainBlack">
               조회수
             </th>
           </tr>
@@ -80,7 +80,7 @@ const Table = (selected = null) => {
             <tr
               key={board.no}
               className={
-                'border-b-2 hover:bg-slate-100 hover:shadow-lg dark:hover:bg-darkComponent ' +
+                'border-b-2 hover:bg-slate-100 hover:shadow-lg dark:hover:bg-darkComponent dark:border-darkComponent ' +
                 getCurrentBoard(board.no, no)
               }
             >
@@ -95,29 +95,37 @@ const Table = (selected = null) => {
                     state: { test: 'test' },
                   }}
                 >
-                  <p className="text-ellipsis overflow-hidden">
-                    {board.title}
-                    {board.image ? (
-                      <PhotographIcon className="inline-block h-5 w-5 " />
-                    ) : (
-                      ''
-                    )}
-                    {board.file ? (
-                      <DocumentTextIcon className="inline-block h-5 w-5" />
-                    ) : (
-                      ''
-                    )}
+                  <div className=" w-60 ">
+                    <p className="truncate w-full text-md ">
+                      <strong>{board.title}</strong>
+                      {board.image ? (
+                        <PhotographIcon className="inline-block h-5 w-5 " />
+                      ) : (
+                        ''
+                      )}
+                      {board.file ? (
+                        <DocumentTextIcon className="inline-block h-5 w-5" />
+                      ) : (
+                        ''
+                      )}
+                    </p>
+                  </div>
+
+                  <p className="text-xs sm:hidden">
+                    글쓴이 : <strong>{board.user}</strong> 작성일시 :{' '}
+                    <strong>{board.date}</strong> 조회수 :{' '}
+                    <strong>{board.watch}</strong>
                   </p>
                 </Link>
               </td>
 
-              <td className=" text-center dark:border-darkComponent">
+              <td className="text-center dark:border-darkComponent hidden sm:table-cell">
                 {board.user}
               </td>
-              <td className=" text-center dark:border-darkComponent">
+              <td className=" text-center dark:border-darkComponent hidden sm:table-cell">
                 {board.date}
               </td>
-              <td className="text-center dark:border-darkComponent">
+              <td className="text-center dark:border-darkComponent hidden sm:table-cell">
                 {board.watch}
               </td>
             </tr>
@@ -243,7 +251,7 @@ const Table = (selected = null) => {
       <div name="bottom" className="">
         <div name="search">
           <select
-            className="border focus:outline-mainYellow dark:border-darkPoint dark:bg-darkComponent dark:text-mainWhite"
+            className="border text-xs focus:ring-mainYellow focus:border-mainYellow dark:border-darkPoint dark:bg-darkComponent dark:text-mainWhite"
             name="search rule"
           >
             <option value="제목+내용">제목+내용</option>
@@ -253,11 +261,11 @@ const Table = (selected = null) => {
           </select>
           <input
             type="text"
-            className="border-2 m-2 rounded-md dark:bg-darkComponent focus:outline-mainYellow dark:border-darkComponent dark:text-white"
+            className="border-2 border-divisionGray m-2 p-1 rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:border-darkComponent dark:text-white"
             placeholder="검색어"
           ></input>
-          <button className="border-2 border-mainYellow rounded-lg  m-2 px-2 shadow-lg active:mr-1 active:ml-3 active:shadow-none ">
-            <SearchIcon className="inline-block h-5 w-5 text-mainYellow" />
+          <button className="border-2 border-mainYellow rounded-lg  m-2 px-2 shadow-lg text-mainYellow active:mr-1 active:ml-3 active:shadow-none">
+            <SearchIcon className="inline-block h-5 w-5" />
             검색
           </button>
         </div>

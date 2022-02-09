@@ -19,7 +19,9 @@ const Info = () => {
 
   return (
     <div className="dark:text-mainWhite">
-      <p className="text-3xl border-b-2 dark:text-mainWhite py-2">공지사항</p>
+      <p className="text-3xl border-b-2 dark:text-mainWhite py-2 dark:border-darkComponent">
+        공지사항
+      </p>
       <div className="flex justify-between">
         <p className="m-3 text-gray-400 inline-block w-3/5 dark:text-divisionGray">
           공지사항입니다.
@@ -31,7 +33,7 @@ const Info = () => {
             </p>
             <select
               name="font"
-              className="border focus:outline-mainYellow dark:border-darkPoint dark:bg-darkComponent dark:text-mainWhite"
+              className="border p-0 focus:ring-mainYellow focus:border-mainYellow dark:border-darkPoint dark:bg-darkComponent dark:text-mainWhite"
               onChange={(e) => {
                 setOption({ font: e.target.value, style });
               }}

@@ -7,7 +7,7 @@ import TextEditer from 'page/Board/Components/TextEditer';
 const BoardWrite = () => {
   return (
     <div className="flex justify-center dark:bg-mainBlack">
-      <div className="mx-5 w-4/5">
+      <div className="m-5 w-4/5">
         <Info />
         <div>
           <TextEditer />

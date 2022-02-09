@@ -26,7 +26,7 @@ const BoardView = (props) => {
         <Comments board={board} />
         <Table />
       </div>
-      <div name="left-sideBar" className="m-5 w-1/6">
+      <div name="left-sideBar" className="hidden m-5 w-1/6 sm:inline-block">
         <WriteButton />
       </div>
     </div>
