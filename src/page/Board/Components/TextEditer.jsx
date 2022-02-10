@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
+import {
+  PencilIcon,
+  EyeIcon,
+  InboxInIcon,
+  ArchiveIcon,
+} from '@heroicons/react/solid';
 
 //마크다운 편집기 에디터
 import '@toast-ui/editor/dist/toastui-editor.css';
@@ -50,27 +56,31 @@ const TextEditer = (props) => {
   };
 
   return (
-    <div className="border-4 border-black">
-      <div name="input" className="border border-black ">
+    <div className="">
+      <div name="input" className="">
         <div name="title_box" className="my-5">
-          <p className="text-center p-1 w-1/12 bg-mainYellow rounded-r-full">
+          <p className="inline-block text-center p-1 px-3 bg-mainYellow rounded-r-full">
             제목
           </p>
-          <input
-            type="text"
-            className="border-2 m-2 p-1 w-4/5 rounded-md dark:bg-darkComponent focus:outline-mainYellow dark:border-darkComponent dark:text-white"
-            onChange={updateTitle}
-          ></input>
           {/*필수 입력 조건 아이콘 표시(임시)*/}
           <span className={'text-red-400' + (title == '' ? '' : ' hidden')}>
             필수
           </span>
+          <input
+            type="text"
+            className="border-2 border-divisionGray m-2 p-1 w-full rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:border-darkComponent dark:text-white"
+            onChange={updateTitle}
+          ></input>
         </div>
         <div name="content_box" className="my-5">
-          <p className="text-center p-1 w-1/12 bg-mainYellow rounded-r-full">
+          <p className="inline-block text-center p-1 px-3 bg-mainYellow rounded-r-full">
             내용
           </p>
-          <div className="m-2 w-4/5 h-screen inline-block">
+          {/*필수 입력 조건 아이콘 표시(임시)*/}
+          <span className={'text-red-400' + (content == '' ? '' : ' hidden')}>
+            필수
+          </span>
+          <div className="m-2 w-full h-screen inline-block">
             <Editor
               initialValue={content}
               usageStatistics={false}
@@ -88,59 +98,91 @@ const TextEditer = (props) => {
               ref={editorRef}
             />
           </div>
-          {/*필수 입력 조건 아이콘 표시(임시)*/}
-          <span className={'text-red-400' + (content == '' ? '' : ' hidden')}>
-            필수
-          </span>
         </div>
         <div name="file_box" className="my-5">
-          <p className="text-center p-1 w-1/12 bg-mainYellow rounded-r-full">
+          <p className="inline-block text-center p-1 px-3 bg-mainYellow rounded-r-full">
             파일 첨부
           </p>
           <input
             type="textArea"
-            className="border-2 m-2 w-4/5 rounded-md"
+            className="border-2 m-2 w-full rounded-md"
           ></input>
         </div>
       </div>
-      <div className="flex justify-between">
-        <div
-          name="option"
-          className="border border-red-400 inline-block dark:text-mainWhite"
-        >
-          <input type="checkbox" value="댓글 허용" checked="checked" />
+      <p className="hidden sm:inline">sm: 테스트</p>
+      <div className="justify-between sm:flex">
+        <div name="option" className="dark:text-mainWhite">
+          <input
+            type="checkbox"
+            value="댓글 허용"
+            className="text-mainYellow focus:ring-mainYellow rounded dark:bg-darkComponent dark:checked:bg-mainYellow"
+            defaultChecked
+          />
           댓글 허용
           <br />
-          <input type="checkbox" value="엮인글 허용" checked />
+          <input
+            type="checkbox"
+            value="엮인글 허용"
+            className="text-mainYellow focus:ring-mainYellow rounded dark:bg-darkComponent dark:checked:bg-mainYellow"
+            defaultChecked
+          />
           엮인글 허용
           <br />
-          <input type="checkbox" value="알림" />
+          <input
+            type="checkbox"
+            value="알림"
+            className="text-mainYellow focus:ring-mainYellow rounded dark:bg-darkComponent dark:checked:bg-mainYellow"
+          />
           알림
           <br />
-          <input type="checkbox" value="공지" checked />
+          <input
+            type="checkbox"
+            value="공지"
+            className="text-mainYellow focus:ring-mainYellow rounded dark:bg-darkComponent dark:checked:bg-mainYellow"
+            defaultChecked
+          />
           공지
           <br />
-          <input type="checkbox" value="비밀글" />
+          <input
+            type="checkbox"
+            className="text-mainYellow focus:ring-mainYellow rounded dark:bg-darkComponent dark:checked:bg-mainYellow peer "
+            id="isSecret"
+            value="비밀글"
+          />
           비밀글
           <br />
+          <label
+            htmlFor="isSecret"
+            className="text-xs hidden peer-checked:contents"
+          >
+            비밀번호 :{' '}
+            <input
+              type="text"
+              className="border-2 border-divisionGray m-2 p-1 text-xs rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent  dark:border-darkComponent dark:text-white"
+            ></input>
+          </label>
         </div>
-        <div className="inline-block border border-blue-400 dark:text-mainWhite">
+        <div className="inline-block dark:text-mainWhite">
           <button
-            className="border-4 float-right w-4/5 border-mainYellow rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none"
+            className="float-right  w-4/5 border-4  border-mainYellow text-mainYellow rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none"
             onClick={postContent()}
           >
+            <PencilIcon className="inline-block ml-auto m-1 h-5 w-5 " />
             게시하기
           </button>
 
           <br />
 
-          <button className="border-4 border-divisionGray rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none">
+          <button className="float-right border-4 border-divisionGray rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none">
+            <InboxInIcon className="inline-block m-1 h-5 w-5  text-divisionGray" />
             임시저장
           </button>
-          <button className="border-4 border-divisionGray rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none">
+          <button className="float-right border-4 border-divisionGray rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none">
+            <ArchiveIcon className="inline-block m-1 h-5 w-5  text-divisionGray" />
             불러오기
           </button>
-          <button className="border-4 border-divisionGray rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none">
+          <button className="float-right border-4 border-divisionGray rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none">
+            <EyeIcon className="inline-block m-1 h-5 w-5 text-divisionGray" />
             미리보기
           </button>
         </div>

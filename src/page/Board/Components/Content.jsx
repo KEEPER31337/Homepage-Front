@@ -3,6 +3,7 @@ import { testText } from 'page/Board/testText';
 import '@toast-ui/editor/dist/toastui-editor.css'; //마크다운 편집기 뷰어 에디터
 import { Viewer } from '@toast-ui/react-editor';
 import { connect } from 'react-redux';
+import { ThumbUpIcon, ThumbDownIcon } from '@heroicons/react/solid';
 
 //local
 import { useEffect } from 'react';
@@ -19,14 +20,21 @@ const Content = ({ state, board }) => {
   }, [board.content]);
 
   return (
-    <div className="border-4 border-black">
-      <div className=" bg-mainYellow rounded-t-lg">
-        <p className="text-2xl">{board.title}</p>
-        {board.user}
-        {board.date + ' ' + board.time}
-        조회수 : {board.watch}
-        댓글수 : {board.commentN}
-        추천수 : {board.goodN}
+    <div className="my-5">
+      <div className="justify-between bg-mainYellow rounded-t-2xl p-3 px-5 sm:flex">
+        <p className="break-all text-2xl">
+          <strong>{board.title}</strong>
+        </p>
+        <p className="text-right text-xs">
+          <br />
+          작성자 : <strong>{board.user + ' '}</strong>
+          <br />
+          작성일시 : <strong>{board.date + ' ' + board.time}</strong>
+          <br />
+          조회수 : <strong>{board.watch + ' '}</strong>
+          댓글수 : <strong>{board.commentN + ' '}</strong>
+          추천수 : <strong>{board.goodN + ' '}</strong>
+        </p>
       </div>
       <div className="w-full p-5 dark:bg-mainBlack">
         <Viewer
@@ -38,11 +46,13 @@ const Content = ({ state, board }) => {
         />
       </div>
 
-      <div className="border-2 text-center">
-        <button className=" border-2 m-2 border-white rounded-lg shadow-lg p-2 bg-blue-400 active:mr-1 active:ml-3 active:shadow-none ">
+      <div className="border-y-2 text-center bg-backGray shadow-lg dark:bg-darkPoint dark:border-darkComponent">
+        <button className=" border-4 m-2 border-white rounded-xl shadow-lg p-2 bg-blue-400 active:mr-1 active:ml-3 active:shadow-none dark:border-darkComponent">
+          <ThumbUpIcon className="inline-block h-5 w-5 m-1 text-mainWhite dark:text-mainBlack " />
           추천
         </button>
-        <button className=" border-2 m-2 border-white rounded-lg shadow-lg p-2 bg-red-400 active:mr-1 active:ml-3 active:shadow-none ">
+        <button className=" border-4 m-2 border-white rounded-xl shadow-lg p-2 bg-red-400 active:mr-1 active:ml-3 active:shadow-none dark:border-darkComponent">
+          <ThumbDownIcon className="inline-block h-5 w-5 m-1 text-mainWhite dark:text-mainBlack" />
           비추천
         </button>
       </div>
