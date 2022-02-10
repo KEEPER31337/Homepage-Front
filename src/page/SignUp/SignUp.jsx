@@ -1,5 +1,9 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+
+// local
+import authAPI from 'API/v1/auth';
+import MessageModal from 'shared/MessageModal';
 
 const SignUp = () => {
   //아이디, 비밀번호, 비밀번호 확인, 이메일, 이름, 닉네임, 학번
@@ -7,15 +11,18 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [email, setEmail] = useState('');
+  const [authCode, setAuthCode] = useState('');
   const [userName, setUserName] = useState('');
   const [nickName, setNickName] = useState('');
   const [studentNumber, setStudentNumber] = useState('');
+  const [birthday, setBirthday] = useState('');
 
   //오류메시지 상태저장
   const [IdMessage, setIdMessage] = useState('');
   const [passwordMessage, setPasswordMessage] = useState('');
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState('');
   const [emailMessage, setEmailMessage] = useState('');
+  const [authMessage, setAuthMessage] = useState('');
   const [userNameMessage, setUserNameMessage] = useState('');
   const [nickNameMessage, setNickNameMessage] = useState('');
   const [studentNumberMessage, setStudentNumberMessage] = useState('');
@@ -29,8 +36,15 @@ const SignUp = () => {
   const [isNickName, setIsNickName] = useState(false);
   const [isStudentNumber, setIsStudentNumber] = useState(false);
 
+  // ref
+  const sendSuccessModalRef = useRef({});
+  const sendFailModalRef = useRef({});
+  const signUpSuccessModalRef = useRef({});
+  const signUpFailModalRef = useRef({});
+
   //아이디
   const onChangeId = (e) => {
+    // NOTE : onChange마다 중복 아이디 체크를 하면 통신량이 너무 많으니, onBlur에서 하는게 좋을 것 같다.!
     setId(e.target.value);
 
     if (e.target.value === '') {
@@ -46,6 +60,7 @@ const SignUp = () => {
 
   //비밀번호
   const onChangePassword = (e) => {
+    // NOTE : 8자 이상이래요
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,}$/;
 
     setPassword(e.target.value);
@@ -86,6 +101,14 @@ const SignUp = () => {
       setIsEmail(true);
     }
   };
+
+  // 인증코드
+  const onChangeAuthCode = (e) => {
+    if (e.target.value.length === 0) setAuthMessage('인증코드를 입력해주세요');
+    else setAuthMessage('');
+    setAuthCode(e.target.value);
+  };
+
   // 이름
   const onChangeUserName = (e) => {
     const userNameRegex = /^[가-힣]+$/;
@@ -127,10 +150,59 @@ const SignUp = () => {
     }
   };
 
+  // 생일
+  const handleChangeBirthday = (e) => {
+    setBirthday(e.target.value);
+  };
+
+  const handleSendMail = () => {
+    authAPI.emailAuth({ emailAddress: email }).then((data) => {
+      console.log(data);
+      if (data.success) sendSuccessModalRef.current.open();
+      else sendFailModalRef.current.open();
+    });
+    // TODO : 보내는 중이라는 (보냈다는) 표시
+  };
+
+  const handleSignUp = () => {
+    // TODO : check를 각 input의 onBlur에서 처리하기
+    authAPI
+      .loginIdCheck({ loginId: id })
+      .then((data) => console.log('loginId', data));
+    authAPI
+      .emailCheck({ emailAddress: email })
+      .then((data) => console.log('email', data));
+    authAPI
+      .studentIdCheck({ studentId: studentNumber })
+      .then((data) => console.log('studentId', data));
+
+    authAPI
+      .signUp({
+        // NOTE : 전부 key: value 이렇게 쓸까 / API parameter랑 통일할까 고민중
+        loginId: id,
+        emailAddress: email,
+        password,
+        realName: userName,
+        authCode,
+        nickName,
+        birthday,
+        studentId: studentNumber,
+      })
+      .then((data) => {
+        console.log(data);
+        if (data.success) {
+          signUpSuccessModalRef.current.open();
+        } else {
+          signUpFailModalRef.current.open();
+        }
+      });
+  };
+
   return (
     <div>
       <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 dark:text-mainWhite dark:bg-mainBlack">
-        <form className="max-w-md w-screen " action="#" method="POST">
+        {/* <form className="max-w-md w-screen " action="#" method="POST"> */}
+        <div className="max-w-md w-screen">
           <div>
             <div className="mt-4 ">
               <h3 className="text-lg font-medium leading-6 ">회원가입</h3>
@@ -251,6 +323,45 @@ const SignUp = () => {
                     {emailMessage}
                   </div>
                 </div>
+                <div className="sm:col-span-2">
+                  <div className="flex justify-items-center">
+                    <label
+                      htmlFor="email_address"
+                      className="block text-sm font-medium "
+                    >
+                      {/* NOTE: vertical align */}
+                      인증코드
+                    </label>
+                    <button
+                      type="submit"
+                      className="group px-2 py-1 mx-2 border border-transparent
+                    text-sm font-medium rounded-lg text-white bg-mainYellow hover:bg-pointYellow "
+                      onClick={handleSendMail}
+                    >
+                      인증
+                    </button>
+                  </div>
+                  <div className="mt-2 flex">
+                    <input
+                      type="email"
+                      id="email_address"
+                      name="email_address"
+                      required
+                      value={authCode}
+                      onChange={onChangeAuthCode}
+                      className=" rounded-md   
+                        block w-1/2 px-1 py-1 border border-divisionGray dark:border-transparent
+                      focus:outline-mainYellow dark:bg-darkPoint dark:outline-white"
+                    />
+                  </div>
+                  <div
+                    className={`block text-sm font-medium text${
+                      isEmail ? '-pointYellow' : '-red-500'
+                    }`}
+                  >
+                    {authMessage}
+                  </div>
+                </div>
 
                 <div className="sm:col-span-2">
                   <label
@@ -369,8 +480,9 @@ const SignUp = () => {
                       id="date_birthday"
                       name="birthday"
                       className=" rounded-md   
-                        block w-full px-1 py-1 border border-divisionGray
+                        block w-full px-1 py-1 border border-divisionGray text-black
                       focus:outline-mainYellow"
+                      onChange={handleChangeBirthday}
                     />
                   </div>
                 </div>
@@ -391,10 +503,11 @@ const SignUp = () => {
                     isStudentNumber
                   )
                 }
+                onClick={handleSignUp}
                 className={`group relative w-full 
                 flex justify-center px-4 py-4 border 
                 border-transparent text-lg font-bold
-                rounded-lg text-white 
+                rounded-lg text-white hover:pointYellow dark:hover:darkPoint
                  
                 ${
                   isId &&
@@ -412,8 +525,21 @@ const SignUp = () => {
               </button>
             </div>
           </div>
-        </form>
+          {/* </form> */}
+        </div>
       </div>
+      <MessageModal ref={sendSuccessModalRef}>
+        <span className="font-bold">{email}</span>로 인증 메일을 발송하였습니다.
+      </MessageModal>
+      <MessageModal ref={sendFailModalRef}>
+        인증 메일 발송에 실패하였습니다.
+      </MessageModal>
+      <MessageModal ref={signUpSuccessModalRef} link={'/signin'}>
+        회원가입이 완료되었습니다.
+      </MessageModal>
+      <MessageModal ref={signUpFailModalRef}>
+        회원가입에 실패하였습니다.
+      </MessageModal>
     </div>
   );
 };
