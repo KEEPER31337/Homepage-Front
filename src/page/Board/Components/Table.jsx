@@ -96,7 +96,7 @@ const Table = (selected = null) => {
                   }}
                 >
                   <div className=" w-60 ">
-                    <p className="truncate w-full text-md ">
+                    <p className="truncate w-4/5 text-md ">
                       <strong>{board.title}</strong>
                       {board.image ? (
                         <PhotographIcon className="inline-block h-5 w-5 " />
@@ -105,6 +105,13 @@ const Table = (selected = null) => {
                       )}
                       {board.file ? (
                         <DocumentTextIcon className="inline-block h-5 w-5" />
+                      ) : (
+                        ''
+                      )}
+                      {board.commentN != 0 ? (
+                        <strong className="text-mainYellow">
+                          {'(' + board.commentN + ')'}
+                        </strong>
                       ) : (
                         ''
                       )}
@@ -158,18 +165,24 @@ const Table = (selected = null) => {
             <p class="text-sm text-gray-700 dark:text-divisionGray">
               Showing
               <span class="font-medium">
-                {' ' + ((currentPage - 1) * MAX_POSTS + 1) + ' '}
+                <strong>
+                  {' ' + ((currentPage - 1) * MAX_POSTS + 1) + ' '}
+                </strong>
               </span>
               to
               <span class="font-medium">
-                {' ' +
-                  (currentPage == pageN
-                    ? testData.maxNo
-                    : currentPage * MAX_POSTS) +
-                  ' '}
+                <strong>
+                  {' ' +
+                    (currentPage == pageN
+                      ? testData.maxNo
+                      : currentPage * MAX_POSTS) +
+                    ' '}
+                </strong>
               </span>
               of
-              <span class="font-medium">{' ' + testData.maxNo + ' '}</span>
+              <span class="font-medium">
+                <strong>{' ' + testData.maxNo + ' '}</strong>
+              </span>
               results
             </p>
           </div>

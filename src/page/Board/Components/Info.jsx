@@ -33,7 +33,7 @@ const Info = () => {
             </p>
             <select
               name="font"
-              className="border p-0 focus:ring-mainYellow focus:border-mainYellow dark:border-darkPoint dark:bg-darkComponent dark:text-mainWhite"
+              className="border text-xs focus:ring-mainYellow focus:border-mainYellow dark:border-darkPoint dark:bg-darkComponent dark:text-mainWhite"
               onChange={(e) => {
                 setOption({ font: e.target.value, style });
               }}
