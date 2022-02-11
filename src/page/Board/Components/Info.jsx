@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+import { ViewGridIcon } from '@heroicons/react/solid';
+
 const fontList = ['돋움', '나눔 고딕', '바탕'];
 const styleList = ['text', 'text+image', 'gallary'];
 
@@ -16,18 +18,22 @@ const Info = () => {
   }, [font, style]);
 
   return (
-    <div className="border-4 border-black dark:text-mainWhite">
-      <p className="text-3xl dark:text-mainWhite">공지사항</p>
+    <div className="dark:text-mainWhite">
+      <p className="text-3xl border-b-2 dark:text-mainWhite py-2 dark:border-darkComponent">
+        공지사항
+      </p>
       <div className="flex justify-between">
-        <p className="border-2 text-gray-400 inline-block w-3/5 dark:text-divisionGray">
+        <p className="m-3 text-gray-400 inline-block w-3/5 dark:text-divisionGray">
           공지사항입니다.
         </p>
         <div>
-          <div className="border-2 inline-block w-1/8">
-            <p className="text-center">Font</p>
+          <div className="mx-2 inline-block w-1/8">
+            <p className="text-center m-2 border-b-2 border-divisionGray dark:border-darkComponent">
+              Font
+            </p>
             <select
               name="font"
-              className="border dark:text-mainBlack"
+              className="border text-xs focus:ring-mainYellow focus:border-mainYellow dark:border-darkPoint dark:bg-darkComponent dark:text-mainWhite"
               onChange={(e) => {
                 setOption({ font: e.target.value, style });
               }}
@@ -39,11 +45,13 @@ const Info = () => {
               ))}
             </select>
           </div>
-          <div className="border-2 inline-block w-1/8">
-            <p className="text-center">Style</p>
+          <div className="mx-2 inline-block w-1/8">
+            <p className="text-center m-2 border-b-2 border-divisionGray dark:border-darkComponent">
+              Style
+            </p>
             <div>
               {styleList.map((item) => (
-                <span key={item}>
+                <span key={item} className="m-1">
                   <input
                     type="radio"
                     className="bg-mainYellow hidden peer"
@@ -56,9 +64,10 @@ const Info = () => {
                   ></input>
                   <label
                     htmlFor={item}
-                    className="border-2 peer-checked:border-mainYellow rounded-lg"
+                    className="border-2 rounded-lg  peer-checked:border-mainYellow peer-checked:text-mainYellow dark:border-darkComponent dark:text-darkComponent"
                   >
-                    ㅁㅁ{/*item*/}
+                    <ViewGridIcon className="inline-block h-5 w-5" />
+                    {/*item*/}
                   </label>
                 </span>
               ))}
