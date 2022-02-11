@@ -25,48 +25,50 @@ const Roulette = () => {
     <div className="border border-divisionGray items-center m-10">
       <div className="m-0 p-0 bg-white flex items-center justify-center overflow-hidden">
         <div className="relative">
-          <div
-            className={`shadow-md shadow-gray-700 ${ani} w-52 h-52 bg-slate-100 border-black border-solid border-8 rounded-full relative overflow-hidden`}
-          >
+          <div className="shadow-md shadow-gray-700 rounded-full">
             <div
-              className={`[clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-[#940202f3] rotate-[0deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-center flex items-center justify-center text-xl font-bold left-1/2`}
+              className={`${ani} w-52 h-52 bg-slate-100 border-black border-solid border-8 rounded-full relative overflow-hidden`}
             >
-              {points[0]}
-            </div>
-            <div
-              className={`[clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-[#780103] rotate-[45deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-center flex items-center justify-center text-xl font-bold left-24`}
-            >
-              {points[1]}
-            </div>
-            <div
-              className={`[clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-[#5a0606] rotate-[90deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-center flex items-center justify-center text-xl font-bold left-24`}
-            >
-              {points[2]}
-            </div>
-            <div
-              className={`[clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-[#500305] rotate-[135deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-center flex items-center justify-center text-xl font-bold left-24`}
-            >
-              {points[3]}
-            </div>
-            <div
-              className={`[clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-[#940202f3] rotate-[180deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-center flex items-center justify-center text-xl font-bold left-24`}
-            >
-              {points[4]}
-            </div>
-            <div
-              className={`[clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-[#780103] rotate-[225deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-center flex items-center justify-center text-xl font-bold left-24`}
-            >
-              {points[5]}
-            </div>
-            <div
-              className={`[clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-[#5a0606] rotate-[270deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-center flex items-center justify-center text-xl font-bold left-24`}
-            >
-              {points[6]}
-            </div>
-            <div
-              className={`[clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-[#500305] rotate-[315deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-center flex items-center justify-center text-xl font-bold left-24`}
-            >
-              {points[7]}
+              <div
+                className={`[clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-[#940202f3] rotate-[0deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-center flex items-center justify-center text-xl font-bold left-1/2`}
+              >
+                {points[0]}
+              </div>
+              <div
+                className={`[clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-[#780103] rotate-[45deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-center flex items-center justify-center text-xl font-bold left-24`}
+              >
+                {points[1]}
+              </div>
+              <div
+                className={`[clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-[#5a0606] rotate-[90deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-center flex items-center justify-center text-xl font-bold left-24`}
+              >
+                {points[2]}
+              </div>
+              <div
+                className={`[clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-[#500305] rotate-[135deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-center flex items-center justify-center text-xl font-bold left-24`}
+              >
+                {points[3]}
+              </div>
+              <div
+                className={`[clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-[#940202f3] rotate-[180deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-center flex items-center justify-center text-xl font-bold left-24`}
+              >
+                {points[4]}
+              </div>
+              <div
+                className={`[clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-[#780103] rotate-[225deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-center flex items-center justify-center text-xl font-bold left-24`}
+              >
+                {points[5]}
+              </div>
+              <div
+                className={`[clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-[#5a0606] rotate-[270deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-center flex items-center justify-center text-xl font-bold left-24`}
+              >
+                {points[6]}
+              </div>
+              <div
+                className={`[clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-[#500305] rotate-[315deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-center flex items-center justify-center text-xl font-bold left-24`}
+              >
+                {points[7]}
+              </div>
             </div>
           </div>
           <div className="absolute top-0 left-1/2 -translate-x-1/2 flex items-center justify-center">
