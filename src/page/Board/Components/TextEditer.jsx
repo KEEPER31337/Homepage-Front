@@ -117,7 +117,7 @@ const TextEditer = (props) => {
             value="댓글 허용"
             className="text-mainYellow focus:ring-mainYellow rounded dark:bg-darkComponent dark:checked:bg-mainYellow"
             defaultChecked
-          />
+          />{' '}
           댓글 허용
           <br />
           <input
@@ -125,14 +125,14 @@ const TextEditer = (props) => {
             value="엮인글 허용"
             className="text-mainYellow focus:ring-mainYellow rounded dark:bg-darkComponent dark:checked:bg-mainYellow"
             defaultChecked
-          />
+          />{' '}
           엮인글 허용
           <br />
           <input
             type="checkbox"
             value="알림"
             className="text-mainYellow focus:ring-mainYellow rounded dark:bg-darkComponent dark:checked:bg-mainYellow"
-          />
+          />{' '}
           알림
           <br />
           <input
@@ -140,7 +140,7 @@ const TextEditer = (props) => {
             value="공지"
             className="text-mainYellow focus:ring-mainYellow rounded dark:bg-darkComponent dark:checked:bg-mainYellow"
             defaultChecked
-          />
+          />{' '}
           공지
           <br />
           <input
@@ -148,7 +148,7 @@ const TextEditer = (props) => {
             className="text-mainYellow focus:ring-mainYellow rounded dark:bg-darkComponent dark:checked:bg-mainYellow peer "
             id="isSecret"
             value="비밀글"
-          />
+          />{' '}
           비밀글
           <br />
           <label
@@ -162,29 +162,30 @@ const TextEditer = (props) => {
             ></input>
           </label>
         </div>
-        <div className="inline-block dark:text-mainWhite">
-          <button
-            className="float-right  w-4/5 border-4  border-mainYellow text-mainYellow rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none"
-            onClick={postContent()}
-          >
-            <PencilIcon className="inline-block ml-auto m-1 h-5 w-5 " />
-            게시하기
-          </button>
-
-          <br />
-
-          <button className="float-right border-4 border-divisionGray rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none">
-            <InboxInIcon className="inline-block m-1 h-5 w-5  text-divisionGray" />
-            임시저장
-          </button>
-          <button className="float-right border-4 border-divisionGray rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none">
-            <ArchiveIcon className="inline-block m-1 h-5 w-5  text-divisionGray" />
-            불러오기
-          </button>
-          <button className="float-right border-4 border-divisionGray rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none">
-            <EyeIcon className="inline-block m-1 h-5 w-5 text-divisionGray" />
-            미리보기
-          </button>
+        <div className="border-2 w-full sm:w-fit inline-block dark:text-mainWhite">
+          <div className="flex justify-center sm:justify-end">
+            <button
+              className="w-4/5 border-4  border-mainYellow text-mainYellow text-md rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none"
+              onClick={postContent()}
+            >
+              <PencilIcon className="inline-block ml-auto m-1 h-5 w-5 " />
+              게시하기
+            </button>
+          </div>
+          <div className="flex justify-center">
+            <button className="float-right border-4 border-divisionGray rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none">
+              <InboxInIcon className="inline-block m-1 h-5 w-5  text-divisionGray" />
+              임시저장
+            </button>
+            <button className="float-right border-4 border-divisionGray rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none">
+              <ArchiveIcon className="inline-block m-1 h-5 w-5  text-divisionGray" />
+              불러오기
+            </button>
+            <button className="float-right border-4 border-divisionGray rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none">
+              <EyeIcon className="inline-block m-1 h-5 w-5 text-divisionGray" />
+              미리보기
+            </button>
+          </div>
         </div>
       </div>
     </div>

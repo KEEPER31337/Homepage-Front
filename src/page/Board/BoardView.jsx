@@ -20,7 +20,7 @@ const BoardView = (props) => {
 
   return (
     <div className="flex justify-center dark:bg-mainBlack">
-      <div className="inline-block m-5 w-3/5">
+      <div className="inline-block m-5 w-full">
         <Info />
         <Content board={board} />
         <Comments board={board} />
