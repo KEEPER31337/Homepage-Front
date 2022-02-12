@@ -33,18 +33,14 @@ const getStartEndPage = (currentPage) => {
   //전체 페이지가 최대 노출 가능 페이지 개수를 넘을 경우(7개 이상)
   var startPage = currentPage - MAX_PAGES / 2;
   var endPage = currentPage + (MAX_PAGES / 2 - 1);
-  console.log('start:' + startPage + ', end:' + endPage);
   if (startPage <= 0) {
     //범위가 0 이하로 오버될 경우
-    console.log('minus');
     endPage = endPage - startPage + 1;
     startPage = 1;
   } else if (endPage > pageN) {
-    console.log('plus');
     startPage = startPage - (endPage - pageN);
     endPage = pageN;
   }
-  console.log('start:' + startPage + ', end:' + endPage);
   return { startPage, endPage };
 };
 
