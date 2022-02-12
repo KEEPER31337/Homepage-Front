@@ -15,8 +15,6 @@ import postAPI from 'API/v1/post';
 import { signIn } from './tempSign';
 /* TODO 지울 부분 끝 */
 
-
-
 const BoardView = (props) => {
   //const { pathname } = useLocation();
   const { no } = useParams();
@@ -29,27 +27,24 @@ const BoardView = (props) => {
   useEffect(() => {
     setPrevBoard(board);
     /* TODO 지울 부분 시작 */
-    signIn()
-    .then(response => {
+    signIn().then((response) => {
       const tempToken = response.data.data.substr(7);
-      console.log(tempToken)
+      console.log(tempToken);
 
-  /* TODO 살릴 부분 시작 */
-      postAPI.getBoard({
-        no: no,
-        token: tempToken
-      }).then(res => {
-        console.log(res);
-        setBoard(res);
-      });
-  /* TODO 살릴 부분 끝 */
-
+      /* TODO 살릴 부분 시작 */
+      postAPI
+        .getBoard({
+          no: no,
+          token: tempToken,
+        })
+        .then((res) => {
+          console.log(res);
+          setBoard(res);
+        });
+      /* TODO 살릴 부분 끝 */
     });
     /* TODO 지울 부분 끝 */
-}, [no]);
-  
-
-
+  }, [no]);
 
   // const board = testData.boards[no - 1]; //해당 게시글 관련 정보
 
@@ -58,7 +53,11 @@ const BoardView = (props) => {
       <div className="inline-block m-5 w-3/5">
         <Info />
         {prevBoard.id !== board.id && board.id ? <Content board={board} /> : ''}
-        {prevBoard.id !== board.id && board.id ? <Comments boardId={board.id} /> : ''}
+        {prevBoard.id !== board.id && board.id ? (
+          <Comments boardId={board.id} />
+        ) : (
+          ''
+        )}
         <Table />
       </div>
       <div name="left-sideBar" className="hidden m-5 w-1/6 sm:inline-block">

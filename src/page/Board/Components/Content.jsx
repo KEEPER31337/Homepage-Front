@@ -9,7 +9,7 @@ import { ThumbUpIcon, ThumbDownIcon } from '@heroicons/react/solid';
 import { useEffect } from 'react';
 
 function getDateWithFormat(boardDate) {
-  return boardDate.substring(0, 19).replace('T', ' ')
+  return boardDate.substring(0, 19).replace('T', ' ');
 }
 
 const Content = ({ state, board }) => {
@@ -33,14 +33,19 @@ const Content = ({ state, board }) => {
           <br />
           작성자 : <strong>{board.writer ? board.writer : ''}</strong>
           <br />
-          작성 일시 : <strong>{board.registerTime ? getDateWithFormat(board.registerTime) : ' '}</strong>
-          {board.registerTime != board.updateTime ?
-            (<>
+          작성 일시 :{' '}
+          <strong>
+            {board.registerTime ? getDateWithFormat(board.registerTime) : ' '}
+          </strong>
+          {board.registerTime != board.updateTime ? (
+            <>
               <br />
-              수정 일시 : <strong>{board.updateTime ? getDateWithFormat(board.updateTime) : ' '}</strong>
-            </>) :
-            null
-          }
+              수정 일시 :{' '}
+              <strong>
+                {board.updateTime ? getDateWithFormat(board.updateTime) : ' '}
+              </strong>
+            </>
+          ) : null}
           <br />
           조회수 : <strong>{board.visitCount} </strong>
           댓글수 : <strong>{board.commentCount} </strong>

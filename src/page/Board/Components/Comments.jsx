@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { ViewGridIcon, ChatAltIcon, PencilIcon } from '@heroicons/react/solid';
 import postAPI from 'API/v1/post';
 
-const Comments = ({ boardId : boardId, state }) => {
+const Comments = ({ boardId: boardId, state }) => {
   const [comments, setComments] = useState([]);
   const isDark = state.darkMode;
   const addComment = () => {
@@ -11,11 +11,13 @@ const Comments = ({ boardId : boardId, state }) => {
   };
 
   useEffect(() => {
-    postAPI.getCommentByBoardId({
-      boardId: boardId,
-    }).then(res => {
-      setComments(res.list);
-    });
+    postAPI
+      .getCommentByBoardId({
+        boardId: boardId,
+      })
+      .then((res) => {
+        setComments(res.list);
+      });
   }, [isDark]);
 
   const filterParentComment = (comments) => {
