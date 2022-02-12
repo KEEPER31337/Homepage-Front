@@ -17,3 +17,5 @@ async function getMember({ token }) {
     return error.response.data;
   }
 }
+
+export default { getMember };
