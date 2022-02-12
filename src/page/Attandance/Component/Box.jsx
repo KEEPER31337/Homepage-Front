@@ -1,8 +1,11 @@
 import React from 'react';
 
-const Box = ({ icon, text }) => {
+const Box = ({ icon, text, ...rest }) => {
   return (
-    <div className="w-36 h-auto m- rounded-lg shadow-lg p-2 bg-white dark:bg-darkComponent">
+    <div
+      className="w-36 h-auto justify-center rounded-lg shadow-lg p-2 cursor-point bg-white hover:bg-green-50 dark:bg-darkComponent dark:hover:bg-teal-800"
+      {...rest}
+    >
       <div className="m-2">
         <img src={icon} className="w-3/4 m-auto" />
       </div>

@@ -1,37 +1,40 @@
 import React from 'react';
-import Info from 'page/Board/Info';
-import Table from 'page/Board/Table';
-import Content from 'page/Board/Content';
-import Comments from 'page/Board/Comments';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+//local
+import Info from 'page/Board/Components/Info';
+import Table from 'page/Board/Components/Table';
+import Content from 'page/Board/Components/Content';
+import Comments from 'page/Board/Components/Comments';
+import WriteButton from 'page/Board/Components/WriteButton';
 import testData from 'page/Board/testData';
 
-const BoardView = () => {
+const BoardView = (props) => {
   //const { pathname } = useLocation();
   const { no } = useParams();
-  const navigate = useNavigate(); //다른 페이지로 이동시키기 위함
   //console.log(pathname); //현재 path url
   //console.log(no); //게시글 번호
 
   const board = testData.boards[no - 1]; //해당 게시글 관련 정보
 
   return (
-    <div>
-      <div className="inline-block m-5 w-4/5">
+    <div className="flex justify-center dark:bg-mainBlack">
+      <div className="inline-block m-5 w-3/5">
         <Info />
         <Content board={board} />
-        <Comments comments={board.comments} />
+        <Comments board={board} />
         <Table />
       </div>
-
-      <button
-        className="border-2 border-mainYellow rounded-lg shadow-lg"
-        onClick={() => navigate('/board/write', { property: 'test' })}
-      >
-        글 쓰기
-      </button>
+      <div name="left-sideBar" className="hidden m-5 w-1/6 sm:inline-block">
+        <WriteButton />
+      </div>
     </div>
   );
 };
 
-export default BoardView;
+const mapStateToProps = (state, OwnProps) => {
+  return { state };
+};
+
+export default connect(mapStateToProps)(BoardView);

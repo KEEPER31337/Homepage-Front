@@ -17,8 +17,6 @@ import ProfileRoute from 'page/Profile/Routes/ProfileRoute';
 import Schedule from 'page/Schedule/Schedule';
 import SignIn from 'page/SignIn/SignIn';
 import SignUp from 'page/SignUp/SignUp';
-import { actions } from 'store';
-import DarkModeSwitch from './shared/DarkModeSwitch';
 
 const App = (props) => {
   const darkMode = props.state.darkMode;
@@ -49,12 +47,5 @@ const App = (props) => {
 const mapStateToProps = (state, OwnProps) => {
   return { state };
 };
-const mapDispatchToProps = (dispatch, OwnProps) => {
-  return {
-    darkModeToggle: () => {
-      dispatch(actions.darkModeToggle());
-    },
-  };
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);
