@@ -13,7 +13,7 @@ import BoardWrite from 'page/Board/BoardWrite';
 import Event from 'page/Event/Event';
 import Game from 'page/Game/Game';
 import Library from 'page/Library/Library';
-import Profile from 'page/Profile/Profile';
+import ProfileRoute from 'page/Profile/Routes/ProfileRoute';
 import Schedule from 'page/Schedule/Schedule';
 import SignIn from 'page/SignIn/SignIn';
 import SignUp from 'page/SignUp/SignUp';
@@ -34,7 +34,7 @@ const App = (props) => {
           <Route path="/event" element={<Event />} />
           <Route path="/game" element={<Game />} />
           <Route path="/library" element={<Library />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/:userId/*" element={<ProfileRoute />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
