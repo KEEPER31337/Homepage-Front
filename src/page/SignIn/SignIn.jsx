@@ -20,9 +20,8 @@ const SignIn = (props) => {
   };
   const handleSignIn = () => {
     authAPI.signIn(loginInfo).then((data) => {
-      console.log(data);
       if (data.success) {
-        const token = data.data;
+        const token = data.data.token;
         props.updateToken(token);
         navigate(BACK);
       } else {

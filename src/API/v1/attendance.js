@@ -11,7 +11,7 @@ async function check({ ipAddress, greetings, token }) {
       greetings,
     },
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: token,
     },
   };
   try {
@@ -30,7 +30,7 @@ async function updateMessage({ greetings, token }) {
       greetings,
     },
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: token,
     },
   };
   try {
@@ -42,6 +42,7 @@ async function updateMessage({ greetings, token }) {
 }
 
 async function getAttendDate({ startDate, endDate, token }) {
+  console.log({ startDate, endDate, token });
   const options = {
     method: 'GET',
     url: API_URL + '/v1/attend/date',
@@ -50,7 +51,7 @@ async function getAttendDate({ startDate, endDate, token }) {
       endDate,
     },
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: token,
     },
   };
   try {
@@ -69,7 +70,7 @@ async function getAttendInfo({ date, token }) {
       date,
     },
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: token,
     },
   };
   try {

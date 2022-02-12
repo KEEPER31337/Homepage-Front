@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 
 // shared
 import PageContainer from 'shared/PageContainer';
@@ -20,7 +20,6 @@ import CoinIcon from 'assets/img/coin.png';
 
 // API
 import attendanceAPI from 'API/v1/attendance';
-import { useEffect } from 'react';
 
 const Attandance = () => {
   const continuousModalRef = useRef({});
@@ -28,13 +27,13 @@ const Attandance = () => {
   const pointModalRef = useRef({});
 
   useEffect(() => {
-    attendanceAPI
-      .getAttendDate({
-        startDate: '2020-01-01',
-        endDate: '2020-01-31',
-        token: '',
-      })
-      .then((data) => console.log(data));
+    // attendanceAPI
+    //   .getAttendDate({
+    //     startDate: '2020-01-01',
+    //     endDate: '2020-01-31',
+    //     token: '',
+    //   })
+    //   .then((data) => console.log(data));
   }, []);
 
   return (
