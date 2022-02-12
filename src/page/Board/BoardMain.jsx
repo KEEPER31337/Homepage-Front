@@ -13,7 +13,7 @@ import WriteButton from 'page/Board/Components/WriteButton';
 const Board = () => {
   return (
     <div className="flex justify-center h-screen dark:bg-mainBlack">
-      <div className="inline-block m-5 w-3/5">
+      <div className="inline-block m-5 w-full">
         <Info />
         <Table />
       </div>

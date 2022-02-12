@@ -50,7 +50,7 @@ const BoardView = (props) => {
 
   return (
     <div className="flex justify-center dark:bg-mainBlack">
-      <div className="inline-block m-5 w-3/5">
+      <div className="inline-block m-5 w-full">
         <Info />
         {board.id && prevBoard.id !== board.id ? <Content board={board} /> : ''}
         {board.id && prevBoard.id !== board.id ? (

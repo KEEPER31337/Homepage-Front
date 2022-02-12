@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import dayjs from 'dayjs';
+
+// API
+import attendanceAPI from 'API/v1/attendance';
+
+const dateFormat = 'YYYY-MM-DD';
 
 const months = [
   'January',
@@ -17,7 +23,7 @@ const months = [
 ];
 const dayOfWeeks = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
-export default function Calendar() {
+const Calendar = ({ member }) => {
   // TODO: 출석
   const [now, setNow] = useState(dayjs());
   const [firstDay, setFirstDay] = useState(now.startOf('month'));
@@ -98,7 +104,15 @@ export default function Calendar() {
     );
   });
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    attendanceAPI
+      .getAttendDate({
+        startDate: firstDay.format(dateFormat),
+        endDate: lastDay.format(dateFormat),
+        token: member.token,
+      })
+      .then((data) => console.log(data));
+  }, []);
 
   return (
     <>
@@ -165,4 +179,10 @@ export default function Calendar() {
       </div>
     </>
   );
-}
+};
+
+const mapStateToProps = (state, OwnProps) => {
+  return { member: state.member };
+};
+
+export default connect(mapStateToProps)(Calendar);

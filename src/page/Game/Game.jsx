@@ -3,17 +3,17 @@ import PageContainer from 'shared/PageContainer';
 import LayoutContainer from 'shared/LayoutContainer';
 
 import React from 'react';
-import { DiceGame, RuleOfDice, Information } from './Dice';
-import { Roulette, RuleOfRoulette } from './Roulette';
-import { Lotto, RuleOfLotto } from './Lotto';
+import { DiceGame, RuleOfDice } from './Components/Dice';
+import { Roulette, RuleOfRoulette } from './Components/Roulette';
+import { Lotto, RuleOfLotto } from './Components/Lotto';
 import { useState } from 'react';
 
 // image
-import leftNav from './img/left_nav.png';
-import RightNav from './img/right_nav.png';
-import DiceNav from './img/dice_gameP.png';
-import LottoNav from './img/lottoP.png';
-import RouletteNav from './img/rouletteP.png';
+import leftNav from './img/nav_left.png';
+import RightNav from './img/nav_right.png';
+import DiceNav from './img/img_dice.png';
+import LottoNav from './img/img_lotto.png';
+import RouletteNav from './img/img_roulette.png';
 
 const TOTAL_GAME = 2;
 const DICE_GAME_ID = 0;
@@ -43,7 +43,7 @@ const Game = () => {
     return (
       <img
         alt="왼쪽 화살표"
-        className="flex-initial w-10 m-4"
+        className="flex-initial w-10 m-10"
         src={leftNav}
         onClick={onClickL}
       ></img>
@@ -53,7 +53,7 @@ const Game = () => {
     return (
       <img
         alt="오른쪽 화살표"
-        className="flex-initial w-10 m-4"
+        className="flex-initial w-10 m-10"
         src={RightNav}
         onClick={onClickR}
       ></img>
@@ -96,9 +96,7 @@ const Game = () => {
               {game === ROULETTE_GAME_ID ? <Roulette /> : null}
               {game === LOTTO_GAME_ID ? <Lotto /> : null}
               <GameRighttNav />
-            {game === DICE_GAME_ID ? <Information /> : null}
           </div>
-          <hr className="mt-4 border-dashed border-4 border-mainYellow" />
           {game === DICE_GAME_ID ? <RuleOfDice /> : null}
           {game === ROULETTE_GAME_ID ? <RuleOfRoulette /> : null}
           {game === LOTTO_GAME_ID ? <RuleOfLotto /> : null}

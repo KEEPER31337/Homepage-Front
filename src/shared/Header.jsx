@@ -10,21 +10,25 @@ import DarkModeSwitch from 'shared/DarkModeSwitch';
 
 const categories = [
   {
+    id: 1,
     name: 'KEEPER',
     subs: [
       {
+        id: 7,
         name: '동아리 소개',
         href: 'about',
         description: '',
         icon: ViewGridIcon,
       },
       {
+        id: 8,
         name: '이벤트',
         href: 'event',
         description: '',
         icon: ViewGridIcon,
       },
       {
+        id: 9,
         name: '동아리 일정',
         href: 'schedule',
         description: '',
@@ -33,33 +37,39 @@ const categories = [
     ],
   },
   {
+    id: 2,
     name: '게시판',
     subs: [
       {
+        id: 10,
         name: '공지사항',
         href: 'board',
         description: '',
         icon: ViewGridIcon,
       },
       {
+        id: 11,
         name: '건의사항',
         href: 'board',
         description: '',
         icon: ViewGridIcon,
       },
       {
+        id: 12,
         name: '자유게시판',
         href: 'board',
         description: '',
         icon: ViewGridIcon,
       },
       {
+        id: 13,
         name: '익명게시판',
         href: 'board',
         description: '',
         icon: ViewGridIcon,
       },
       {
+        id: 14,
         name: '연재글',
         href: 'board',
         description: '',
@@ -68,33 +78,39 @@ const categories = [
     ],
   },
   {
+    id: 3,
     name: '동아리활동',
     subs: [
       {
+        id: 15,
         name: '발표자료',
         href: 'board',
         description: '',
         icon: ViewGridIcon,
       },
       {
+        id: 16,
         name: '스터디',
         href: 'board',
         description: '',
         icon: ViewGridIcon,
       },
       {
+        id: 17,
         name: '기술문서',
         href: 'board',
         description: '',
         icon: ViewGridIcon,
       },
       {
+        id: 18,
         name: '회계부',
         href: 'board',
         description: '',
         icon: ViewGridIcon,
       },
       {
+        id: 19,
         name: 'KUCIS',
         href: 'board',
         description: '',
@@ -103,39 +119,46 @@ const categories = [
     ],
   },
   {
+    id: 4,
     name: '정보',
     subs: [
       {
+        id: 20,
         name: '해킹대회정보',
         href: 'board',
         description: '',
         icon: ViewGridIcon,
       },
       {
+        id: 21,
         name: '유용한사이트',
         href: 'board',
         description: '',
         icon: ViewGridIcon,
       },
       {
+        id: 22,
         name: 'Tools',
         href: 'board',
         description: '',
         icon: ViewGridIcon,
       },
       {
+        id: 23,
         name: '외부문서&강의',
         href: 'board',
         description: '',
         icon: ViewGridIcon,
       },
       {
+        id: 24,
         name: '취업&면접',
         href: 'board',
         description: '',
         icon: ViewGridIcon,
       },
       {
+        id: 25,
         name: '시험',
         href: 'board',
         description: '',
@@ -144,27 +167,32 @@ const categories = [
     ],
   },
   {
+    id: 5,
     name: '서비스',
     subs: [
       {
+        id: 26,
         name: '도서 신청',
         href: 'library',
         description: '',
         icon: ViewGridIcon,
       },
       {
+        id: 27,
         name: '기자재 신청',
         href: 'library',
         description: '',
         icon: ViewGridIcon,
       },
       {
+        id: 28,
         name: '도서 대여',
         href: 'library',
         description: '',
         icon: ViewGridIcon,
       },
       {
+        id: 29,
         name: '기자재 대여',
         href: 'library',
         description: '',
@@ -173,21 +201,25 @@ const categories = [
     ],
   },
   {
+    id: 6,
     name: '포인트',
     subs: [
       {
+        id: 30,
         name: '랭킹',
         href: 'attandance',
         description: '',
         icon: ViewGridIcon,
       },
       {
+        id: 31,
         name: '출석부',
         href: 'attandance',
         description: '',
         icon: ViewGridIcon,
       },
       {
+        id: 32,
         name: '게임',
         href: 'game',
         description: '',
@@ -204,7 +236,7 @@ function classNames(...classes) {
 export default function Header() {
   return (
     <>
-      <Popover className="relative bg-mainWhite dark:bg-mainBlack">
+      <Popover className="relative bg-mainWhite dark:bg-mainBlack z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex justify-between items-center border-b-2 border-gray-100 dark:border-darkComponent py-6 md:justify-start md:space-x-10">
             <div className="flex justify-start lg:w-0 lg:flex-1">
@@ -311,7 +343,7 @@ export default function Header() {
           </Popover.Panel>
         </Transition>
       </Popover>
-      <div className="absolute right-1 z-40">
+      <div className="absolute right-1 z-20">
         <DarkModeSwitch />
       </div>
     </>
