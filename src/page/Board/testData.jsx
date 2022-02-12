@@ -1,5 +1,5 @@
 const testData = {
-  maxNo: 5,
+  maxNo: 15,
   boards: [
     {
       no: 1, //번호

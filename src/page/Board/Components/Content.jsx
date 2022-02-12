@@ -10,7 +10,8 @@ import { getDateWithFormat } from '../BoardUtil';
 
 const Content = ({ state, board }) => {
   //board는 게시글 정보가 담긴 객체
-
+  //console.log(state.member.memberId); //(내 아이디)나중에 업데이트 될거임
+  //
   const isDark = state.darkMode; //Dark모드 여부
   const viwerRef = useRef();
 

@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import {
-  SearchIcon,
-  PhotographIcon,
-  DocumentTextIcon,
-} from '@heroicons/react/solid';
+import { connect } from 'react-redux';
+import { SearchIcon } from '@heroicons/react/solid';
 //local
 import testData from 'page/Board/testData';
 import postAPI from 'API/v1/post';
 import { getDateWithFormat } from '../BoardUtil';
 
-const MAX_POSTS = 3; //한 페이지당 노출시킬 최대 게시글 수
-const pageN = Math.ceil(testData.maxNo / MAX_POSTS); //페이지 수
-const tempCategory = 1; // TODO 삭제
+const MAX_POSTS = 1; //한 페이지당 노출시킬 최대 게시글 수
+const MAX_PAGES = 6; //한 번에 노출시킬 최대 페이지 버튼 개수
+const pageN = Math.ceil(testData.maxNo / MAX_POSTS); //전체 페이지 수
 
 const setPageButton = (currentPage, page) => {
   //현재 페이지
@@ -22,21 +19,42 @@ const setPageButton = (currentPage, page) => {
     return 'bg-mainWhite border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-mainBlack dark:text-mainWhite';
 };
 const hiddenPrevious = (currentPage) => {
-  //맨 앞 페이지인지
+  //현재 페이지가 맨 앞 페이지인지
   if (currentPage == 1) return 'hidden';
   return '';
 };
 const hiddenNext = (currentPage) => {
-  //맨 뒤 페이지인지
+  //현재 페이지가 맨 뒤 페이지인지
   if (currentPage == pageN) return 'hidden';
   return '';
 };
+const getStartEndPage = (currentPage) => {
+  //currentPage-MAX_PAGES/2~currentPage+MAX_PAGES/2-1
+  //전체 페이지가 최대 노출 가능 페이지 개수를 넘을 경우(7개 이상)
+  var startPage = currentPage - MAX_PAGES / 2;
+  var endPage = currentPage + (MAX_PAGES / 2 - 1);
+  console.log('start:' + startPage + ', end:' + endPage);
+  if (startPage <= 0) {
+    //범위가 0 이하로 오버될 경우
+    console.log('minus');
+    endPage = endPage - startPage + 1;
+    startPage = 1;
+  } else if (endPage > pageN) {
+    console.log('plus');
+    startPage = startPage - (endPage - pageN);
+    endPage = pageN;
+  }
+  console.log('start:' + startPage + ', end:' + endPage);
+  return { startPage, endPage };
+};
 
-const Table = (selected = null) => {
+const Table = (props) => {
   const [boardContent, setBoardContent] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   //console.log(currentPage); //현재 페이지
   const { no } = useParams();
+  const currentCategoryId = props.state.category.current.id;
+  const { startPage, endPage } = getStartEndPage(currentPage);
 
   const getCurrentBoard = (id, currentId) => {
     //현재 게시글
@@ -45,20 +63,21 @@ const Table = (selected = null) => {
   };
 
   useEffect(() => {
+    //console.log(props.state.member.memberId);
     var end = 0;
     // TODO 카테고리별 게시물 최대 개수 불러오기
     if (currentPage * MAX_POSTS > testData.maxNo) end = testData.maxNo;
     else end = currentPage * MAX_POSTS;
     postAPI
       .getList({
-        category: tempCategory, // TODO 카테고리 불러와서 실행
+        category: currentCategoryId,
         page: currentPage - 1,
         size: MAX_POSTS,
       })
       .then((res) => {
         setBoardContent(res?.list);
       });
-  }, [currentPage]); //currentPage 값이 변경될 때마다
+  }, [currentPage, currentCategoryId]); //currentPage 값이 변경될 때마다
 
   return (
     <div className="dark:bg-mainBlack dark:text-mainWhite ">
@@ -155,6 +174,7 @@ const Table = (selected = null) => {
       <div class=" px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 dark:border-darkComponent">
         <div class="flex-1 flex justify-between sm:hidden">
           <button
+            name="모바일 previous 버튼"
             onClick={() => {
               setCurrentPage(currentPage - 1);
             }}
@@ -164,6 +184,7 @@ const Table = (selected = null) => {
             Previous{' '}
           </button>
           <button
+            name="모바일 next 버튼"
             onClick={() => {
               setCurrentPage(currentPage + 1);
             }}
@@ -178,13 +199,13 @@ const Table = (selected = null) => {
             <p class="text-sm text-gray-700 dark:text-divisionGray">
               Showing
               <span class="font-medium">
-                <strong>
+                <strong name="현재 보여지는 게시글들 중 첫 게시글 번호">
                   {' ' + ((currentPage - 1) * MAX_POSTS + 1) + ' '}
                 </strong>
               </span>
               to
               <span class="font-medium">
-                <strong>
+                <strong name="현재 보여지는 게시글들 중 마지막 게시글 번호">
                   {' ' +
                     (currentPage == pageN
                       ? testData.maxNo
@@ -194,7 +215,9 @@ const Table = (selected = null) => {
               </span>
               of
               <span class="font-medium">
-                <strong>{' ' + testData.maxNo + ' '}</strong>
+                <strong name="전체 게시글 개수">
+                  {' ' + testData.maxNo + ' '}
+                </strong>
               </span>
               results
             </p>
@@ -205,6 +228,7 @@ const Table = (selected = null) => {
               aria-label="Pagination"
             >
               <button
+                name="Previous 버튼(기본)"
                 onClick={() => {
                   setCurrentPage(currentPage - 1);
                 }}
@@ -230,8 +254,9 @@ const Table = (selected = null) => {
                 </svg>
               </button>
 
-              {[...Array(pageN).keys()].map((pageNum) => (
+              {/*[...Array(pageN).keys()].map((pageNum) => (
                 <button
+                  name="각 페이지 번호"
                   key={pageNum}
                   className={
                     setPageButton(currentPage, pageNum + 1) +
@@ -243,9 +268,67 @@ const Table = (selected = null) => {
                 >
                   {pageNum + 1}
                 </button>
-              ))}
+                ))*/}
+              {startPage > 1 ? (
+                <button
+                  name="첫 페이지"
+                  className="bg-mainWhite border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-mainBlack dark:text-mainWhite relative inline-flex items-center px-4 py-2 border text-sm font-medium"
+                  onClick={() => {
+                    setCurrentPage(1);
+                  }}
+                >
+                  1
+                </button>
+              ) : (
+                ''
+              )}
+              {startPage > 2 ? (
+                <button className="w-10 bg-mainWhite border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-mainBlack dark:text-mainWhite relative inline-flex items-center px-3 py-2 border text-sm font-medium">
+                  ...
+                </button>
+              ) : (
+                ''
+              )}
+              {[...Array(pageN > MAX_PAGES ? MAX_PAGES : pageN).keys()].map(
+                (pageNum) => (
+                  <button
+                    name="각 페이지 번호"
+                    key={pageNum}
+                    className={
+                      setPageButton(currentPage, pageNum + startPage) +
+                      ' w-10 relative inline-flex items-center px-3 py-2 border text-sm font-medium'
+                    }
+                    onClick={() => {
+                      setCurrentPage(pageNum + startPage);
+                    }}
+                  >
+                    {pageNum + startPage}
+                  </button>
+                )
+              )}
+              {endPage < pageN - 1 ? (
+                <button className="w-10 bg-mainWhite border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-mainBlack dark:text-mainWhite relative inline-flex items-center px-3 py-2 border text-sm font-medium">
+                  ...
+                </button>
+              ) : (
+                ''
+              )}
+              {endPage < pageN ? (
+                <button
+                  name="마지막 페이지"
+                  className="bg-mainWhite border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-mainBlack dark:text-mainWhite relative inline-flex items-center px-4 py-2 border text-sm font-medium"
+                  onClick={() => {
+                    setCurrentPage(pageN);
+                  }}
+                >
+                  {pageN}
+                </button>
+              ) : (
+                ''
+              )}
 
               <button
+                name="Next 버튼(기본)"
                 onClick={() => {
                   setCurrentPage(currentPage + 1);
                 }}
@@ -300,4 +383,9 @@ const Table = (selected = null) => {
   );
 };
 //className={'border-2 text-2xl m-1 rounded-lg px-1  ' +setPageButton(currentPage, pageNum + 1)}
-export default Table;
+const mapStateToProps = (state, OwnProps) => {
+  return {
+    state,
+  };
+};
+export default connect(mapStateToProps)(Table);

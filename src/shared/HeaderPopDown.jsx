@@ -52,7 +52,7 @@ const PopDown = ({ category, currentCategory, updateCurrentCategory }) => {
                       to={item.href}
                       className="-m-3 p-3 flex items-start rounded-lg hover:bg-pointYellow"
                       onClick={() => {
-                        updateCurrentCategory(item.id);
+                        updateCurrentCategory({ id: item.id, name: item.name });
                       }}
                     >
                       <item.icon

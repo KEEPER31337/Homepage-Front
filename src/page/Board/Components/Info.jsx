@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 
 import { ViewGridIcon } from '@heroicons/react/solid';
 
 const fontList = ['돋움', '나눔 고딕', '바탕'];
 const styleList = ['text', 'text+image', 'gallary'];
 
-const Info = () => {
+const Info = (props) => {
   const [option, setOption] = useState({
     font: '돋움', //초기 옵션 설정
     style: 'text',
   });
   const { font, style } = option; //비구조화 할당
+
+  const currentCategoryName = props.state.category.current.name;
 
   useEffect(() => {
     console.log(font);
@@ -20,7 +23,7 @@ const Info = () => {
   return (
     <div className="dark:text-mainWhite">
       <p className="text-3xl border-b-2 dark:text-mainWhite py-2 dark:border-darkComponent">
-        공지사항
+        {currentCategoryName}
       </p>
       <div className="flex justify-between">
         <p className="m-3 text-gray-400 inline-block w-3/5 dark:text-divisionGray">
@@ -78,5 +81,9 @@ const Info = () => {
     </div>
   );
 };
-
-export default Info;
+const mapStateToProps = (state, OwnProps) => {
+  return {
+    state,
+  };
+};
+export default connect(mapStateToProps)(Info);

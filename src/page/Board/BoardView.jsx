@@ -11,10 +11,6 @@ import WriteButton from 'page/Board/Components/WriteButton';
 import testData from 'page/Board/testData';
 import postAPI from 'API/v1/post';
 
-/* TODO 지울 부분 시작 */
-import { signIn } from './tempSign';
-/* TODO 지울 부분 끝 */
-
 const BoardView = (props) => {
   //const { pathname } = useLocation();
   const { no } = useParams();
@@ -22,29 +18,22 @@ const BoardView = (props) => {
   const [prevBoard, setPrevBoard] = useState({});
   //console.log(pathname); //현재 path url
   // console.log(no); //게시글 번호
-
-  // TODO getBoard는 사용!!
+  const token = props.state.member.token;
   useEffect(() => {
     setPrevBoard(board);
-    /* TODO 지울 부분 시작 */
-    signIn().then((response) => {
-      const tempToken = response.data.data.token.substr(7);
-      console.log(tempToken);
-
-      /* TODO 살릴 부분 시작 */
+    if (token) {
+      console.log('token : ' + token);
       postAPI
         .getOne({
           no: no,
-          token: tempToken,
+          token: token,
         })
         .then((res) => {
           console.log(res);
           setBoard(res.data);
         });
-      /* TODO 살릴 부분 끝 */
-    });
-    /* TODO 지울 부분 끝 */
-  }, [no]);
+    }
+  }, [no, token]);
 
   // const board = testData.boards[no - 1]; //해당 게시글 관련 정보
 
@@ -52,8 +41,12 @@ const BoardView = (props) => {
     <div className="flex justify-center dark:bg-mainBlack">
       <div className="inline-block m-5 w-full">
         <Info />
-        {board.id && prevBoard.id !== board.id ? <Content board={board} /> : ''}
-        {board.id && prevBoard.id !== board.id ? (
+        {board?.id && prevBoard.id !== board.id ? (
+          <Content board={board} />
+        ) : (
+          ''
+        )}
+        {board?.id && prevBoard.id !== board.id ? (
           <Comments boardId={board.id} />
         ) : (
           ''
