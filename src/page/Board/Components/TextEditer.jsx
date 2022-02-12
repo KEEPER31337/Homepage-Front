@@ -143,7 +143,7 @@ const TextEditer = (props) => {
     <div className="">
       <div name="input" className="">
         <div name="title_box" className="my-5">
-          <p className="inline-block text-center p-1 px-3 bg-mainYellow rounded-r-full">
+          <p className="inline-block text-center p-1 px-3 bg-mainYellow rounded-r-full shadow-lg border-b-2 border-pointYellow">
             제목
           </p>
           {/*필수 입력 조건 아이콘 표시(임시)*/}
@@ -169,7 +169,7 @@ const TextEditer = (props) => {
           )}
         </div>
         <div name="content_box" className="my-5">
-          <p className="inline-block text-center p-1 px-3 bg-mainYellow rounded-r-full">
+          <p className="inline-block text-center p-1 px-3 bg-mainYellow rounded-r-full shadow-lg border-b-2 border-pointYellow">
             내용
           </p>
           {/*필수 입력 조건 아이콘 표시(임시)*/}
@@ -196,7 +196,7 @@ const TextEditer = (props) => {
           </div>
         </div>
         <div name="file_box" className="my-5">
-          <p className="inline-block text-center p-1 px-3 bg-mainYellow rounded-r-full">
+          <p className="inline-block text-center p-1 px-3 bg-mainYellow rounded-r-full shadow-lg border-b-2 border-pointYellow">
             파일 첨부
           </p>
           {/* TODO: 썸네일 tailwind 사용해서 구현 */}
@@ -207,9 +207,8 @@ const TextEditer = (props) => {
           ></input>
         </div>
       </div>
-      <p className="hidden sm:inline">sm: 테스트</p>
       <div className="justify-between sm:flex">
-        <div name="option" className="dark:text-mainWhite">
+        <div name="option" className="mb-10 dark:text-mainWhite">
           <input
             type="checkbox"
             value="댓글 허용"
@@ -253,26 +252,28 @@ const TextEditer = (props) => {
           ) : (
             ' '
           )}
-          <br />
         </div>
-        <div className="border-2 w-full sm:w-fit inline-block dark:text-mainWhite">
-          <div className="flex justify-center sm:justify-end">
+        <div className="w-full sm:w-fit inline-block dark:text-mainWhite">
+          <div className="flex justify-between sm:justify-end">
             <button
-              className="w-4/5 border-4  border-mainYellow text-mainYellow text-md rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none"
+              className="text-xl border-4 border-divisionGray rounded-xl m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none"
+              onClick={(e) => uploadPostinghandler(TEMP, e)}
+            >
+              <InboxInIcon className="inline-block m-1 h-7 w-7  text-divisionGray" />
+              임시저장
+            </button>
+            <button
+              className={
+                (uploadAble
+                  ? 'border-mainYellow text-mainYellow shadow-lg'
+                  : 'border-divisionGray text-mainWhite bg-divisionGray dark:text-darkComponent dark:bg-darkPoint dark:border-darkComponent') +
+                ' text-xl border-4  rounded-xl m-2 p-2 active:mr-1 active:ml-3 active:shadow-none'
+              }
               onClick={(e) => uploadPostinghandler(NO_TEMP, e)}
               disabled={!uploadAble}
             >
-              <PencilIcon className="inline-block ml-auto m-1 h-5 w-5 " />
+              <PencilIcon className="inline-block m-1 h-7 w-7 " />
               게시하기
-            </button>
-          </div>
-          <div className="flex justify-center">
-            <button
-              className="float-right border-4 border-divisionGray rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none"
-              onClick={(e) => uploadPostinghandler(TEMP, e)}
-            >
-              <InboxInIcon className="inline-block m-1 h-5 w-5  text-divisionGray" />
-              임시저장
             </button>
           </div>
         </div>
