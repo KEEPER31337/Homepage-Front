@@ -2,6 +2,9 @@ module.exports = {
   content: ['./src/**/*.{html,js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+      },
       colors: {
         mainHeader: 'rgb(255,255,255,0)',
         mainBlack: '#000000',
