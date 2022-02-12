@@ -3,6 +3,8 @@ const navigatoinSub = {
   menuList: ['랭킹', '출석부', '게임'],
 };
 
+// TODO: 범용적으로 만들기
+
 const NavigationLayout = (props) => {
   console.log(props.children);
   return (

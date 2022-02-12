@@ -13,7 +13,6 @@ function classNames(...classes) {
 }
 
 const PopDown = ({ category, currentCategory, updateCurrentCategory }) => {
-  console.log('current category:', currentCategory);
   return (
     <Popover className="relative">
       {({ open }) => (

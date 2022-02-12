@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 // API
 
-const AuthModal = forwardRef((props, ref) => {
+const MessageModal = forwardRef((props, ref) => {
   const [isOpen, setIsOpen] = useState(false);
   const [authCode, setAuthCode] = useState('');
 
@@ -87,4 +87,4 @@ const AuthModal = forwardRef((props, ref) => {
   );
 });
 
-export default AuthModal;
+export default MessageModal;
