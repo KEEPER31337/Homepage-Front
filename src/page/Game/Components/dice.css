@@ -13,10 +13,10 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
-    height: 7vw;
+    height: 6vw;
     list-style-type: none;
     transform-style: preserve-3d;
-    width: 7vw;
+    width: 6vw;
   }
   .even-roll {
     transition: transform 1.5s ease-out;
@@ -89,22 +89,22 @@
     transform: rotateX(-360deg) rotateY(-900deg) rotateZ(-360deg);
   }
   [data-side="1"] {
-    transform: rotate3d(0, 0, 0, 90deg) translateZ(3.5vw);
+    transform: rotate3d(0, 0, 0, 90deg) translateZ(3vw);
   }
   [data-side="2"] {
-    transform: rotate3d(-1, 0, 0, 90deg) translateZ(3.5vw);
+    transform: rotate3d(-1, 0, 0, 90deg) translateZ(3vw);
   }
   [data-side="3"] {
-    transform: rotate3d(0, 1, 0, 90deg) translateZ(3.5vw);
+    transform: rotate3d(0, 1, 0, 90deg) translateZ(3vw);
   }
   [data-side="4"] {
-    transform: rotate3d(0, -1, 0, 90deg) translateZ(3.5vw);
+    transform: rotate3d(0, -1, 0, 90deg) translateZ(3vw);
   }
   [data-side="5"] {
-    transform: rotate3d(1, 0, 0, 90deg) translateZ(3.5vw);
+    transform: rotate3d(1, 0, 0, 90deg) translateZ(3vw);
   }
   [data-side="6"] {
-    transform: rotate3d(1, 0, 0, 180deg) translateZ(3.5vw);
+    transform: rotate3d(1, 0, 0, 180deg) translateZ(3vw);
   }
   [data-side="1"] .dot:nth-of-type(1) {
     grid-area: five;
