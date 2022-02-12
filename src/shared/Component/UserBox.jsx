@@ -10,13 +10,16 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-const UserBox = ({ signOut }) => {
+const UserBox = ({ member, signOut }) => {
   return (
     <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
       <Menu as="div" className="ml-3 relative">
         <div>
-          <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+          <Menu.Button className="bg-gray-100 dark:bg-gray-800 flex text-sm rounded-full focus:outline-none ring-2 ring-divisionGray dark:ring-darkPoint">
             <span className="sr-only">Open user menu</span>
+            <div className="text-lg self-center mx-5 text-mainBlack dark:text-mainWhite w-10 break-words">
+              {member.userInfo.nickName}
+            </div>
             <img
               className="h-8 w-8 rounded-full"
               // user Image
@@ -86,6 +89,9 @@ const UserBox = ({ signOut }) => {
   );
 };
 
+const mapStateToProps = (state) => {
+  return { member: state.member };
+};
 const mapDispatchToProps = (dispatch, OwnProps) => {
   return {
     signOut: () => {
@@ -94,4 +100,4 @@ const mapDispatchToProps = (dispatch, OwnProps) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(UserBox);
+export default connect(mapStateToProps, mapDispatchToProps)(UserBox);

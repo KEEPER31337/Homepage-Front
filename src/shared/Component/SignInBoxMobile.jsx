@@ -10,7 +10,7 @@ const SignInBoxMobile = () => {
       >
         회원가입
       </Link>
-      <p className="mt-6 text-center text-base font-medium text-mainBlack">
+      <p className="mt-6 text-center text-base font-medium text-mainBlack dark:text-mainWhite">
         Existing account?{' '}
         <Link
           to="signin"

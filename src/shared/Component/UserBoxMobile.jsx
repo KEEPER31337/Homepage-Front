@@ -10,19 +10,23 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-const UserBoxMobile = ({ signOut }) => {
+const UserBoxMobile = ({ member, signOut }) => {
+  console.log(member);
   return (
     <div className="md:flex items-center justify-end md:flex-1 lg:w-0">
       <Menu as="div" className="ml-3 relative">
         <div>
           <Menu.Button className="bg-gray-100 dark:bg-gray-800 w-full flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-            <div className="w-full">
+            <div className="w-full flex justify-items-center justify-center">
               <img
-                className="h-8 w-8 rounded-full"
+                className="h-12 w-12 rounded-full"
                 // user Image
                 src="https://avatars.githubusercontent.com/u/23546441?s=400&u=db7abf2929e5518c12189034dc3fed9bda94f0a6&v=4"
                 alt=""
               />
+              <div className="text-lg self-center mx-5 text-mainBlack dark:text-mainWhite">
+                {member.userInfo.nickName}
+              </div>
             </div>
           </Menu.Button>
         </div>
@@ -87,6 +91,10 @@ const UserBoxMobile = ({ signOut }) => {
   );
 };
 
+const mapStateToProps = (state) => {
+  return { member: state.member };
+};
+
 const mapDispatchToProps = (dispatch, OwnProps) => {
   return {
     signOut: () => {
@@ -95,4 +103,4 @@ const mapDispatchToProps = (dispatch, OwnProps) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(UserBoxMobile);
+export default connect(mapStateToProps, mapDispatchToProps)(UserBoxMobile);
