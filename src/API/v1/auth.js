@@ -13,7 +13,6 @@ async function signIn({ loginId, password }) {
   };
   try {
     const response = await axios(options);
-    // TODO : login할 때 token + member 같이달라고 하기
     return response.data;
   } catch (error) {
     return error.response.data;

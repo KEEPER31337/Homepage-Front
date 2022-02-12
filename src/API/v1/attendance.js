@@ -42,7 +42,6 @@ async function updateMessage({ greetings, token }) {
 }
 
 async function getAttendDate({ startDate, endDate, token }) {
-  console.log({ startDate, endDate, token });
   const options = {
     method: 'GET',
     url: API_URL + '/v1/attend/date',

@@ -38,6 +38,7 @@ const UserBox = ({ signOut }) => {
             <Menu.Item>
               {({ active }) => (
                 <Link
+                  // TODO : 링크 수정
                   to="/profile/1"
                   className={classNames(
                     active ? 'bg-gray-100' : '',
@@ -51,6 +52,7 @@ const UserBox = ({ signOut }) => {
             <Menu.Item>
               {({ active }) => (
                 <Link
+                  // TODO : 링크 수정
                   to="/profile/1/edit"
                   className={classNames(
                     active ? 'bg-gray-100' : '',

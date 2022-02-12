@@ -22,7 +22,6 @@ function classNames(...classes) {
 
 const Header = ({ member }) => {
   useEffect(() => {
-    console.log(member);
     // memberAPI.getMember({ token: member.token }).then((data) => {
     //   console.log(data);
     // });
