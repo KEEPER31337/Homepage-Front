@@ -7,9 +7,12 @@ import {
 } from '@heroicons/react/solid';
 //local
 import testData from 'page/Board/testData';
+import postAPI from 'API/v1/post';
+import { getDateWithFormat } from '../BoardUtil';
 
 const MAX_POSTS = 3; //한 페이지당 노출시킬 최대 게시글 수
 const pageN = Math.ceil(testData.maxNo / MAX_POSTS); //페이지 수
+const tempCategory = 1; // TODO 삭제
 
 const setPageButton = (currentPage, page) => {
   //현재 페이지
@@ -35,18 +38,26 @@ const Table = (selected = null) => {
   //console.log(currentPage); //현재 페이지
   const { no } = useParams();
 
-  const getCurrentBoard = (no, currentNo) => {
+  const getCurrentBoard = (id, currentId) => {
     //현재 게시글
-    if (no == currentNo) return 'text-mainYellow  rounded-lg';
+    if (id == currentId) return 'text-mainYellow  rounded-lg';
     return;
   };
 
   useEffect(() => {
     var end = 0;
+    // TODO 카테고리별 게시물 최대 개수 불러오기
     if (currentPage * MAX_POSTS > testData.maxNo) end = testData.maxNo;
     else end = currentPage * MAX_POSTS;
-    const boards = testData.boards.slice((currentPage - 1) * MAX_POSTS, end); //나중에 이 부분을 특정 개수의 게시글 데이터를 DB에서 직접 불러오는 것으로 수정
-    setBoardContent(boards);
+    postAPI
+      .getList({
+        category: tempCategory, // TODO 카테고리 불러와서 실행
+        page: currentPage - 1,
+        size: MAX_POSTS,
+      })
+      .then((res) => {
+        setBoardContent(res?.list);
+      });
   }, [currentPage]); //currentPage 값이 변경될 때마다
 
   return (
@@ -76,28 +87,29 @@ const Table = (selected = null) => {
           </tr>
         </thead>
         <tbody>
-          {boardContent.map((board) => (
+          {boardContent?.map((board, index) => (
             <tr
-              key={board.no}
+              key={board.id}
               className={
                 'border-b-2 hover:bg-slate-100 hover:shadow-lg dark:hover:bg-darkComponent dark:border-darkComponent ' +
-                getCurrentBoard(board.no, no)
+                getCurrentBoard(board.id, no)
               }
             >
               <td className="border-r border-divisionGray text-center dark:border-darkComponent">
-                {board.no}
+                {MAX_POSTS * (currentPage - 1) + index + 1}
               </td>
 
               <td className="p-2 dark:border-darkComponent">
                 <Link
                   to={{
-                    pathname: `/board/${board.no}`,
+                    pathname: `/board/${board.id}`,
                     state: { test: 'test' },
                   }}
                 >
                   <div className=" w-60 ">
                     <p className="truncate w-4/5 text-md ">
                       <strong>{board.title}</strong>
+                      {/* TODO: 이미지, 첨부파일 정보 가져오기
                       {board.image ? (
                         <PhotographIcon className="inline-block h-5 w-5 " />
                       ) : (
@@ -114,26 +126,27 @@ const Table = (selected = null) => {
                         </strong>
                       ) : (
                         ''
-                      )}
+                      )} */}
                     </p>
                   </div>
 
                   <p className="text-xs sm:hidden">
-                    글쓴이 : <strong>{board.user}</strong> 작성일시 :{' '}
-                    <strong>{board.date}</strong> 조회수 :{' '}
-                    <strong>{board.watch}</strong>
+                    글쓴이 : <strong>{board.writer} </strong>
+                    작성일시 :
+                    <strong>{getDateWithFormat(board.registerTime)} </strong>
+                    조회수 : <strong>{board.visitCount} </strong>
                   </p>
                 </Link>
               </td>
 
               <td className="text-center dark:border-darkComponent hidden sm:table-cell">
-                {board.user}
+                {board.writer}
               </td>
               <td className=" text-center dark:border-darkComponent hidden sm:table-cell">
-                {board.date}
+                {getDateWithFormat(board.registerTime)}
               </td>
               <td className="text-center dark:border-darkComponent hidden sm:table-cell">
-                {board.watch}
+                {board.visitCount}
               </td>
             </tr>
           ))}

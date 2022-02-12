@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { testText } from 'page/Board/testText';
 import '@toast-ui/editor/dist/toastui-editor.css'; //마크다운 편집기 뷰어 에디터
 import { Viewer } from '@toast-ui/react-editor';
@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { ThumbUpIcon, ThumbDownIcon } from '@heroicons/react/solid';
 
 //local
-import { useEffect } from 'react';
+import { getDateWithFormat } from '../BoardUtil';
 
 const Content = ({ state, board }) => {
   //board는 게시글 정보가 담긴 객체
@@ -27,13 +27,25 @@ const Content = ({ state, board }) => {
         </p>
         <p className="text-right text-xs">
           <br />
-          작성자 : <strong>{board.user + ' '}</strong>
+          작성자 : <strong>{board.writer ? board.writer : ''}</strong>
           <br />
-          작성일시 : <strong>{board.date + ' ' + board.time}</strong>
+          작성 일시 :{' '}
+          <strong>
+            {board.registerTime ? getDateWithFormat(board.registerTime) : ' '}
+          </strong>
+          {board.registerTime != board.updateTime ? (
+            <>
+              <br />
+              수정 일시 :{' '}
+              <strong>
+                {board.updateTime ? getDateWithFormat(board.updateTime) : ' '}
+              </strong>
+            </>
+          ) : null}
           <br />
-          조회수 : <strong>{board.watch + ' '}</strong>
-          댓글수 : <strong>{board.commentN + ' '}</strong>
-          추천수 : <strong>{board.goodN + ' '}</strong>
+          조회수 : <strong>{board.visitCount} </strong>
+          댓글수 : <strong>{board.commentCount} </strong>
+          추천수 : <strong>{board.likeCount} </strong>
         </p>
       </div>
       <div className="w-full p-5 dark:bg-mainBlack">

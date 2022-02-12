@@ -1,14 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { ViewGridIcon, ChatAltIcon, PencilIcon } from '@heroicons/react/solid';
+import commentAPI from 'API/v1/comment';
 
-const Comments = ({ board, state }) => {
-  var comments = board.comments;
+const Comments = ({ boardId: boardId, state }) => {
+  const [comments, setComments] = useState([]);
   const isDark = state.darkMode;
   const addComment = () => {
     console.log('addComment');
   };
-  useEffect(() => {}, [isDark, comments]);
+
+  useEffect(() => {
+    commentAPI
+      .get({
+        boardId: boardId,
+      })
+      .then((res) => {
+        setComments(res.list);
+      });
+  }, [isDark]);
+
   const filterParentComment = (comments) => {
     return comments.filter((comment) => comment.parentId == 0);
   };
@@ -20,7 +31,7 @@ const Comments = ({ board, state }) => {
       <p className="text-2xl">
         <strong>
           <ChatAltIcon className="inline-block h-10 w-10 text-mainYellow" />
-          댓글({board.commentN})
+          댓글({comments.length})
         </strong>
       </p>
 
