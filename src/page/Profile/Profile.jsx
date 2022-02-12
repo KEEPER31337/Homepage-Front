@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import CircularGauge from './CircularGauge';
-import Group from './Group';
-import InfoBox from './InfoBox';
-import InfoRouteBtn from './InfoRouteBtn';
+import { useParams, useNavigate } from 'react-router-dom';
+import ProfileFrame from './Components/Frames/ProfileFrame';
+import blogImg from '../../assets/img/profileImg/social/blog.png';
+import githubImg from '../../assets/img/profileImg/social/github.png';
+import homePageImg from '../../assets/img/profileImg/social/homepage.png';
+import instargramImg from '../../assets/img/profileImg/social/instargram.png';
 
 const dummyUser = {
   userId: '1',
@@ -12,23 +14,108 @@ const dummyUser = {
   loginId: 'userLoginId',
   level: 256,
   point: 78,
-  type: '정회원',
-  rank: '우수회원',
-  job: '무직',
   github: 'jasper200207',
+  groups: [
+    {
+      name: '정회원',
+      img: 'https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/753640/4018a8f2c5b6cb72162d157315f27fbdbb92050d.png',
+    },
+    {
+      name: '우수회원',
+      img: 'https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/400630/21e2819817725efff601afc2e52b44772d80fb0a.png',
+    },
+    {
+      name: '무직',
+      img: 'https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/400630/276a940028f208f167c3b8790eb11031d552f384.png',
+    },
+    {
+      name: '무직',
+      img: 'https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/400630/276a940028f208f167c3b8790eb11031d552f384.png',
+    },
+  ],
+  levelUp: 100,
+  socialList: [
+    {
+      text: '블로그',
+      img: blogImg,
+      onClick: () => {
+        console.log('blog');
+      },
+    },
+    {
+      text: 'jasper200207',
+      img: githubImg,
+      onClick: () => {
+        console.log('github');
+      },
+    },
+    {
+      text: '홈페이지',
+      img: homePageImg,
+      onClick: () => {
+        console.log('homepage');
+      },
+    },
+    {
+      text: '@인스타그램',
+      img: instargramImg,
+      onClick: () => {
+        console.log('instargram');
+      },
+    },
+  ],
 };
-const LevelUp = 100;
-const isMe = false;
+const isMe = true;
 const isFriend = false;
-
-const myBtns = ['수정', '비밀번호 변경', '탈퇴'];
-const otherBtns = ['쪽지', '친구 등록', '선물 하기'];
-const friendBtns = ['쪽지', '친구 삭제', '선물 하기'];
 
 const Profile = () => {
   const user = dummyUser;
-
+  const params = useParams();
+  const navigate = useNavigate();
   const [btns, setBtns] = useState(new Array());
+
+  const myBtns = [
+    {
+      text: '수정',
+      onClick: () => {
+        navigate('edit');
+      },
+    },
+    {
+      text: '마이페이지',
+      onClick: () => {
+        navigate('mypage/clipping');
+      },
+    },
+  ];
+  const otherBtns = [
+    {
+      text: '친구 등록',
+      onClick: () => {
+        console.log('friend');
+      },
+    },
+    {
+      text: '포인트선물',
+      onClick: () => {
+        console.log('points');
+      },
+    },
+  ];
+  const friendBtns = [
+    {
+      text: '친구 삭제',
+      onClick: () => {
+        console.log('friend');
+      },
+    },
+    {
+      text: '포인트선물',
+      onClick: () => {
+        console.log('points');
+      },
+    },
+  ];
 
   useEffect(async () => {
     if (isMe) setBtns(myBtns);
@@ -36,90 +123,7 @@ const Profile = () => {
     else setBtns(otherBtns);
   }, [isMe, isFriend]);
 
-  const userGroups = {
-    type: {
-      name: user.type,
-      img: 'https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/753640/4018a8f2c5b6cb72162d157315f27fbdbb92050d.png',
-    },
-    rank: {
-      name: user.rank,
-      img: 'https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/400630/21e2819817725efff601afc2e52b44772d80fb0a.png',
-    },
-    job: {
-      name: user.job,
-      img: 'https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/400630/276a940028f208f167c3b8790eb11031d552f384.png',
-    },
-  };
-
-  return (
-    <div className="bg-mainWhite dark:bg-mainBlack pt-20">
-      <div className="mx-auto h-full w-[900px] bg-backGray dark:bg-darkPoint rounded-3xl shadow-2xl">
-        {/*profile head*/}
-        <div className="w-full h-[265px]">
-          <div className="px-10 pt-10 pb-7 w-full h-full flex float-left">
-            {/*profile image*/}
-            <div className="pr-2 w-3/12 object-cover">
-              <img className="w-full h-full rounded-2xl" src={user.img} />
-            </div>
-            {/*profile head info*/}
-            <div className="pt-3 w-5/12 h-full">
-              <div className="text-left text-4xl h-1/5 dark:text-pointYellow">
-                {user.name}
-              </div>
-              <div className="mt-3 text-left text-lg h-1/5 dark:text-mainYellow">
-                {user.nickName + ' ' + user.loginId}
-              </div>
-              {/*profile Level*/}
-              <div className="mt-10 pr-2 w-full h-2/6">
-                <div className="pt-2 text-center float-left text-3xl dark:text-pointYellow">
-                  Level
-                </div>
-                <div className="pl-5 h-full float-left flex">
-                  <CircularGauge
-                    inRad={20}
-                    outRad={24}
-                    parcent={user.point / LevelUp}
-                    text={user.level}
-                  />
-                </div>
-              </div>
-            </div>
-            {/*profile level type rank job*/}
-            <div className="w-4/12 pl-5">
-              {/*profile level*/}
-              <div className="w-full h-1/4 flex justify-center items-center">
-                {btns.map((btn) => (
-                  <InfoRouteBtn text={btn} />
-                ))}
-              </div>
-              {/* profile betchis */}
-              <div className="w-full h-3/4 pt-3">
-                <div className="w-full h-full bg-divisionGray dark:bg-darkComponent dark:text-mainWhite rounded-2xl">
-                  {/*profile type*/}
-                  <Group group={userGroups.type} />
-                  {/*profile rank*/}
-                  <Group group={userGroups.rank} />
-                  {/*profile job*/}
-                  <Group group={userGroups.job} />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        {/*profile body*/}
-        <div className="w-full h-[900px]">
-          <InfoBox type="github" params={{ gitId: user.github }} />
-          <InfoBox type="postlist" params={{ userId: user.userId }} />
-          <InfoBox />
-          <InfoBox />
-        </div>
-        {/*profile footer*/}
-        <footer className="w-full h-[50px]">
-          <div className="text-center dark:text-mainWhite">Profile footer</div>
-        </footer>
-      </div>
-    </div>
-  );
+  return <ProfileFrame user={user} profileBtns={btns} />;
 };
 
 export default Profile;
