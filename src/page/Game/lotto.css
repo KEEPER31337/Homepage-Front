@@ -1,0 +1,13 @@
+
+
+.lotto_container {
+    overflow: hidden;
+   
+    position: relative;
+ 
+    
+  
+   
+    cursor: url('./img/Lotto/coin.png'), grab;
+ 
+}
