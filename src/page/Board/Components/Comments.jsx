@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { ViewGridIcon, ChatAltIcon, PencilIcon } from '@heroicons/react/solid';
-import postAPI from 'API/v1/post';
+import commentAPI from 'API/v1/comment';
 
 const Comments = ({ boardId: boardId, state }) => {
   const [comments, setComments] = useState([]);
@@ -11,8 +11,8 @@ const Comments = ({ boardId: boardId, state }) => {
   };
 
   useEffect(() => {
-    postAPI
-      .getCommentByBoardId({
+    commentAPI
+      .get({
         boardId: boardId,
       })
       .then((res) => {

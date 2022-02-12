@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { testText } from 'page/Board/testText';
 import '@toast-ui/editor/dist/toastui-editor.css'; //마크다운 편집기 뷰어 에디터
 import { Viewer } from '@toast-ui/react-editor';
@@ -6,11 +6,7 @@ import { connect } from 'react-redux';
 import { ThumbUpIcon, ThumbDownIcon } from '@heroicons/react/solid';
 
 //local
-import { useEffect } from 'react';
-
-function getDateWithFormat(boardDate) {
-  return boardDate.substring(0, 19).replace('T', ' ');
-}
+import { getDateWithFormat } from '../BoardUtil';
 
 const Content = ({ state, board }) => {
   //board는 게시글 정보가 담긴 객체

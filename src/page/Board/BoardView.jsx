@@ -28,18 +28,18 @@ const BoardView = (props) => {
     setPrevBoard(board);
     /* TODO 지울 부분 시작 */
     signIn().then((response) => {
-      const tempToken = response.data.data.substr(7);
+      const tempToken = response.data.data.token.substr(7);
       console.log(tempToken);
 
       /* TODO 살릴 부분 시작 */
       postAPI
-        .getBoard({
+        .getOne({
           no: no,
           token: tempToken,
         })
         .then((res) => {
           console.log(res);
-          setBoard(res);
+          setBoard(res.data);
         });
       /* TODO 살릴 부분 끝 */
     });
@@ -52,8 +52,8 @@ const BoardView = (props) => {
     <div className="flex justify-center dark:bg-mainBlack">
       <div className="inline-block m-5 w-3/5">
         <Info />
-        {prevBoard.id !== board.id && board.id ? <Content board={board} /> : ''}
-        {prevBoard.id !== board.id && board.id ? (
+        {board.id && prevBoard.id !== board.id ? <Content board={board} /> : ''}
+        {board.id && prevBoard.id !== board.id ? (
           <Comments boardId={board.id} />
         ) : (
           ''
