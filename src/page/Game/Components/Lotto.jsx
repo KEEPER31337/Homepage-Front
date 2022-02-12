@@ -1,11 +1,11 @@
 import React from 'react';
-import './lotto.css';
+import '../lotto.css';
 import { useState, useRef, useEffect } from 'react';
-import scratchCardImageSrc from './img/Lotto/scratchCard.png';
-import backgroundImageSrc from './img/Lotto/backGround.png';
-import win1 from './img/Lotto/win1.png';
-import win2 from './img/Lotto/win2.png';
-import win3 from './img/Lotto/win3.png';
+import scratchCardImageSrc from '../img/Lotto/scratchCard.png';
+import backgroundImageSrc from '../img/Lotto/backGround.png';
+import win1 from '../img/Lotto/win1.png';
+import win2 from '../img/Lotto/win2.png';
+import win3 from '../img/Lotto/win3.png';
 
 const width = 700;
 const height = 400;
@@ -32,13 +32,17 @@ const Lotto = () => {
   const [isCompleted, setIsCompleted] = useState(false);
   //alert창 한번만 띄우기 위해서
 
-  const onCompleted = () => {setCompleted(true);};
-  const onProgress = (percent) => {setProgress(percent);}
+  const onCompleted = () => {
+    setCompleted(true);
+  };
+  const onProgress = (percent) => {
+    setProgress(percent);
+  };
 
   const backEnd = () => {
     //output : rank
-    const randomNum =  Math.floor(Math.random() * 3 +1);
-    setRank(randomNum)
+    const randomNum = Math.floor(Math.random() * 3 + 1);
+    setRank(randomNum);
     //일단 랜덤으로 아무 값(1~3) 가져옴
 
     setIsPop(true);
@@ -130,8 +134,7 @@ const Lotto = () => {
     if (percent >= completedAt && !isCompleted) {
       setIsCompleted(true);
       onCompleted();
-      alert(rank+" 등 축하합니다!")
-      
+      alert(rank + ' 등 축하합니다!');
     }
   };
 
@@ -141,7 +144,7 @@ const Lotto = () => {
   return (
     <div className="bg-divisionGray h-full w-1/2 items-center m-10">
       Lotto 게임 화면! 여기다가 만들면 됩니당!
-      <div >
+      <div>
         <p>
           성공여부: {completed ? 'Yes' : 'No'}
           <br />
@@ -180,8 +183,6 @@ const Lotto = () => {
             id="canvas"
             width={width}
             height={height}
-
-        
             onMouseDown={scratchStart}
             onMouseMove={scratch}
             onMouseUp={scratchEnd}
@@ -190,13 +191,13 @@ const Lotto = () => {
             onTouchEnd={scratchEnd}
           />
 
-          <div className="group absolute w-full 
-            flex justify-center top-6 left-6 z-20">
+          <div
+            className="group absolute w-full 
+            flex justify-center top-6 left-6 z-20"
+          >
             <img src={win}></img>
           </div>
-
         </div>
-        
       </div>
     </div>
   );
