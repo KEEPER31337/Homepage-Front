@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
   PencilIcon,
@@ -23,11 +24,62 @@ import uml from '@toast-ui/editor-plugin-uml';
 
 //local
 import { testText } from 'page/Board/testText';
+import postAPI from 'API/v1/post';
+import ipAPI from 'API/v1/ip';
+
+const NO_TEMP = 0;
+const TEMP = 1;
 
 const TextEditer = (props) => {
   const isDark = props.state.darkMode; //Dark모드 여부
-  //현재 작성된 상황 저장(입력 내용, 체크박스 등)
-  const [EditerState, setEditerState] = useState([]);
+  const currentCategoryId = props.state.category.current;
+  const token = props.state.member.token;
+  const navigate = useNavigate();
+
+  const [allowComment, setAllowComment] = useState(true);
+  const [isNotice, setIsNotice] = useState(false);
+  const [isSecret, setIsSecret] = useState(false);
+  const [password, setPassword] = useState('');
+  const [uploadAble, setUploadAble] = useState(false);
+  const [thumbnailBase64, setThumbnailBase64] = useState(null); // 파일 base64
+  const [thumbnail, setThumbnail] = useState(null);
+  const [files, setFiles] = useState([]);
+
+  const checkAllowCommentHandler = ({ target }) => {
+    setAllowComment(target.checked);
+  };
+
+  const checkIsNoticeHandler = ({ target }) => {
+    setIsNotice(target.checked);
+  };
+
+  const checkIsSecretHandler = ({ target }) => {
+    setIsSecret(target.checked);
+  };
+
+  const passwordHandler = ({ target }) => {
+    setPassword(target);
+  };
+
+  const changeThumbnailHandler = ({ target }) => {
+    setThumbnail(target.files);
+    setThumbnailBase64([]);
+    const reader = new FileReader();
+    reader.readAsDataURL(target.files[0]); // 단일 파일일 경우 1개
+    reader.onloadend = () => {
+      const base64 = reader.result;
+      console.log(base64);
+      if (base64) {
+        const base64Sub = base64.toString();
+        setThumbnailBase64(base64Sub);
+      }
+    };
+  };
+
+  const changeFileHandler = ({ target }) => {
+    setFiles(target.files);
+  };
+
   const [text, setText] = useState({
     title: '',
     content: '', //testText
@@ -36,23 +88,55 @@ const TextEditer = (props) => {
 
   const editorRef = useRef();
 
-  useEffect(() => {
-    console.log(title);
-    console.log(content); //에디터의 텍스트를 수정할 때마다 출력됨
-  }, [text]);
+  useEffect(() => {}, [text]);
 
   const updateTitle = (e) => {
     const getTitle = e.target.value;
+    if (getTitle && text.content) {
+      setUploadAble(true);
+    } else {
+      setUploadAble(false);
+    }
     setText({ title: getTitle, content });
   };
   const updateContent = () => {
     const editorInstance = editorRef.current.getInstance();
     const getContent_md = editorInstance.getMarkdown();
+    if (text.title && getContent_md) {
+      setUploadAble(true);
+    } else {
+      setUploadAble(false);
+    }
     setText({ title, content: getContent_md });
   };
 
-  const postContent = () => {
-    //게시하기
+  const uploadPostinghandler = (isTemp) => {
+    setUploadAble(false);
+    ipAPI.getIp().then((ipAddress) => {
+      postAPI
+        .create({
+          title: text.title,
+          content: text.content,
+          categoryId: currentCategoryId,
+          ipAddress: ipAddress,
+          allowComment: +allowComment,
+          isNotice: +isNotice,
+          isSecret: +isSecret,
+          isTemp: +isTemp,
+          password: password,
+          token: token,
+          files: files,
+          thumbnailFile: thumbnail,
+        })
+        .then((res) => {
+          setUploadAble(true);
+          if (res.success) {
+            navigate('/board');
+          } else {
+            alert('게시물 생성 실패! 전산관리자에게 문의하세요~');
+          }
+        });
+    });
   };
 
   return (
@@ -71,6 +155,18 @@ const TextEditer = (props) => {
             className="border-2 border-divisionGray m-2 p-1 w-full rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:border-darkComponent dark:text-white"
             onChange={updateTitle}
           ></input>
+          {/* TODO: 썸네일 tailwind 사용해서 구현 */}
+          <input type="file" id="thumbnail" onChange={changeThumbnailHandler} />
+          {thumbnailBase64 ? (
+            <img
+              className="d-block w-100"
+              src={thumbnailBase64}
+              alt="thumbnail"
+              style={{ width: '100px', height: '100px' }}
+            />
+          ) : (
+            ''
+          )}
         </div>
         <div name="content_box" className="my-5">
           <p className="inline-block text-center p-1 px-3 bg-mainYellow rounded-r-full">
@@ -103,9 +199,11 @@ const TextEditer = (props) => {
           <p className="inline-block text-center p-1 px-3 bg-mainYellow rounded-r-full">
             파일 첨부
           </p>
+          {/* TODO: 썸네일 tailwind 사용해서 구현 */}
           <input
-            type="textArea"
+            type="file"
             className="border-2 m-2 w-full rounded-md"
+            onChange={changeFileHandler}
           ></input>
         </div>
       </div>
@@ -116,30 +214,17 @@ const TextEditer = (props) => {
             type="checkbox"
             value="댓글 허용"
             className="text-mainYellow focus:ring-mainYellow rounded dark:bg-darkComponent dark:checked:bg-mainYellow"
-            defaultChecked
+            checked={allowComment}
+            onChange={(e) => checkAllowCommentHandler(e)}
           />{' '}
           댓글 허용
           <br />
           <input
             type="checkbox"
-            value="엮인글 허용"
-            className="text-mainYellow focus:ring-mainYellow rounded dark:bg-darkComponent dark:checked:bg-mainYellow"
-            defaultChecked
-          />{' '}
-          엮인글 허용
-          <br />
-          <input
-            type="checkbox"
-            value="알림"
-            className="text-mainYellow focus:ring-mainYellow rounded dark:bg-darkComponent dark:checked:bg-mainYellow"
-          />{' '}
-          알림
-          <br />
-          <input
-            type="checkbox"
             value="공지"
             className="text-mainYellow focus:ring-mainYellow rounded dark:bg-darkComponent dark:checked:bg-mainYellow"
-            defaultChecked
+            checked={isNotice}
+            onChange={(e) => checkIsNoticeHandler(e)}
           />{' '}
           공지
           <br />
@@ -148,42 +233,46 @@ const TextEditer = (props) => {
             className="text-mainYellow focus:ring-mainYellow rounded dark:bg-darkComponent dark:checked:bg-mainYellow peer "
             id="isSecret"
             value="비밀글"
+            checked={isSecret}
+            onChange={(e) => checkIsSecretHandler(e)}
           />{' '}
           비밀글
           <br />
-          <label
-            htmlFor="isSecret"
-            className="text-xs hidden peer-checked:contents"
-          >
-            비밀번호 :{' '}
-            <input
-              type="text"
-              className="border-2 border-divisionGray m-2 p-1 text-xs rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent  dark:border-darkComponent dark:text-white"
-            ></input>
-          </label>
+          {isSecret ? (
+            <label
+              htmlFor="isSecret"
+              className="text-xs hidden peer-checked:contents"
+            >
+              비밀번호 :{' '}
+              <input
+                type="password"
+                className="border-2 border-divisionGray m-2 p-1 text-xs rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent  dark:border-darkComponent dark:text-white"
+                onBlur={(e) => passwordHandler(e)}
+              ></input>
+            </label>
+          ) : (
+            ' '
+          )}
+          <br />
         </div>
         <div className="border-2 w-full sm:w-fit inline-block dark:text-mainWhite">
           <div className="flex justify-center sm:justify-end">
             <button
               className="w-4/5 border-4  border-mainYellow text-mainYellow text-md rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none"
-              onClick={postContent()}
+              onClick={(e) => uploadPostinghandler(NO_TEMP, e)}
+              disabled={!uploadAble}
             >
               <PencilIcon className="inline-block ml-auto m-1 h-5 w-5 " />
               게시하기
             </button>
           </div>
           <div className="flex justify-center">
-            <button className="float-right border-4 border-divisionGray rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none">
+            <button
+              className="float-right border-4 border-divisionGray rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none"
+              onClick={(e) => uploadPostinghandler(TEMP, e)}
+            >
               <InboxInIcon className="inline-block m-1 h-5 w-5  text-divisionGray" />
               임시저장
-            </button>
-            <button className="float-right border-4 border-divisionGray rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none">
-              <ArchiveIcon className="inline-block m-1 h-5 w-5  text-divisionGray" />
-              불러오기
-            </button>
-            <button className="float-right border-4 border-divisionGray rounded-lg m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none">
-              <EyeIcon className="inline-block m-1 h-5 w-5 text-divisionGray" />
-              미리보기
             </button>
           </div>
         </div>
@@ -192,6 +281,8 @@ const TextEditer = (props) => {
   );
 };
 const mapStateToProps = (state, OwnProps) => {
-  return { state };
+  return {
+    state,
+  };
 };
 export default connect(mapStateToProps)(TextEditer);

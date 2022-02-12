@@ -30,9 +30,9 @@ async function create({
   formData.append('thumbnailFile', thumbnailFile);
 
   const config = {
-    header: {
+    headers: {
       'content-type': 'multipart/form-data',
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     },
   };
 
@@ -53,7 +53,7 @@ async function getOne({ no, token }) {
     method: 'GET',
     url: API_URL + '/v1/post/' + no,
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     },
   };
   try {
@@ -124,9 +124,9 @@ async function modify({
   formData.append('thumbnailFile', thumbnailFile);
 
   const config = {
-    header: {
+    headers: {
       'content-type': 'multipart/form-data',
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     },
   };
 
@@ -147,7 +147,7 @@ async function remove({ boardId, token }) {
     method: 'DELETE',
     url: API_URL + '/v1/post/' + boardId,
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     },
   };
   try {
@@ -219,7 +219,7 @@ async function like({ boardId, token }) {
     method: 'GET ',
     url: API_URL + '/v1/post/like',
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     },
     params: { type: 'INC', boardId },
   };
@@ -236,7 +236,7 @@ async function dislike({ boardId, token }) {
     method: 'GET ',
     url: API_URL + '/v1/post/dislike',
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     },
     params: { type: 'DEC', boardId },
   };

@@ -7,7 +7,7 @@ async function create({ boardId, content, ipAddress, parentId, token }) {
     method: 'POST',
     url: API_URL + '/v1/comment/' + boardId,
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     },
     body: {
       content,
@@ -45,7 +45,7 @@ async function remove({ commentId, token }) {
     method: 'GET',
     url: API_URL + '/v1/comment/' + commentId,
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     },
   };
   try {
@@ -61,7 +61,7 @@ async function modify({ commentId, content, token }) {
     method: 'PUT',
     url: API_URL + '/v1/comment/' + commentId,
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     },
     body: { content },
   };
@@ -78,7 +78,7 @@ async function like({ commentId, token }) {
     method: 'GET',
     url: API_URL + '/v1/comment/like',
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     },
     params: { commentId },
   };
@@ -95,7 +95,7 @@ async function dislike({ commentId, token }) {
     method: 'GET',
     url: API_URL + '/v1/comment/dislike',
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     },
     params: { commentId },
   };
