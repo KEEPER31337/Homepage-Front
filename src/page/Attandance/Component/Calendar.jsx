@@ -105,7 +105,6 @@ const Calendar = ({ member }) => {
   });
 
   useEffect(() => {
-    console.log(member.token);
     attendanceAPI
       .getAttendDate({
         startDate: firstDay.format(dateFormat),
