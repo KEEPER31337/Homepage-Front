@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
+
+import FileUploadForm from 'page/Board/Components/fileUploadForm';
 import {
   PencilIcon,
-  EyeIcon,
   InboxInIcon,
-  ArchiveIcon,
+  ExclamationIcon,
 } from '@heroicons/react/solid';
 
 //마크다운 편집기 에디터
@@ -23,7 +24,6 @@ import tableMergedCell from '@toast-ui/editor-plugin-table-merged-cell';
 import uml from '@toast-ui/editor-plugin-uml';
 
 //local
-import { testText } from 'page/Board/testText';
 import postAPI from 'API/v1/post';
 import ipAPI from 'API/v1/ip';
 
@@ -142,40 +142,85 @@ const TextEditer = (props) => {
   return (
     <div className="">
       <div name="input" className="">
-        <div name="title_box" className="my-5">
-          <p className="inline-block text-center p-1 px-3 bg-mainYellow rounded-r-full shadow-lg border-b-2 border-pointYellow">
-            제목
-          </p>
-          {/*필수 입력 조건 아이콘 표시(임시)*/}
-          <span className={'text-red-400' + (title == '' ? '' : ' hidden')}>
-            필수
-          </span>
-          <input
-            type="text"
-            className="border-2 border-divisionGray m-2 p-1 w-full rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:border-darkComponent dark:text-white"
-            onChange={updateTitle}
-          ></input>
-          {/* TODO: 썸네일 tailwind 사용해서 구현 */}
-          <input type="file" id="thumbnail" onChange={changeThumbnailHandler} />
-          {thumbnailBase64 ? (
-            <img
-              className="d-block w-100"
-              src={thumbnailBase64}
-              alt="thumbnail"
-              style={{ width: '100px', height: '100px' }}
+        <div name="제목과 썸네일" className="justify-between md:flex">
+          <div
+            name="title_box"
+            className=" inline-block mt-5 w-full md:w-content"
+          >
+            <p className="inline-block text-center p-1 px-3 bg-mainYellow rounded-r-full shadow-lg border-b-2 border-pointYellow">
+              제목
+            </p>
+            <div
+              className={
+                (title == '' ? '' : ' hidden') +
+                ' rounded-md bg-red-50 mt-2 ml-2 p-4'
+              }
+            >
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <ExclamationIcon
+                    className="h-5 w-5 text-red-400"
+                    aria-hidden="true"
+                  />
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-sm font-medium text-red-800">
+                    제목은 필수로 입력해야 합니다.
+                  </h3>
+                </div>
+              </div>
+            </div>
+            <input
+              type="text"
+              className="border-2 border-divisionGray m-2 p-1 w-full rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:border-darkComponent dark:text-white"
+              onChange={updateTitle}
+            ></input>
+
+            {/* TODO: 썸네일 tailwind 사용해서 구현 
+            <input
+              type="file"
+              id="thumbnail"
+              onChange={changeThumbnailHandler}
             />
-          ) : (
-            ''
-          )}
+            {thumbnailBase64 ? (
+              <img
+                className="d-block w-100 rounded-xl border-4 border-mainYellow p-1 shadow-lg"
+                src={thumbnailBase64}
+                alt="thumbnail"
+                style={{ width: '100px', height: '100px' }}
+              />
+            ) : (
+              ''
+            )}*/}
+          </div>
+          <div className=" inline-block ml-5 mt-5">
+            <FileUploadForm />
+          </div>
         </div>
         <div name="content_box" className="my-5">
           <p className="inline-block text-center p-1 px-3 bg-mainYellow rounded-r-full shadow-lg border-b-2 border-pointYellow">
             내용
           </p>
-          {/*필수 입력 조건 아이콘 표시(임시)*/}
-          <span className={'text-red-400' + (content == '' ? '' : ' hidden')}>
-            필수
-          </span>
+          <div
+            className={
+              (content == '' ? '' : ' hidden') +
+              ' rounded-md bg-red-50 mt-2 ml-2 p-4'
+            }
+          >
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <ExclamationIcon
+                  className="h-5 w-5 text-red-400"
+                  aria-hidden="true"
+                />
+              </div>
+              <div className="ml-3">
+                <h3 className="text-sm font-medium text-red-800">
+                  내용은 필수로 입력해야 합니다.
+                </h3>
+              </div>
+            </div>
+          </div>
           <div className="m-2 w-full h-screen inline-block">
             <Editor
               initialValue={content}
