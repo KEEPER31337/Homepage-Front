@@ -32,7 +32,7 @@ const TEMP = 1;
 
 const TextEditer = (props) => {
   const isDark = props.state.darkMode; //Dark모드 여부
-  const currentCategoryId = props.state.category.current;
+  const currentCategoryId = props.state.category.current.id;
   const token = props.state.member.token;
   const navigate = useNavigate();
 
@@ -196,7 +196,7 @@ const TextEditer = (props) => {
           </div>
           {/* TODO: 썸네일 제거 기능, 기존 구현 방식이 조금 변형되서 필요없는 거 지우고 누락된 부분 채워야함 */}
           <div className="inline-block md:ml-5 mt-5 w-full md:w-fit flex justify-center">
-            <FileUploadForm />
+            <FileUploadForm setThumbnail={setThumbnail} />
           </div>
         </div>
         <div name="content_box" className="my-5">

@@ -18,14 +18,15 @@ const validateName = (fname) => {
   return validated;
 };
 
-const FileUploadForm = () => {
+const FileUploadForm = (props) => {
   const [thumbnailBase64, setThumbnailBase64] = useState(null); // 파일 base64
-  const [thumbnail, setThumbnail] = useState(null);
+  // const [thumbnail, setThumbnail] = useState(null);
 
   const onDrop = useCallback((acceptedFiles) => {
     console.log('acceptedFiles : ');
     console.log(acceptedFiles);
-    setThumbnail(acceptedFiles);
+    console.log(props);
+    props.setThumbnail(acceptedFiles);
     setThumbnailBase64('');
     acceptedFiles.forEach((file) => {
       if (validateName(file.name)) {
