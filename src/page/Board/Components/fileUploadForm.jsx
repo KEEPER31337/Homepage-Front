@@ -61,14 +61,13 @@ const FileUploadForm = () => {
       <div
         {...getRootProps()}
         className={
-          (isDragActive ? 'bg-blue-50' : '') +
-          ' h-40 w-40 border-4 border-dashed rounded-xl flex items-center justify-center'
+          (isDragActive ? 'bg-blue-300 bg-opacity-50' : '') +
+          ' h-40 w-40 border-4 border-dashed rounded-xl flex items-center justify-center dark:border-slate-500'
         }
       >
         <input {...InputProps} />
         {thumbnailBase64 ? (
           <>
-            {(InputProps.noClick = true)}
             <div className="peer h-full w-full">
               <img
                 className={
@@ -88,7 +87,11 @@ const FileUploadForm = () => {
         ) : (
           <>
             {isDragActive ? (
-              <p>Drop the files here ...</p>
+              <p className="text-slate-500 flex items-center text-center dark:text-slate-300">
+                파일을
+                <br />
+                놓으세요
+              </p>
             ) : (
               <p className="text-slate-500 flex items-center">
                 <DocumentAddIcon

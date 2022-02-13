@@ -4,21 +4,15 @@ import { connect } from 'react-redux';
 import { ViewGridIcon } from '@heroicons/react/solid';
 
 const fontList = ['돋움', '나눔 고딕', '바탕'];
-const styleList = ['text', 'text+image', 'gallary'];
 
 const Info = (props) => {
-  const [option, setOption] = useState({
-    font: '돋움', //초기 옵션 설정
-    style: 'text',
-  });
-  const { font, style } = option; //비구조화 할당
+  const [font, setFont] = useState('돋움');
 
   const currentCategoryName = props.state.category.current.name;
 
   useEffect(() => {
     console.log(font);
-    console.log(style);
-  }, [font, style]);
+  }, [font]);
 
   return (
     <div className="dark:text-mainWhite">
@@ -30,6 +24,7 @@ const Info = (props) => {
           공지사항입니다.
         </p>
         <div>
+          {/* 
           <div className="mx-2 inline-block w-1/8">
             <p className="text-center m-2 border-b-2 border-divisionGray dark:border-darkComponent">
               Font
@@ -38,7 +33,7 @@ const Info = (props) => {
               name="font"
               className="border text-xs focus:ring-mainYellow focus:border-mainYellow dark:border-darkPoint dark:bg-darkComponent dark:text-mainWhite"
               onChange={(e) => {
-                setOption({ font: e.target.value, style });
+                setFont(e.target.value);
               }}
             >
               {fontList.map((item) => (
@@ -47,35 +42,7 @@ const Info = (props) => {
                 </option>
               ))}
             </select>
-          </div>
-          <div className="mx-2 inline-block w-1/8">
-            <p className="text-center m-2 border-b-2 border-divisionGray dark:border-darkComponent">
-              Style
-            </p>
-            <div>
-              {styleList.map((item) => (
-                <span key={item} className="m-1">
-                  <input
-                    type="radio"
-                    className="bg-mainYellow hidden peer"
-                    id={item}
-                    name="style"
-                    checked={style === item}
-                    onChange={() => {
-                      setOption({ font, style: item });
-                    }}
-                  ></input>
-                  <label
-                    htmlFor={item}
-                    className="border-2 rounded-lg  peer-checked:border-mainYellow peer-checked:text-mainYellow dark:border-darkComponent dark:text-darkComponent"
-                  >
-                    <ViewGridIcon className="inline-block h-5 w-5" />
-                    {/*item*/}
-                  </label>
-                </span>
-              ))}
-            </div>
-          </div>
+          </div>*/}
         </div>
       </div>
     </div>

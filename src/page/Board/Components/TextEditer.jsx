@@ -154,7 +154,7 @@ const TextEditer = (props) => {
             <div
               className={
                 (title == '' ? '' : ' hidden') +
-                ' rounded-md bg-red-50 mt-2 ml-2 p-4'
+                ' rounded-md bg-red-50 mt-2 ml-2 p-4 dark:bg-red-300'
               }
             >
               <div className="flex">
@@ -206,7 +206,7 @@ const TextEditer = (props) => {
           <div
             className={
               (content == '' ? '' : ' hidden') +
-              ' rounded-md bg-red-50 mt-2 ml-2 p-4'
+              ' rounded-md bg-red-50 mt-2 ml-2 p-4 dark:bg-red-300'
             }
           >
             <div className="flex">
