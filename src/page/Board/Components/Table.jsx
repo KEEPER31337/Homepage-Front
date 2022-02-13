@@ -5,9 +5,13 @@ import { SearchIcon } from '@heroicons/react/solid';
 //local
 import testData from 'page/Board/testData';
 import postAPI from 'API/v1/post';
-import { getDateWithFormat } from '../BoardUtil';
+import {
+  getDateWithFormat,
+  getDiffTimeWithFormat,
+  isNewPost,
+} from '../BoardUtil';
 
-const MAX_POSTS = 1; //한 페이지당 노출시킬 최대 게시글 수
+const MAX_POSTS = 5; //한 페이지당 노출시킬 최대 게시글 수
 const MAX_PAGES = 6; //한 번에 노출시킬 최대 페이지 버튼 개수
 const pageN = Math.ceil(testData.maxNo / MAX_POSTS); //전체 페이지 수
 
@@ -77,7 +81,7 @@ const Table = (props) => {
 
   return (
     <div className="dark:bg-mainBlack dark:text-mainWhite ">
-      <p>
+      <p className="text-xl my-2">
         Total <span className="text-mainYellow">{testData.maxNo}</span>
       </p>
 
@@ -110,7 +114,7 @@ const Table = (props) => {
                 getCurrentBoard(board.id, no)
               }
             >
-              <td className="border-r border-divisionGray text-center dark:border-darkComponent">
+              <td className="w-[3em] border-r border-divisionGray text-center dark:border-darkComponent">
                 {MAX_POSTS * (currentPage - 1) + index + 1}
               </td>
 
@@ -142,25 +146,35 @@ const Table = (props) => {
                       ) : (
                         ''
                       )} */}
+                      {isNewPost(board.registerTime) ? (
+                        <strong className="inline-block rounded-full w-5 h-5 align-middle text-center text-xs m-1 bg-red-500 shadow-lg border-2 border-red-200 text-mainWhite dark:text-mainBlack">
+                          n
+                        </strong>
+                      ) : (
+                        ''
+                      )}
                     </p>
                   </div>
 
-                  <p className="text-xs sm:hidden">
-                    글쓴이 : <strong>{board.writer} </strong>
-                    작성일시 :
-                    <strong>{getDateWithFormat(board.registerTime)} </strong>
-                    조회수 : <strong>{board.visitCount} </strong>
+                  <p className="mt-2 text-xs sm:hidden">
+                    글쓴이 : <strong>{board.writer} </strong>| 작성일시 :
+                    <strong>{getDateWithFormat(board.registerTime)} </strong>|{' '}
+                    <span className="inline-block">
+                      조회수 : <strong>{board.visitCount} </strong>
+                    </span>
                   </p>
                 </Link>
               </td>
 
-              <td className="text-center dark:border-darkComponent hidden sm:table-cell">
+              <td className="min-w-[4em] text-center dark:border-darkComponent hidden sm:table-cell">
                 {board.writer}
               </td>
-              <td className=" text-center dark:border-darkComponent hidden sm:table-cell">
-                {getDateWithFormat(board.registerTime)}
+              <td className="min-w-[6em] text-center dark:border-darkComponent hidden sm:table-cell">
+                {/*getDateWithFormat(board.registerTime)
+                <br />*/}
+                {getDiffTimeWithFormat(board.registerTime)}
               </td>
-              <td className="text-center dark:border-darkComponent hidden sm:table-cell">
+              <td className="min-w-[4em] text-center dark:border-darkComponent hidden sm:table-cell">
                 {board.visitCount}
               </td>
             </tr>
