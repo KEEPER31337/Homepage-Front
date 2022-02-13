@@ -28,26 +28,32 @@ const Calendar = ({ member }) => {
   const [now, setNow] = useState(dayjs());
   const [firstDay, setFirstDay] = useState(now.startOf('month'));
   const [lastDay, setLastDay] = useState(now.endOf('month'));
+  const [attendDateList, setAttendDateList] = useState([
+    '2022-02-01',
+    '2022-02-13',
+  ]);
 
-  const checkRange = (day) => {
-    return 1 <= day && day <= lastDay.date();
+  const checkRange = (date) => {
+    return firstDay <= date && date <= lastDay;
   };
 
   const getCalendar = () => {
     // NOTE : Need to refactoring
     const calendar = [];
-    let day = -firstDay.day();
+    let dayOfWeek = firstDay.day();
+    let theDate = firstDay;
+
+    theDate = theDate.date(theDate.date() - dayOfWeek - 1);
     while (true) {
       calendar.push(
         Array(7)
           .fill(1)
           .map((first, index) => {
-            day++;
-            if (checkRange(day)) return day;
-            return '';
+            theDate = theDate.date(theDate.date() + 1);
+            return theDate;
           })
       );
-      if (day > lastDay.date()) break;
+      if (theDate > lastDay) break;
     }
     return calendar;
   };
@@ -69,9 +75,7 @@ const Calendar = ({ member }) => {
   const jsxHeader = dayOfWeeks.map((dayOfWeek, index) => (
     <th key={index}>
       <div className="w-full flex justify-center">
-        <p className="text-lg font-medium text-center text-gray-800 dark:text-gray-100">
-          {dayOfWeek}
-        </p>
+        <p className="text-lg font-medium text-center">{dayOfWeek}</p>
       </div>
     </th>
   ));
@@ -79,25 +83,26 @@ const Calendar = ({ member }) => {
   const jsxCalendar = calendar.map((week, index) => {
     return (
       <tr key={(week, index)}>
-        {week.map((day, index) => (
-          <td key={(day, index)}>
-            {day === now.date() &&
-            firstDay.month() === now.month() &&
-            firstDay.year() === now.year() ? (
+        {week.map((date, index) => (
+          <td key={(date, index)}>
+            {
               <div className="w-full h-full">
                 <div className="flex items-center justify-center w-full rounded-full">
-                  <p className="text-lg w-14 h-14 flex items-center justify-center font-medium text-white bg-mainYellow rounded-full">
-                    {day}
+                  <p
+                    className={`text-lg w-14 h-14 flex items-center justify-center font-medium ${
+                      date.format(dateFormat) === now.format(dateFormat)
+                        ? 'bg-mainYellow text-white'
+                        : attendDateList.includes(date.format(dateFormat)) &&
+                          checkRange(date)
+                        ? 'bg-green-500 text-white'
+                        : ''
+                    } rounded-full`}
+                  >
+                    {checkRange(date) ? date.date() : ''}
                   </p>
                 </div>
               </div>
-            ) : (
-              <div className="px-4 py-4 cursor-pointer flex w-full justify-center">
-                <p className="text-lg text-gray-500 dark:text-gray-100 font-medium">
-                  {day}
-                </p>
-              </div>
-            )}
+            }
           </td>
         ))}
       </tr>
@@ -105,13 +110,13 @@ const Calendar = ({ member }) => {
   });
 
   useEffect(() => {
-    attendanceAPI
-      .getAttendDate({
-        startDate: firstDay.format(dateFormat),
-        endDate: lastDay.format(dateFormat),
-        token: member.token,
-      })
-      .then((data) => console.log(data));
+    // attendanceAPI
+    //   .getAttendDate({
+    //     startDate: firstDay.format(dateFormat),
+    //     endDate: lastDay.format(dateFormat),
+    //     token: member.token,
+    //   })
+    //   .then((data) => console.log(data));
   }, []);
 
   return (
@@ -121,7 +126,7 @@ const Calendar = ({ member }) => {
           <div className="md:p-12 md:pb-12 p-5 dark:bg-gray-800 bg-white rounded-lg">
             <div className="px-4 flex items-center justify-between ">
               <h1 className="text-lg font-bold dark:text-gray-100 text-gray-800">
-                {months[firstDay.month()]} {firstDay.year()}
+                {firstDay.year()}년 {firstDay.month() + 1}월
               </h1>
               <div className="flex items-center text-gray-800 dark:text-gray-100">
                 <button
@@ -166,7 +171,7 @@ const Calendar = ({ member }) => {
                 </button>
               </div>
             </div>
-            <div className="flex items-center justify-between pt-12 overflow-x-auto">
+            <div className="flex items-center justify-between pt-12 overflow-x-auto text-gray-800 dark:text-gray-100">
               <table className="w-full">
                 <thead>
                   <tr>{jsxHeader}</tr>
