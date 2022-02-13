@@ -63,12 +63,13 @@ const TextEditer = (props) => {
 
   const changeThumbnailHandler = ({ target }) => {
     setThumbnail(target.files);
+    console.log(target.files);
     setThumbnailBase64([]);
     const reader = new FileReader();
     reader.readAsDataURL(target.files[0]); // 단일 파일일 경우 1개
     reader.onloadend = () => {
       const base64 = reader.result;
-      console.log(base64);
+      //console.log(base64);
       if (base64) {
         const base64Sub = base64.toString();
         setThumbnailBase64(base64Sub);
@@ -142,7 +143,7 @@ const TextEditer = (props) => {
   return (
     <div className="">
       <div name="input" className="">
-        <div name="제목과 썸네일" className="justify-between md:flex">
+        <div name="제목과 썸네일" className="md:flex">
           <div
             name="title_box"
             className=" inline-block mt-5 w-full md:w-content"
@@ -176,7 +177,7 @@ const TextEditer = (props) => {
               onChange={updateTitle}
             ></input>
 
-            {/* TODO: 썸네일 tailwind 사용해서 구현 
+            {/* TODO: 썸네일 tailwind 사용해서 구현 */}
             <input
               type="file"
               id="thumbnail"
@@ -191,9 +192,10 @@ const TextEditer = (props) => {
               />
             ) : (
               ''
-            )}*/}
+            )}
           </div>
-          <div className=" inline-block ml-5 mt-5">
+          {/* TODO: 썸네일 제거 기능, 기존 구현 방식이 조금 변형되서 필요없는 거 지우고 누락된 부분 채워야함 */}
+          <div className="inline-block md:ml-5 mt-5 w-full md:w-fit flex justify-center">
             <FileUploadForm />
           </div>
         </div>

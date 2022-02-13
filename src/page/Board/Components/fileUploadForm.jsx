@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { DocumentAddIcon, TrashIcon } from '@heroicons/react/solid';
+import { Input } from 'postcss';
 
 const validateName = (fname) => {
   let extensions = ['jpeg', 'jpg', 'png'];
@@ -22,18 +23,21 @@ const FileUploadForm = () => {
   const [thumbnail, setThumbnail] = useState(null);
 
   const onDrop = useCallback((acceptedFiles) => {
+    console.log('acceptedFiles : ');
     console.log(acceptedFiles);
     setThumbnail(acceptedFiles);
     setThumbnailBase64('');
     acceptedFiles.forEach((file) => {
       if (validateName(file.name)) {
         const reader = new FileReader();
+        console.log('file : ');
+        console.log(file);
 
         reader.onabort = () => console.log('file reading was aborted');
         reader.onerror = () => console.log('file reading has failed');
         reader.onloadend = () => {
           const base64 = reader.result;
-          console.log(base64);
+          //console.log(base64);
           if (base64) {
             const base64Sub = base64.toString();
             setThumbnailBase64(base64Sub);
@@ -64,21 +68,22 @@ const FileUploadForm = () => {
         <input {...InputProps} />
         {thumbnailBase64 ? (
           <>
-            <img
-              className={
-                (isDragActive ? 'opacity-50' : '') +
-                '  w-full h-full rounded-xl p-1 shadow-lg peer'
-              }
-              src={thumbnailBase64}
-              alt="thumbnail"
-            />
-            <div className="m-1">
-              <TrashIcon
-                className="h-5 w-5 inline-block text-slate-500 "
-                aria-hidden="true"
+            {(InputProps.noClick = true)}
+            <div className="peer h-full w-full">
+              <img
+                className={
+                  (isDragActive ? 'opacity-50' : '') +
+                  '   w-full h-full rounded-xl p-1 shadow-lg'
+                }
+                src={thumbnailBase64}
+                alt="thumbnail"
               />
-              삭제
             </div>
+
+            <button className="absolute  h-40 w-40 rounded-xl bg-red-300 bg-opacity-50 text-red-500 text-xl hidden peer-hover:inline-block hover:inline-block">
+              <TrashIcon className="h-5 w-5 inline-block" aria-hidden="true" />
+              삭제
+            </button>
           </>
         ) : (
           <>
