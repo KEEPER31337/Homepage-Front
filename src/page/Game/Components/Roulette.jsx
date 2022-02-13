@@ -8,7 +8,7 @@ const Roulette = () => {
   const [ani, setAni] = useState('animate-none');
   const onClick = () => {
     console.log('click');
-    setAni('animate-spin');
+    setAni('animate-[spin_0.3s_linear_infinite]');
     setStopPoint(points.length - pointIdx);
     setTimeout(function () {
       setAni(
