@@ -1,4 +1,5 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import dayjs from 'dayjs';
 
 // shared
 import PageContainer from 'shared/PageContainer';
@@ -20,20 +21,31 @@ import CoinIcon from 'assets/img/coin.png';
 
 // API
 import attendanceAPI from 'API/v1/attendance';
+import { connect } from 'react-redux';
 
-const Attandance = () => {
+const dateFormat = 'YYYY-MM-DD';
+
+const Attandance = ({ member }) => {
+  const [attendInfo, setAttendInfo] = useState({});
+
   const continuousModalRef = useRef({});
   const rankModalRef = useRef({});
   const pointModalRef = useRef({});
 
   useEffect(() => {
-    // attendanceAPI
-    //   .getAttendDate({
-    //     startDate: '2020-01-01',
-    //     endDate: '2020-01-31',
-    //     token: '',
-    //   })
-    //   .then((data) => console.log(data));
+    const date = dayjs();
+    // console.log(date.format(dateFormat));
+    attendanceAPI
+      .getAttendInfo({
+        date: date.format(dateFormat),
+        token: member.token,
+      })
+      .then((data) => {
+        if (data.success) setAttendInfo(data.data);
+        else console.log(data);
+      });
+
+    // attendanceAPI.get
   }, []);
 
   return (
@@ -77,4 +89,7 @@ const Attandance = () => {
   );
 };
 
-export default Attandance;
+const mapStateToProps = (state, OwnProps) => {
+  return { member: state.member };
+};
+export default connect(mapStateToProps)(Attandance);
