@@ -5,16 +5,30 @@ import { useEffect, useState, useRef } from 'react';
 import authAPI from 'API/v1/auth';
 import MessageModal from 'shared/MessageModal';
 
+//custom hook
+const useInput = (initialValue = null) => {
+  const [value, setValue] = useState(initialValue);
+
+  const onChange = (e) => {
+    setValue(e.target.value);
+  };
+
+  return [value, onChange];
+};
+
 const SignUp = () => {
   //아이디, 비밀번호, 비밀번호 확인, 이메일, 이름, 닉네임, 학번
-  const [id, setId] = useState('');
+  const [id, setId] = useInput('');
+
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [email, setEmail] = useState('');
   const [authCode, setAuthCode] = useState('');
   const [userName, setUserName] = useState('');
   const [nickName, setNickName] = useState('');
-  const [studentNumber, setStudentNumber] = useState('');
+
+  const [studentId, setStudentId] = useInput('');
+
   const [birthday, setBirthday] = useState('');
 
   //오류메시지 상태저장
@@ -25,7 +39,7 @@ const SignUp = () => {
   const [authMessage, setAuthMessage] = useState('');
   const [userNameMessage, setUserNameMessage] = useState('');
   const [nickNameMessage, setNickNameMessage] = useState('');
-  const [studentNumberMessage, setStudentNumberMessage] = useState('');
+  const [studentIdMessage, setStudentIdMessage] = useState('');
 
   //유효성 검사
   const [isId, setIsId] = useState(false);
@@ -34,7 +48,7 @@ const SignUp = () => {
   const [isEmail, setIsEmail] = useState(false);
   const [isUserName, setIsUserName] = useState(false);
   const [isNickName, setIsNickName] = useState(false);
-  const [isStudentNumber, setIsStudentNumber] = useState(false);
+  const [isStudentId, setIsStudentId] = useState(false);
 
   // ref
   const sendSuccessModalRef = useRef({});
@@ -45,17 +59,8 @@ const SignUp = () => {
   //아이디
   const onChangeId = (e) => {
     // NOTE : onChange마다 중복 아이디 체크를 하면 통신량이 너무 많으니, onBlur에서 하는게 좋을 것 같다.!
-    setId(e.target.value);
 
-    if (e.target.value === '') {
-      setIdMessage(
-        '필수 정보입니다. or 이미 사용중이거나 탈퇴한 아이디입니다(아이디 존재 체크)'
-      );
-      setIsId(false);
-    } else {
-      setIdMessage('멋진 아이디네요!');
-      setIsId(true);
-    }
+    console.log(id);
   };
 
   //비밀번호
@@ -136,23 +141,36 @@ const SignUp = () => {
     }
   };
 
-  // 학번
-  const onChangeStudentNumber = (e) => {
-    const studentNumberRegex = /^[0-9]+$/;
-    setStudentNumber(e.target.value);
-
-    if (!studentNumberRegex.test(e.target.value)) {
-      setStudentNumberMessage('숫자 입력만 가능합니다');
-      setIsStudentNumber(false);
-    } else {
-      setStudentNumberMessage('올바른 학번 형식입니다.');
-      setIsStudentNumber(true);
-    }
-  };
-
   // 생일
   const handleChangeBirthday = (e) => {
     setBirthday(e.target.value);
+  };
+
+  const handleId = () => {
+    authAPI
+      .loginIdCheck({ loginId: id })
+      .then((data) => console.log('loginId', data));
+    setIsId('true');
+  };
+
+  const handleStudentId = () => {
+    const studentIdRegex = /^[0-9]+$/;
+
+    authAPI.studentIdCheck({ studentId: studentId }).then((data) => {
+      if (!data.data) {
+        //true면 중복
+        if (!studentIdRegex.test(studentId)) {
+          setStudentIdMessage('숫자 입력만 가능합니다');
+          setIsStudentId(false);
+        } else {
+          setStudentIdMessage('올바른 학번 형식입니다.');
+          setIsStudentId(true);
+        }
+      } else {
+        setStudentIdMessage('이미 존재하는 학번입니다');
+        setIsStudentId(false);
+      }
+    });
   };
 
   const handleSendMail = () => {
@@ -166,15 +184,10 @@ const SignUp = () => {
 
   const handleSignUp = () => {
     // TODO : check를 각 input의 onBlur에서 처리하기
-    authAPI
-      .loginIdCheck({ loginId: id })
-      .then((data) => console.log('loginId', data));
+
     authAPI
       .emailCheck({ emailAddress: email })
       .then((data) => console.log('email', data));
-    authAPI
-      .studentIdCheck({ studentId: studentNumber })
-      .then((data) => console.log('studentId', data));
 
     authAPI
       .signUp({
@@ -186,7 +199,7 @@ const SignUp = () => {
         authCode,
         nickName,
         birthday,
-        studentId: studentNumber,
+        studentId,
       })
       .then((data) => {
         console.log(data);
@@ -222,7 +235,8 @@ const SignUp = () => {
                       name="id"
                       required
                       value={id}
-                      onChange={onChangeId}
+                      onChange={setId}
+                      onBlur={handleId}
                       className=" rounded-md   
                         block w-full px-1 py-1 border border-divisionGray dark:border-transparent
                       focus:outline-mainYellow dark:bg-darkPoint dark:outline-white autofill:bg-yellow-200"
@@ -434,8 +448,9 @@ const SignUp = () => {
                       id="studentNumber"
                       name="studentNumber"
                       required
-                      value={studentNumber}
-                      onChange={onChangeStudentNumber}
+                      value={studentId}
+                      onChange={setStudentId}
+                      onBlur={handleStudentId}
                       className=" rounded-md   
                         block w-full px-1 py-1 border border-divisionGray dark:border-transparent
                       focus:outline-mainYellow dark:bg-darkPoint dark:outline-white"
@@ -443,27 +458,10 @@ const SignUp = () => {
                   </div>
                   <div
                     className={`block text-sm font-medium text${
-                      isStudentNumber ? '-pointYellow' : '-red-500'
+                      isStudentId ? '-pointYellow' : '-red-500'
                     }`}
                   >
-                    {studentNumberMessage}
-                  </div>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="profile_image"
-                    className="block text-sm font-medium "
-                  >
-                    프로필 사진
-                  </label>
-                  <div className="mt-3">
-                    <input
-                      type="file"
-                      id="profile_image"
-                      name="profile_image"
-                      accept="image/*"
-                    />
+                    {studentIdMessage}
                   </div>
                 </div>
 
@@ -500,7 +498,7 @@ const SignUp = () => {
                     isPasswordConfirm &&
                     isNickName &&
                     isUserName &&
-                    isStudentNumber
+                    isStudentId
                   )
                 }
                 onClick={handleSignUp}
@@ -516,7 +514,7 @@ const SignUp = () => {
                   isPasswordConfirm &&
                   isNickName &&
                   isUserName &&
-                  isStudentNumber
+                  isStudentId
                     ? 'bg-mainYellow hover:bg-pointYellow'
                     : 'bg-divisionGray dark:bg-darkPoint'
                 }`}
