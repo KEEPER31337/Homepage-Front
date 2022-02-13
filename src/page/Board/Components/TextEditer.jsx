@@ -8,24 +8,10 @@ import {
   InboxInIcon,
   ExclamationIcon,
 } from '@heroicons/react/solid';
-
-//마크다운 편집기 에디터
-import '@toast-ui/editor/dist/toastui-editor.css';
-import { Editor } from '@toast-ui/react-editor';
-
-//마크다운 편집기 플러그인
-import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
-import chart from '@toast-ui/editor-plugin-chart';
-import 'highlight.js/styles/github.css';
-import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
-import 'tui-color-picker/dist/tui-color-picker.css';
-import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
-import tableMergedCell from '@toast-ui/editor-plugin-table-merged-cell';
-import uml from '@toast-ui/editor-plugin-uml';
-
 //local
 import postAPI from 'API/v1/post';
 import ipAPI from 'API/v1/ip';
+import ResponsiveEditor from './ResponsiveEditor';
 
 const NO_TEMP = 0;
 const TEMP = 1;
@@ -224,21 +210,11 @@ const TextEditer = (props) => {
             </div>
           </div>
           <div className="m-2 w-full h-screen inline-block">
-            <Editor
-              initialValue={content}
-              usageStatistics={false}
-              plugins={[
-                chart,
-                codeSyntaxHighlight,
-                colorSyntax,
-                tableMergedCell,
-                uml,
-              ]}
-              theme={isDark ? 'dark' : 'light'}
-              previewStyle="vertical"
-              height="100%"
-              onChange={updateContent}
-              ref={editorRef}
+            <ResponsiveEditor
+              content={content}
+              isDark={isDark}
+              updateContent={updateContent}
+              editorRef={editorRef}
             />
           </div>
         </div>
