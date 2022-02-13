@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 // local
 import authAPI from 'API/v1/auth';
 import actionMember from 'redux/action/member';
@@ -133,6 +134,13 @@ const SignIn = (props) => {
               </a>
             </div>
           </div>
+          아직 계정이 없으신가요? 
+          <Link
+            to="/signup"
+            className="ml-4 whitespace-nowrap inline-flex items-center justify-center   text-base font-bold  text-mainYellow hover:text-pointYellow">
+            회원가입
+          </Link>
+          <div></div>
           {/* </form> */}
         </div>
       </div>
