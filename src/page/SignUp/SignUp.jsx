@@ -19,25 +19,22 @@ const useInput = (initialValue = null) => {
 const SignUp = () => {
   //아이디, 비밀번호, 비밀번호 확인, 이메일, 이름, 닉네임, 학번
   const [id, setId] = useInput('');
-
-  const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [email, setEmail] = useState('');
-  const [authCode, setAuthCode] = useState('');
-  const [userName, setUserName] = useState('');
-  const [nickName, setNickName] = useState('');
-
+  const [password, setPassword] = useInput('');
+  const [passwordConfirm, setPasswordConfirm] = useInput('');
+  const [emailAddress, setEmailAddress] = useInput('');
+  const [authCode, setAuthCode] = useInput('');
+  const [realName, setRealName] = useInput('');
+  const [nickName, setNickName] = useInput('');
   const [studentId, setStudentId] = useInput('');
-
-  const [birthday, setBirthday] = useState('');
+  const [birthday, setBirthday] = useInput('');
 
   //오류메시지 상태저장
   const [IdMessage, setIdMessage] = useState('');
   const [passwordMessage, setPasswordMessage] = useState('');
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState('');
-  const [emailMessage, setEmailMessage] = useState('');
-  const [authMessage, setAuthMessage] = useState('');
-  const [userNameMessage, setUserNameMessage] = useState('');
+  const [emailAddressMessage, setEmailAddressMessage] = useState('');
+  const [authCodeMessage, setAuthCodeMessage] = useState('');
+  const [realNameMessage, setRealNameMessage] = useState('');
   const [nickNameMessage, setNickNameMessage] = useState('');
   const [studentIdMessage, setStudentIdMessage] = useState('');
 
@@ -45,8 +42,8 @@ const SignUp = () => {
   const [isId, setIsId] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
-  const [isEmail, setIsEmail] = useState(false);
-  const [isUserName, setIsUserName] = useState(false);
+  const [isEmailAddress, setIsEmailAddress] = useState(false);
+  const [isRealName, setIsRealName] = useState(false);
   const [isNickName, setIsNickName] = useState(false);
   const [isStudentId, setIsStudentId] = useState(false);
 
@@ -56,22 +53,15 @@ const SignUp = () => {
   const signUpSuccessModalRef = useRef({});
   const signUpFailModalRef = useRef({});
 
-  //아이디
-  const onChangeId = (e) => {
-    // NOTE : onChange마다 중복 아이디 체크를 하면 통신량이 너무 많으니, onBlur에서 하는게 좋을 것 같다.!
-
-    console.log(id);
-  };
+  //NOTE 유효성 검사
 
   //비밀번호
-  const onChangePassword = (e) => {
+  const handlePassword = (e) => {
     // NOTE : 8자 이상이래요
-    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,}$/;
-
-    setPassword(e.target.value);
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{7,}$/;
 
     if (!passwordRegex.test(e.target.value)) {
-      setPasswordMessage('6자 이상이어야 하며, 영문과 숫자를 사용하세요.');
+      setPasswordMessage('8자 이상이어야 하며, 영문과 숫자를 사용하세요.');
       setIsPassword(false);
     } else {
       setPasswordMessage('올바른 비밀번호 형식입니다.');
@@ -80,9 +70,7 @@ const SignUp = () => {
   };
 
   // 비밀번호 확인
-  const onChangePasswordConfirm = (e) => {
-    setPasswordConfirm(e.target.value);
-
+  const handlePasswordConfirm = (e) => {
     if (password === e.target.value) {
       setPasswordConfirmMessage('비밀번호가 일치합니다.');
       setIsPasswordConfirm(true);
@@ -92,45 +80,28 @@ const SignUp = () => {
     }
   };
 
-  // 이메일
-  const onChangeEmail = (e) => {
-    const emailRegex =
-      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-    setEmail(e.target.value);
-
-    if (!emailRegex.test(e.target.value)) {
-      setEmailMessage('이메일 형식이 틀렸습니다');
-      setIsEmail(false);
-    } else {
-      setEmailMessage('올바른 이메일 형식입니다.');
-      setIsEmail(true);
-    }
-  };
-
   // 인증코드
-  const onChangeAuthCode = (e) => {
-    if (e.target.value.length === 0) setAuthMessage('인증코드를 입력해주세요');
-    else setAuthMessage('');
-    setAuthCode(e.target.value);
+  const handleAuthCode = (e) => {
+    if (e.target.value.length === 0)
+      setAuthCodeMessage('인증코드를 입력해주세요');
+    else setAuthCodeMessage('');
   };
 
   // 이름
-  const onChangeUserName = (e) => {
-    const userNameRegex = /^[가-힣]+$/;
-    setUserName(e.target.value);
+  const handleRealName = (e) => {
+    const realNameRegex = /^[가-힣]+$/;
 
-    if (!userNameRegex.test(e.target.value)) {
-      setUserNameMessage('한글 입력만 가능합니다');
-      setIsUserName(false);
+    if (!realNameRegex.test(e.target.value)) {
+      setRealNameMessage('한글 입력만 가능합니다');
+      setIsRealName(false);
     } else {
-      setUserNameMessage('올바른 이름 형식입니다.');
-      setIsUserName(true);
+      setRealNameMessage('올바른 이름 형식입니다.');
+      setIsRealName(true);
     }
   };
   // 닉네임
-  const onChangeNickName = (e) => {
+  const handleNickName = (e) => {
     const nickNameRegex = /^[가-힣]+$/;
-    setNickName(e.target.value);
 
     if (!nickNameRegex.test(e.target.value)) {
       setNickNameMessage('한글 입력만 가능합니다');
@@ -141,11 +112,10 @@ const SignUp = () => {
     }
   };
 
-  // 생일
-  const handleChangeBirthday = (e) => {
-    setBirthday(e.target.value);
-  };
+  //NOTE 유효성 검사 + 중복 체크 api
 
+  //아이디
+  //TODO 현모선배 아이디 중복체크 확인후에 하기
   const handleId = () => {
     authAPI
       .loginIdCheck({ loginId: id })
@@ -153,49 +123,72 @@ const SignUp = () => {
     setIsId('true');
   };
 
-  const handleStudentId = () => {
-    const studentIdRegex = /^[0-9]+$/;
+  //이메일 체크
+  const handleEmailAddress = () => {
+    const emailAddressRegex =
+      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
 
-    authAPI.studentIdCheck({ studentId: studentId }).then((data) => {
-      if (!data.data) {
-        //true면 중복
-        if (!studentIdRegex.test(studentId)) {
-          setStudentIdMessage('숫자 입력만 가능합니다');
-          setIsStudentId(false);
+    if (!emailAddressRegex.test(emailAddress)) {
+      setEmailAddressMessage('이메일 형식이 틀렸습니다');
+      setIsEmailAddress(false);
+    } else {
+      //유효성 검사 통과했을 경우에만, 중복 체크 api작동하게
+      authAPI.emailCheck({ emailAddress: emailAddress }).then((data) => {
+        if (!data.data) {
+          setEmailAddressMessage(
+            '올바른 이메일 형식입니다. 인증버튼을 눌러주세요'
+          );
+          setIsEmailAddress(true);
         } else {
-          setStudentIdMessage('올바른 학번 형식입니다.');
-          setIsStudentId(true);
+          setEmailAddressMessage('이미 존재하는 이메일입니다.');
+          setIsEmailAddress(false);
         }
-      } else {
-        setStudentIdMessage('이미 존재하는 학번입니다');
-        setIsStudentId(false);
-      }
-    });
+
+        console.log(data);
+      });
+    }
   };
 
+  //이메일 인증 보내기 (이메일 유효성검사 통과했을 경우만, 인증버튼 활성화 시킴)
   const handleSendMail = () => {
-    authAPI.emailAuth({ emailAddress: email }).then((data) => {
+    authAPI.emailAuth({ emailAddress: emailAddress }).then((data) => {
       console.log(data);
       if (data.success) sendSuccessModalRef.current.open();
       else sendFailModalRef.current.open();
     });
-    // TODO : 보내는 중이라는 (보냈다는) 표시
+    // NOTE : 보내는 중이라는 (보냈다는) 표시
+    setEmailAddressMessage('해당 메일로 인증코드를 보냈습니다.');
+  };
+
+  //학번
+  const handleStudentId = () => {
+    const studentIdRegex = /^[0-9]+$/;
+
+    if (!studentIdRegex.test(studentId)) {
+      setStudentIdMessage('숫자 입력만 가능합니다');
+      setIsStudentId(false);
+    } else {
+      //유효성 검사 통과했을 경우에만, 중복 체크 api작동하게
+      authAPI.studentIdCheck({ studentId: studentId }).then((data) => {
+        if (!data.data) {
+          setStudentIdMessage('올바른 학번 형식입니다.');
+          setIsStudentId(true);
+        } else {
+          setStudentIdMessage('이미 존재하는 학번입니다');
+          setIsStudentId(false);
+        }
+      });
+    }
   };
 
   const handleSignUp = () => {
-    // TODO : check를 각 input의 onBlur에서 처리하기
-
-    authAPI
-      .emailCheck({ emailAddress: email })
-      .then((data) => console.log('email', data));
-
     authAPI
       .signUp({
-        // NOTE : 전부 key: value 이렇게 쓸까 / API parameter랑 통일할까 고민중
+        // NOTE : API parameter랑 통일
         loginId: id,
-        emailAddress: email,
+        emailAddress,
         password,
-        realName: userName,
+        realName,
         authCode,
         nickName,
         birthday,
@@ -220,10 +213,13 @@ const SignUp = () => {
             <div className="mt-4 ">
               <h3 className="text-lg font-medium leading-6 ">회원가입</h3>
               <p className="mt-1 text-sm">키퍼 회원가입 페이지입니다!</p>
+
+              <p className="text-pointYellow"></p>
             </div>
 
             <div className="mt-8 border-t border-divisionGray pt-4">
               <div className="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4">
+                {/* 아이디 */}
                 <div className="sm:col-span-2">
                   <label htmlFor="id" className="block text-sm font-medium ">
                     아이디
@@ -251,6 +247,7 @@ const SignUp = () => {
                   </div>
                 </div>
 
+                {/* 비밀번호 */}
                 <div className="sm:col-span-2">
                   <label
                     htmlFor="password"
@@ -265,7 +262,8 @@ const SignUp = () => {
                       name="password"
                       required
                       value={password}
-                      onChange={onChangePassword}
+                      onChange={setPassword}
+                      onBlur={handlePassword}
                       className=" rounded-md   
                         block w-full px-1 py-1 border border-divisionGray dark:border-transparent
                       focus:outline-mainYellow dark:bg-darkPoint dark:outline-white"
@@ -273,7 +271,7 @@ const SignUp = () => {
                   </div>
 
                   <div
-                    className={`block text-sm font-medium text${
+                    className={`block mt-1 text-sm font-medium text${
                       isPassword ? '-pointYellow' : '-red-500'
                     }`}
                   >
@@ -281,6 +279,7 @@ const SignUp = () => {
                   </div>
                 </div>
 
+                {/* 비밀번호 확인 */}
                 <div className="sm:col-span-2">
                   <label
                     htmlFor="passwordConfirm"
@@ -294,14 +293,15 @@ const SignUp = () => {
                       id="passwordConfirm"
                       name="passwordConfirm"
                       value={passwordConfirm}
-                      onChange={onChangePasswordConfirm}
+                      onChange={setPasswordConfirm}
+                      onBlur={handlePasswordConfirm}
                       className=" rounded-md   
                         block w-full px-1 py-1 border border-divisionGray dark:border-transparent
                       focus:outline-mainYellow dark:bg-darkPoint dark:outline-white"
                     />
                   </div>
                   <div
-                    className={`block text-sm font-medium text${
+                    className={`block mt-1 text-sm font-medium text${
                       isPasswordConfirm ? '-pointYellow' : '-red-500'
                     }`}
                   >
@@ -309,6 +309,7 @@ const SignUp = () => {
                   </div>
                 </div>
 
+                {/* 이메일 */}
                 <div className="sm:col-span-2">
                   <label
                     htmlFor="email_address"
@@ -316,31 +317,34 @@ const SignUp = () => {
                   >
                     이메일
                   </label>
-                  <div className="mt-2">
+                  <div className="mt-2 flex  justify-between">
                     <input
                       type="email"
                       id="email_address"
                       name="email_address"
                       required
-                      value={email}
-                      onChange={onChangeEmail}
+                      value={emailAddress}
+                      onChange={setEmailAddress}
+                      onBlur={handleEmailAddress}
                       className=" rounded-md   
-                        block w-full px-1 py-1 border border-divisionGray dark:border-transparent
+                      block w-full px-1 py-1 border border-divisionGray dark:border-transparent
                       focus:outline-mainYellow dark:bg-darkPoint dark:outline-white"
                     />
                   </div>
                   <div
                     className={`block text-sm font-medium text${
-                      isEmail ? '-pointYellow' : '-red-500'
+                      isEmailAddress ? '-pointYellow' : '-red-500'
                     }`}
                   >
-                    {emailMessage}
+                    {emailAddressMessage}
                   </div>
                 </div>
+
+                {/* 인증코드 */}
                 <div className="sm:col-span-2">
                   <div className="flex justify-items-center">
                     <label
-                      htmlFor="email_address"
+                      htmlFor="auth_code"
                       className="block text-sm font-medium "
                     >
                       {/* NOTE: vertical align */}
@@ -357,29 +361,25 @@ const SignUp = () => {
                   </div>
                   <div className="mt-2 flex">
                     <input
-                      type="email"
-                      id="email_address"
-                      name="email_address"
+                      id="auth_code"
+                      name="auth_code"
                       required
                       value={authCode}
-                      onChange={onChangeAuthCode}
+                      onChange={setAuthCode}
+                      onBlur={handleAuthCode}
                       className=" rounded-md   
                         block w-1/2 px-1 py-1 border border-divisionGray dark:border-transparent
                       focus:outline-mainYellow dark:bg-darkPoint dark:outline-white"
                     />
                   </div>
-                  <div
-                    className={`block text-sm font-medium text${
-                      isEmail ? '-pointYellow' : '-red-500'
-                    }`}
-                  >
-                    {authMessage}
+                  <div className="block mt-1 text-sm font-medium text-red-500">
+                    {authCodeMessage}
                   </div>
                 </div>
-
+                {/* 이름 */}
                 <div className="sm:col-span-2">
                   <label
-                    htmlFor="userName"
+                    htmlFor="realName"
                     className="block text-sm font-medium "
                   >
                     이름
@@ -387,29 +387,30 @@ const SignUp = () => {
                   <div className="mt-2">
                     <input
                       type="text"
-                      id="userName"
-                      name="userName"
+                      id="realName"
+                      name="realName"
                       required
-                      value={userName}
-                      onChange={onChangeUserName}
+                      value={realName}
+                      onChange={setRealName}
+                      onBlur={handleRealName}
                       className=" rounded-md   
                         block w-full px-1 py-1 border border-divisionGray dark:border-transparent
                       focus:outline-mainYellow dark:bg-darkPoint dark:outline-white"
                     />
                   </div>
                   <div
-                    className={`block text-sm font-medium text${
-                      isUserName ? '-pointYellow' : '-red-500'
+                    className={`block mt-1 text-sm font-medium text${
+                      isRealName ? '-pointYellow' : '-red-500'
                     }`}
                   >
-                    {userNameMessage}
+                    {realNameMessage}
                   </div>
                 </div>
-
+                {/* 닉네임 */}
                 <div className="sm:col-span-2">
                   <label
                     htmlFor="nickName"
-                    className="block text-sm font-medium "
+                    className="block mt-1 text-sm font-medium "
                   >
                     닉네임
                   </label>
@@ -420,21 +421,22 @@ const SignUp = () => {
                       name="nickName"
                       required
                       value={nickName}
-                      onChange={onChangeNickName}
+                      onChange={setNickName}
+                      onBlur={handleNickName}
                       className=" rounded-md   
                         block w-full px-1 py-1 border border-divisionGray dark:border-transparent
                       focus:outline-mainYellow dark:bg-darkPoint dark:outline-white"
                     />
                   </div>
                   <div
-                    className={`block text-sm font-medium text${
+                    className={`block mt-1 text-sm font-medium text${
                       isNickName ? '-pointYellow' : '-red-500'
                     }`}
                   >
                     {nickNameMessage}
                   </div>
                 </div>
-
+                {/* 학번 */}
                 <div className="sm:col-span-2">
                   <label
                     htmlFor="studentNumber"
@@ -457,7 +459,7 @@ const SignUp = () => {
                     />
                   </div>
                   <div
-                    className={`block text-sm font-medium text${
+                    className={`block mt-1 text-sm font-medium text${
                       isStudentId ? '-pointYellow' : '-red-500'
                     }`}
                   >
@@ -480,7 +482,7 @@ const SignUp = () => {
                       className=" rounded-md   
                         block w-full px-1 py-1 border border-divisionGray text-black
                       focus:outline-mainYellow"
-                      onChange={handleChangeBirthday}
+                      onChange={setBirthday}
                     />
                   </div>
                 </div>
@@ -493,11 +495,11 @@ const SignUp = () => {
                 disabled={
                   !(
                     isId &&
-                    isEmail &&
+                    isEmailAddress &&
                     isPassword &&
                     isPasswordConfirm &&
                     isNickName &&
-                    isUserName &&
+                    isRealName &&
                     isStudentId
                   )
                 }
@@ -509,11 +511,11 @@ const SignUp = () => {
                  
                 ${
                   isId &&
-                  isEmail &&
+                  isEmailAddress &&
                   isPassword &&
                   isPasswordConfirm &&
                   isNickName &&
-                  isUserName &&
+                  isRealName &&
                   isStudentId
                     ? 'bg-mainYellow hover:bg-pointYellow'
                     : 'bg-divisionGray dark:bg-darkPoint'
@@ -527,7 +529,8 @@ const SignUp = () => {
         </div>
       </div>
       <MessageModal ref={sendSuccessModalRef}>
-        <span className="font-bold">{email}</span>로 인증 메일을 발송하였습니다.
+        <span className="font-bold">{emailAddress}</span>로 인증 메일을
+        발송하였습니다.
       </MessageModal>
       <MessageModal ref={sendFailModalRef}>
         인증 메일 발송에 실패하였습니다.
