@@ -235,7 +235,7 @@ const SignUp = () => {
                       onBlur={handleId}
                       className=" rounded-md   
                         block w-full px-1 py-1 border border-divisionGray dark:border-transparent
-                      focus:outline-mainYellow dark:bg-darkPoint dark:outline-white autofill:bg-yellow-200"
+                      focus:border-mainYellow focus:ring-mainYellow  dark:bg-darkPoint dark:outline-white autofill:bg-yellow-200"
                     />
                   </div>
                   <div
@@ -266,7 +266,7 @@ const SignUp = () => {
                       onBlur={handlePassword}
                       className=" rounded-md   
                         block w-full px-1 py-1 border border-divisionGray dark:border-transparent
-                      focus:outline-mainYellow dark:bg-darkPoint dark:outline-white"
+                      focus:border-mainYellow focus:ring-mainYellow  dark:bg-darkPoint dark:outline-white"
                     />
                   </div>
 
@@ -297,7 +297,7 @@ const SignUp = () => {
                       onBlur={handlePasswordConfirm}
                       className=" rounded-md   
                         block w-full px-1 py-1 border border-divisionGray dark:border-transparent
-                      focus:outline-mainYellow dark:bg-darkPoint dark:outline-white"
+                      focus:border-mainYellow focus:ring-mainYellow  dark:bg-darkPoint dark:outline-white"
                     />
                   </div>
                   <div
@@ -328,7 +328,7 @@ const SignUp = () => {
                       onBlur={handleEmailAddress}
                       className=" rounded-md w-full 
                         px-1 py-1 border border-divisionGray dark:border-transparent
-                      focus:outline-mainYellow dark:bg-darkPoint dark:outline-white"
+                      focus:border-mainYellow focus:ring-mainYellow  dark:bg-darkPoint dark:outline-white"
                     />
 
                     <button
@@ -389,7 +389,7 @@ const SignUp = () => {
                       onBlur={handleAuthCode}
                       className=" rounded-md   
                         block w-1/2 px-1 py-1 border border-divisionGray dark:border-transparent
-                      focus:outline-mainYellow dark:bg-darkPoint dark:outline-white"
+                      focus:outline-mainYellow  dark:bg-darkPoint dark:outline-white"
                     />
                   </div>
                   <div className="block mt-1 text-sm font-medium text-red-500">
@@ -415,7 +415,7 @@ const SignUp = () => {
                       onBlur={handleRealName}
                       className=" rounded-md   
                         block w-full px-1 py-1 border border-divisionGray dark:border-transparent
-                      focus:outline-mainYellow dark:bg-darkPoint dark:outline-white"
+                      focus:border-mainYellow focus:ring-mainYellow  dark:bg-darkPoint dark:outline-white"
                     />
                   </div>
                   <div
@@ -445,7 +445,7 @@ const SignUp = () => {
                       onBlur={handleNickName}
                       className=" rounded-md   
                         block w-full px-1 py-1 border border-divisionGray dark:border-transparent
-                      focus:outline-mainYellow dark:bg-darkPoint dark:outline-white"
+                      focus:border-mainYellow focus:ring-mainYellow  dark:bg-darkPoint dark:outline-white"
                     />
                   </div>
                   <div
@@ -475,7 +475,7 @@ const SignUp = () => {
                       onBlur={handleStudentId}
                       className=" rounded-md   
                         block w-full px-1 py-1 border border-divisionGray dark:border-transparent
-                      focus:outline-mainYellow dark:bg-darkPoint dark:outline-white"
+                      focus:border-mainYellow focus:ring-mainYellow  dark:bg-darkPoint dark:outline-white"
                     />
                   </div>
                   <div
@@ -501,7 +501,7 @@ const SignUp = () => {
                       name="birthday"
                       className=" rounded-md   
                         block w-full px-1 py-1 border border-divisionGray text-black
-                      focus:outline-mainYellow"
+                      focus:border-mainYellow focus:ring-mainYellow "
                       onChange={setBirthday}
                     />
                   </div>

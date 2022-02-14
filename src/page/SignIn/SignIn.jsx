@@ -54,7 +54,7 @@ const SignIn = (props) => {
               
               relative block w-full px-3 py-4 border border-gray-300 
               placeholder-gray-500  rounded-t-md focus:outline-none 
-              focus:bg-backGray focus:border-backGray  dark:bg-darkPoint dark:outline-white  dark:border-transparent
+              focus:bg-backGray focus:border-backGray  focus:ring-backGray dark:bg-darkPoint dark:outline-white  dark:border-transparent
               "
                 placeholder="아이디"
                 onBlur={handleBlur}
@@ -72,7 +72,8 @@ const SignIn = (props) => {
               relative block w-full px-3 py-4 border 
               border-gray-300 placeholder-gray-500 
                rounded-b-md focus:outline-none 
-              focus:bg-backGray focus:border-backGray  dark:bg-darkPoint dark:outline-white  dark:border-transparent
+               
+              focus:bg-backGray focus:border-backGray  focus:ring-backGray dark:bg-darkPoint dark:outline-white  dark:border-transparent
 
               focus:z-10 sm:text-sm"
                 placeholder="비밀번호"
@@ -80,7 +81,6 @@ const SignIn = (props) => {
               />
             </div>
           </div>
-
           <div>
             <button
               type="submit"
@@ -94,7 +94,6 @@ const SignIn = (props) => {
               로그인
             </button>
           </div>
-
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <input
@@ -134,10 +133,11 @@ const SignIn = (props) => {
               </a>
             </div>
           </div>
-          아직 계정이 없으신가요? 
+          아직 계정이 없으신가요?
           <Link
             to="/signup"
-            className="ml-4 whitespace-nowrap inline-flex items-center justify-center   text-base font-bold  text-mainYellow hover:text-pointYellow">
+            className="ml-4 whitespace-nowrap inline-flex items-center justify-center   text-base font-bold  text-mainYellow hover:text-pointYellow"
+          >
             회원가입
           </Link>
           <div></div>
