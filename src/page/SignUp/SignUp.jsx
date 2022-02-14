@@ -57,10 +57,10 @@ const SignUp = () => {
 
   //비밀번호
   const handlePassword = (e) => {
-    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{7,20}$/;
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$/;
 
     if (!passwordRegex.test(e.target.value)) {
-      setPasswordMessage('8자 이상이어야 하며, 영문과 숫자를 사용하세요.');
+      setPasswordMessage('8~20자 영문과 숫자를 사용하세요.');
       setIsPassword(false);
     } else {
       setPasswordMessage('올바른 비밀번호 형식입니다.');
@@ -88,10 +88,10 @@ const SignUp = () => {
 
   // 이름
   const handleRealName = (e) => {
-    const realNameRegex = /^[가-힣]+$/;
+    const realNameRegex = /^[가-힣a-zA-Z]{1,20}$/;
 
     if (!realNameRegex.test(e.target.value)) {
-      setRealNameMessage('한글 입력만 가능합니다');
+      setRealNameMessage('1~20자 한글, 영어만 가능합니다');
       setIsRealName(false);
     } else {
       setRealNameMessage('올바른 이름 형식입니다.');
@@ -100,10 +100,10 @@ const SignUp = () => {
   };
   // 닉네임
   const handleNickName = (e) => {
-    const nickNameRegex = /^[가-힣]+$/;
+    const nickNameRegex = /^[a-zA-Z가-힣0-9]{1,16}$/;
 
     if (!nickNameRegex.test(e.target.value)) {
-      setNickNameMessage('한글 입력만 가능합니다');
+      setNickNameMessage('1~16자 한글, 영어, 숫자만 가능합니다');
       setIsNickName(false);
     } else {
       setNickNameMessage('올바른 닉네임 형식입니다.');
@@ -116,7 +116,7 @@ const SignUp = () => {
   //아이디
   //TODO 아이디 중복체크 api 확인!!! 중복인데도 반환값이 false나옴
   const handleLoginId = () => {
-    const loginIdRegex = /^[a-zA-Z\\d_]{4,12}$/;
+    const loginIdRegex = /^[a-zA-Z0-9_]{4,12}$/;
 
     if (!loginIdRegex.test(loginId)) {
       setLoginIdMessage("4~12자 영어, 숫자, '_' 만 가능합니다");
