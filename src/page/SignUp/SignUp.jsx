@@ -18,7 +18,7 @@ const useInput = (initialValue = null) => {
 
 const SignUp = () => {
   //아이디, 비밀번호, 비밀번호 확인, 이메일, 이름, 닉네임, 학번
-  const [id, setId] = useInput('');
+  const [loginId, setLoginId] = useInput('');
   const [password, setPassword] = useInput('');
   const [passwordConfirm, setPasswordConfirm] = useInput('');
   const [emailAddress, setEmailAddress] = useInput('');
@@ -29,7 +29,7 @@ const SignUp = () => {
   const [birthday, setBirthday] = useInput('');
 
   //오류메시지 상태저장
-  const [IdMessage, setIdMessage] = useState('');
+  const [loginIdMessage, setLoginIdMessage] = useState('');
   const [passwordMessage, setPasswordMessage] = useState('');
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState('');
   const [emailAddressMessage, setEmailAddressMessage] = useState('');
@@ -39,7 +39,7 @@ const SignUp = () => {
   const [studentIdMessage, setStudentIdMessage] = useState('');
 
   //유효성 검사
-  const [isId, setIsId] = useState(false);
+  const [isLoginId, setIsLoginId] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
   const [isEmailAddress, setIsEmailAddress] = useState(false);
@@ -57,8 +57,7 @@ const SignUp = () => {
 
   //비밀번호
   const handlePassword = (e) => {
-    // NOTE : 8자 이상이래요
-    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{7,}$/;
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{7,20}$/;
 
     if (!passwordRegex.test(e.target.value)) {
       setPasswordMessage('8자 이상이어야 하며, 영문과 숫자를 사용하세요.');
@@ -115,12 +114,26 @@ const SignUp = () => {
   //NOTE 유효성 검사 + 중복 체크 api
 
   //아이디
-  //TODO 현모선배 아이디 중복체크 확인후에 하기
-  const handleId = () => {
-    authAPI
-      .loginIdCheck({ loginId: id })
-      .then((data) => console.log('loginId', data));
-    setIsId('true');
+  //TODO 아이디 중복체크 api 확인!!! 중복인데도 반환값이 false나옴
+  const handleLoginId = () => {
+    const loginIdRegex = /^[a-zA-Z\\d_]{4,12}$/;
+
+    if (!loginIdRegex.test(loginId)) {
+      setLoginIdMessage("4~12자 영어, 숫자, '_' 만 가능합니다");
+      setIsLoginId(false);
+    } else {
+      //유효성 검사 통과했을 경우에만, 중복 체크 api작동하게
+      authAPI.loginIdCheck({ loginId: loginId }).then((data) => {
+        console.log(data);
+        if (!data.data) {
+          setLoginIdMessage('올바른 아이디 형식입니다.');
+          setIsLoginId(true);
+        } else {
+          setLoginIdMessage('이미 존재하는 아이디입니다');
+          setIsLoginId(false);
+        }
+      });
+    }
   };
 
   //이메일 체크
@@ -185,7 +198,7 @@ const SignUp = () => {
     authAPI
       .signUp({
         // NOTE : API parameter랑 통일
-        loginId: id,
+        loginId,
         emailAddress,
         password,
         realName,
@@ -230,9 +243,9 @@ const SignUp = () => {
                       id="id"
                       name="id"
                       required
-                      value={id}
-                      onChange={setId}
-                      onBlur={handleId}
+                      value={loginId}
+                      onChange={setLoginId}
+                      onBlur={handleLoginId}
                       className=" rounded-md   
                         block w-full px-1 py-1 border border-divisionGray dark:border-transparent
                       focus:border-mainYellow focus:ring-mainYellow  dark:bg-darkPoint dark:outline-white autofill:bg-yellow-200"
@@ -240,10 +253,10 @@ const SignUp = () => {
                   </div>
                   <div
                     className={`block text-sm font-medium text${
-                      isId ? '-pointYellow' : '-red-500'
+                      isLoginId ? '-pointYellow' : '-red-500'
                     }`}
                   >
-                    {IdMessage}
+                    {loginIdMessage}
                   </div>
                 </div>
 
@@ -514,7 +527,7 @@ const SignUp = () => {
                 type="submit"
                 disabled={
                   !(
-                    isId &&
+                    isLoginId &&
                     isEmailAddress &&
                     isPassword &&
                     isPasswordConfirm &&
@@ -530,7 +543,7 @@ const SignUp = () => {
                 rounded-lg text-white hover:pointYellow dark:hover:darkPoint
                  
                 ${
-                  isId &&
+                  isLoginId &&
                   isEmailAddress &&
                   isPassword &&
                   isPasswordConfirm &&
