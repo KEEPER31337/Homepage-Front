@@ -317,7 +317,7 @@ const SignUp = () => {
                   >
                     이메일
                   </label>
-                  <div className="mt-2 flex  justify-between">
+                  <div className="mt-2 flex  ">
                     <input
                       type="email"
                       id="email_address"
@@ -326,13 +326,41 @@ const SignUp = () => {
                       value={emailAddress}
                       onChange={setEmailAddress}
                       onBlur={handleEmailAddress}
-                      className=" rounded-md   
-                      block w-full px-1 py-1 border border-divisionGray dark:border-transparent
+                      className=" rounded-md w-full 
+                        px-1 py-1 border border-divisionGray dark:border-transparent
                       focus:outline-mainYellow dark:bg-darkPoint dark:outline-white"
                     />
+
+                    <button
+                      type="submit"
+                      className={` px-2 py-1 ml-2 border border-transparent
+                    text-sm font-medium rounded-lg text-white 
+                    ${
+                      isEmailAddress
+                        ? 'bg-mainYellow hover:bg-pointYellow'
+                        : 'bg-divisionGray dark:bg-darkPoint'
+                    }`}
+                      onClick={handleSendMail}
+                      disabled={!isEmailAddress}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                        />
+                      </svg>
+                    </button>
                   </div>
                   <div
-                    className={`block text-sm font-medium text${
+                    className={`block mt-1 text-sm font-medium text${
                       isEmailAddress ? '-pointYellow' : '-red-500'
                     }`}
                   >
@@ -345,19 +373,11 @@ const SignUp = () => {
                   <div className="flex justify-items-center">
                     <label
                       htmlFor="auth_code"
-                      className="block text-sm font-medium "
+                      className="block mt-1 text-sm font-medium "
                     >
                       {/* NOTE: vertical align */}
                       인증코드
                     </label>
-                    <button
-                      type="submit"
-                      className="group px-2 py-1 mx-2 border border-transparent
-                    text-sm font-medium rounded-lg text-white bg-mainYellow hover:bg-pointYellow "
-                      onClick={handleSendMail}
-                    >
-                      인증
-                    </button>
                   </div>
                   <div className="mt-2 flex">
                     <input
