@@ -18,14 +18,20 @@ const validateName = (fname) => {
   return validated;
 };
 
-const FileUploadForm = () => {
+const FileUploadForm = (props) => {
   const [thumbnailBase64, setThumbnailBase64] = useState(null); // 파일 base64
-  const [thumbnail, setThumbnail] = useState(null);
+  // const [thumbnail, setThumbnail] = useState(null);
+
+  const deleteClickHandler = () => {
+    setThumbnailBase64(null);
+    props.setThumbnail(null);
+  };
 
   const onDrop = useCallback((acceptedFiles) => {
     console.log('acceptedFiles : ');
     console.log(acceptedFiles);
-    setThumbnail(acceptedFiles);
+    console.log(props);
+    props.setThumbnail(acceptedFiles);
     setThumbnailBase64('');
     acceptedFiles.forEach((file) => {
       if (validateName(file.name)) {
@@ -49,9 +55,12 @@ const FileUploadForm = () => {
       }
     });
   }, []);
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
-  const InputProps = {
-    ...getInputProps(),
+  const { getRootProps, isDragActive } = useDropzone({ onDrop });
+
+  const rootProps = {
+    ...getRootProps({
+      onClick: (event) => event.stopPropagation(),
+    }),
     multiple: false,
     accept: 'image/jpg, image/jpeg, image/png',
   };
@@ -59,13 +68,12 @@ const FileUploadForm = () => {
   return (
     <>
       <div
-        {...getRootProps()}
+        {...rootProps}
         className={
           (isDragActive ? 'bg-blue-300 bg-opacity-50' : '') +
           ' h-40 w-40 border-4 border-dashed rounded-xl flex items-center justify-center dark:border-slate-500'
         }
       >
-        <input {...InputProps} />
         {thumbnailBase64 ? (
           <>
             <div className="peer h-full w-full">
@@ -79,7 +87,10 @@ const FileUploadForm = () => {
               />
             </div>
 
-            <button className="absolute  h-40 w-40 rounded-xl bg-red-300 bg-opacity-50 text-red-500 text-xl hidden peer-hover:inline-block hover:inline-block">
+            <button
+              className="absolute  h-40 w-40 rounded-xl bg-red-300 bg-opacity-50 text-red-500 text-xl hidden peer-hover:inline-block hover:inline-block"
+              onClick={deleteClickHandler}
+            >
               <TrashIcon className="h-5 w-5 inline-block" aria-hidden="true" />
               삭제
             </button>

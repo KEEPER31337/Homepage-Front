@@ -9,31 +9,18 @@ import {
   InboxInIcon,
   ExclamationIcon,
 } from '@heroicons/react/solid';
-
-//마크다운 편집기 에디터
-import '@toast-ui/editor/dist/toastui-editor.css';
-import { Editor } from '@toast-ui/react-editor';
-
-//마크다운 편집기 플러그인
-import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
-import chart from '@toast-ui/editor-plugin-chart';
-import 'highlight.js/styles/github.css';
-import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
-import 'tui-color-picker/dist/tui-color-picker.css';
-import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
-import tableMergedCell from '@toast-ui/editor-plugin-table-merged-cell';
-import uml from '@toast-ui/editor-plugin-uml';
-
 //local
 import postAPI from 'API/v1/post';
 import ipAPI from 'API/v1/ip';
+import ResponsiveEditor from './ResponsiveEditor';
 
 const NO_TEMP = 0;
 const TEMP = 1;
 
 const TextEditer = (props) => {
   const isDark = props.state.darkMode; //Dark모드 여부
-  const currentCategoryId = props.state.category.current;
+  const currentCategoryId = props.state.category.current.id;
+  console.log(currentCategoryId);
   const token = props.state.member.token;
   const navigate = useNavigate();
 
@@ -197,7 +184,7 @@ const TextEditer = (props) => {
           </div>
           {/* TODO: 썸네일 제거 기능, 기존 구현 방식이 조금 변형되서 필요없는 거 지우고 누락된 부분 채워야함 */}
           <div className="inline-block md:ml-5 mt-5 w-full md:w-fit flex justify-center">
-            <FileUploadForm />
+            <FileUploadForm setThumbnail={setThumbnail} />
           </div>
         </div>
         <div name="content_box" className="my-5">
@@ -225,21 +212,11 @@ const TextEditer = (props) => {
             </div>
           </div>
           <div className="m-2 w-full h-screen inline-block">
-            <Editor
-              initialValue={content}
-              usageStatistics={false}
-              plugins={[
-                chart,
-                codeSyntaxHighlight,
-                colorSyntax,
-                tableMergedCell,
-                uml,
-              ]}
-              theme={isDark ? 'dark' : 'light'}
-              previewStyle="vertical"
-              height="100%"
-              onChange={updateContent}
-              ref={editorRef}
+            <ResponsiveEditor
+              content={content}
+              isDark={isDark}
+              updateContent={updateContent}
+              editorRef={editorRef}
             />
           </div>
         </div>
