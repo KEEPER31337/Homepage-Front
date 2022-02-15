@@ -157,7 +157,7 @@ async function lottoCheck({ token }) {
 }
 
 // Game
-async function gameInfo() {
+async function getGameInfo() {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/game/info',
@@ -180,5 +180,5 @@ export default {
   lottoInfo,
   lottoPlay,
   lottoCheck,
-  gameInfo,
+  getGameInfo,
 };

@@ -2,7 +2,7 @@
 import PageContainer from 'shared/PageContainer';
 import LayoutContainer from 'shared/LayoutContainer';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { DiceGame, RuleOfDice } from './Components/Dice';
 import { Roulette, RuleOfRoulette } from './Components/Roulette';
 import { Lotto, RuleOfLotto } from './Components/Lotto';
@@ -15,6 +15,9 @@ import DiceNav from './img/img_dice.png';
 import LottoNav from './img/img_lotto.png';
 import RouletteNav from './img/img_roulette.png';
 
+// API
+import gameAPI from 'API/v1/game';
+
 const TOTAL_GAME = 2;
 const DICE_GAME_ID = 0;
 const ROULETTE_GAME_ID = 1;
@@ -22,6 +25,13 @@ const LOTTO_GAME_ID = 2;
 
 const Game = () => {
   const [game, setGame] = useState(0);
+  const [gameInfo, setGameInfo] = useState({});
+
+  useEffect(() => {
+    gameAPI.getGameInfo().then((data) => {
+      if (data.success) setGameInfo(data.data);
+    });
+  }, []);
 
   const onClickR = () => {
     setGame((prev) => (prev !== TOTAL_GAME ? prev + 1 : 0));
@@ -91,11 +101,13 @@ const Game = () => {
         <div className="dark:bg-mainBlack">
           <GameList />
           <div className="flex justify-center items-center">
-              <GameLeftNav />
-              {game === DICE_GAME_ID ? <DiceGame /> : null}
-              {game === ROULETTE_GAME_ID ? <Roulette /> : null}
-              {game === LOTTO_GAME_ID ? <Lotto /> : null}
-              <GameRighttNav />
+            <GameLeftNav />
+            {game === DICE_GAME_ID ? <DiceGame gameInfo={gameInfo} /> : null}
+            {game === ROULETTE_GAME_ID ? (
+              <Roulette gameInfo={gameInfo} />
+            ) : null}
+            {game === LOTTO_GAME_ID ? <Lotto gameInfo={gameInfo} /> : null}
+            <GameRighttNav />
           </div>
           {game === DICE_GAME_ID ? <RuleOfDice /> : null}
           {game === ROULETTE_GAME_ID ? <RuleOfRoulette /> : null}
