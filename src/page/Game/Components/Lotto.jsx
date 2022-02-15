@@ -9,7 +9,7 @@ import win3 from '../img/Lotto/win3.png';
 
 const width = 700;
 const height = 400;
-const strokeWidth = 100; //브러쉬 굵기
+const strokeWidth = 150; //브러쉬 굵기
 const completedAt = 20; //20% 이상 긁어야함
 
 const Lotto = () => {
@@ -142,45 +142,31 @@ const Lotto = () => {
     setIsDrawing(false);
   };
   return (
-    <div className="bg-divisionGray h-full w-1/2 items-center m-10">
-      Lotto 게임 화면! 여기다가 만들면 됩니당!
-      <div>
+    <div className="relative w-3/5 space-y-4 pb-10 sm:p-10 mb-10 flex flex-wrap justify-center sm:justify-start bg-gradient-radial from-gray-700 to-gray-900 rounded-md border-[16px] border-mainBlack dark:border-divisionGray">
+      <div className="inset-y-5 py-2 pl-5  w-full   bg-gray-900 rounded-md shadow-md text-amber-200 text-xs sm:text-base">
         <p>
           성공여부: {completed ? 'Yes' : 'No'}
           <br />
           진행상황: {progress}% ({completedAt}%이상 넘어야 합니다)
         </p>
-        <button
-          disabled={isPop}
-          onClick={backEnd}
-          className={`group relative w-full 
-          flex justify-center px-4 py-4 border 
-          border-transparent text-lg font-bold
-          rounded-lg text-white 
-         
-          ${
-            !isPop
-              ? 'bg-mainYellow hover:bg-pointYellow'
-              : 'bg-divisionGray dark:bg-darkPoint'
-          }`}
-        >
-          복권 뽑기
-        </button>
+      </div>
 
-        <div class="lotto_container">
+      <div
+        className="relative w-full
+        flex justify-center z-10"
+      >
+        <canvas
+          id="scratch-canvas"
+          className=" w-full h-full"
+          ref={backgroundCanvasRef}
+          width={width}
+          height={height}
+        />
+        <div className=" absolute w-10/12  bottom-4 h-3/5 z-30">
           <canvas
-            id="scratch-canvas"
-            className="group relative w-full 
-            flex justify-center z-10"
-            ref={backgroundCanvasRef}
-            width={width}
-            height={height}
-          />
-          <canvas
-            className="group absolute w-full 
-            flex justify-center top-6 left-6   z-30"
             ref={scratchCardCanvasRef}
             id="canvas"
+            className=" w-full h-full"
             width={width}
             height={height}
             onMouseDown={scratchStart}
@@ -190,15 +176,31 @@ const Lotto = () => {
             onTouchMove={scratch}
             onTouchEnd={scratchEnd}
           />
-
-          <div
-            className="group absolute w-full 
-            flex justify-center top-6 left-6 z-20"
-          >
-            <img src={win}></img>
-          </div>
+        </div>
+        <div
+          className="absolute w-10/12  bottom-4 h-3/5
+             z-20"
+        >
+          <img className=" w-full h-full" src={win}></img>
         </div>
       </div>
+
+      <button
+        disabled={isPop}
+        onClick={backEnd}
+        className={` relative w-full 
+          flex justify-center px-4 py-4 border 
+          border-transparent text-sm font-bold
+          rounded-lg text-white 
+         
+          ${
+            !isPop
+              ? 'bg-mainYellow hover:bg-pointYellow'
+              : 'bg-divisionGray dark:bg-darkPoint'
+          }`}
+      >
+        복권 뽑기
+      </button>
     </div>
   );
 };
