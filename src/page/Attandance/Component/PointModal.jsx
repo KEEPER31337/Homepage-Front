@@ -28,6 +28,7 @@ const PointModal = forwardRef((props, ref) => {
 
   return (
     <>
+      {/* TODO : dark mode에서 버튼 border 매치안됨 */}
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog
           as="div"

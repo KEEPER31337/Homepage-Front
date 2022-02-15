@@ -1,28 +1,24 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState, forwardRef, useImperativeHandle } from 'react';
-import { useNavigate } from 'react-router-dom';
 
-// API
-
-const MessageModal = forwardRef((props, ref) => {
+const MessageModal = forwardRef(({ handleUpdateMessage }, ref) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [authCode, setAuthCode] = useState('');
+  const [message, setMessage] = useState('');
 
-  // navigate
-  const navigate = useNavigate();
-
-  const closeModal = () => {
+  const handleSave = () => {
+    handleUpdateMessage(message);
     setIsOpen(false);
-    if (props.link) navigate(props.link);
+    setMessage('');
   };
 
-  const openModal = () => {
+  const handleOpen = () => {
     setIsOpen(true);
+    setMessage('');
   };
 
   useImperativeHandle(ref, () => ({
     open: () => {
-      openModal();
+      handleOpen();
     },
   }));
 
@@ -32,7 +28,7 @@ const MessageModal = forwardRef((props, ref) => {
         <Dialog
           as="div"
           className="fixed inset-0 z-10 overflow-y-auto bg-red"
-          onClose={closeModal}
+          onClose={handleSave}
         >
           <div className="min-h-screen px-4 text-center">
             <Transition.Child
@@ -47,7 +43,6 @@ const MessageModal = forwardRef((props, ref) => {
               <Dialog.Overlay className="fixed inset-0" />
             </Transition.Child>
 
-            {/* This element is to trick the browser into centering the modal contents. */}
             <span
               className="inline-block h-screen align-middle"
               aria-hidden="true"
@@ -66,16 +61,29 @@ const MessageModal = forwardRef((props, ref) => {
                   as="h3"
                   className="m-2 mb-4 text-lg font-bold leading-6"
                 >
-                  알림
+                  메세지 업데이트
                 </Dialog.Title>
-                <p className="pb-2">{props.children}</p>
+                <p className="pb-2"></p>
+                <div>
+                  <input
+                    type="text"
+                    required
+                    value={message}
+                    onChange={(e) => {
+                      setMessage(e.target.value);
+                    }}
+                    className=" rounded-md   
+                        block w-full px-1 py-1 border border-divisionGray dark:border-transparent
+                      focus:outline-mainYellow dark:bg-darkPoint dark:outline-white autofill:bg-yellow-200"
+                  />
+                </div>
                 <div className="m-auto mt-4 w-fit">
                   <button
                     type="button"
                     className="inline-flex justify-center px-4 py-2 text-sm font-bold border-2 border-amber-400 rounded-md text-amber-900 bg-amber-100 hover:bg-amber-200"
-                    onClick={closeModal}
+                    onClick={handleSave}
                   >
-                    확인
+                    저장
                   </button>
                 </div>
               </div>
