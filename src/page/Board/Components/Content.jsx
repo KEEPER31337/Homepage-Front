@@ -13,7 +13,8 @@ const Content = ({ state, board }) => {
   //console.log(state.member.memberId); //(내 아이디)나중에 업데이트 될거임
   //
   const isDark = state.darkMode; //Dark모드 여부
-  const memberId = state.member.token;
+  //console.log(board.writerId);
+  const myId = state.member.userInfo.id;
 
   console.log();
   const viwerRef = useRef();
@@ -25,8 +26,6 @@ const Content = ({ state, board }) => {
 
   return (
     <div className="my-5">
-      <button className="border border-black m-2 bg-divisionGray">수정</button>
-      <button className="border border-black m-2 bg-divisionGray">삭제</button>
       <div className="justify-between bg-mainYellow rounded-t-2xl p-3 px-5 sm:flex">
         <p className="break-all text-2xl">
           <strong>{board.title}</strong>
@@ -55,6 +54,18 @@ const Content = ({ state, board }) => {
         </p>
       </div>
       <div className="w-full p-5 dark:bg-mainBlack">
+        {board.writerId == myId ? (
+          <div className="border absolute w-4/5 flex flex-row-reverse ">
+            <button className="border border-black m-2 bg-divisionGray">
+              수정
+            </button>
+            <button className="border border-black m-2 bg-divisionGray">
+              삭제
+            </button>
+          </div>
+        ) : (
+          ''
+        )}
         <Viewer
           initialValue={board.content}
           change={board.content}

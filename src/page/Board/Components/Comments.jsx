@@ -6,6 +6,7 @@ import commentAPI from 'API/v1/comment';
 const Comments = ({ boardId: boardId, state }) => {
   const [comments, setComments] = useState([]);
   const isDark = state.darkMode;
+  console.log(state.member.userInfo);
   const addCommentHandler = () => {
     console.log('addComment');
   };
@@ -42,6 +43,10 @@ const Comments = ({ boardId: boardId, state }) => {
             <div className="inline-block p-2 w-3/5">
               <h4 className="text-lg font-bold">{comment.memberId}</h4>
               <p className="mt-1">{comment.content}</p>
+              <button className="border">
+                <PencilIcon className="mr-4 flex-shrink-0 border h-10 w-10 text-mainYellow" />
+                대댓글
+              </button>
 
               {filterChildComment(comments, comment.id).map((childCom) => (
                 <div key={childCom.id} name="대댓글" className="mt-6 flex">
