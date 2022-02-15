@@ -26,7 +26,7 @@ const App = (props) => {
     attendanceAPI
       .check({ token: props.state.member.token })
       .then((data) => console.log(data));
-  }, []);
+  }, [props.state.member]);
 
   const darkMode = props.state.darkMode;
   return (
