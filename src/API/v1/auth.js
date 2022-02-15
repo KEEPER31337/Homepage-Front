@@ -84,7 +84,7 @@ async function emailCheck({ emailAddress }) {
 async function loginIdCheck({ loginId }) {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/signup/checkloginidduplication?loginId=hyeonmomo',
+    url: API_URL + '/v1/signup/checkloginidduplication',
     params: {
       loginId,
     },
