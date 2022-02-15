@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { useEffect } from 'react';
 import Header from 'shared/Header.jsx';
 import { Route, Routes } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -18,7 +18,16 @@ import Schedule from 'page/Schedule/Schedule';
 import SignIn from 'page/SignIn/SignIn';
 import SignUp from 'page/SignUp/SignUp';
 
+// API
+import attendanceAPI from 'API/v1/attendance';
+
 const App = (props) => {
+  useEffect(() => {
+    attendanceAPI
+      .check({ token: props.state.member.token })
+      .then((data) => console.log(data));
+  }, [props.state.member]);
+
   const darkMode = props.state.darkMode;
   return (
     <div className={darkMode ? 'dark' : 'light'}>

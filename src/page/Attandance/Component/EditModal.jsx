@@ -1,39 +1,34 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState, forwardRef, useImperativeHandle } from 'react';
-import CoinIcon from 'assets/img/coin.png';
 
-const continuous = [
-  { name: '출석 포인트', point: 1000, icon: CoinIcon },
-  { name: '개근 포인트', point: 300, icon: CoinIcon },
-  { name: '순위 포인트', point: 500, icon: CoinIcon },
-  { name: '랜덤 포인트', point: 0, icon: CoinIcon },
-];
+const MessageModal = forwardRef(({ handleUpdateMessage }, ref) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [message, setMessage] = useState('');
 
-const PointModal = forwardRef((props, ref) => {
-  let [isOpen, setIsOpen] = useState(false);
-
-  const closeModal = () => {
+  const handleSave = () => {
+    handleUpdateMessage(message);
     setIsOpen(false);
+    setMessage('');
   };
 
-  const openModal = () => {
+  const handleOpen = () => {
     setIsOpen(true);
+    setMessage('');
   };
 
   useImperativeHandle(ref, () => ({
     open: () => {
-      openModal();
+      handleOpen();
     },
   }));
 
   return (
     <>
-      {/* TODO : dark mode에서 버튼 border 매치안됨 */}
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog
           as="div"
           className="fixed inset-0 z-10 overflow-y-auto bg-red"
-          onClose={closeModal}
+          onClose={handleSave}
         >
           <div className="min-h-screen px-4 text-center">
             <Transition.Child
@@ -48,7 +43,6 @@ const PointModal = forwardRef((props, ref) => {
               <Dialog.Overlay className="fixed inset-0" />
             </Transition.Child>
 
-            {/* This element is to trick the browser into centering the modal contents. */}
             <span
               className="inline-block h-screen align-middle"
               aria-hidden="true"
@@ -67,29 +61,29 @@ const PointModal = forwardRef((props, ref) => {
                   as="h3"
                   className="m-2 mb-4 text-lg font-bold leading-6"
                 >
-                  포인트 합계
+                  메세지 업데이트
                 </Dialog.Title>
-                <table className="w-full font-bold">
-                  <tbody>
-                    {continuous.map((item, index) => (
-                      <tr key={index} className="m-5">
-                        <td className="py-5 pr-5">
-                          <img className="w-6 h-6" src={CoinIcon} />
-                        </td>
-                        <td>{item.name}</td>
-                        <td>{`Point: ${item.point}`}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-
+                <p className="pb-2"></p>
+                <div>
+                  <input
+                    type="text"
+                    required
+                    value={message}
+                    onChange={(e) => {
+                      setMessage(e.target.value);
+                    }}
+                    className=" rounded-md   
+                        block w-full px-1 py-1 border border-divisionGray dark:border-transparent
+                      focus:outline-mainYellow dark:bg-darkPoint dark:outline-white autofill:bg-yellow-200"
+                  />
+                </div>
                 <div className="m-auto mt-4 w-fit">
                   <button
                     type="button"
                     className="inline-flex justify-center px-4 py-2 text-sm font-bold border-2 border-amber-400 rounded-md text-amber-900 bg-amber-100 hover:bg-amber-200"
-                    onClick={closeModal}
+                    onClick={handleSave}
                   >
-                    Thanks!
+                    저장
                   </button>
                 </div>
               </div>
@@ -101,4 +95,4 @@ const PointModal = forwardRef((props, ref) => {
   );
 });
 
-export default PointModal;
+export default MessageModal;
