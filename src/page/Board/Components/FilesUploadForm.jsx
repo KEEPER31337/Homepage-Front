@@ -3,10 +3,10 @@ import { useDropzone } from 'react-dropzone';
 import { DocumentAddIcon, TrashIcon } from '@heroicons/react/solid';
 import { Input } from 'postcss';
 import { useEffect } from 'react';
-import AddedFiles from './AddedFiles';
-const deleteClickHandler = () => {
+const deleteClickHandler = (fileName) => {
   //TODO 첨부한 파일 삭제 기능 구현
-  console.log('delete');
+
+  console.log(fileName);
 };
 
 const decideUnit = (size) => {
@@ -30,7 +30,7 @@ const getFileInfo = (file) => {
       </td>
       <td>{decideUnit(file.size)}</td>
       <td className="text-red-500">
-        <button onClick={deleteClickHandler}>
+        <button onClick={() => deleteClickHandler(file.name)}>
           <TrashIcon className=" h-5 w-5 inline-block " aria-hidden="true" />
           삭제
         </button>
@@ -40,13 +40,22 @@ const getFileInfo = (file) => {
 };
 const getFileIcon = (filename) => {
   const extension = filename.split('.')[1];
-  //TODO 파일 존재 여부에 따라 해당 이미지 or 디폴트 이미지를 가져올 수 있도록 하고싶다.(서버를 거치기엔 비효율적인것같고)
-  return (
-    <img
-      src={require('assets/img/icons/' + 'default' + '.png')}
-      className="h-7 w-7 inline-block"
-    />
-  );
+
+  try {
+    return (
+      <img
+        src={require('assets/img/icons/' + extension + '.png')}
+        className="h-7 w-7 inline-block"
+      />
+    );
+  } catch (e) {
+    return (
+      <img
+        src={require('assets/img/icons/default.png')}
+        className="h-7 w-7 inline-block"
+      />
+    );
+  }
 };
 
 const FilesUploadForm = () => {

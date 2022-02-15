@@ -6,7 +6,7 @@ import commentAPI from 'API/v1/comment';
 const Comments = ({ boardId: boardId, state }) => {
   const [comments, setComments] = useState([]);
   const isDark = state.darkMode;
-  const addComment = () => {
+  const addCommentHandler = () => {
     console.log('addComment');
   };
 
@@ -60,7 +60,7 @@ const Comments = ({ boardId: boardId, state }) => {
         <textarea className="resize-none border-2 border-divisionGray m-2 p-1 w-full h-32 rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:border-darkComponent dark:text-white"></textarea>
         <button
           className="border-4 border-mainYellow p-2 pr-3 rounded-lg shadow-lg text-mainYellow active:mt-1 active:ml-1 active:shadow-none"
-          onClick={addComment()}
+          onClick={addCommentHandler()}
         >
           <PencilIcon className="inline-block m-1 h-5 w-5 " />
           <strong>COMMENT</strong>

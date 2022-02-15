@@ -19,7 +19,7 @@ const TEMP = 1;
 
 const TextEditer = (props) => {
   const isDark = props.state.darkMode; //Dark모드 여부
-  const currentCategoryId = props.state.category.current.id;
+  const currentCategoryId = props.state.category.current.id; //리덕스에서 가져옴
   console.log(currentCategoryId);
   const token = props.state.member.token;
   const navigate = useNavigate();
