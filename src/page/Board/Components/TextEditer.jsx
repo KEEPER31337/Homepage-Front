@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import FileUploadForm from 'page/Board/Components/fileUploadForm';
+import FilesUploadForm from 'page/Board/Components/FilesUploadForm';
 import {
   PencilIcon,
   InboxInIcon,
@@ -177,12 +178,12 @@ const TextEditer = (props) => {
               onChange={updateTitle}
             ></input>
 
-            {/* TODO: 썸네일 tailwind 사용해서 구현 */}
+            {/* TODO: 썸네일 tailwind 사용해서 구현 
             <input
               type="file"
               id="thumbnail"
               onChange={changeThumbnailHandler}
-            />
+            />*/}
             {thumbnailBase64 ? (
               <img
                 className="d-block w-100 rounded-xl border-4 border-mainYellow p-1 shadow-lg"
@@ -246,12 +247,13 @@ const TextEditer = (props) => {
           <p className="inline-block text-center p-1 px-3 bg-mainYellow rounded-r-full shadow-lg border-b-2 border-pointYellow">
             파일 첨부
           </p>
-          {/* TODO: 썸네일 tailwind 사용해서 구현 */}
+          {/* TODO: 썸네일 tailwind 사용해서 구현 
           <input
             type="file"
             className="border-2 m-2 w-full rounded-md"
             onChange={changeFileHandler}
-          ></input>
+          ></input>*/}
+          <FilesUploadForm />
         </div>
       </div>
       <div className="justify-between sm:flex">

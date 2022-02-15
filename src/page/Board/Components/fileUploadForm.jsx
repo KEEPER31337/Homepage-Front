@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { DocumentAddIcon, TrashIcon } from '@heroicons/react/solid';
+import { PhotographIcon, TrashIcon } from '@heroicons/react/solid';
 import { Input } from 'postcss';
 
 const validateName = (fname) => {
@@ -94,7 +94,7 @@ const FileUploadForm = () => {
               </p>
             ) : (
               <p className="text-slate-500 flex items-center">
-                <DocumentAddIcon
+                <PhotographIcon
                   className=" h-7 w-7 inline-block "
                   aria-hidden="true"
                 />
