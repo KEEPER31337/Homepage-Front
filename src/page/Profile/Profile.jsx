@@ -5,6 +5,8 @@ import blogImg from '../../assets/img/profileImg/social/blog.png';
 import githubImg from '../../assets/img/profileImg/social/github.png';
 import homePageImg from '../../assets/img/profileImg/social/homepage.png';
 import instargramImg from '../../assets/img/profileImg/social/instargram.png';
+import InfoBox from './Components/InfoBox';
+import { useSelector } from 'react-redux';
 
 const dummyUser = {
   userId: '1',
@@ -15,6 +17,7 @@ const dummyUser = {
   level: 256,
   point: 78,
   github: 'jasper200207',
+  email: 'test@test.com',
   groups: [
     {
       name: '정회원',
@@ -123,7 +126,15 @@ const Profile = () => {
     else setBtns(otherBtns);
   }, [isMe, isFriend]);
 
-  return <ProfileFrame user={user} profileBtns={btns} />;
+  const renderBody = () => (
+    <div className="w-full">
+      <InfoBox type="postlist" params={{ userId: user.userId }} />
+    </div>
+  );
+
+  return (
+    <ProfileFrame user={user} profileBtns={btns} renderBody={renderBody} />
+  );
 };
 
 export default Profile;

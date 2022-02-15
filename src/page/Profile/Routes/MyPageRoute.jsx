@@ -12,9 +12,9 @@ const MyPageRoute = () => {
       <Routes>
         <Route exact path="clipping" element={<Clipping />} />
         <Route exact path="drafts" element={<Drafts />} />
+        <Route exact path="posts" element={<Posts />} />
         <Route exact path="friends" element={<Friends />} />
         <Route exact path="points" element={<Points />} />
-        <Route exact path="posts" element={<Posts />} />
       </Routes>
     </>
   );
