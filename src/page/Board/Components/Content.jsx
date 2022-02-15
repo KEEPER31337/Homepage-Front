@@ -3,7 +3,11 @@ import { testText } from 'page/Board/testText';
 import '@toast-ui/editor/dist/toastui-editor.css'; //마크다운 편집기 뷰어 에디터
 import { Viewer } from '@toast-ui/react-editor';
 import { connect } from 'react-redux';
-import { ThumbUpIcon, ThumbDownIcon } from '@heroicons/react/solid';
+import {
+  ThumbUpIcon,
+  ThumbDownIcon,
+  UserCircleIcon,
+} from '@heroicons/react/solid';
 
 //local
 import { getDateWithFormat } from '../BoardUtil';
@@ -11,12 +15,9 @@ import { getDateWithFormat } from '../BoardUtil';
 const Content = ({ state, board }) => {
   //board는 게시글 정보가 담긴 객체
   //console.log(state.member.memberId); //(내 아이디)나중에 업데이트 될거임
-  //
   const isDark = state.darkMode; //Dark모드 여부
-  //console.log(board.writerId);
-  const myId = state.member.userInfo.id;
-
-  console.log();
+  const myId = state.member.userInfo.id; //게시글을 보고 있는 나의 정보
+  console.log(board);
   const viwerRef = useRef();
 
   useEffect(() => {
@@ -53,19 +54,22 @@ const Content = ({ state, board }) => {
           추천수 : <strong>{board.likeCount} </strong>
         </p>
       </div>
-      <div className="w-full p-5 dark:bg-mainBlack">
-        {board.writerId == myId ? (
-          <div className="border absolute w-4/5 flex flex-row-reverse ">
-            <button className="border border-black m-2 bg-divisionGray">
-              수정
+      {board.writerId == myId ? (
+        <div className=" px-3 absolute w-4/5 flex flex-row-reverse ">
+          <div className=" rounded-lg bg-slate-100 my-2">
+            <UserCircleIcon className="inline-block h-5 w-5 m-1 text-divisionGray " />
+            <button className="text-mainYellow mx-1 hover:text-pointYellow">
+              글 수정
             </button>
-            <button className="border border-black m-2 bg-divisionGray">
-              삭제
+            <button className="text-red-400 mx-2 hover:text-red-600 ">
+              <span className="">글 삭제</span>
             </button>
           </div>
-        ) : (
-          ''
-        )}
+        </div>
+      ) : (
+        ''
+      )}
+      <div className="p-5 min-h-[200px] dark:bg-mainBlack">
         <Viewer
           initialValue={board.content}
           change={board.content}
