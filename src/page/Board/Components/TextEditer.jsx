@@ -161,7 +161,7 @@ const TextEditer = (props) => {
             </div>
             <input
               type="text"
-              className="border-2 border-divisionGray m-2 p-1 w-full rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:border-darkComponent dark:text-white"
+              className="border-2 border-divisionGray m-2 p-1 w-full rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:bg-darkPoint dark:border-darkComponent dark:text-white"
               onChange={updateTitle}
             ></input>
 
@@ -182,7 +182,7 @@ const TextEditer = (props) => {
               ''
             )}
           </div>
-          {/* TODO: 썸네일 제거 기능, 기존 구현 방식이 조금 변형되서 필요없는 거 지우고 누락된 부분 채워야함 */}
+
           <div className="inline-block md:ml-5 mt-5 w-full md:w-fit flex justify-center">
             <FileUploadForm setThumbnail={setThumbnail} />
           </div>
@@ -221,7 +221,7 @@ const TextEditer = (props) => {
           </div>
         </div>
         <div name="file_box" className="my-5">
-          <p className="inline-block text-center p-1 px-3 bg-mainYellow rounded-r-full shadow-lg border-b-2 border-pointYellow">
+          <p className="hidden text-center p-1 px-3 bg-mainYellow rounded-r-full shadow-lg border-b-2 border-pointYellow sm:inline-block">
             파일 첨부
           </p>
           {/* TODO: 썸네일 tailwind 사용해서 구현 

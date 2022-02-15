@@ -3,41 +3,8 @@ import { useDropzone } from 'react-dropzone';
 import { DocumentAddIcon, TrashIcon } from '@heroicons/react/solid';
 import { Input } from 'postcss';
 import { useEffect } from 'react';
-const deleteClickHandler = (fileName) => {
-  //TODO 첨부한 파일 삭제 기능 구현
+import { formatFileSize } from '../BoardUtil';
 
-  console.log(fileName);
-};
-
-const decideUnit = (size) => {
-  const kb = parseInt(size / 1000);
-  if (kb < 10000) {
-    return kb + 'KB';
-  } else {
-    const mb = parseInt(kb / 1000);
-    if (mb < 10000) {
-      return mb + 'MB';
-    }
-    return parseInt(mb / 1000) + 'GB';
-  }
-};
-const getFileInfo = (file) => {
-  return (
-    <tr className="border-b">
-      <td>
-        {getFileIcon(file.name)}
-        {file.name}
-      </td>
-      <td>{decideUnit(file.size)}</td>
-      <td className="text-red-500">
-        <button onClick={() => deleteClickHandler(file.name)}>
-          <TrashIcon className=" h-5 w-5 inline-block " aria-hidden="true" />
-          삭제
-        </button>
-      </td>
-    </tr>
-  );
-};
 const getFileIcon = (filename) => {
   const extension = filename.split('.')[1];
 
@@ -61,12 +28,58 @@ const getFileIcon = (filename) => {
 const FilesUploadForm = () => {
   const [files, setFiles] = useState([]);
 
+  const deleteClickHandler = (fileName) => {
+    setFiles(files.filter((file) => file.name !== fileName));
+  };
+
+  const getFileInfo = (file) => {
+    return (
+      <tr className="border-b">
+        <td>
+          {getFileIcon(file.name)}
+          {file.name}
+        </td>
+        <td>{formatFileSize(file.size)}</td>
+        <td className="text-red-500">
+          <button onClick={() => deleteClickHandler(file.name)}>
+            <TrashIcon className=" h-5 w-5 inline-block " aria-hidden="true" />
+            삭제
+          </button>
+        </td>
+      </tr>
+    );
+  };
+
   useEffect(() => {
     console.log(files);
   }, [files]);
   const onDrop = useCallback(
     (acceptedFiles) => {
-      setFiles([...files, ...acceptedFiles]);
+      var temp = [...files];
+      var realAddFiles = []; //최종적으로 추가될 파일
+      var notAddFiles = []; //중복된 파일
+      acceptedFiles.forEach((newFile) => {
+        const isRepeat = temp.filter((file) => file.name == newFile.name);
+        if (isRepeat.length != 0) {
+          //console.log('중복');
+          notAddFiles = [...notAddFiles, newFile];
+        } else {
+          temp = [...temp, newFile];
+          realAddFiles = [...realAddFiles, newFile];
+        }
+      });
+      if (notAddFiles.length !== 0) {
+        var fileNameList = ''; //이름이 중복된 파일들
+        notAddFiles.forEach((file) => {
+          fileNameList += ' ' + file.name + ' ';
+        });
+        alert(
+          '중복된 파일이 있습니다.(' +
+            fileNameList.replace('  ', ', ') +
+            ') 기존 파일을 삭제하고 새로 업로드 해주십시오.'
+        );
+      }
+      setFiles([...files, ...realAddFiles]);
     },
     [files]
   );
@@ -78,15 +91,21 @@ const FilesUploadForm = () => {
 
   return (
     <>
-      <div className="mt-2 flex-column h-[200px] w-full border-4 border-dashed rounded-xl dark:border-slate-500">
-        <div className="border w-full h-[100px] overflow-auto rounded-t-lg">
+      <div className="mt-2 flex-column h-[200px] w-full border-4 border-dashed rounded-xl hidden sm:block dark:border-slate-500">
+        <div
+          className={
+            files.length === 0
+              ? 'hidden'
+              : '' + ' border w-full h-[100px] overflow-auto rounded-t-lg '
+          }
+        >
           {/*TODO 이 테이블이 files가 비어있을 땐 아예 안보였으면 좋겠는데 이게 잘 안된다.*/}
-          <table className="w-full dark:text-mainWhite">
+          <table className=" w-full dark:text-mainWhite ">
             <thead className=" sticky top-0 bg-divisionGray dark:bg-darkComponent">
               <tr className="">
                 <th className="">파일명</th>
-                <th className="">파일 크기</th>
-                <th className="">삭제</th>
+                <th className="min-w-[5em] w-1/5">파일 크기</th>
+                <th className="min-w-[4em] w-1/5">삭제</th>
               </tr>
             </thead>
             <tbody>{files.map((file) => getFileInfo(file))}</tbody>
@@ -99,7 +118,10 @@ const FilesUploadForm = () => {
             (isDragActive
               ? 'bg-blue-300 bg-opacity-50'
               : 'bg-slate-100 bg-opacity-50') +
-            ' rounded-b-lg h-[92px] flex items-center justify-center '
+            (files.length === 0
+              ? ' h-full rounded-lg'
+              : ' h-[92px] rounded-b-lg') +
+            ' border flex items-center justify-center '
           }
         >
           <input {...InputProps} />
@@ -122,6 +144,36 @@ const FilesUploadForm = () => {
                 파일을 첨부하세요
               </div>
             </p>
+          )}
+        </div>
+      </div>
+      <div>
+        <div className="block sm:hidden">
+          <button
+            {...getRootProps()}
+            className="border-[3px]  border-divisionGray my-3 p-1 pr-2 shadow-lg rounded-lg text-pointYellow flex items-center dark:bg-darkPoint"
+          >
+            <input {...InputProps} />
+            <DocumentAddIcon
+              className=" h-7 w-7 inline-block "
+              aria-hidden="true"
+            />
+            파일 추가
+          </button>
+          {files.length !== 0 ? (
+            <table className="w-full dark:text-mainWhite">
+              {console.log(files.length)}
+              <thead className="bg-mainYellow bg-opacity-100 ">
+                <tr className="">
+                  <th className="rounded-tl-lg">파일명</th>
+                  <th className="min-w-[5em] w-1/5">파일 크기</th>
+                  <th className="min-w-[4em] w-1/5 rounded-tr-lg">삭제</th>
+                </tr>
+              </thead>
+              <tbody>{files.map((file) => getFileInfo(file))}</tbody>
+            </table>
+          ) : (
+            <p>{console.log('aaa')}</p>
           )}
         </div>
       </div>

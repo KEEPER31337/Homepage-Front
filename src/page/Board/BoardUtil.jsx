@@ -24,5 +24,18 @@ function isNewPost(boardDate) {
   }
   return false;
 }
+const formatFileSize = (size) => {
+  //파일 크기의 단위 처리
+  const kb = parseInt(size / 1000);
+  if (kb < 10000) {
+    return kb + 'KB';
+  } else {
+    const mb = parseInt(kb / 1000);
+    if (mb < 10000) {
+      return mb + 'MB';
+    }
+    return parseInt(mb / 1000) + 'GB';
+  }
+};
 
-export { getDateWithFormat, getDiffTimeWithFormat, isNewPost };
+export { getDateWithFormat, getDiffTimeWithFormat, isNewPost, formatFileSize };
