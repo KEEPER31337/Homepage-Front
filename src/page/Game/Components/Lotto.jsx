@@ -12,7 +12,7 @@ const height = 400;
 const strokeWidth = 150; //브러쉬 굵기
 const completedAt = 20; //20% 이상 긁어야함
 
-const Lotto = () => {
+const Lotto = ({ gameInfo }) => {
   const backgroundCanvasRef = useRef(null);
   const scratchCardCanvasRef = useRef(null);
 
@@ -41,6 +41,7 @@ const Lotto = () => {
 
   const backEnd = () => {
     //output : rank
+
     const randomNum = Math.floor(Math.random() * 3 + 1);
     setRank(randomNum);
     //일단 랜덤으로 아무 값(1~3) 가져옴
@@ -205,13 +206,56 @@ const Lotto = () => {
   );
 };
 
-const RuleOfLotto = () => {
+const RuleOfLotto = ({ gameInfo }) => {
   return (
     <div className="flex justify-center items-center">
-      <div className="w-3/5 my-5 p-5 border-2 border-divisionGray">
-        게임 규칙
-        <br />
-        적어주시면 됩니당!
+      <div className="relative w-2/5 my-5 p-5 border-2 border-divisionGray">
+        <div className="flex  border-b bg-white  rounded-lg">
+          <table className="relative w-full divide-y divide-gray-200">
+            <tr key="1">
+              <td className="px- py-4 whitespace-nowrap">
+                <div className="flex items-center">
+                  <div className="ml-4">
+                    <span className=" px-2 py-1 leading-5 text-sm font-bold rounded-full bg-amber-100 text-amber-600">
+                      1등
+                    </span>
+
+                    <div className="text-lg text-gray-500">
+                      {gameInfo.FIRST_POINT}
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <td className="px-6 py-4 whitespace-nowrap">
+                <span className="px-2 inline-flex text-lg leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                  {gameInfo.FIRST_PROB}%
+                </span>
+              </td>
+            </tr>
+            <tr key="1">
+              <td className="px- py-4 whitespace-nowrap">
+                <div className="flex items-center">
+                  <div className="ml-4">
+                    <span className=" px-2 py-1 leading-5 text-sm font-bold rounded-full bg-amber-100 text-amber-600">
+                      2등
+                    </span>
+
+                    <div className="text-lg text-gray-500">
+                      {gameInfo.SECOND_POINT}
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <td className="px-6 py-4 whitespace-nowrap">
+                <span className="px-2 inline-flex text-lg leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                  {gameInfo.SECOND_PROB}%
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
   );

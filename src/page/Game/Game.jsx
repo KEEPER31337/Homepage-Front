@@ -111,7 +111,7 @@ const Game = () => {
           </div>
           {game === DICE_GAME_ID ? <RuleOfDice /> : null}
           {game === ROULETTE_GAME_ID ? <RuleOfRoulette /> : null}
-          {game === LOTTO_GAME_ID ? <RuleOfLotto /> : null}
+          {game === LOTTO_GAME_ID ? <RuleOfLotto gameInfo={gameInfo} /> : null}
         </div>
       </LayoutContainer>
     </PageContainer>
