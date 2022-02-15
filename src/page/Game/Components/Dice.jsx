@@ -3,15 +3,15 @@ import './dice.css';
 import { useState } from 'react';
 
 //img
-import one from '../img/dice_one.png';
-import two from '../img/dice_two.png';
-import three from '../img/dice_three.png';
-import four from '../img/dice_four.png';
-import five from '../img/dice_five.png';
-import six from '../img/dice_six.png';
-import win from '../img/result_win.png';
-import lose from '../img/result_lose.png';
-import draw from '../img/result_draw.png';
+import one from '../img/dice/dice_one.png';
+import two from '../img/dice/dice_two.png';
+import three from '../img/dice/dice_three.png';
+import four from '../img/dice/dice_four.png';
+import five from '../img/dice/dice_five.png';
+import six from '../img/dice/dice_six.png';
+import win from '../img/dice/result_win.png';
+import lose from '../img/dice/result_lose.png';
+import draw from '../img/dice/result_draw.png';
 
 // audio
 import rollDiceA from '../sound/roll.wav';
@@ -238,77 +238,80 @@ const DiceGame = () => {
     else return 0;
   }
 
-  function resultImg(tmp){
-    var screen = document.getElementById("result_img");
-    if(tmp === 1){
-      var img_win = document.createElement("img");
+  function resultImg(tmp) {
+    var screen = document.getElementById('result_img');
+    if (tmp === 1) {
+      var img_win = document.createElement('img');
       img_win.src = win;
-        screen.appendChild(img_win);
-    } else if(tmp === 0){
-      var img_draw = document.createElement("img");
+      screen.appendChild(img_win);
+    } else if (tmp === 0) {
+      var img_draw = document.createElement('img');
       img_draw.src = draw;
-        screen.appendChild(img_draw);
-    } else if(tmp === -1){
-      var img_lose = document.createElement("img");
+      screen.appendChild(img_draw);
+    } else if (tmp === -1) {
+      var img_lose = document.createElement('img');
       img_lose.src = lose;
-        screen.appendChild(img_lose);
+      screen.appendChild(img_lose);
     }
   }
 
-  function Computer(items){
+  function Computer(items) {
     items.sort(function (a, b) {
       if (a > b) return 1;
       if (a === b) return 0;
       if (a < b) return -1;
     });
-    var screen = document.getElementById("com_result");
-    var i=0;
-    for(; i<items.length; i++){
-      if(items[i] === 1){
-        var tmp1 = document.createElement("img");
+    var screenTotal = document.getElementById('com_result');
+    var screen = document.createElement('div');
+    screen.className = 'h-10 mb-2 flex';
+    var i = 0;
+    for (; i < items.length; i++) {
+      if (items[i] === 1) {
+        var tmp1 = document.createElement('img');
         tmp1.src = one;
-        tmp1.className = "w-8 mr-1";
+        tmp1.className = 'w-8 mr-1';
         screen.appendChild(tmp1);
-      } else if(items[i] === 2){
-        var tmp2 = document.createElement("img");
+      } else if (items[i] === 2) {
+        var tmp2 = document.createElement('img');
         tmp2.src = two;
-        tmp2.className = "w-8 mr-1";
+        tmp2.className = 'w-8 mr-1';
         screen.appendChild(tmp2);
-      } else if(items[i] === 3){
-        var tmp3 = document.createElement("img");
+      } else if (items[i] === 3) {
+        var tmp3 = document.createElement('img');
         tmp3.src = three;
-        tmp3.className = "w-8 mr-1";
+        tmp3.className = 'w-8 mr-1';
         screen.appendChild(tmp3);
-      } else if(items[i] === 4){
-        var tmp4 = document.createElement("img");
+      } else if (items[i] === 4) {
+        var tmp4 = document.createElement('img');
         tmp4.src = four;
-        tmp4.className = "w-8 mr-1";
+        tmp4.className = 'w-8 mr-1';
         screen.appendChild(tmp4);
-      } else if(items[i] === 5){
-        var tmp5 = document.createElement("img");
+      } else if (items[i] === 5) {
+        var tmp5 = document.createElement('img');
         tmp5.src = five;
-        tmp5.className = "w-8 mr-1";
+        tmp5.className = 'w-8 mr-1';
         screen.appendChild(tmp5);
       } else {
-        var tmp6 = document.createElement("img");
+        var tmp6 = document.createElement('img');
         tmp6.src = six;
-        tmp6.className = "w-8 mr-1";
+        tmp6.className = 'w-8 mr-1';
         screen.appendChild(tmp6);
       }
     }
-    var tmp = document.createElement("div");
+    var tmp = document.createElement('div');
     tmp.innerHTML = calculate(items);
     screen.appendChild(tmp);
+    screenTotal.appendChild(screen);
   }
 
   return (
-    <div className="w-3/5 mb-10 flex flex-wrap items-end bg-gradient-radial from-red-600 to-red-900  rounded-md border-[16px] border-mainBlack dark:border-divisionGray">
+    <div className="md:w-3/5 lg:w-3/5 w-full mb-10 flex flex-wrap items-end bg-gradient-radial from-red-600 to-red-900  rounded-md border-[16px] border-[ridge] border-mainBlack dark:border-[#CA8600]">
       {/* <div className="w-full border-2 border-divisionGray">
         보유 포인트 : 
         배팅 포인트 : 
         잔여 횟수 : ?/6
       </div> */}
-      <div className="w-2/3 items-center flex-initial">
+      <div className="sm:w-2/3 w-full items-center flex-initial">
         <div className="dice">
           <ol
             className="die-list odd-roll shadow-lg"
@@ -544,40 +547,39 @@ const DiceGame = () => {
           ) : null}
         </div>
       </div>
-      <div className="w-1/3">
+      <div className="sm:w-1/3 w-full ">
         <div id="result_img"></div>
-      <div className="h-10 mb-2 border-2 border-black flex" id="com_result">
-      </div>
-      <div className="h-fit bg-white/20 rounded-md border-2 border-white ">
-        <div className="p-2 flex flex-col justify-center">
-          <div className="flex justify-between my-1">
-            <strong className="big text-slate-200">현재 포인트 :</strong>
-            <div className="text-yellow-500">10000000</div>
-          </div>
-          <div className="flex justify-between my-1">
-            <strong className="big text-slate-200">배팅 포인트 :</strong>
-            {confirm ? (
-              <input
-                id="point"
-                value={betting}
-                className="big border-2 border-divisionGray rounded-md text-yellow-500"
-                onChange={onChange}
-                style={{ width: '6vw', textAlign: 'right' }}
-              ></input>
-            ) : (
-              <div className="text-yellow-500">{betting}</div>
-            )}
-          </div>
-          <div className="flex justify-between my-1">
-            <strong className="big text-slate-200">점수 :</strong>
-            <div className="big text-yellow-500">{score}</div>
-          </div>
-          <div className="flex justify-between my-1">
-            <strong className="big text-slate-200">오늘 한 횟수 :</strong>
-            <div className="big text-yellow-500">1</div>
+        <div id="com_result"></div>
+        <div className="h-fit bg-white/20 rounded-md border-2 border-white ">
+          <div className="p-2 flex flex-col justify-center ">
+            <div className="flex justify-between my-1">
+              <strong className="big text-slate-200">현재 포인트 :</strong>
+              <div className="text-yellow-500">10000000</div>
+            </div>
+            <div className="flex justify-between my-1">
+              <strong className="big text-slate-200">배팅 포인트 :</strong>
+              {confirm ? (
+                <input
+                  id="point"
+                  value={betting}
+                  className="big border-2 border-divisionGray rounded-md text-yellow-500"
+                  onChange={onChange}
+                  style={{ width: '6vw', textAlign: 'right' }}
+                ></input>
+              ) : (
+                <div className="text-yellow-500">{betting}</div>
+              )}
+            </div>
+            <div className="flex justify-between my-1">
+              <strong className="big text-slate-200">점수 :</strong>
+              <div className="big text-yellow-500">{score}</div>
+            </div>
+            <div className="flex justify-between my-1">
+              <strong className="big text-slate-200">오늘 한 횟수 :</strong>
+              <div className="big text-yellow-500">1</div>
+            </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
   );
