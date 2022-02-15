@@ -28,10 +28,7 @@ const Calendar = ({ member }) => {
   const [now, setNow] = useState(dayjs());
   const [firstDay, setFirstDay] = useState(now.startOf('month'));
   const [lastDay, setLastDay] = useState(now.endOf('month'));
-  const [attendDateList, setAttendDateList] = useState([
-    '2022-02-01',
-    '2022-02-13',
-  ]);
+  const [attendDateList, setAttendDateList] = useState([]);
 
   const checkRange = (date) => {
     return firstDay <= date && date <= lastDay;
@@ -110,14 +107,22 @@ const Calendar = ({ member }) => {
   });
 
   useEffect(() => {
-    // attendanceAPI
-    //   .getAttendDate({
-    //     startDate: firstDay.format(dateFormat),
-    //     endDate: lastDay.format(dateFormat),
-    //     token: member.token,
-    //   })
-    //   .then((data) => console.log(data));
-  }, []);
+    attendanceAPI
+      .getAttendDate({
+        startDate: firstDay.format(dateFormat),
+        endDate: lastDay.format(dateFormat),
+        token: member.token,
+      })
+      .then((data) => {
+        if (data.success) {
+          // NOTE : backend에서 날짜만 파싱해서 주기로 했는데
+          const dateList = data.list.map((strDate) =>
+            dayjs(strDate).format(dateFormat)
+          );
+          setAttendDateList(dateList);
+        }
+      });
+  }, [member]);
 
   return (
     <>

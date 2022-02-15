@@ -41,7 +41,8 @@ async function check({ token }) {
 async function updateMessage({ greetings, token }) {
   const options = {
     method: 'PATCH',
-    url: API_URL + '/v1/attend',
+    // NOTE : uri에 마지막 /는 떼는걸로 통일 요청할 예정
+    url: API_URL + '/v1/attend/',
     data: {
       greetings,
     },
