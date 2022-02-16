@@ -3,6 +3,7 @@ import { testText } from 'page/Board/testText';
 import '@toast-ui/editor/dist/toastui-editor.css'; //마크다운 편집기 뷰어 에디터
 import { Viewer } from '@toast-ui/react-editor';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import {
   ThumbUpIcon,
   ThumbDownIcon,
@@ -44,6 +45,13 @@ const Content = ({ state, board }) => {
         });
     }
   };
+
+  const deletePostingHandler = () => {
+    postAPI.remove({ boardId: postingId, token: token }).then((res) => {
+      console.log(res);
+    });
+  };
+
   useEffect(() => {
     const viwerInstance = viwerRef.current.getInstance();
     viwerInstance.setMarkdown(board.content);
@@ -82,10 +90,22 @@ const Content = ({ state, board }) => {
         <div className="px-10 absolute w-full text-xs sm:w-4/5 sm:text-base flex flex-row-reverse ">
           <div className=" rounded-lg bg-slate-100 my-2">
             <UserCircleIcon className="inline-block h-5 w-5 m-1 text-divisionGray " />
-            <button className="text-mainYellow font-bold mx-1 hover:text-pointYellow">
-              글 수정
-            </button>
-            <button className="text-red-400 font-bold mx-2 hover:text-red-600 ">
+
+            <Link
+              to="/board/write"
+              state={{
+                modifyFlag: true,
+                board,
+              }}
+            >
+              <button className="text-mainYellow font-bold mx-1 hover:text-pointYellow">
+                글 수정
+              </button>
+            </Link>
+            <button
+              className="text-red-400 font-bold mx-2 hover:text-red-600 "
+              onClick={deletePostingHandler}
+            >
               <span className="">글 삭제</span>
             </button>
           </div>

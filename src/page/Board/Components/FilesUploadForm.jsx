@@ -173,7 +173,7 @@ const FilesUploadForm = () => {
               <tbody>{files.map((file) => getFileInfo(file))}</tbody>
             </table>
           ) : (
-            <p>{console.log('aaa')}</p>
+            ''
           )}
         </div>
       </div>

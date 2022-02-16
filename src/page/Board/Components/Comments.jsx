@@ -18,7 +18,6 @@ const Comments = ({ boardId: boardId, state }) => {
   const isDark = state.darkMode;
   const token = state.member.token;
   const myId = state.member.userInfo.id;
-  console.log(state.member.userInfo);
   useEffect(() => {
     commentAPI
       .get({
@@ -35,7 +34,6 @@ const Comments = ({ boardId: boardId, state }) => {
 
   const addCommentHandler = () => {
     ipAPI.getIp().then((ipAddress) => {
-      console.log(boardId);
       commentAPI
         .create({
           boardId: boardId,
@@ -52,7 +50,6 @@ const Comments = ({ boardId: boardId, state }) => {
           }
         });
     });
-    console.log('addComment');
   };
 
   const filterParentComment = (comments) => {

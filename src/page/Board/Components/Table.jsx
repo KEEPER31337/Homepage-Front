@@ -162,12 +162,7 @@ const Table = (props) => {
               </td>
 
               <td className="p-2 dark:border-darkComponent">
-                <Link
-                  to={{
-                    pathname: `/board/${board.id}`,
-                    state: { test: 'test' },
-                  }}
-                >
+                <Link to={`/board/${board.id}`} state={{ test: 'test' }}>
                   <div className=" w-60 ">
                     <p className="truncate w-4/5 text-md ">
                       <strong>{board.title}</strong>
