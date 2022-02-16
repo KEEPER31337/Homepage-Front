@@ -26,36 +26,23 @@ const FileUploadForm = (props) => {
 
   useEffect(() => {
     if (props.modifyFlag) {
-      /* TODO: 게시글 수정 시 썸네일 불러오기
       utilAPI
         .getThumbnail({ thumbnailId: props.board.thumbnail.id })
         .then((data) => {
-          // const binary = data;
-          // const array = [];
-          // for (var i = 0; i < binary.length; i++) {
-          //   array.push(binary.charCodeAt(i));
-          // }
-          // console.log(new Uint8Array(array));
-          // const blob = new Blob([new Uint8Array(array)], { type: 'image/png' });
-          // props.setThumbnail(blob);
+          console.log(data);
+          props.setThumbnail(data);
 
-          // const reader = new FileReader();
-          // reader.onabort = () => console.log('file reading was aborted');
-          // reader.onerror = () => console.log('file reading has failed');
-          // reader.onloadend = () => {
-          //   const array = [];
-          //   for (var i = 0; i < reader.result.length; i++) {
-          //     array.push(reader.result.charCodeAt(i));
-          //   }
-          //   console.log(new Uint8Array(array));
-          //   const base64 = reader.result;
-          //   if (base64) {
-          //     setThumbnailBase64(base64);
-          //   }
-          // };
-          // reader.readAsDataURL(blob);
+          const reader = new FileReader();
+          reader.onabort = () => console.log('file reading was aborted');
+          reader.onerror = () => console.log('file reading has failed');
+          reader.onloadend = () => {
+            const base64 = reader.result;
+            if (base64) {
+              setThumbnailBase64(base64);
+            }
+          };
+          reader.readAsDataURL(data);
         });
-      */
     }
   }, []);
 

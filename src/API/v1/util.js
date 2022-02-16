@@ -16,12 +16,12 @@ async function getImage({ fileId }) {
 }
 
 async function getThumbnail({ thumbnailId }) {
+  const url = API_URL + '/v1/util/thumbnail/' + thumbnailId;
   const options = {
-    method: 'GET',
-    url: API_URL + '/v1/util/thumbnail/' + thumbnailId,
+    responseType: 'blob',
   };
   try {
-    const response = await axios(options);
+    const response = await axios.get(url, options);
     return response.data;
   } catch (error) {
     return error.response.data;
