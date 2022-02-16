@@ -57,7 +57,7 @@ const posts = [
       },
     },
     {
-      title: 'Boost your conversion rate',
+      title: 'Boost your conversion rate 2',
       href: '#',
       category: { name: 'Article', href: '#' },
       description:
@@ -78,7 +78,7 @@ const posts = [
   
   export default function Trends() {
     return (
-      <div className="relative bg-gray-50 h-1/2 pt-16 pb-4 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8">
+      <div className="relative bg-gray-50 h-auto pt-16 pb-4 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8">
         <div className="absolute inset-0">
           <div className="bg-white h-1/5 sm:h-2/3" />
         </div>
