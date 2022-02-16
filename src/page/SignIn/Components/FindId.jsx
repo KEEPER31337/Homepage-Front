@@ -1,6 +1,4 @@
-import React, { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 // local
@@ -54,7 +52,7 @@ const FindId = () => {
         <div>
           <img className="mx-auto h-35 w-auto" src={Logo} alt="" />
         </div>
-        <div class="w-full ">
+        <div className="w-full ">
           <h1 className="text-center mb-2 text-lg text-mainYellow font-semibold">
             아이디 찾기
           </h1>
@@ -70,10 +68,9 @@ const FindId = () => {
           <div className="space-y-2">
             <div>
               <input
-                id="id"
-                name="loginId"
-                type="text"
-                autoComplete="off"
+                id="emailAddress"
+                name="emailAddress"
+                type="email"
                 required
                 value={emailAddress}
                 onChange={setEmailAddress}
@@ -87,7 +84,7 @@ const FindId = () => {
               />
             </div>
 
-            <p class="mt-3 text-sm font-medium text-red-500">
+            <p className="mt-3 text-sm font-medium text-red-500">
               {emailAddressMessage}
             </p>
           </div>
