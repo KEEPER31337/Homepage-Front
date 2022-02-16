@@ -107,7 +107,7 @@ const Comments = ({ boardId: boardId, state }) => {
         <textarea className="resize-none border-2 border-divisionGray m-2 p-1 w-full h-32 rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:border-darkComponent dark:text-white"></textarea>
         <div className="flex justify-end">
           <button
-            className="border-4 border-mainYellow p-2 pr-3 rounded-lg shadow-lg text-mainYellow active:mt-1 active:ml-1 active:shadow-none"
+            className="border-4 border-mainYellow my-2 p-2 pr-3 rounded-lg hover:shadow-lg text-mainYellow active:mt-3 active:mb-1 active:shadow-none"
             onClick={addCommentHandler()}
           >
             <PencilIcon className="inline-block m-1 h-5 w-5 " />

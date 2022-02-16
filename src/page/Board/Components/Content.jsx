@@ -18,33 +18,51 @@ const Content = ({ state, board }) => {
   //console.log(state.member.memberId); //(내 아이디)나중에 업데이트 될거임
   const isDark = state.darkMode; //Dark모드 여부
   const myId = state.member.userInfo.id; //게시글을 보고 있는 나의 정보
-  const [isDisliked, setIsDisliked] = useState(false); //싫어요 여부
-  const [isLiked, setIsLiked] = useState(false); //좋아요 여부
+  const [isDisliked, setIsDisliked] = useState(); //싫어요 여부
+  const [isLiked, setIsLiked] = useState(); //좋아요 여부
   const postingId = board.id;
   const token = state.member.token;
-  console.log(board);
+  //console.log(board);
   const viwerRef = useRef();
   const clickLikeHandler = () => {
+    const type = isLiked ? 'DEC' : 'INC';
+    postAPI
+      .like({
+        type: type,
+        postingId: postingId,
+        token: token,
+      })
+      .then((res) => {
+        console.log(res);
+      });
     setIsLiked(!isLiked);
-    console.log(isLiked);
   };
   const clickDislikeHandler = () => {
+    const type = isDisliked ? 'DEC' : 'INC';
+    postAPI
+      .dislike({
+        type: type,
+        postingId: postingId,
+        token: token,
+      })
+      .then((res) => {
+        console.log(res);
+      });
     setIsDisliked(!isDisliked);
-
-    console.log(isDisliked);
-    if (!isDisliked) {
-      postAPI
-        .dislike({
-          type: 'INC',
-          postingId: postingId,
-          token: token,
-        })
-        .then((res) => {
-          console.log(res);
-        });
-    }
   };
+
   useEffect(() => {
+    postAPI
+      .check({
+        postingId: postingId,
+        token: token,
+      })
+      .then((res) => {
+        console.log('is dislike?');
+        console.log(res);
+        setIsLiked(res.data.liked);
+        setIsDisliked(res.data.disliked);
+      });
     const viwerInstance = viwerRef.current.getInstance();
     viwerInstance.setMarkdown(board.content);
   }, [board.content]);
@@ -111,7 +129,6 @@ const Content = ({ state, board }) => {
               : 'bg-blue-400 hover:shadow-lg border-white') +
             ' border-4 m-2  rounded-xl p-2 active:mr-1 active:ml-3 active:shadow-none dark:border-darkComponent'
           }
-          disabled={isLiked}
           onClick={() => clickLikeHandler()}
         >
           <ThumbUpIcon
@@ -131,7 +148,6 @@ const Content = ({ state, board }) => {
               : 'bg-red-400 hover:shadow-lg border-white') +
             ' border-4 m-2  rounded-xl p-2 active:mr-1 active:ml-3 active:shadow-none dark:border-darkComponent'
           }
-          disabled={false /*isDisliked*/}
           onClick={() => clickDislikeHandler()}
         >
           <ThumbDownIcon

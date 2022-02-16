@@ -214,14 +214,14 @@ async function searchByWriter({ keyword, category, page, size }) {
   }
 }
 
-async function like({ boardId, token }) {
+async function like({ type, postingId, token }) {
   const options = {
-    method: 'GET ',
+    method: 'GET',
     url: API_URL + '/v1/post/like',
     headers: {
-      Authorization: `${token}`,
+      Authorization: token,
     },
-    params: { type: 'INC', boardId },
+    params: { type: type, postingId: postingId },
   };
   try {
     const response = await axios(options);
@@ -233,7 +233,7 @@ async function like({ boardId, token }) {
 
 async function dislike({ type, postingId, token }) {
   const options = {
-    method: 'GET ',
+    method: 'GET',
     url: API_URL + '/v1/post/dislike',
     headers: {
       Authorization: token,
@@ -244,7 +244,23 @@ async function dislike({ type, postingId, token }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    return 'error.response.data';
+    return error.response.data;
+  }
+}
+async function check({ postingId, token }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/post/check',
+    headers: {
+      Authorization: token,
+    },
+    params: { postingId: postingId },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
   }
 }
 
@@ -261,4 +277,5 @@ export default {
   searchByWriter,
   like,
   dislike,
+  check,
 };
