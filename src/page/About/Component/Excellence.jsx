@@ -1,7 +1,6 @@
 import React from 'react';
-import Icon from './keyicon.png';
+import Icon from 'assets/img/aboutImg/keyicon.png';
 
-/* This example requires Tailwind CSS v2.0+ */
 const articles = [
   {
     subtitle: '동아리 지원',
