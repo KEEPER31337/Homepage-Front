@@ -37,16 +37,13 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <img className="m-auto pt-60" alt="keeper_logo" src={require("../../assets/img/keeper_logo.png").default}></img>
-      <div className="text-xl tracking-tight font-extrabold text-gray-900 text-center my-20 mb-60">
-        '지키다'라는 의미를 가진 단어 'KEEP'에서 착안하여, <br></br> 
-        정보보호에 관한 연구를 진행하고 그 성과를 공유하기 위해 만들어진 동아리입니다.
+      <div class="h-screen">
+        <img className="m-auto pt-60" alt="keeper_logo" src={require("../../assets/img/keeper_logo.png").default}></img>
+        <div className="text-xl font-semibold text-gray-900 text-center my-28 mb-60">
+          '지키다'라는 의미를 가진 단어 'KEEP'에서 착안하여, <br></br> 
+          정보보호에 관한 연구를 진행하고 그 성과를 공유하기 위해 만들어진 동아리입니다.
+        </div>
       </div>
-      {/* <section className="number_of_visitors">
-        <div className="text-center pt-32">KEEPER의 어제, 오늘, 그리고 누적 방문자 수</div>
-        TO DO : Back-End에서 방문자 수 받아와서 출력해야 함
-        <div className="text-center">어제: 94, 오늘: 98, 전체: 167,621</div>
-      </section> */}
       {Trends()} 
       {Latest()}
     </div>
