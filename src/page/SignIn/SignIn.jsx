@@ -23,8 +23,8 @@ const SignIn = (props) => {
     authAPI.signIn(loginInfo).then((data) => {
       if (data.success) {
         const token = data.data.token;
-        const userInfo = data.data.member;
-        props.memberSignIn({ token, userInfo });
+        const memberInfo = data.data.member;
+        props.memberSignIn({ token, memberInfo });
         navigate(BACK);
       } else {
         loginFailModalRef.current.open();
@@ -80,7 +80,6 @@ const SignIn = (props) => {
               />
             </div>
           </div>
-
           <div>
             <button
               type="submit"
@@ -94,7 +93,6 @@ const SignIn = (props) => {
               로그인
             </button>
           </div>
-
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <input
@@ -134,10 +132,11 @@ const SignIn = (props) => {
               </a>
             </div>
           </div>
-          아직 계정이 없으신가요? 
+          아직 계정이 없으신가요?
           <Link
             to="/signup"
-            className="ml-4 whitespace-nowrap inline-flex items-center justify-center   text-base font-bold  text-mainYellow hover:text-pointYellow">
+            className="ml-4 whitespace-nowrap inline-flex items-center justify-center   text-base font-bold  text-mainYellow hover:text-pointYellow"
+          >
             회원가입
           </Link>
           <div></div>
@@ -159,8 +158,8 @@ const mapDispatchToProps = (dispatch, OwnProps) => {
     updateToken: (token) => {
       dispatch(actionMember.updateToken(token));
     },
-    memberSignIn: ({ token, userInfo }) => {
-      dispatch(actionMember.signIn({ token, userInfo }));
+    memberSignIn: ({ token, memberInfo }) => {
+      dispatch(actionMember.signIn({ token, memberInfo }));
     },
   };
 };

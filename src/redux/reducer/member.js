@@ -10,7 +10,7 @@ const reducerMember = (state = initialState, action) => {
       // console.log('payload', action.payload);
       return {
         token: action.payload.token,
-        userInfo: action.payload.userInfo,
+        memberInfo: action.payload.memberInfo,
       };
     case actionMember.signOut.type:
       return initialState;

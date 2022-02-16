@@ -25,7 +25,7 @@ const UserBoxMobile = ({ member, signOut }) => {
                 alt=""
               />
               <div className="text-lg self-center mx-5 text-mainBlack dark:text-mainWhite">
-                {member.userInfo.nickName}
+                {member.memberInfo.nickName}
               </div>
             </div>
           </Menu.Button>
