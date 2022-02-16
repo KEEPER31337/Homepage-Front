@@ -263,43 +263,44 @@ const DiceGame = () => {
     });
     var screenTotal = document.getElementById('com_result');
     var screen = document.createElement('div');
-    screen.className = 'h-10 mb-2 flex';
+    screen.className = 'h-10 mb-2 flex md:flex-wrap';
     var i = 0;
     for (; i < items.length; i++) {
       if (items[i] === 1) {
         var tmp1 = document.createElement('img');
         tmp1.src = one;
-        tmp1.className = 'w-8 mr-1';
+        tmp1.className = 'w-[15%] h-fit max-w-[40px] mr-1';
         screen.appendChild(tmp1);
       } else if (items[i] === 2) {
         var tmp2 = document.createElement('img');
         tmp2.src = two;
-        tmp2.className = 'w-8 mr-1';
+        tmp2.className = 'w-[15%] h-fit max-w-[40px] mr-1';
         screen.appendChild(tmp2);
       } else if (items[i] === 3) {
         var tmp3 = document.createElement('img');
         tmp3.src = three;
-        tmp3.className = 'w-8 mr-1';
+        tmp3.className = 'w-[15%] h-fit max-w-[40px] mr-1';
         screen.appendChild(tmp3);
       } else if (items[i] === 4) {
         var tmp4 = document.createElement('img');
         tmp4.src = four;
-        tmp4.className = 'w-8 mr-1';
+        tmp4.className = 'w-[15%] h-fit max-w-[40px] mr-1';
         screen.appendChild(tmp4);
       } else if (items[i] === 5) {
         var tmp5 = document.createElement('img');
         tmp5.src = five;
-        tmp5.className = 'w-8 mr-1';
+        tmp5.className = 'w-[15%] h-fit max-w-[40px] mr-1';
         screen.appendChild(tmp5);
       } else {
         var tmp6 = document.createElement('img');
         tmp6.src = six;
-        tmp6.className = 'w-8 mr-1';
+        tmp6.className = 'w-[15%] h-fit max-w-[40px] mr-1';
         screen.appendChild(tmp6);
       }
     }
     var tmp = document.createElement('div');
     tmp.innerHTML = calculate(items);
+    tmp.className = 'text-orange-300 text-2xl';
     screen.appendChild(tmp);
     screenTotal.appendChild(screen);
   }
@@ -550,33 +551,40 @@ const DiceGame = () => {
       <div className="sm:w-1/3 w-full ">
         <div id="result_img"></div>
         <div id="com_result"></div>
-        <div className="h-fit bg-white/20 rounded-md border-2 border-white ">
+        <div className="lg:text-base md:text-xs h-fit bg-white/20 rounded-md border-2 border-white ">
           <div className="p-2 flex flex-col justify-center ">
-            <div className="flex justify-between my-1">
-              <strong className="big text-slate-200">현재 포인트 :</strong>
-              <div className="text-yellow-500">10000000</div>
+            <div className="flex justify-between md:flex-wrap my-1">
+              <strong className="big text-slate-200">보유 포인트 :</strong>
+              <div className="text-right text-yellow-500 min-w-[64px] w-auto px-2 bg-white bg-opacity-20 rounded-md">
+                6911602
+              </div>
             </div>
-            <div className="flex justify-between my-1">
+            <div className="flex justify-between md:flex-wrap my-1">
               <strong className="big text-slate-200">배팅 포인트 :</strong>
               {confirm ? (
                 <input
                   id="point"
                   value={betting}
-                  className="big border-2 border-divisionGray rounded-md text-yellow-500"
+                  className="w-16 px-2 bg-white text-right h-fit big rounded-md text-yellow-500"
                   onChange={onChange}
-                  style={{ width: '6vw', textAlign: 'right' }}
                 ></input>
               ) : (
-                <div className="text-yellow-500">{betting}</div>
+                <div className="text-yellow-500 min-w-[64px] text-right w-auto px-2 bg-white bg-opacity-20 rounded-md">
+                  {betting}
+                </div>
               )}
             </div>
-            <div className="flex justify-between my-1">
+            <div className="flex justify-between md:flex-wrap my-1">
               <strong className="big text-slate-200">점수 :</strong>
-              <div className="big text-yellow-500">{score}</div>
+              <div className="text-yellow-500 min-w-[64px] w-auto px-2 bg-white bg-opacity-20 rounded-md text-right">
+                {score}
+              </div>
             </div>
-            <div className="flex justify-between my-1">
-              <strong className="big text-slate-200">오늘 한 횟수 :</strong>
-              <div className="big text-yellow-500">1</div>
+            <div className="flex justify-between md:flex-wrap my-1">
+              <strong className="big text-slate-200">잔여횟수 :</strong>
+              <div className="big text-yellow-500 min-w-[64px] w-auto px-2 bg-white bg-opacity-20 rounded-md text-right">
+                6
+              </div>
             </div>
           </div>
         </div>
