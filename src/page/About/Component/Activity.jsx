@@ -1,6 +1,9 @@
 // TODO 화면 크기 조정 시 단어 단위로 줄바꿈 되도록 하기
-
 import React from 'react';
+
+// asset
+import seminarImg from 'assets/img/aboutImg/seminar.png';
+import mentoringImg from 'assets/img/aboutImg/mentoring.png';
 
 const articles = [
   // TODO 이미지 넣기
@@ -8,21 +11,18 @@ const articles = [
     subtitle: '세미나',
     content: (
       <ul>
-        {/* FIXME ul적용 왜 안 되는 지는 살펴봐야겠음 */}
         <li>매주 금요일 마다 정기적으로 운영</li>
         <li>공지사항 전달 및 건의</li>
         <li>개인 발표 또는 팀 발표</li>
       </ul>
     ),
-    imageSrc:
-      'https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2850&q=80',
+    imageSrc: seminarImg,
     imageAlt: 'Seminar',
   },
   {
     subtitle: '스터디 & 멘토링',
     content: (
       <ul>
-        {/* ul적용 왜 안 되는 지는 살펴봐야겠음 */}
         <li>매학기 활동 시작 전 원하는 스터디 개설 및 스터디원 구성</li>
         <li>스터디원과의 시간 협의 후 가능한 시간에 매주 스터디 진행</li>
         <li>
@@ -31,15 +31,13 @@ const articles = [
         </li>
       </ul>
     ),
-    imageSrc:
-      'https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2850&q=80',
+    imageSrc: mentoringImg,
     imageAlt: 'Study & Mentoring',
   },
   {
     subtitle: '기술문서',
     content: (
       <ul>
-        {/* ul적용 왜 안 되는 지는 살펴봐야겠음 */}
         <li>
           여름/겨울 방학 기간에 원하는 주제로 사람을 모집하여 기술 문서 작성
         </li>

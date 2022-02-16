@@ -48,10 +48,7 @@ KEEPER에 가입하시면 선배, 후배, 동기들과 다 같이 정보보안�
             <h2 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black">
               {sectionTitle}
             </h2>
-            <div
-              style={{ whiteSpace: 'pre-wrap' }}
-              className="px-2 lg:px-4 text-base text-black"
-            >
+            <div className="whitespace-pre-wrap px-2 lg:px-4 text-base text-black">
               {content}
               <br />
               {supervisors}
