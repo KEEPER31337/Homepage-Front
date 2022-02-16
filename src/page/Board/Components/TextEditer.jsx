@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import FileUploadForm from 'page/Board/Components/fileUploadForm';
+import FilesUploadForm from 'page/Board/Components/FilesUploadForm';
 import {
   PencilIcon,
   InboxInIcon,
@@ -18,7 +19,8 @@ const TEMP = 1;
 
 const TextEditer = (props) => {
   const isDark = props.state.darkMode; //Dark모드 여부
-  const currentCategoryId = props.state.category.current.id;
+  const currentCategoryId = props.state.category.current.id; //리덕스에서 가져옴
+  console.log(currentCategoryId);
   const token = props.state.member.token;
   const navigate = useNavigate();
 
@@ -140,7 +142,7 @@ const TextEditer = (props) => {
             <div
               className={
                 (title == '' ? '' : ' hidden') +
-                ' rounded-md bg-red-50 mt-2 ml-2 p-4'
+                ' rounded-md bg-red-50 mt-2 ml-2 p-4 dark:bg-red-300'
               }
             >
               <div className="flex">
@@ -159,16 +161,16 @@ const TextEditer = (props) => {
             </div>
             <input
               type="text"
-              className="border-2 border-divisionGray m-2 p-1 w-full rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:border-darkComponent dark:text-white"
+              className="border-2 border-divisionGray m-2 p-1 w-full rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:bg-darkPoint dark:border-darkComponent dark:text-white"
               onChange={updateTitle}
             ></input>
 
-            {/* TODO: 썸네일 tailwind 사용해서 구현 */}
+            {/* TODO: 썸네일 tailwind 사용해서 구현 
             <input
               type="file"
               id="thumbnail"
               onChange={changeThumbnailHandler}
-            />
+            />*/}
             {thumbnailBase64 ? (
               <img
                 className="d-block w-100 rounded-xl border-4 border-mainYellow p-1 shadow-lg"
@@ -180,7 +182,7 @@ const TextEditer = (props) => {
               ''
             )}
           </div>
-          {/* TODO: 썸네일 제거 기능, 기존 구현 방식이 조금 변형되서 필요없는 거 지우고 누락된 부분 채워야함 */}
+
           <div className="inline-block md:ml-5 mt-5 w-full md:w-fit flex justify-center">
             <FileUploadForm setThumbnail={setThumbnail} />
           </div>
@@ -192,7 +194,7 @@ const TextEditer = (props) => {
           <div
             className={
               (content == '' ? '' : ' hidden') +
-              ' rounded-md bg-red-50 mt-2 ml-2 p-4'
+              ' rounded-md bg-red-50 mt-2 ml-2 p-4 dark:bg-red-300'
             }
           >
             <div className="flex">
@@ -219,15 +221,16 @@ const TextEditer = (props) => {
           </div>
         </div>
         <div name="file_box" className="my-5">
-          <p className="inline-block text-center p-1 px-3 bg-mainYellow rounded-r-full shadow-lg border-b-2 border-pointYellow">
+          <p className="hidden text-center p-1 px-3 bg-mainYellow rounded-r-full shadow-lg border-b-2 border-pointYellow sm:inline-block">
             파일 첨부
           </p>
-          {/* TODO: 썸네일 tailwind 사용해서 구현 */}
+          {/* TODO: 썸네일 tailwind 사용해서 구현 
           <input
             type="file"
             className="border-2 m-2 w-full rounded-md"
             onChange={changeFileHandler}
-          ></input>
+          ></input>*/}
+          <FilesUploadForm />
         </div>
       </div>
       <div className="justify-between sm:flex">

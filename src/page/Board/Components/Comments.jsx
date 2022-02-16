@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { ViewGridIcon, ChatAltIcon, PencilIcon } from '@heroicons/react/solid';
+import {
+  ViewGridIcon,
+  ChatAltIcon,
+  PencilIcon,
+  TrashIcon,
+} from '@heroicons/react/solid';
 
 //local
 import ipAPI from 'API/v1/ip';
@@ -12,7 +17,8 @@ const Comments = ({ boardId: boardId, state }) => {
   const [content, setContent] = useState('');
   const isDark = state.darkMode;
   const token = state.member.token;
-
+  const myId = state.member.userInfo.id;
+  console.log(state.member.userInfo);
   useEffect(() => {
     commentAPI
       .get({
@@ -66,18 +72,58 @@ const Comments = ({ boardId: boardId, state }) => {
 
       <div name="댓글 리스트">
         {filterParentComment(comments).map((comment) => (
-          <div key={comment.id} name="댓글" className="flex border-b mt-4">
-            <ViewGridIcon className="mr-4 flex-shrink-0 border h-10 w-10 text-mainYellow" />
-            <div className="inline-block p-2 w-3/5">
-              <h4 className="text-lg font-bold">{comment.memberId}</h4>
-              <p className="mt-1">{comment.content}</p>
+          <div
+            key={comment.id}
+            name="댓글"
+            className=" border-b-4 flex border-b mt-4 pb-4"
+          >
+            <ViewGridIcon className="mr-4 mt-2 rounded-full shadow-lg flex-shrink-0 border-4 h-[10%] w-[10%] max-w-[5em] text-mainYellow" />
+            <div className="border-2 rounded-lg shadow-lg inline-block p-2 w-full">
+              <div className="flex justify-between">
+                <h4 className="inline-block border text-lg font-bold bg-slate-200 rounded-lg px-2">
+                  {comment.writer}
+                </h4>
+                <div>
+                  <button className="mx-1 text-mainYellow text-xs sm:text-base hover:text-pointYellow">
+                    <PencilIcon className="inline-block Sh-5 w-5" />
+                    대댓글
+                  </button>
+                  {myId == comment.writerId ? (
+                    <button className="mx-1 text-red-400 text-xs sm:text-base hover:text-red-600">
+                      <TrashIcon className="inline-block Sh-5 w-5" />
+                      삭제
+                    </button>
+                  ) : (
+                    ''
+                  )}
+                </div>
+              </div>
+              <p className="mt-1 px-3">{comment.content}</p>
 
               {filterChildComment(comments, comment.id).map((childCom) => (
-                <div key={childCom.id} name="대댓글" className="mt-6 flex">
-                  <ViewGridIcon className="mr-4 flex-shrink-0 border h-10 w-10 text-mainYellow" />
-                  <div className="">
-                    <h4 className="text-lg font-bold">{childCom.memberId}</h4>
-                    <p className="mt-1">{childCom.content}</p>
+                <div
+                  key={childCom.id}
+                  name="대댓글"
+                  className="mt-6 p-2 flex w-full bg-slate-50 rounded-lg"
+                >
+                  <ViewGridIcon className="mr-4 rounded-full shadow-lg flex-shrink-0 border-4  h-[10%] w-[10%] max-w-[3em] text-mainYellow" />
+                  <div className="w-full">
+                    <div className=" flex justify-between">
+                      <h4 className="inline-block text-base font-bold rounded-lg px-2 ">
+                        {childCom.writer}
+                      </h4>
+                      {myId === comment.writerId ? (
+                        <button className="mx-1 text-red-400 text-xs sm:text-base hover:text-red-600">
+                          <TrashIcon className="inline-block Sh-5 w-5" />
+                          삭제
+                        </button>
+                      ) : (
+                        ''
+                      )}
+                    </div>
+                    <p className="mt-1 px-3 text-slate-500">
+                      {childCom.content}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -91,13 +137,15 @@ const Comments = ({ boardId: boardId, state }) => {
           onChange={commentContentHandler}
           className="resize-none border-2 border-divisionGray m-2 p-1 w-full h-32 rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:border-darkComponent dark:text-white"
         ></textarea>
-        <button
-          className="border-4 border-mainYellow p-2 pr-3 rounded-lg shadow-lg text-mainYellow active:mt-1 active:ml-1 active:shadow-none"
-          onClick={addCommentHandler}
-        >
-          <PencilIcon className="inline-block m-1 h-5 w-5 " />
-          <strong>COMMENT</strong>
-        </button>
+        <div className="flex justify-end">
+          <button
+            className="border-4 border-mainYellow p-2 pr-3 rounded-lg shadow-lg text-mainYellow active:mt-1 active:ml-1 active:shadow-none"
+            onClick={addCommentHandler}
+          >
+            <PencilIcon className="inline-block m-1 h-5 w-5 " />
+            <strong>COMMENT</strong>
+          </button>
+        </div>
       </div>
     </div>
   );

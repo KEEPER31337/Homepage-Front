@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { SearchIcon } from '@heroicons/react/solid';
+import { SearchIcon, ViewGridIcon, ViewListIcon } from '@heroicons/react/solid';
 //local
 import testData from 'page/Board/testData';
 import postAPI from 'API/v1/post';
-import { getDateWithFormat } from '../BoardUtil';
+import {
+  getDateWithFormat,
+  getDiffTimeWithFormat,
+  isNewPost,
+} from '../BoardUtil';
 
-const MAX_POSTS = 1; //한 페이지당 노출시킬 최대 게시글 수
+const MAX_POSTS = 5; //한 페이지당 노출시킬 최대 게시글 수
 const MAX_PAGES = 6; //한 번에 노출시킬 최대 페이지 버튼 개수
 const pageN = Math.ceil(testData.maxNo / MAX_POSTS); //전체 페이지 수
+const styleList = ['text', 'gallary'];
 
 const setPageButton = (currentPage, page) => {
   //현재 페이지
@@ -43,10 +48,18 @@ const getStartEndPage = (currentPage) => {
   }
   return { startPage, endPage };
 };
+const getStyleIcon = (item) => {
+  if (item == styleList[0]) {
+    return <ViewListIcon className="inline-block h-5 w-5" />;
+  } else {
+    return <ViewGridIcon className="inline-block h-5 w-5" />;
+  }
+};
 
 const Table = (props) => {
   const [boardContent, setBoardContent] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [viewStyle, setViewStyle] = useState('text');
   //console.log(currentPage); //현재 페이지
   const { no } = useParams();
   const currentCategoryId = props.state.category.current.id;
@@ -73,13 +86,47 @@ const Table = (props) => {
       .then((res) => {
         setBoardContent(res?.list);
       });
-  }, [currentPage, currentCategoryId]); //currentPage 값이 변경될 때마다
+    console.log(viewStyle);
+  }, [currentPage, currentCategoryId, viewStyle]); //currentPage 값이 변경될 때마다
 
   return (
     <div className="dark:bg-mainBlack dark:text-mainWhite ">
-      <p>
-        Total <span className="text-mainYellow">{testData.maxNo}</span>
-      </p>
+      <div
+        name="전체 게시글 수 및 스타일 옵션"
+        className="items-end flex justify-between"
+      >
+        <div className="inline-block text-xl my-2">
+          Total <span className="text-mainYellow">{testData.maxNo}</span>
+        </div>
+        <div className="m-2 inline-block w-1/8">
+          <p className="text-center m-2 border-b-2 border-divisionGray dark:border-darkComponent">
+            Style
+          </p>
+          <div>
+            {styleList.map((item) => (
+              <span key={item} className="m-1">
+                <input
+                  type="radio"
+                  className="bg-mainYellow hidden peer"
+                  id={item}
+                  name="viewStyle"
+                  checked={viewStyle === item}
+                  onChange={() => {
+                    setViewStyle(item);
+                  }}
+                ></input>
+                <label
+                  htmlFor={item}
+                  className="border-2 rounded-lg  peer-checked:border-mainYellow peer-checked:text-mainYellow dark:border-darkComponent dark:text-darkComponent"
+                >
+                  {getStyleIcon(item)}
+                  {/*item*/}
+                </label>
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
 
       <table className="w-full mb-5">
         <thead>
@@ -110,7 +157,7 @@ const Table = (props) => {
                 getCurrentBoard(board.id, no)
               }
             >
-              <td className="border-r border-divisionGray text-center dark:border-darkComponent">
+              <td className="w-[3em] border-r border-divisionGray text-center dark:border-darkComponent">
                 {MAX_POSTS * (currentPage - 1) + index + 1}
               </td>
 
@@ -142,25 +189,35 @@ const Table = (props) => {
                       ) : (
                         ''
                       )} */}
+                      {isNewPost(board.registerTime) ? (
+                        <strong className="inline-block rounded-full w-5 h-5 align-middle text-center text-xs m-1 bg-red-500 shadow-lg border-2 border-red-200 text-mainWhite dark:text-mainBlack">
+                          n
+                        </strong>
+                      ) : (
+                        ''
+                      )}
                     </p>
                   </div>
 
-                  <p className="text-xs sm:hidden">
-                    글쓴이 : <strong>{board.writer} </strong>
-                    작성일시 :
-                    <strong>{getDateWithFormat(board.registerTime)} </strong>
-                    조회수 : <strong>{board.visitCount} </strong>
+                  <p className="mt-2 text-xs sm:hidden">
+                    글쓴이 : <strong>{board.writer} </strong>| 작성일시 :
+                    <strong>{getDateWithFormat(board.registerTime)} </strong>|{' '}
+                    <span className="inline-block">
+                      조회수 : <strong>{board.visitCount} </strong>
+                    </span>
                   </p>
                 </Link>
               </td>
 
-              <td className="text-center dark:border-darkComponent hidden sm:table-cell">
+              <td className="min-w-[4em] text-center dark:border-darkComponent hidden sm:table-cell">
                 {board.writer}
               </td>
-              <td className=" text-center dark:border-darkComponent hidden sm:table-cell">
-                {getDateWithFormat(board.registerTime)}
+              <td className="min-w-[6em] text-center dark:border-darkComponent hidden sm:table-cell">
+                {/*getDateWithFormat(board.registerTime)
+                <br />*/}
+                {getDiffTimeWithFormat(board.registerTime)}
               </td>
-              <td className="text-center dark:border-darkComponent hidden sm:table-cell">
+              <td className="min-w-[4em] text-center dark:border-darkComponent hidden sm:table-cell">
                 {board.visitCount}
               </td>
             </tr>

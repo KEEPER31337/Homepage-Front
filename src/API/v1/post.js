@@ -231,20 +231,20 @@ async function like({ boardId, token }) {
   }
 }
 
-async function dislike({ boardId, token }) {
+async function dislike({ type, postingId, token }) {
   const options = {
     method: 'GET ',
     url: API_URL + '/v1/post/dislike',
     headers: {
-      Authorization: `${token}`,
+      Authorization: token,
     },
-    params: { type: 'DEC', boardId },
+    params: { type: type, postingId: postingId },
   };
   try {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    return error.response.data;
+    return 'error.response.data';
   }
 }
 

@@ -3,8 +3,9 @@ const navigatoinSub = {
   menuList: ['랭킹', '출석부', '게임'],
 };
 
+// TODO: 범용적으로 만들기
+
 const NavigationLayout = (props) => {
-  console.log(props.children);
   return (
     <>
       <div className="relative min-h-screen flex flex-col bg-gray-50 dark:bg-mainBlack dark:text-mainYellow">

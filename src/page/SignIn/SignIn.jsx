@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 // local
 import authAPI from 'API/v1/auth';
 import actionMember from 'redux/action/member';
@@ -22,7 +23,8 @@ const SignIn = (props) => {
     authAPI.signIn(loginInfo).then((data) => {
       if (data.success) {
         const token = data.data.token;
-        props.updateToken(token);
+        const userInfo = data.data.member;
+        props.memberSignIn({ token, userInfo });
         navigate(BACK);
       } else {
         loginFailModalRef.current.open();
@@ -132,6 +134,13 @@ const SignIn = (props) => {
               </a>
             </div>
           </div>
+          아직 계정이 없으신가요? 
+          <Link
+            to="/signup"
+            className="ml-4 whitespace-nowrap inline-flex items-center justify-center   text-base font-bold  text-mainYellow hover:text-pointYellow">
+            회원가입
+          </Link>
+          <div></div>
           {/* </form> */}
         </div>
       </div>
@@ -149,6 +158,9 @@ const mapDispatchToProps = (dispatch, OwnProps) => {
   return {
     updateToken: (token) => {
       dispatch(actionMember.updateToken(token));
+    },
+    memberSignIn: ({ token, userInfo }) => {
+      dispatch(actionMember.signIn({ token, userInfo }));
     },
   };
 };

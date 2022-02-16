@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
-import Dropzone, { useDropzone } from 'react-dropzone';
-import { DocumentAddIcon, TrashIcon } from '@heroicons/react/solid';
+import { useDropzone } from 'react-dropzone';
+import { PhotographIcon, TrashIcon } from '@heroicons/react/solid';
 import { Input } from 'postcss';
 
 const validateName = (fname) => {
@@ -70,8 +70,8 @@ const FileUploadForm = (props) => {
       <div
         {...rootProps}
         className={
-          (isDragActive ? 'bg-blue-50' : '') +
-          ' h-40 w-40 border-4 border-dashed rounded-xl flex items-center justify-center'
+          (isDragActive ? 'bg-blue-300 bg-opacity-50' : '') +
+          ' h-40 w-40 border-4 border-dashed rounded-xl flex items-center justify-center dark:border-slate-500'
         }
       >
         {thumbnailBase64 ? (
@@ -98,10 +98,14 @@ const FileUploadForm = (props) => {
         ) : (
           <>
             {isDragActive ? (
-              <p>Drop the files here ...</p>
+              <p className="text-slate-500 flex items-center text-center dark:text-slate-300">
+                파일을
+                <br />
+                놓으세요
+              </p>
             ) : (
               <p className="text-slate-500 flex items-center">
-                <DocumentAddIcon
+                <PhotographIcon
                   className=" h-7 w-7 inline-block "
                   aria-hidden="true"
                 />

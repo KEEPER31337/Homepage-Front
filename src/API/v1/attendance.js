@@ -1,14 +1,30 @@
 import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL;
+const IP_API_URL = 'https://geolocation-db.com/json/';
 
-async function check({ ipAddress, greetings, token }) {
+async function getIp() {
+  try {
+    const response = await axios.get(IP_API_URL);
+    return response.data.IPv4;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+async function check({ token }) {
+  let ip = null;
+  try {
+    ip = await getIp();
+  } catch (error) {
+    return error.response.data;
+  }
   const options = {
     method: 'POST',
-    url: API_URL + '/v1/attend/check',
+    url: API_URL + '/v1/attend/',
     data: {
-      ipAddress,
-      greetings,
+      ipAddress: ip,
+      greetings: 'hi',
     },
     headers: {
       Authorization: token,
@@ -25,7 +41,8 @@ async function check({ ipAddress, greetings, token }) {
 async function updateMessage({ greetings, token }) {
   const options = {
     method: 'PATCH',
-    url: API_URL + '/v1/attend',
+    // NOTE : uri에 마지막 /는 떼는걸로 통일 요청할 예정
+    url: API_URL + '/v1/attend/',
     data: {
       greetings,
     },
@@ -42,7 +59,6 @@ async function updateMessage({ greetings, token }) {
 }
 
 async function getAttendDate({ startDate, endDate, token }) {
-  console.log({ startDate, endDate, token });
   const options = {
     method: 'GET',
     url: API_URL + '/v1/attend/date',
@@ -81,9 +97,29 @@ async function getAttendInfo({ date, token }) {
   }
 }
 
+async function getAttendAll({ date, token }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/attend/all',
+    params: {
+      date,
+    },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 export default {
   check,
   updateMessage,
   getAttendDate,
   getAttendInfo,
+  getAttendAll,
 };

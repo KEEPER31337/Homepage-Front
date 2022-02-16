@@ -1,52 +1,30 @@
-//쓰이지 않는 파일입니다
-//혹시 나중에 다시 사용할 수 있는 코드를 모아놨습니다.
+import React, { useState, useCallback } from 'react';
+import { useDropzone, DropZone } from 'react-dropzone';
+import { DocumentAddIcon, TrashIcon } from '@heroicons/react/solid';
+import { Input } from 'postcss';
 
-import React, { createRef, useEffect } from 'react';
-import { connect } from 'react-redux';
+const FilesUploadForm = () => {
+  const { getRootProps } = useDropzone({
+    // Note how this callback is never invoked if drop occurs on the inner dropzone
+    onDrop: (files) => console.log(files),
+  });
 
-const Comments = ({ comments, state }) => {
-  const commentRef = createRef();
-  const isDark = state.darkMode;
-
-  useEffect(() => {
-    const isComment = commentRef.current.firstChild;
-    if (isComment) {
-      commentRef.current.removeChild(isComment);
-    }
-
-    const utterances = document.createElement('script');
-    const theme = isDark ? 'photon-dark' : 'github-light';
-    const utterancesConfig = {
-      src: 'https://utteranc.es/client.js',
-      repo: 'amaran-th/comments-test',
-      theme: theme,
-      async: true,
-      crossorigin: 'anonymous',
-      'issue-term': 'pathname',
-    };
-
-    Object.entries(utterancesConfig).forEach(([key, value]) => {
-      utterances.setAttribute(key, value);
-    });
-
-    commentRef.current.appendChild(utterances);
-  }, [isDark, comments]);
   return (
-    <div
-      className="border-4 border-black dark:bg-mainBlack"
-      ref={commentRef}
-    ></div>
+    <div className="container">
+      <div {...getRootProps({ className: 'dropzone border p-2 m-2' })}>
+        <InnerDropzone />
+        <p>Outer dropzone</p>
+      </div>
+    </div>
   );
 };
-/*
-{comments.map((comment) => (
-        <p key={comment.no} className="border">
-          {comment.content}
-        </p>
-      ))}
-      */
-const mapStateToProps = (state, OwnProps) => {
-  return { state };
-};
 
-export default connect(mapStateToProps)(Comments);
+function InnerDropzone(props) {
+  const { getRootProps } = useDropzone({ noDragEventsBubbling: true });
+  return (
+    <div {...getRootProps({ className: 'dropzone border p-2 m-2' })}>
+      <p>Inner dropzone</p>
+    </div>
+  );
+}
+export default FilesUploadForm;
