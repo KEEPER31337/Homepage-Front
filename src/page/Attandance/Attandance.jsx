@@ -23,6 +23,9 @@ import CoinIcon from 'assets/img/coin.png';
 import attendanceAPI from 'API/v1/attendance';
 import { connect } from 'react-redux';
 
+// shared
+import SimpleNotification from 'shared/SimpleNotification';
+
 const dateFormat = 'YYYY-MM-DD';
 
 const Attandance = ({ member }) => {
@@ -32,6 +35,7 @@ const Attandance = ({ member }) => {
   const continuousModalRef = useRef({});
   const rankModalRef = useRef({});
   const pointModalRef = useRef({});
+  const successNotiRef = useRef({});
 
   useEffect(() => {
     const date = dayjs();
@@ -90,6 +94,7 @@ const Attandance = ({ member }) => {
           <AttandanceTable attendLogList={attendLogList} />
         </div>
       </NavigationLayout>
+      <SimpleNotification ref={successNotiRef} />
     </div>
   );
 };
