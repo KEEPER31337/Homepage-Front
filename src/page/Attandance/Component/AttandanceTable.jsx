@@ -1,27 +1,45 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import dayjs from 'dayjs';
+import { connect } from 'react-redux';
 
-const headers = ['이름', '내용', '개근', '등수'];
+// API
+import attendanceAPI from 'API/v1/attendance';
+// local
+import EditModal from './EditModal';
+import iconPencilAlt from 'assets/img/icons/pecil-alt.svg';
 
-const people = [
-  {
-    name: 'Googy',
-    image:
-      'https://goo-gy.github.io/static/bd980a9f8c3998db92fa9ed41520e21b/eaa90/nehalist-gatsby.png',
-    content: '자동 출석입니다.',
-    prize: '5일째 개근',
-    rank: '1등',
-  },
-  {
-    name: 'H',
-    image:
-      'https://goo-gy.github.io/static/bd980a9f8c3998db92fa9ed41520e21b/eaa90/nehalist-gatsby.png',
-    content: '자동 출석입니다.',
-    prize: '1일째 개근',
-    rank: '2등',
-  },
-];
+const dateFormat = 'YYYY-MM-DD';
+const headers = ['이름', '메세지', '개근', '등수'];
 
-export default function AttandanceTable() {
+const AttandanceTable = ({ member }) => {
+  // TODO : useMemo (message 업데이트시 한 row만 rerendering 하도록)
+  const editModalRef = useRef({});
+  const [attendLogList, setAttendLogList] = useState([]);
+  const [reload, setReload] = useState(false);
+
+  const handleUpdateMessage = (greetings) => {
+    attendanceAPI
+      .updateMessage({ greetings, token: member.token })
+      .then((data) => {
+        if (data.success) setReload(!reload);
+        // TODO : 성공/실패 알림
+      });
+  };
+
+  useEffect(() => {
+    const date = dayjs();
+    attendanceAPI
+      .getAttendAll({
+        date: date.format(dateFormat),
+        token: member.token,
+      })
+      .then((data) => {
+        if (data.success) {
+          setAttendLogList(data.list);
+        } else console.log(data);
+      });
+  }, [member, reload]);
+
   return (
     <div className="min-w-full flex flex-col">
       <div className="min-w-full overflow-x-auto">
@@ -30,6 +48,7 @@ export default function AttandanceTable() {
             <table className="min-w-full">
               <thead className="bg-gray-50 text-gray-500 dark:bg-darkPoint dark:text-mainYellow">
                 <tr>
+                  {/* NOTE : backend reponse refactoring 요청 예정 */}
                   {headers.map((header, index) => (
                     <th
                       key={index}
@@ -45,46 +64,49 @@ export default function AttandanceTable() {
                 </tr>
               </thead>
               <tbody className="divide-y bg-white divide-gray-200 dark:bg-darkComponent dark:divide-darkPoint">
-                {people.map((log, index) => (
+                {attendLogList.map((log, index) => (
                   <tr key={index}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-10 w-10 rounded-full bg-white">
                           <img
                             className="h-10 w-10 rounded-full"
-                            src={log.image}
-                            alt="user-image"
+                            src={
+                              log.memberId?.thumbnail
+                                ? log.memberId.thumbnail
+                                : 'https://avatars.githubusercontent.com/u/23546441?s=400&u=db7abf2929e5518c12189034dc3fed9bda94f0a6&v=4'
+                            }
                           />
                         </div>
                         <div className="ml-4">
                           <div className="text-xl font-medium text-gray-900 dark:text-mainWhite">
-                            {log.name}
+                            {log.memberId.nickName}
                           </div>
                         </div>
                       </div>
                     </td>
                     <td className="w-xl px-6 py-4 whitespace-nowrap">
                       <div className="text-md text-gray-900 dark:text-mainWhite">
-                        {log.content}
+                        {log.greetings}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="px-2 inline-flex text-lg leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                        {log.prize}
+                        {log.continousDay ? `${log.continousDay}일째 개근` : ''}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-xl text-gray-500">
                       <span className="px-2 inline-flex text-xl leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                        {log.rank}
+                        {log.rank ? `${log.rank}등` : ''}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-xl font-medium">
-                      <a
-                        href="#"
+                      <button
                         className="text-mainYellow hover:text-pointYellow"
+                        onClick={() => editModalRef.current.open()}
                       >
-                        Edit
-                      </a>
+                        <img className="w-6" src={iconPencilAlt} />
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -93,6 +115,12 @@ export default function AttandanceTable() {
           </div>
         </div>
       </div>
+      <EditModal ref={editModalRef} handleUpdateMessage={handleUpdateMessage} />
     </div>
   );
-}
+};
+
+const mapStateToProps = (state, OwnProps) => {
+  return { member: state.member };
+};
+export default connect(mapStateToProps)(AttandanceTable);
