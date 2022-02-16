@@ -19,6 +19,38 @@ async function signIn({ loginId, password }) {
   }
 }
 
+async function findId({ emailAddress}) {
+  const options = {
+    method: 'POST',
+    url: API_URL + '/v1/signin/find-id',
+    data: {
+      emailAddress
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+async function findPassword({ emailAddress}) {
+  const options = {
+    method: 'POST',
+    url: API_URL + '/v1/signin/find-password',
+    data: {
+      emailAddress
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 async function emailAuth({ emailAddress }) {
   const options = {
     method: 'POST',
@@ -115,6 +147,8 @@ async function studentIdCheck({ studentId }) {
 
 export default {
   signIn,
+  findId,
+  findPassword,
   emailAuth,
   signUp,
   emailCheck,

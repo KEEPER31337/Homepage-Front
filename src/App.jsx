@@ -16,6 +16,8 @@ import Library from 'page/Library/Library';
 import ProfileRoute from 'page/Profile/Routes/ProfileRoute';
 import Schedule from 'page/Schedule/Schedule';
 import SignIn from 'page/SignIn/SignIn';
+import FindId from 'page/SignIn/Components/FindId';
+import FindPassword from 'page/SignIn/Components/FindPassword';
 import SignUp from 'page/SignUp/SignUp';
 
 const App = (props) => {
@@ -37,6 +39,8 @@ const App = (props) => {
           <Route path="/profile/:userId/*" element={<ProfileRoute />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/signin" element={<SignIn />} />
+          <Route path="/signin/findid" element={<FindId />} />
+          <Route path="/signin/findpassword" element={<FindPassword />} />
           <Route path="/signup" element={<SignUp />} />
         </Routes>
       </>
