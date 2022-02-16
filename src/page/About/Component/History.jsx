@@ -88,10 +88,10 @@ export default function History() {
   const sectionTitle = '동아리 연혁';
 
   return (
-    <div className="bg-white py-4 lg:py-5 / my-5">
+    <div className="py-4 lg:py-5 / my-5">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-6 lg:py-10 px-12 lg:px-16">
-          <h2 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black">
+          <h2 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow">
             {sectionTitle}
           </h2>
           <div className="px-2 lg:px-4 overflow-hidden">
@@ -115,10 +115,12 @@ export default function History() {
                       <span className="relative z-10 w-8 h-8 flex items-center justify-center bg-mainYellow rounded-full"></span>
                     </span>
                     <span className="ml-4 min-w-0 flex flex-col">
-                      <span className="text-sm font-bold tracking-wide text-gray-500">
+                      <span className="text-sm font-bold tracking-wide text-gray-500 dark:text-pointYellow">
                         {article.subtitle}
                       </span>
-                      <span className="text-gray-500">{article.content}</span>
+                      <span className="text-gray-500 dark:text-white">
+                        {article.content}
+                      </span>
                     </span>
                   </div>
                 </>

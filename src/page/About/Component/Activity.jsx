@@ -58,13 +58,13 @@ function classNames(...classes) {
 export default function Activity() {
   const sectionTitle = '정기 활동';
   return (
-    <div className="bg-white my-5">
+    <div className="">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-6 lg:py-10 px-12 lg:px-16">
-          <h2 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black">
+          <h2 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow">
             {sectionTitle}
           </h2>
-          <div className="px-2 lg:px-4 space-y-16 text-black">
+          <div className="px-2 lg:px-4 space-y-16 text-black dark:text-white">
             {articles.map((article, articleIdx) => (
               <div
                 key={article.subtitle}
@@ -76,7 +76,9 @@ export default function Activity() {
                     'mt-6 lg:mt-0 lg:row-start-1 lg:col-span-3'
                   )}
                 >
-                  <h3 className="text-lg font-bold">{article.subtitle}</h3>
+                  <h3 className="text-lg font-bold dark:text-pointYellow">
+                    {article.subtitle}
+                  </h3>
                   <div className="mt-2 text-base">{article.content}</div>
                 </div>
                 <div
