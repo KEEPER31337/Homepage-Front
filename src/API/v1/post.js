@@ -27,7 +27,7 @@ async function create({
   formData.append('isTemp', isTemp);
   formData.append('password', password);
   formData.append('file', files);
-  formData.append('thumbnailFile', thumbnailFile);
+  formData.append('thumbnail', thumbnailFile);
 
   const config = {
     headers: {

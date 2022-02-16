@@ -164,23 +164,6 @@ const TextEditer = (props) => {
               className="border-2 border-divisionGray m-2 p-1 w-full rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:bg-darkPoint dark:border-darkComponent dark:text-white"
               onChange={updateTitle}
             ></input>
-
-            {/* TODO: 썸네일 tailwind 사용해서 구현 
-            <input
-              type="file"
-              id="thumbnail"
-              onChange={changeThumbnailHandler}
-            />*/}
-            {thumbnailBase64 ? (
-              <img
-                className="d-block w-100 rounded-xl border-4 border-mainYellow p-1 shadow-lg"
-                src={thumbnailBase64}
-                alt="thumbnail"
-                style={{ width: '100px', height: '100px' }}
-              />
-            ) : (
-              ''
-            )}
           </div>
 
           <div className="inline-block md:ml-5 mt-5 w-full md:w-fit flex justify-center">

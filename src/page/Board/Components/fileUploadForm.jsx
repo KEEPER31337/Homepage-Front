@@ -28,16 +28,11 @@ const FileUploadForm = (props) => {
   };
 
   const onDrop = useCallback((acceptedFiles) => {
-    console.log('acceptedFiles : ');
-    console.log(acceptedFiles);
-    console.log(props);
-    props.setThumbnail(acceptedFiles);
     setThumbnailBase64('');
     acceptedFiles.forEach((file) => {
       if (validateName(file.name)) {
+        props.setThumbnail(file);
         const reader = new FileReader();
-        console.log('file : ');
-        console.log(file);
 
         reader.onabort = () => console.log('file reading was aborted');
         reader.onerror = () => console.log('file reading has failed');
