@@ -18,7 +18,7 @@ const UserBox = ({ member, signOut }) => {
           <Menu.Button className="bg-gray-100 dark:bg-gray-800 flex text-sm rounded-full focus:outline-none ring-2 ring-divisionGray dark:ring-darkPoint">
             <span className="sr-only">Open user menu</span>
             <div className="text-lg self-center mx-5 text-mainBlack dark:text-mainWhite w-10 break-words">
-              {member.memberInfo.nickName}
+              {member?.memberInfo?.nickName}
             </div>
             <img
               className="h-8 w-8 rounded-full"
