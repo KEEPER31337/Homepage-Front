@@ -1,0 +1,116 @@
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+
+// local
+import authAPI from 'API/v1/auth';
+// asset
+import Logo from 'assets/img/keeper_logo.png';
+
+//custom hook
+const useInput = (initialValue = null) => {
+  const [value, setValue] = useState(initialValue);
+
+  const onChange = (e) => {
+    setValue(e.target.value);
+  };
+
+  return [value, onChange];
+};
+
+const FindId = () => {
+  //
+  const [emailAddress, setEmailAddress] = useInput('');
+
+  //메시지 상태저장
+  const [emailAddressMessage, setEmailAddressMessage] = useState('');
+  const [findIdMessage, setFindIdMessage] = useState('');
+
+  //유효성 검사
+  const [isFindId, setIsFindId] = useState(false);
+
+  const handleFindId = () => {
+    setEmailAddressMessage('이메일을 보내고 있습니다...');
+    authAPI.findId({ emailAddress: emailAddress }).then((data) => {
+      console.log(data);
+
+      if (data.success) {
+        setEmailAddressMessage('');
+
+        setIsFindId(true);
+        setFindIdMessage(emailAddress + ' 로 아이디를 발송하였습니다.');
+      } else {
+        setEmailAddressMessage('해당 이메일을 가진 유저가 존재하지 않습니다');
+        setIsFindId(false);
+      }
+    });
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 dark:text-mainWhite dark:bg-mainBlack">
+      <div className="max-w-md w-screen  ">
+        <div className="text-red-500"></div>
+        <div>
+          <img className="mx-auto h-35 w-auto" src={Logo} alt="" />
+        </div>
+        <div className="w-full ">
+          <h1 className="text-center mb-2 text-lg text-mainYellow font-semibold">
+            아이디 찾기
+          </h1>
+          {isFindId ? (
+            <div className="text-center text-md mb-12">{findIdMessage}</div>
+          ) : (
+            <div className="text-center text-md mb-12">
+              등록하신 이메일을 입력해주세요
+            </div>
+          )}
+        </div>
+        <div className="mt-8 space-y-4">
+          <div className="space-y-2">
+            <div>
+              <input
+                id="emailAddress"
+                name="emailAddress"
+                type="email"
+                required
+                value={emailAddress}
+                onChange={setEmailAddress}
+                className="appearance-none rounded-md  
+              
+              relative block w-full px-3 py-4 border border-gray-300 
+              placeholder-gray-500  rounded-t-md focus:outline-none 
+              focus:bg-backGray focus:border-backGray  focus:ring-backGray dark:bg-darkPoint dark:outline-white  dark:border-transparent
+              "
+                placeholder="이메일"
+              />
+            </div>
+
+            <p className="mt-3 text-sm font-medium text-red-500">
+              {emailAddressMessage}
+            </p>
+          </div>
+          <div>
+            <button
+              onClick={handleFindId}
+              className="group relative w-full 
+            flex justify-center px-4 py-4 border 
+            border-transparent text-sm font-medium 
+            rounded-lg text-white bg-mainYellow 
+            hover:bg-pointYellow "
+            >
+              찾기
+            </button>
+          </div>
+        </div>
+
+        <Link
+          to="/signin"
+          className="mr-4 mt-4 flex  justify-end   text-base font-bold  text-mainYellow hover:text-pointYellow"
+        >
+          <div>로그인 화면으로</div>
+        </Link>
+      </div>
+    </div>
+  );
+};
+
+export default FindId;

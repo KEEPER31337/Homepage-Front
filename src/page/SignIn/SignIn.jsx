@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 // local
 import authAPI from 'API/v1/auth';
 import actionMember from 'redux/action/member';
@@ -116,21 +117,21 @@ const SignIn = (props) => {
             </div>
 
             <div className="text-sm">
-              <a
-                href="#"
+              <Link
+                to="/signin/findid"
                 className="font-medium 
             text-gray hover:text-pointYellow"
               >
                 아이디 찾기
-              </a>{' '}
+              </Link>{' '}
               |{' '}
-              <a
-                href="#"
+              <Link
+                to="/signin/findpassword"
                 className="font-medium 
             text-gray hover:text-pointYellow"
               >
                 비밀번호 찾기
-              </a>
+              </Link>
             </div>
           </div>
           아직 계정이 없으신가요?
