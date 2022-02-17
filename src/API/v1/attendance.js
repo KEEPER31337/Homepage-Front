@@ -21,10 +21,10 @@ async function check({ token }) {
   }
   const options = {
     method: 'POST',
-    url: API_URL + '/v1/attend/',
+    url: API_URL + '/v1/attend',
     data: {
       ipAddress: ip,
-      greetings: 'hi',
+      greetings: '자동 출석입니다.',
     },
     headers: {
       Authorization: token,
@@ -42,7 +42,7 @@ async function updateMessage({ greetings, token }) {
   const options = {
     method: 'PATCH',
     // NOTE : uri에 마지막 /는 떼는걸로 통일 요청할 예정
-    url: API_URL + '/v1/attend/',
+    url: API_URL + '/v1/attend',
     data: {
       greetings,
     },

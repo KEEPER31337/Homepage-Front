@@ -41,7 +41,9 @@ const Attandance = ({ member }) => {
         token: member.token,
       })
       .then((data) => {
-        if (data.success) setAttendInfo(data.data);
+        if (data.success) {
+          setAttendInfo(data.data);
+        }
       });
   }, [member]);
 
@@ -55,8 +57,8 @@ const Attandance = ({ member }) => {
           <Box
             icon={LeafIcon}
             text={
-              attendInfo.continousDay
-                ? `개근 ${attendInfo.continousDay + 1}일차`
+              attendInfo.continuousDay
+                ? `개근 ${attendInfo.continuousDay + 1}일차`
                 : '-'
             }
             onClick={() => {
@@ -72,11 +74,7 @@ const Attandance = ({ member }) => {
           />
           <Box
             icon={CoinIcon}
-            text={
-              attendInfo.point
-                ? `${attendInfo.point + attendInfo.randomPoint} pt`
-                : '-'
-            }
+            text={attendInfo.point ? `${attendInfo.point} pt` : '-'}
             onClick={() => {
               pointModalRef.current.open();
             }}
