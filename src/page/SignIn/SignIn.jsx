@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 // local
 import authAPI from 'API/v1/auth';
 import actionMember from 'redux/action/member';
@@ -54,7 +55,7 @@ const SignIn = (props) => {
               
               relative block w-full px-3 py-4 border border-gray-300 
               placeholder-gray-500  rounded-t-md focus:outline-none 
-              focus:bg-backGray focus:border-backGray  dark:bg-darkPoint dark:outline-white  dark:border-transparent
+              focus:bg-backGray focus:border-backGray  focus:ring-backGray dark:bg-darkPoint dark:outline-white  dark:border-transparent
               "
                 placeholder="아이디"
                 onBlur={handleBlur}
@@ -72,7 +73,8 @@ const SignIn = (props) => {
               relative block w-full px-3 py-4 border 
               border-gray-300 placeholder-gray-500 
                rounded-b-md focus:outline-none 
-              focus:bg-backGray focus:border-backGray  dark:bg-darkPoint dark:outline-white  dark:border-transparent
+               
+              focus:bg-backGray focus:border-backGray  focus:ring-backGray dark:bg-darkPoint dark:outline-white  dark:border-transparent
 
               focus:z-10 sm:text-sm"
                 placeholder="비밀번호"
@@ -80,7 +82,6 @@ const SignIn = (props) => {
               />
             </div>
           </div>
-
           <div>
             <button
               type="submit"
@@ -94,7 +95,6 @@ const SignIn = (props) => {
               로그인
             </button>
           </div>
-
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <input
@@ -117,27 +117,28 @@ const SignIn = (props) => {
             </div>
 
             <div className="text-sm">
-              <a
-                href="#"
+              <Link
+                to="/signin/findid"
                 className="font-medium 
             text-gray hover:text-pointYellow"
               >
                 아이디 찾기
-              </a>{' '}
+              </Link>{' '}
               |{' '}
-              <a
-                href="#"
+              <Link
+                to="/signin/findpassword"
                 className="font-medium 
             text-gray hover:text-pointYellow"
               >
                 비밀번호 찾기
-              </a>
+              </Link>
             </div>
           </div>
-          아직 계정이 없으신가요? 
+          아직 계정이 없으신가요?
           <Link
             to="/signup"
-            className="ml-4 whitespace-nowrap inline-flex items-center justify-center   text-base font-bold  text-mainYellow hover:text-pointYellow">
+            className="ml-4 whitespace-nowrap inline-flex items-center justify-center   text-base font-bold  text-mainYellow hover:text-pointYellow"
+          >
             회원가입
           </Link>
           <div></div>
