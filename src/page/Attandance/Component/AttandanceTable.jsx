@@ -39,10 +39,7 @@ const AttandanceTable = ({ member }) => {
         token: member.token,
       })
       .then((data) => {
-        console.log('log', data);
-        if (data.success) {
-          setAttendLogList(data.list);
-        } else console.log(data);
+        if (data.success) setAttendLogList(data.list);
       });
   }, [member, reload]);
 

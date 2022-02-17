@@ -24,7 +24,7 @@ async function check({ token }) {
     url: API_URL + '/v1/attend',
     data: {
       ipAddress: ip,
-      greetings: 'hi',
+      greetings: '자동 출석입니다.',
     },
     headers: {
       Authorization: token,

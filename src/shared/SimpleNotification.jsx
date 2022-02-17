@@ -22,7 +22,6 @@ const SimpleNotification = forwardRef(({ isSuccess, msg }, ref) => {
     setTimeout(() => {
       setShow(false);
     }, 3000);
-    console.log('cll');
   }, [show]);
 
   return (
