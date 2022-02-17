@@ -23,9 +23,6 @@ import CoinIcon from 'assets/img/coin.png';
 import attendanceAPI from 'API/v1/attendance';
 import { connect } from 'react-redux';
 
-// shared
-import SimpleNotification from 'shared/SimpleNotification';
-
 const dateFormat = 'YYYY-MM-DD';
 
 const Attandance = ({ member }) => {
@@ -35,7 +32,6 @@ const Attandance = ({ member }) => {
   const continuousModalRef = useRef({});
   const rankModalRef = useRef({});
   const pointModalRef = useRef({});
-  const successNotiRef = useRef({});
 
   useEffect(() => {
     const date = dayjs();
@@ -45,7 +41,9 @@ const Attandance = ({ member }) => {
         token: member.token,
       })
       .then((data) => {
-        if (data.success) setAttendInfo(data.data);
+        if (data.success) {
+          setAttendInfo(data.data);
+        }
       });
   }, [member]);
 
@@ -59,8 +57,8 @@ const Attandance = ({ member }) => {
           <Box
             icon={LeafIcon}
             text={
-              attendInfo.continousDay
-                ? `개근 ${attendInfo.continousDay + 1}일차`
+              attendInfo.continuousDay
+                ? `개근 ${attendInfo.continuousDay + 1}일차`
                 : '-'
             }
             onClick={() => {
@@ -76,11 +74,7 @@ const Attandance = ({ member }) => {
           />
           <Box
             icon={CoinIcon}
-            text={
-              attendInfo.point
-                ? `${attendInfo.point + attendInfo.randomPoint} pt`
-                : '-'
-            }
+            text={attendInfo.point ? `${attendInfo.point} pt` : '-'}
             onClick={() => {
               pointModalRef.current.open();
             }}
@@ -94,7 +88,6 @@ const Attandance = ({ member }) => {
           <AttandanceTable attendLogList={attendLogList} />
         </div>
       </NavigationLayout>
-      <SimpleNotification ref={successNotiRef} />
     </div>
   );
 };
