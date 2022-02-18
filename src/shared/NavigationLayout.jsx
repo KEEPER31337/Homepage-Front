@@ -6,7 +6,6 @@ const navigatoinSub = {
 // TODO: 범용적으로 만들기
 
 const NavigationLayout = (props) => {
-  console.log(props.children);
   return (
     <>
       <div className="relative min-h-screen flex flex-col bg-gray-50 dark:bg-mainBlack dark:text-mainYellow">

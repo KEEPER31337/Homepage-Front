@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { useEffect } from 'react';
 import Header from 'shared/Header.jsx';
 import { Route, Routes } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -16,9 +16,20 @@ import Library from 'page/Library/Library';
 import ProfileRoute from 'page/Profile/Routes/ProfileRoute';
 import Schedule from 'page/Schedule/Schedule';
 import SignIn from 'page/SignIn/SignIn';
+import FindId from 'page/SignIn/Components/FindId';
+import FindPassword from 'page/SignIn/Components/FindPassword';
 import SignUp from 'page/SignUp/SignUp';
 
+// API
+import attendanceAPI from 'API/v1/attendance';
+
 const App = (props) => {
+  useEffect(() => {
+    attendanceAPI
+      .check({ token: props.state.member.token })
+      .then((data) => console.log(data));
+  }, [props.state.member]);
+
   const darkMode = props.state.darkMode;
   return (
     <div className={darkMode ? 'dark' : 'light'}>
@@ -37,6 +48,8 @@ const App = (props) => {
           <Route path="/profile/:userId/*" element={<ProfileRoute />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/signin" element={<SignIn />} />
+          <Route path="/signin/findid" element={<FindId />} />
+          <Route path="/signin/findpassword" element={<FindPassword />} />
           <Route path="/signup" element={<SignUp />} />
         </Routes>
       </>
