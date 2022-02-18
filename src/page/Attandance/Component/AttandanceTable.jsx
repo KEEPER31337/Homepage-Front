@@ -51,7 +51,6 @@ const AttandanceTable = ({ member }) => {
             <table className="min-w-full">
               <thead className="bg-gray-50 text-gray-500 dark:bg-darkPoint dark:text-mainYellow">
                 <tr>
-                  {/* NOTE : backend reponse refactoring 요청 예정 */}
                   {headers.map((header, index) => (
                     <th
                       key={index}
