@@ -2,15 +2,17 @@ import React from 'react';
 import '../lotto.css';
 import { useState, useRef, useEffect } from 'react';
 import scratchCardImageSrc from '../img/Lotto/scratchCard.png';
-import backgroundImageSrc from '../img/Lotto/backGround.png';
 import win1 from '../img/Lotto/win1.png';
 import win2 from '../img/Lotto/win2.png';
 import win3 from '../img/Lotto/win3.png';
+import win4 from '../img/Lotto/win4.png';
+import win5 from '../img/Lotto/win5.png';
+import win6 from '../img/Lotto/win6.png';
 
-const width = 700;
-const height = 400;
-const strokeWidth = 150; //브러쉬 굵기
-const completedAt = 20; //20% 이상 긁어야함
+const width = 350;
+const height = 500;
+const strokeWidth = 100; //브러쉬 굵기
+const completedAt = 80; //80% 이상 긁어야함
 
 const Lotto = ({ gameInfo }) => {
   const backgroundCanvasRef = useRef(null);
@@ -42,23 +44,45 @@ const Lotto = ({ gameInfo }) => {
   const backEnd = () => {
     //output : rank
 
-    const randomNum = Math.floor(Math.random() * 3 + 1);
+    //이미지 변경
+    const backgroundCanvas = backgroundCanvasRef.current;
+    const backgroundContext = backgroundCanvas.getContext('2d');
+
+    const backgroundImage = new Image();
+
+    backgroundImage.onload = function () {
+      backgroundContext.drawImage(this, 0, 0);
+    };
+
+    const randomNum = Math.floor(Math.random() * 6 + 1);
+
     setRank(randomNum);
+    console.log('randomNum : ', randomNum);
+    console.log('rank : ', rank);
     //일단 랜덤으로 아무 값(1~3) 가져옴
 
     setIsPop(true);
     //setCompleted(false);
     //setProgress(0)
     //console.log(isPop)
-    switch (rank) {
+    switch (randomNum) {
       case 0:
-        setWin(win1);
+        backgroundImage.src = win1;
         break;
       case 1:
-        setWin(win2);
+        backgroundImage.src = win2;
         break;
       case 2:
-        setWin(win3);
+        backgroundImage.src = win3;
+        break;
+      case 3:
+        backgroundImage.src = win4;
+        break;
+      case 4:
+        backgroundImage.src = win5;
+        break;
+      case 5:
+        backgroundImage.src = win6;
         break;
     }
   };
@@ -75,7 +99,7 @@ const Lotto = ({ gameInfo }) => {
       scratchCardContext.drawImage(this, 0, 0);
       scratchCardContext.globalCompositeOperation = 'destination-out';
       scratchCardContext.lineWidth = strokeWidth;
-      backgroundImage.src = backgroundImageSrc;
+      backgroundImage.src = win6;
     };
 
     const backgroundImage = new Image();
@@ -143,7 +167,7 @@ const Lotto = ({ gameInfo }) => {
     setIsDrawing(false);
   };
   return (
-    <div className="relative w-3/5 space-y-4 pb-10 sm:p-10 mb-10 flex flex-wrap justify-center sm:justify-start bg-gradient-radial from-gray-700 to-gray-900 rounded-md border-[16px] border-mainBlack dark:border-divisionGray">
+    <div className="relative md:w-3/5 lg:w-3/5 w-full space-y-4 pb-10 sm:p-10 mb-10 flex flex-wrap justify-center bg-gradient-radial from-gray-700 to-gray-900 rounded-md border-[16px] border-mainBlack dark:border-divisionGray">
       <div className="inset-y-5 py-2 pl-5  w-full   bg-gray-900 rounded-md shadow-md text-amber-200 text-xs sm:text-base">
         <p>
           성공여부: {completed ? 'Yes' : 'No'}
@@ -152,22 +176,20 @@ const Lotto = ({ gameInfo }) => {
         </p>
       </div>
 
-      <div
-        className="relative w-full
-        flex justify-center z-10"
-      >
-        <canvas
-          id="scratch-canvas"
-          className=" w-full h-full"
-          ref={backgroundCanvasRef}
-          width={width}
-          height={height}
-        />
-        <div className=" absolute w-10/12  bottom-4 h-3/5 z-30">
+      <div className="relative flex justify-start">
+        <div>
           <canvas
+            className="w-full h-full pl-2 pr-2"
+            ref={backgroundCanvasRef}
+            width={width}
+            height={height}
+          />
+        </div>
+
+        <div className="absolute w-full h-full">
+          <canvas
+            className="w-full h-full pl-2 pr-2"
             ref={scratchCardCanvasRef}
-            id="canvas"
-            className=" w-full h-full"
             width={width}
             height={height}
             onMouseDown={scratchStart}
@@ -177,12 +199,6 @@ const Lotto = ({ gameInfo }) => {
             onTouchMove={scratch}
             onTouchEnd={scratchEnd}
           />
-        </div>
-        <div
-          className="absolute w-10/12  bottom-4 h-3/5
-             z-20"
-        >
-          <img className=" w-full h-full" src={win}></img>
         </div>
       </div>
 
