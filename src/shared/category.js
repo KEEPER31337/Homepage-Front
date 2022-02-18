@@ -33,14 +33,14 @@ const categories = [
     name: '게시판',
     subs: [
       {
-        id: 10,
+        id: 105,
         name: '공지사항',
         href: 'board',
         description: '',
         icon: ViewGridIcon,
       },
       {
-        id: 11,
+        id: 6105,
         name: '건의사항',
         href: 'board',
         description: '',

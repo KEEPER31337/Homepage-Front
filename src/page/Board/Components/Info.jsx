@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { ViewGridIcon } from '@heroicons/react/solid';
+import WriteButton from './WriteButton';
 
 const fontList = ['돋움', '나눔 고딕', '바탕'];
 
@@ -15,16 +16,17 @@ const Info = (props) => {
   }, [font]);
 
   return (
-    <div className="dark:text-mainWhite">
-      <p className="text-3xl border-b-2 dark:text-mainWhite py-2 dark:border-darkComponent">
-        {currentCategoryName}
-      </p>
-      <div className="flex justify-between">
-        <p className="m-3 text-gray-400 inline-block w-3/5 dark:text-divisionGray">
-          공지사항입니다.
+    <div className="flex">
+      <div className="dark:text-mainWhite w-full mx-3">
+        <p className="text-3xl border-b-2 dark:text-mainWhite py-2 dark:border-darkComponent">
+          {currentCategoryName}
         </p>
-        <div>
-          {/* 
+        <div className="flex justify-between">
+          <p className="m-3 text-gray-400 inline-block w-3/5 dark:text-divisionGray">
+            공지사항입니다.
+          </p>
+          <div>
+            {/* 
           <div className="mx-2 inline-block w-1/8">
             <p className="text-center m-2 border-b-2 border-divisionGray dark:border-darkComponent">
               Font
@@ -43,8 +45,10 @@ const Info = (props) => {
               ))}
             </select>
           </div>*/}
+          </div>
         </div>
       </div>
+      <WriteButton />
     </div>
   );
 };

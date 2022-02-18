@@ -14,6 +14,9 @@ const Comments = ({ boardId: boardId, state }) => {
   const [comments, setComments] = useState([]);
   const [commentAddFlag, setCommentAddFlag] = useState(false);
   const [content, setContent] = useState('');
+  const [subContent, setSubContent] = useState('');
+  const [focusedComment, setFocusedComment] = useState();
+  const [isView, setIsView] = useState(false);
   const isDark = state.darkMode;
   const token = state.member.token;
   const myId = state.member.userInfo.id;
@@ -30,8 +33,33 @@ const Comments = ({ boardId: boardId, state }) => {
   const commentContentHandler = (e) => {
     setContent(e.target.value);
   };
-
+  const subCommentContentHandler = (e) => {
+    console.log(e.target.value);
+    setSubContent(e.target.value);
+  };
+  const addSubCommentHandler = (parentId = 0) => {
+    console.log('addSubCommentHandler');
+    ipAPI.getIp().then((ipAddress) => {
+      commentAPI
+        .create({
+          boardId: boardId,
+          content: subContent,
+          ipAddress: ipAddress,
+          parentId: parentId,
+          token: token,
+        })
+        .then((res) => {
+          if (res.success) {
+            setCommentAddFlag(!commentAddFlag);
+            setSubContent('');
+          } else {
+            alert('댓글 달기 실패! 전산관리자에게 문의하세요~');
+          }
+        });
+    });
+  };
   const addCommentHandler = () => {
+    console.log('addCommentHandler');
     ipAPI.getIp().then((ipAddress) => {
       commentAPI
         .create({
@@ -49,6 +77,14 @@ const Comments = ({ boardId: boardId, state }) => {
           }
         });
     });
+  };
+  const displayInput = (id) => {
+    //대댓글 버튼 클릭시 대댓글 입력 창이 보였다가 안 보였다가 할 수 있도록
+    if (focusedComment != id) setIsView(true);
+    else setIsView(!isView);
+    setFocusedComment(id);
+    setSubContent('');
+    //console.log(isView);
   };
 
   const filterParentComment = (comments) => {
@@ -123,7 +159,10 @@ const Comments = ({ boardId: boardId, state }) => {
                       />
                     </svg>
                   </button>
-                  <button className="border mx-1 text-mainYellow text-xs sm:text-base hover:text-pointYellow">
+                  <button
+                    className="border mx-1 text-mainYellow text-xs sm:text-base hover:text-pointYellow"
+                    onClick={() => displayInput(comment.id)}
+                  >
                     <PencilIcon className="inline-block h-5 w-5" />
                     대댓글
                   </button>
@@ -139,7 +178,28 @@ const Comments = ({ boardId: boardId, state }) => {
                 </div>
               </div>
               <p className="mt-1 px-3">{comment.content}</p>
-
+              <div
+                name="대댓글 작성창"
+                className={
+                  (isView && focusedComment == comment.id ? '' : 'hidden') +
+                  ' flex pr-2 mb-1'
+                }
+              >
+                <textarea
+                  value={subContent}
+                  onChange={subCommentContentHandler}
+                  className="resize-none border-2 border-divisionGray m-2 p-1 w-full h-20 rounded-md focus:ring-slate-400 focus:border-slate-400 dark:bg-darkComponent dark:border-darkComponent dark:text-white"
+                ></textarea>
+                <button
+                  className="border-4 border-slate-400 my-1 p-2 pr-3 rounded-xl hover:shadow-lg text-slate-400 active:mt-3 active:mb-1 active:shadow-none"
+                  onClick={() => {
+                    addSubCommentHandler(comment.id, subContent);
+                  }}
+                >
+                  <PencilIcon className="inline-block m-1 h-5 w-5 " />
+                  <strong>COMMENT</strong>
+                </button>
+              </div>
               {filterChildComment(comments, comment.id).map((childCom) => (
                 <div
                   key={childCom.id}
@@ -185,7 +245,7 @@ const Comments = ({ boardId: boardId, state }) => {
         <div className="flex justify-end">
           <button
             className="border-4 border-mainYellow my-2 p-2 pr-3 rounded-lg hover:shadow-lg text-mainYellow active:mt-3 active:mb-1 active:shadow-none"
-            onClick={addCommentHandler()}
+            onClick={addCommentHandler}
           >
             <PencilIcon className="inline-block m-1 h-5 w-5 " />
             <strong>COMMENT</strong>
