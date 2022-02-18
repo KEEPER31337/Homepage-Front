@@ -96,7 +96,7 @@ const FilesUploadForm = () => {
           className={
             files.length === 0
               ? 'hidden'
-              : '' + ' border w-full h-[100px] overflow-auto rounded-t-lg '
+              : '' + ' w-full h-[100px] overflow-auto rounded-t-lg '
           }
         >
           {/*TODO 이 테이블이 files가 비어있을 땐 아예 안보였으면 좋겠는데 이게 잘 안된다.*/}
@@ -121,7 +121,7 @@ const FilesUploadForm = () => {
             (files.length === 0
               ? ' h-full rounded-lg'
               : ' h-[92px] rounded-b-lg') +
-            ' border flex items-center justify-center '
+            ' flex items-center justify-center '
           }
         >
           <input {...InputProps} />

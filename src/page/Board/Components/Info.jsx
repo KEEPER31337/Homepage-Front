@@ -23,7 +23,7 @@ const Info = (props) => {
         </p>
         <div className="flex justify-between">
           <p className="m-3 text-gray-400 inline-block w-3/5 dark:text-divisionGray">
-            공지사항입니다.
+            {currentCategoryName}입니다.
           </p>
           <div>
             {/* 
@@ -48,7 +48,9 @@ const Info = (props) => {
           </div>
         </div>
       </div>
+      {/*
       <WriteButton />
+      */}
     </div>
   );
 };

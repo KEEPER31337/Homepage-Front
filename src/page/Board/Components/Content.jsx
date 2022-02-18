@@ -76,37 +76,38 @@ const Content = ({ state, board }) => {
 
   return (
     <div className="my-5">
-      <div className="justify-between bg-mainYellow rounded-t-2xl p-3 px-5 sm:flex">
+      <div className="justify-between bg-mainYellow rounded-t-2xl p-3 px-5 md:flex">
         <p className="break-all text-2xl">
           <strong>{board.title}</strong>
         </p>
-        <p className="text-right text-xs">
-          <br />
-          작성자 : <strong>{board.writer ? board.writer : ''}</strong>
-          <br />
-          작성 일시 :{' '}
-          <strong>
-            {board.registerTime ? getDateWithFormat(board.registerTime) : ' '}
-          </strong>
-          {board.registerTime != board.updateTime ? (
-            <>
-              <br />
-              수정 일시 :{' '}
-              <strong>
-                {board.updateTime ? getDateWithFormat(board.updateTime) : ' '}
-              </strong>
-            </>
-          ) : null}
-          <br />
-          조회수 : <strong>{board.visitCount} </strong>
-          댓글수 : <strong>{board.commentCount} </strong>
-          추천수 : <strong>{board.likeCount} </strong>
+        <p className="min-w-[180px] flex flex-col-reverse text-right text-xs">
+          <div>
+            작성자 : <strong>{board.writer ? board.writer : ''}</strong>
+            <br />
+            작성 일시 :{' '}
+            <strong>
+              {board.registerTime ? getDateWithFormat(board.registerTime) : ' '}
+            </strong>
+            {board.registerTime != board.updateTime ? (
+              <>
+                <br />
+                수정 일시 :{' '}
+                <strong>
+                  {board.updateTime ? getDateWithFormat(board.updateTime) : ' '}
+                </strong>
+              </>
+            ) : null}
+            <br />
+            조회수 : <strong>{board.visitCount} </strong>
+            댓글수 : <strong>{board.commentCount} </strong>
+            추천수 : <strong>{board.likeCount} </strong>
+          </div>
         </p>
       </div>
       {board.writerId == myId ? (
-        <div className="px-10 absolute w-full text-xs sm:w-4/5 sm:text-base flex flex-row-reverse ">
-          <div className=" rounded-lg bg-slate-100 my-2">
-            <UserCircleIcon className="inline-block h-5 w-5 m-1 text-divisionGray " />
+        <div className="px-10 absolute w-full text-xs md:w-[75%] sm:text-base flex flex-row-reverse ">
+          <div className="rounded-lg bg-slate-100 my-2 dark:bg-darkComponent">
+            <UserCircleIcon className="inline-block h-5 w-5 m-1 text-divisionGray dark:text-slate-500 " />
 
             <Link
               to="/board/write"

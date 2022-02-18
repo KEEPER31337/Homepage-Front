@@ -25,7 +25,7 @@ const Board = () => {
       </div>
       <div
         name="mobile 글쓰기 버튼"
-        className="fixed right-0 bottom-10 m-5 inline-block sm:hidden"
+        className="fixed right-0 bottom-10 m-5 inline-block md:hidden"
       >
         <WriteButtonMobile />
       </div>
