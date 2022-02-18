@@ -20,8 +20,10 @@ const TEMP = 1;
 const TextEditer = (props) => {
   const isDark = props.state.darkMode; //Dark모드 여부
   const currentCategoryId = props.state.category.current.id; //리덕스에서 가져옴
-  console.log(currentCategoryId);
   const token = props.state.member.token;
+  console.log(props);
+  const modifyFlag = !!props.redirectData.state?.modifyFlag;
+  const board = props.redirectData.state?.board;
   const navigate = useNavigate();
 
   const [allowComment, setAllowComment] = useState(true);
@@ -49,35 +51,21 @@ const TextEditer = (props) => {
     setPassword(target);
   };
 
-  const changeThumbnailHandler = ({ target }) => {
-    setThumbnail(target.files);
-    console.log(target.files);
-    setThumbnailBase64([]);
-    const reader = new FileReader();
-    reader.readAsDataURL(target.files[0]); // 단일 파일일 경우 1개
-    reader.onloadend = () => {
-      const base64 = reader.result;
-      //console.log(base64);
-      if (base64) {
-        const base64Sub = base64.toString();
-        setThumbnailBase64(base64Sub);
-      }
-    };
-  };
-
-  const changeFileHandler = ({ target }) => {
-    setFiles(target.files);
-  };
-
   const [text, setText] = useState({
-    title: '',
-    content: '', //testText
+    title: modifyFlag ? board.title : '',
+    content: modifyFlag ? board.content : '', //testText
   });
   const { title, content } = text;
 
   const editorRef = useRef();
 
-  useEffect(() => {}, [text]);
+  useEffect(() => {
+    if (modifyFlag) {
+      setAllowComment(!!board.allowComment);
+      setIsNotice(!!board.isNotice);
+      setIsSecret(!!board.isSecret);
+    }
+  }, []);
 
   const updateTitle = (e) => {
     const getTitle = e.target.value;
@@ -127,7 +115,35 @@ const TextEditer = (props) => {
         });
     });
   };
-
+  const uploadModifyhandler = (isTemp) => {
+    setUploadAble(false);
+    ipAPI.getIp().then((ipAddress) => {
+      postAPI
+        .modify({
+          boardId: board.id,
+          title: text.title,
+          content: text.content,
+          categoryId: currentCategoryId,
+          ipAddress: ipAddress,
+          allowComment: +allowComment,
+          isNotice: +isNotice,
+          isSecret: +isSecret,
+          isTemp: +isTemp,
+          password: password,
+          token: token,
+          files: files,
+          thumbnailFile: thumbnail,
+        })
+        .then((res) => {
+          setUploadAble(true);
+          if (res.success) {
+            navigate(`/board/${board.id}`);
+          } else {
+            alert('게시물 수정 실패! 전산관리자에게 문의하세요~');
+          }
+        });
+    });
+  };
   return (
     <div className="">
       <div name="input" className="">
@@ -162,29 +178,17 @@ const TextEditer = (props) => {
             <input
               type="text"
               className="border-2 border-divisionGray m-2 p-1 w-full rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:bg-darkPoint dark:border-darkComponent dark:text-white"
+              value={text.title}
               onChange={updateTitle}
             ></input>
-
-            {/* TODO: 썸네일 tailwind 사용해서 구현 
-            <input
-              type="file"
-              id="thumbnail"
-              onChange={changeThumbnailHandler}
-            />*/}
-            {thumbnailBase64 ? (
-              <img
-                className="d-block w-100 rounded-xl border-4 border-mainYellow p-1 shadow-lg"
-                src={thumbnailBase64}
-                alt="thumbnail"
-                style={{ width: '100px', height: '100px' }}
-              />
-            ) : (
-              ''
-            )}
           </div>
 
           <div className="inline-block md:ml-5 mt-5 w-full md:w-fit flex justify-center">
-            <FileUploadForm setThumbnail={setThumbnail} />
+            <FileUploadForm
+              setThumbnail={setThumbnail}
+              modifyFlag={modifyFlag}
+              board={board}
+            />
           </div>
         </div>
         <div name="content_box" className="my-5">
@@ -224,12 +228,6 @@ const TextEditer = (props) => {
           <p className="hidden text-center p-1 px-3 bg-mainYellow rounded-r-full shadow-lg border-b-2 border-pointYellow sm:inline-block">
             파일 첨부
           </p>
-          {/* TODO: 썸네일 tailwind 사용해서 구현 
-          <input
-            type="file"
-            className="border-2 m-2 w-full rounded-md"
-            onChange={changeFileHandler}
-          ></input>*/}
           <FilesUploadForm />
         </div>
       </div>
@@ -281,26 +279,52 @@ const TextEditer = (props) => {
         </div>
         <div className="w-full sm:w-fit inline-block dark:text-mainWhite">
           <div className="flex justify-between sm:justify-end">
-            <button
-              className="text-xl border-4 border-divisionGray rounded-xl m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none"
-              onClick={(e) => uploadPostinghandler(TEMP, e)}
-            >
-              <InboxInIcon className="inline-block m-1 h-7 w-7  text-divisionGray" />
-              임시저장
-            </button>
-            <button
-              className={
-                (uploadAble
-                  ? 'border-mainYellow text-mainYellow shadow-lg'
-                  : 'border-divisionGray text-mainWhite bg-divisionGray dark:text-darkComponent dark:bg-darkPoint dark:border-darkComponent') +
-                ' text-xl border-4  rounded-xl m-2 p-2 active:mr-1 active:ml-3 active:shadow-none'
-              }
-              onClick={(e) => uploadPostinghandler(NO_TEMP, e)}
-              disabled={!uploadAble}
-            >
-              <PencilIcon className="inline-block m-1 h-7 w-7 " />
-              게시하기
-            </button>
+            {modifyFlag ? (
+              <button
+                className="text-xl border-4 border-divisionGray rounded-xl m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none"
+                onClick={(e) => uploadModifyhandler(TEMP, e)}
+              >
+                <InboxInIcon className="inline-block m-1 h-7 w-7  text-divisionGray" />
+                임시저장
+              </button>
+            ) : (
+              <button
+                className="text-xl border-4 border-divisionGray rounded-xl m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none"
+                onClick={(e) => uploadPostinghandler(TEMP, e)}
+              >
+                <InboxInIcon className="inline-block m-1 h-7 w-7  text-divisionGray" />
+                임시저장
+              </button>
+            )}
+            {modifyFlag ? (
+              <button
+                className={
+                  (uploadAble
+                    ? 'border-mainYellow text-mainYellow shadow-lg'
+                    : 'border-divisionGray text-mainWhite bg-divisionGray dark:text-darkComponent dark:bg-darkPoint dark:border-darkComponent') +
+                  ' text-xl border-4  rounded-xl m-2 p-2 active:mr-1 active:ml-3 active:shadow-none'
+                }
+                onClick={(e) => uploadModifyhandler(NO_TEMP, e)}
+                disabled={!uploadAble}
+              >
+                <PencilIcon className="inline-block m-1 h-7 w-7 " />
+                수정하기
+              </button>
+            ) : (
+              <button
+                className={
+                  (uploadAble
+                    ? 'border-mainYellow text-mainYellow shadow-lg'
+                    : 'border-divisionGray text-mainWhite bg-divisionGray dark:text-darkComponent dark:bg-darkPoint dark:border-darkComponent') +
+                  ' text-xl border-4  rounded-xl m-2 p-2 active:mr-1 active:ml-3 active:shadow-none'
+                }
+                onClick={(e) => uploadPostinghandler(NO_TEMP, e)}
+                disabled={!uploadAble}
+              >
+                <PencilIcon className="inline-block m-1 h-7 w-7 " />
+                게시하기
+              </button>
+            )}
           </div>
         </div>
       </div>

@@ -6,16 +6,17 @@ import {
   PencilIcon,
   TrashIcon,
 } from '@heroicons/react/solid';
+
+//local
+import ipAPI from 'API/v1/ip';
 import commentAPI from 'API/v1/comment';
 const Comments = ({ boardId: boardId, state }) => {
   const [comments, setComments] = useState([]);
+  const [commentAddFlag, setCommentAddFlag] = useState(false);
+  const [content, setContent] = useState('');
   const isDark = state.darkMode;
+  const token = state.member.token;
   const myId = state.member.userInfo.id;
-  console.log(state.member.userInfo);
-  const addCommentHandler = () => {
-    console.log('addComment');
-  };
-
   useEffect(() => {
     commentAPI
       .get({
@@ -24,7 +25,31 @@ const Comments = ({ boardId: boardId, state }) => {
       .then((res) => {
         setComments(res.list);
       });
-  }, [isDark]);
+  }, [isDark, commentAddFlag]);
+
+  const commentContentHandler = (e) => {
+    setContent(e.target.value);
+  };
+
+  const addCommentHandler = () => {
+    ipAPI.getIp().then((ipAddress) => {
+      commentAPI
+        .create({
+          boardId: boardId,
+          content: content,
+          ipAddress: ipAddress,
+          token: token,
+        })
+        .then((res) => {
+          if (res.success) {
+            setCommentAddFlag(!commentAddFlag);
+            setContent('');
+          } else {
+            alert('댓글 달기 실패! 전산관리자에게 문의하세요~');
+          }
+        });
+    });
+  };
 
   const filterParentComment = (comments) => {
     return comments.filter((comment) => comment.parentId == 0);
@@ -152,7 +177,11 @@ const Comments = ({ boardId: boardId, state }) => {
         ))}
       </div>
       <div name="댓글 작성 창">
-        <textarea className="resize-none border-2 border-divisionGray m-2 p-1 w-full h-32 rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:border-darkComponent dark:text-white"></textarea>
+        <textarea
+          value={content}
+          onChange={commentContentHandler}
+          className="resize-none border-2 border-divisionGray m-2 p-1 w-full h-32 rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:border-darkComponent dark:text-white"
+        ></textarea>
         <div className="flex justify-end">
           <button
             className="border-4 border-mainYellow my-2 p-2 pr-3 rounded-lg hover:shadow-lg text-mainYellow active:mt-3 active:mb-1 active:shadow-none"

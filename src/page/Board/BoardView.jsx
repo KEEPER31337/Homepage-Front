@@ -13,12 +13,9 @@ import testData from 'page/Board/testData';
 import postAPI from 'API/v1/post';
 
 const BoardView = (props) => {
-  //const { pathname } = useLocation();
   const { no } = useParams();
   const [board, setBoard] = useState({});
   const [prevBoard, setPrevBoard] = useState({});
-  //console.log(pathname); //현재 path url
-  // console.log(no); //게시글 번호
   const token = props.state.member.token;
   useEffect(() => {
     setPrevBoard(board);

@@ -1,7 +1,9 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { PhotographIcon, TrashIcon } from '@heroicons/react/solid';
 import { Input } from 'postcss';
+
+import utilAPI from 'API/v1/util';
 
 const validateName = (fname) => {
   let extensions = ['jpeg', 'jpg', 'png'];
@@ -22,28 +24,50 @@ const FileUploadForm = (props) => {
   const [thumbnailBase64, setThumbnailBase64] = useState(null); // 파일 base64
   // const [thumbnail, setThumbnail] = useState(null);
 
+  useEffect(() => {
+    if (props.modifyFlag) {
+      utilAPI
+        .getThumbnail({ thumbnailId: props.board.thumbnail.id })
+        .then((data) => {
+          console.log(data);
+          props.setThumbnail(data);
+
+          const reader = new FileReader();
+          reader.onabort = () => console.log('file reading was aborted');
+          reader.onerror = () => console.log('file reading has failed');
+          reader.onloadend = () => {
+            const base64 = reader.result;
+            if (base64) {
+              setThumbnailBase64(base64);
+            }
+          };
+          reader.readAsDataURL(data);
+        });
+    }
+  }, []);
+
   const deleteClickHandler = () => {
     setThumbnailBase64(null);
     props.setThumbnail(null);
   };
 
   const onDrop = useCallback((acceptedFiles) => {
-    console.log('acceptedFiles : ');
-    console.log(acceptedFiles);
-    console.log(props);
-    props.setThumbnail(acceptedFiles);
     setThumbnailBase64('');
     acceptedFiles.forEach((file) => {
       if (validateName(file.name)) {
-        const reader = new FileReader();
-        console.log('file : ');
         console.log(file);
+        props.setThumbnail(file);
+        const reader = new FileReader();
 
         reader.onabort = () => console.log('file reading was aborted');
         reader.onerror = () => console.log('file reading has failed');
         reader.onloadend = () => {
+          const array = [];
+          for (var i = 0; i < reader.result.length; i++) {
+            array.push(reader.result.charCodeAt(i));
+          }
+          console.log(new Uint8Array(array));
           const base64 = reader.result;
-          //console.log(base64);
           if (base64) {
             const base64Sub = base64.toString();
             setThumbnailBase64(base64Sub);
