@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { SearchIcon, ViewGridIcon, ViewListIcon } from '@heroicons/react/solid';
+import {
+  SearchIcon,
+  ViewGridIcon,
+  ViewListIcon,
+  DocumentTextIcon,
+  PhotographIcon,
+} from '@heroicons/react/solid';
 //local
 import testData from 'page/Board/testData';
 import postAPI from 'API/v1/post';
@@ -153,47 +159,54 @@ const Table = (props) => {
             <tr
               key={board.id}
               className={
-                'border-b-2 hover:bg-slate-100 hover:shadow-lg dark:hover:bg-darkComponent dark:border-darkComponent ' +
+                (board.isNotice ? 'bg-slate-100' : '') +
+                ' border-b-2 hover:bg-slate-200 hover:shadow-lg dark:hover:bg-darkComponent dark:border-darkComponent ' +
                 getCurrentBoard(board.id, no)
               }
             >
+              {console.log(board)}
               <td className="w-[3em] border-r border-divisionGray text-center dark:border-darkComponent">
-                {MAX_POSTS * (currentPage - 1) + index + 1}
+                {board.isNotice
+                  ? '공지'
+                  : MAX_POSTS * (currentPage - 1) + index + 1}
               </td>
 
               <td className="p-2 dark:border-darkComponent">
                 <Link to={`/board/${board.id}`} state={{ test: 'test' }}>
-                  <div className=" w-60 ">
-                    <p className="truncate w-4/5 text-md ">
-                      <strong>{board.title}</strong>
-                      {/* TODO: 이미지, 첨부파일 정보 가져오기
-                      {board.image ? (
-                        <PhotographIcon className="inline-block h-5 w-5 " />
-                      ) : (
-                        ''
-                      )}
-                      {board.file ? (
-                        <DocumentTextIcon className="inline-block h-5 w-5" />
-                      ) : (
-                        ''
-                      )}
-                      {board.commentN != 0 ? (
-                        <strong className="text-mainYellow">
-                          {'(' + board.commentN + ')'}
-                        </strong>
-                      ) : (
-                        ''
-                      )} */}
-                      {isNewPost(board.registerTime) ? (
-                        <strong className="inline-block rounded-full w-5 h-5 align-middle text-center text-xs m-1 bg-red-500 shadow-lg border-2 border-red-200 text-mainWhite dark:text-mainBlack">
-                          n
-                        </strong>
-                      ) : (
-                        ''
-                      )}
+                  <div className="max-w-[50vw] md:max-w-[40vw] sm:max-w-[20vw] inline-block">
+                    <p className="truncate text-md ">
+                      <strong
+                        className={board.isSecret ? 'text-slate-400' : ''}
+                      >
+                        {board.title}
+                      </strong>
                     </p>
                   </div>
 
+                  {!board.isSecret && board.thumbnail ? (
+                    <PhotographIcon className="inline-block h-5 w-5 m-1 text-slate-500 " />
+                  ) : (
+                    ''
+                  )}
+                  {!board.isSecret && board.files.length != 0 ? (
+                    <DocumentTextIcon className="inline-block h-5 w-5" />
+                  ) : (
+                    ''
+                  )}
+                  {!board.isSecret && board.commentCount != 0 ? (
+                    <strong className="text-mainYellow">
+                      {'(' + board.commentN + ')'}
+                    </strong>
+                  ) : (
+                    ''
+                  )}
+                  {isNewPost(board.registerTime) ? (
+                    <strong className="inline-block rounded-full w-5 h-5 align-middle text-center text-xs m-1 bg-red-500 shadow-lg border-2 border-red-200 text-mainWhite dark:text-mainBlack">
+                      n
+                    </strong>
+                  ) : (
+                    ''
+                  )}
                   <p className="mt-2 text-xs sm:hidden">
                     글쓴이 : <strong>{board.writer} </strong>| 작성일시 :
                     <strong>{getDateWithFormat(board.registerTime)} </strong>|{' '}

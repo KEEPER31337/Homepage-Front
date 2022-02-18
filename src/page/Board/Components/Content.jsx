@@ -23,6 +23,42 @@ const Content = ({ state, board }) => {
   const [isLiked, setIsLiked] = useState(); //좋아요 여부
   const postingId = board.id;
   const token = state.member.token;
+  //const files=board.files;
+  const files = [
+    {
+      fileName: 'dwg.png',
+      filePath: 'dwg.png',
+      fileSize: 3496,
+      id: 1645204350432,
+      ipAddress: '1.1.1.1',
+      uploadTime: '2022-1-18T22:16:53',
+    },
+    {
+      fileName: 'jar.png',
+      filePath: 'jar.png',
+      fileSize: 3482,
+      id: 1645204350433,
+      ipAddress: '1.1.1.1',
+      uploadTime: '2022-1-18T22:16:53',
+    },
+    {
+      fileName: 'java.png',
+      filePath: 'java.png',
+      fileSize: 3479,
+      id: 1645204350434,
+      ipAddress: '1.1.1.1',
+      uploadTime: '2022-1-18T22:16:53',
+    },
+    {
+      fileName: 'jpg.png',
+      filePath: 'jpg.png',
+      fileSize: 3478,
+      id: 1645204350435,
+      ipAddress: '1.1.1.1',
+      uploadTime: '2022-1-18T22:16:53',
+    },
+  ];
+
   //console.log(board);
   const viwerRef = useRef();
   const clickLikeHandler = () => {

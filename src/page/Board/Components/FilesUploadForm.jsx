@@ -25,23 +25,24 @@ const getFileIcon = (filename) => {
   }
 };
 
-const FilesUploadForm = () => {
+const FilesUploadForm = (props) => {
   const [files, setFiles] = useState([]);
 
   const deleteClickHandler = (fileName) => {
-    setFiles(files.filter((file) => file.name !== fileName));
+    props.setFiles(files.filter((file) => file.fileName !== fileName));
+    setFiles(files.filter((file) => file.fileName !== fileName));
   };
 
   const getFileInfo = (file) => {
     return (
-      <tr className="border-b">
+      <tr className="border-b" key={file.fileName}>
         <td>
-          {getFileIcon(file.name)}
-          {file.name}
+          {getFileIcon(file.fileName)}
+          {file.fileName}
         </td>
-        <td>{formatFileSize(file.size)}</td>
+        <td>{formatFileSize(file.fileSize)}</td>
         <td className="text-red-500">
-          <button onClick={() => deleteClickHandler(file.name)}>
+          <button onClick={() => deleteClickHandler(file.fileName)}>
             <TrashIcon className=" h-5 w-5 inline-block " aria-hidden="true" />
             삭제
           </button>
@@ -65,7 +66,27 @@ const FilesUploadForm = () => {
           notAddFiles = [...notAddFiles, newFile];
         } else {
           temp = [...temp, newFile];
-          realAddFiles = [...realAddFiles, newFile];
+          const date = new Date(newFile.lastModifiedDate);
+          const uploadTime =
+            date.getFullYear() +
+            '-' +
+            date.getMonth() +
+            '-' +
+            date.getDate() +
+            'T' +
+            newFile.lastModifiedDate.toString().split(' ')[4];
+          //realAddFiles = [...realAddFiles, newFile];
+          realAddFiles = [
+            ...realAddFiles,
+            {
+              id: Date.now(),
+              fileName: newFile.name,
+              filePath: newFile.path,
+              fileSize: newFile.size,
+              uploadTime: uploadTime,
+              ipAddress: '1.1.1.1',
+            },
+          ];
         }
       });
       if (notAddFiles.length !== 0) {
@@ -79,6 +100,7 @@ const FilesUploadForm = () => {
             ') 기존 파일을 삭제하고 새로 업로드 해주십시오.'
         );
       }
+      props.setFiles([...files, ...realAddFiles]);
       setFiles([...files, ...realAddFiles]);
     },
     [files]

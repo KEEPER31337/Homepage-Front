@@ -90,6 +90,7 @@ const TextEditer = (props) => {
   const uploadPostinghandler = (isTemp) => {
     setUploadAble(false);
     ipAPI.getIp().then((ipAddress) => {
+      console.log(files);
       postAPI
         .create({
           title: text.title,
@@ -228,7 +229,11 @@ const TextEditer = (props) => {
           <p className="hidden text-center p-1 px-3 bg-mainYellow rounded-r-full shadow-lg border-b-2 border-pointYellow sm:inline-block">
             파일 첨부
           </p>
-          <FilesUploadForm />
+          <FilesUploadForm
+            setFiles={setFiles}
+            modifyFlag={modifyFlag}
+            board={board}
+          />
         </div>
       </div>
       <div className="justify-between sm:flex">
