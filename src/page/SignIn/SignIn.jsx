@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -16,22 +16,36 @@ const SignIn = (props) => {
   const [loginInfo, setLoginInfo] = useState({ loginId: '', password: '' });
   const loginFailModalRef = useRef({});
   const navigate = useNavigate();
+  //NOTE 문제점 : 원래 onBlur로 id, pw state값이 바뀌는데, 그러려면 input값을 한번 클릭했다가 다른곳을 클릭해야 했습니다.
+  //그런데, 자동완성기능은 홈페이지에 들어가면 바로 적용이 되서, onBlur기능으로 state값을 저장하게 되면 아예 빈 값으로 적용이 됬습니다.
 
-  const handleBlur = (e) => {
-    setLoginInfo({ ...loginInfo, [e.target.name]: e.target.value });
+  //NOTE flag => id, pw 둘다 빈칸일 경우, 알람 뜨게 하기 위해서
+  const [flag, setFlag] = useState(0);
+  //ref
+  const id = useRef();
+  const pw = useRef();
+
+  const handleSignIn = (e) => {
+    setFlag(1);
+    //NOTE 바로 이 함수안에서 API로 넘어가면, 비동기때문에 state값이 적용이 바로 안됨. 빈내용으로 보내져서, 로그인 실패창이 뜸.
+    setLoginInfo({ loginId: id.current.value, password: pw.current.value });
+
+    //console.log(loginInfo);
   };
-  const handleSignIn = () => {
-    authAPI.signIn(loginInfo).then((data) => {
-      if (data.success) {
-        const token = data.data.token;
-        const memberInfo = data.data.member;
-        props.memberSignIn({ token, memberInfo });
-        navigate(BACK);
-      } else {
-        loginFailModalRef.current.open();
-      }
-    });
-  };
+  useEffect(() => {
+    if (id.current.value !== '' || pw.current.value !== '' || flag !== 0) {
+      authAPI.signIn(loginInfo).then((data) => {
+        if (data.success) {
+          const token = data.data.token;
+          const memberInfo = data.data.member;
+          props.memberSignIn({ token, memberInfo });
+          navigate(BACK);
+        } else {
+          loginFailModalRef.current.open();
+        }
+      });
+    }
+  }, [loginInfo]);
 
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 dark:text-mainWhite dark:bg-mainBlack">
@@ -46,6 +60,7 @@ const SignIn = (props) => {
           <div className="space-y-4">
             <div>
               <input
+                ref={id}
                 id="id"
                 name="loginId"
                 type="text"
@@ -58,12 +73,12 @@ const SignIn = (props) => {
               focus:bg-backGray focus:border-backGray  focus:ring-backGray dark:bg-darkPoint dark:outline-white  dark:border-transparent
               "
                 placeholder="아이디"
-                onBlur={handleBlur}
               />
             </div>
 
             <div>
               <input
+                ref={pw}
                 id="password"
                 name="password"
                 type="password"
@@ -78,7 +93,6 @@ const SignIn = (props) => {
 
               focus:z-10 sm:text-sm"
                 placeholder="비밀번호"
-                onBlur={handleBlur}
               />
             </div>
           </div>
