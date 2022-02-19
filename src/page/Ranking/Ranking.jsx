@@ -1,7 +1,7 @@
 import React from 'react';
 
 // local
-import Member from './Component/Member';
+import MemberGrid from './Component/MemberGrid';
 import RankingTable from './Component/RankingTable';
 import PageContainer from './Component/PageContainer';
 
@@ -9,7 +9,7 @@ const Ranking = () => {
   return (
     <div className="bg-mainWhite dark:bg-mainBlack">
       <PageContainer>
-        <Member />
+        <MemberGrid />
         <RankingTable />
       </PageContainer>
     </div>

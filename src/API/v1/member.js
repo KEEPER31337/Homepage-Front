@@ -18,4 +18,20 @@ async function getMember({ token }) {
   }
 }
 
-export default { getMember };
+async function getMembers({ token }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/members',
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+export default { getMember, getMembers };

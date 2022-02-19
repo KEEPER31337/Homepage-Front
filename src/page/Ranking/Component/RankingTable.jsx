@@ -6,7 +6,7 @@ import rankAPI from 'API/v1/rank';
 import SimpleNotification from 'shared/SimpleNotification';
 import iconPencilAlt from 'assets/img/icons/pecil-alt.svg';
 
-const headers = ['랭킹', '이름', '포인트', '역할'];
+const headers = ['랭킹', '이름', '포인트', '직책'];
 
 const AttandanceTable = ({ member }) => {
   const [rankList, setRankList] = useState([{}]);
