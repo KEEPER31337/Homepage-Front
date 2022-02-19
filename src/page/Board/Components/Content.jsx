@@ -3,7 +3,7 @@ import { testText } from 'page/Board/testText';
 import '@toast-ui/editor/dist/toastui-editor.css'; //마크다운 편집기 뷰어 에디터
 import { Viewer } from '@toast-ui/react-editor';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   ThumbUpIcon,
   ThumbDownIcon,
@@ -23,6 +23,7 @@ const Content = ({ state, board }) => {
   const [isLiked, setIsLiked] = useState(); //좋아요 여부
   const postingId = board.id;
   const token = state.member.token;
+  const navigate = useNavigate();
   //const files=board.files;
   const files = [
     {
@@ -90,7 +91,11 @@ const Content = ({ state, board }) => {
 
   const deletePostingHandler = () => {
     postAPI.remove({ boardId: postingId, token: token }).then((res) => {
-      console.log(res);
+      if (res.success) {
+        navigate('/board');
+      } else {
+        alert('게시물 삭제 실패! 전산관리자에게 문의하세요~');
+      }
     });
   };
 

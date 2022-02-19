@@ -9,7 +9,6 @@ import {
   PhotographIcon,
 } from '@heroicons/react/solid';
 //local
-import testData from 'page/Board/testData';
 import postAPI from 'API/v1/post';
 import {
   getDateWithFormat,
@@ -19,7 +18,6 @@ import {
 
 const MAX_POSTS = 5; //한 페이지당 노출시킬 최대 게시글 수
 const MAX_PAGES = 6; //한 번에 노출시킬 최대 페이지 버튼 개수
-const pageN = Math.ceil(testData.maxNo / MAX_POSTS); //전체 페이지 수
 const styleList = ['text', 'gallary'];
 
 const setPageButton = (currentPage, page) => {
@@ -29,31 +27,7 @@ const setPageButton = (currentPage, page) => {
   else
     return 'bg-mainWhite border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-mainBlack dark:text-mainWhite';
 };
-const hiddenPrevious = (currentPage) => {
-  //현재 페이지가 맨 앞 페이지인지
-  if (currentPage == 1) return 'hidden';
-  return '';
-};
-const hiddenNext = (currentPage) => {
-  //현재 페이지가 맨 뒤 페이지인지
-  if (currentPage == pageN) return 'hidden';
-  return '';
-};
-const getStartEndPage = (currentPage) => {
-  //currentPage-MAX_PAGES/2~currentPage+MAX_PAGES/2-1
-  //전체 페이지가 최대 노출 가능 페이지 개수를 넘을 경우(7개 이상)
-  var startPage = currentPage - MAX_PAGES / 2;
-  var endPage = currentPage + (MAX_PAGES / 2 - 1);
-  if (startPage <= 0) {
-    //범위가 0 이하로 오버될 경우
-    endPage = endPage - startPage + 1;
-    startPage = 1;
-  } else if (endPage > pageN) {
-    startPage = startPage - (endPage - pageN);
-    endPage = pageN;
-  }
-  return { startPage, endPage };
-};
+
 const getStyleIcon = (item) => {
   if (item == styleList[0]) {
     return <ViewListIcon className="inline-block h-5 w-5" />;
@@ -68,8 +42,19 @@ const Table = (props) => {
   const [viewStyle, setViewStyle] = useState('text');
   //console.log(currentPage); //현재 페이지
   const { no } = useParams();
-  const currentCategoryId = props.state.category.current.id;
-  const { startPage, endPage } = getStartEndPage(currentPage);
+  const [pageN, setPageN] = useState(0); //전체 페이지 수
+
+  const hiddenPrevious = (currentPage) => {
+    //현재 페이지가 맨 앞 페이지인지
+    if (currentPage == 1) return 'hidden';
+    return '';
+  };
+
+  const hiddenNext = (currentPage) => {
+    //현재 페이지가 맨 뒤 페이지인지
+    if (currentPage == pageN) return 'hidden';
+    return '';
+  };
 
   const getCurrentBoard = (id, currentId) => {
     //현재 게시글
@@ -77,11 +62,30 @@ const Table = (props) => {
     return;
   };
 
+  const getStartEndPage = (currentPage) => {
+    //currentPage-MAX_PAGES/2~currentPage+MAX_PAGES/2-1
+    //전체 페이지가 최대 노출 가능 페이지 개수를 넘을 경우(7개 이상)
+    var startPage = currentPage - MAX_PAGES / 2;
+    var endPage = currentPage + (MAX_PAGES / 2 - 1);
+    if (startPage <= 0) {
+      //범위가 0 이하로 오버될 경우
+      endPage = endPage - startPage + 1;
+      startPage = 1;
+    } else if (endPage > pageN) {
+      startPage = startPage - (endPage - pageN);
+      endPage = pageN;
+    }
+    return { startPage, endPage };
+  };
+
+  const currentCategoryId = props.state.category.current.id;
+  const { startPage, endPage } = getStartEndPage(currentPage);
+
   useEffect(() => {
     //console.log(props.state.member.memberId);
     var end = 0;
     // TODO 카테고리별 게시물 최대 개수 불러오기
-    if (currentPage * MAX_POSTS > testData.maxNo) end = testData.maxNo;
+    if (currentPage * MAX_POSTS > pageN) end = pageN;
     else end = currentPage * MAX_POSTS;
     postAPI
       .getList({
@@ -90,9 +94,11 @@ const Table = (props) => {
         size: MAX_POSTS,
       })
       .then((res) => {
+        if (res?.list) {
+          setPageN(Math.ceil(res.list[0].size / MAX_POSTS));
+        }
         setBoardContent(res?.list);
       });
-    console.log(viewStyle);
   }, [currentPage, currentCategoryId, viewStyle]); //currentPage 값이 변경될 때마다
 
   return (
@@ -102,7 +108,7 @@ const Table = (props) => {
         className="items-end flex justify-between"
       >
         <div className="inline-block text-xl my-2">
-          Total <span className="text-mainYellow">{testData.maxNo}</span>
+          Total <span className="text-mainYellow">{boardContent[0].size}</span>
         </div>
         <div className="m-2 inline-block w-1/8">
           <p className="text-center m-2 border-b-2 border-divisionGray dark:border-darkComponent">
@@ -164,7 +170,6 @@ const Table = (props) => {
                 getCurrentBoard(board.id, no)
               }
             >
-              {console.log(board)}
               <td className="w-[3em] border-r border-divisionGray text-center dark:border-darkComponent">
                 {board.isNotice
                   ? '공지'
@@ -269,7 +274,7 @@ const Table = (props) => {
                 <strong name="현재 보여지는 게시글들 중 마지막 게시글 번호">
                   {' ' +
                     (currentPage == pageN
-                      ? testData.maxNo
+                      ? boardContent[0].size
                       : currentPage * MAX_POSTS) +
                     ' '}
                 </strong>
@@ -277,7 +282,8 @@ const Table = (props) => {
               of
               <span class="font-medium">
                 <strong name="전체 게시글 개수">
-                  {' ' + testData.maxNo + ' '}
+                  {' '}
+                  {boardContent[0].size}{' '}
                 </strong>
               </span>
               results
