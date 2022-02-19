@@ -3,6 +3,8 @@ import Trends from './src/Trends';
 import Latest from './src/Latest';
 import './style/height.css';
 
+import Logo from 'assets/img/keeper_logo.png';
+
 const Home = () => {
   return (
     <div className="home">

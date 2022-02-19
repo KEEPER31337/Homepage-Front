@@ -8,8 +8,12 @@
 npm install
 ```
 
-### 개발 모드로 실행
+### env 환경 설정
+
+- **.env**
 
 ```
-npm run dev
+REACT_APP_API_URL=주소
 ```
+
+프로젝트 디렉토리에 위와 같이 **.env** 파일 작성

@@ -2,13 +2,17 @@
 import React, { Fragment } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/solid';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+// redux
+import actionCategory from 'redux/action/category';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function PopDown(props) {
-  console.log(props.category.subs);
+const PopDown = ({ category, currentCategory, updateCurrentCategory }) => {
   return (
     <Popover className="relative">
       {({ open }) => (
@@ -19,7 +23,9 @@ export default function PopDown(props) {
               'group rounded-md inline-flex items-center text-base font-semibold hover:text-mainYellow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mainYellow'
             )}
           >
-            <span>{props.category.name}</span>
+            <span className="overflow-hidden whitespace-nowrap">
+              {category.name}
+            </span>
             <ChevronDownIcon
               className={classNames(
                 open ? 'text-mainWhite' : 'text-mainWhite',
@@ -41,11 +47,14 @@ export default function PopDown(props) {
             <Popover.Panel className="absolute z-10 -ml-4 mt-3 transform px-2 w-screen max-w-md sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2">
               <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
                 <div className="relative grid gap-6 bg-mainYellow px-5 py-6 sm:gap-8 sm:p-8">
-                  {props.category.subs.map((item) => (
-                    <a
+                  {category.subs.map((item) => (
+                    <Link
                       key={item.name}
-                      href={item.href}
+                      to={item.href}
                       className="-m-3 p-3 flex items-start rounded-lg hover:bg-pointYellow"
+                      onClick={() => {
+                        updateCurrentCategory(item.id);
+                      }}
                     >
                       <item.icon
                         className="flex-shrink-0 h-6 w-6 text-white"
@@ -59,7 +68,7 @@ export default function PopDown(props) {
                           {item.description}
                         </p>
                       </div>
-                    </a>
+                    </Link>
                   ))}
                 </div>
                 <div className="px-5 py-5 bg-gray-50 space-y-6 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8"></div>
@@ -70,4 +79,17 @@ export default function PopDown(props) {
       )}
     </Popover>
   );
-}
+};
+
+const mapStateToProps = (state) => {
+  return { currentCategory: state.category.current };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateCurrentCategory: (categoryId) => {
+      dispatch(actionCategory.updateCurrent(categoryId));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PopDown);
