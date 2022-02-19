@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
@@ -40,9 +40,10 @@ const Table = (props) => {
   const [boardContent, setBoardContent] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [viewStyle, setViewStyle] = useState('text');
-  //console.log(currentPage); //현재 페이지
   const { no } = useParams();
   const [pageN, setPageN] = useState(0); //전체 페이지 수
+  const [searchFlag, setSearchFlag] = useState(false); //전체 페이지 수
+  const [selectedSearchVal, SetSelectedSearchVal] = useState('TC');
 
   const hiddenPrevious = (currentPage) => {
     //현재 페이지가 맨 앞 페이지인지
@@ -80,26 +81,102 @@ const Table = (props) => {
 
   const currentCategoryId = props.state.category.current.id;
   const { startPage, endPage } = getStartEndPage(currentPage);
+  const postingSearchRef = useRef(null);
+
+  const searchHandler = () => {
+    if (currentCategoryId) {
+      postAPI
+        .search({
+          type: selectedSearchVal,
+          keyword: postingSearchRef.current?.value,
+          category: currentCategoryId,
+          page: 0,
+          size: MAX_POSTS,
+        })
+        .then((res) => {
+          setSearchFlag(true);
+          if (res?.list?.length == 0) {
+            setPageN(0);
+            setCurrentPage(0);
+          } else {
+            setPageN(
+              Math.ceil(
+                (res?.list?.length != 0 ? res.list[0]?.size : 0) / MAX_POSTS
+              )
+            );
+            setCurrentPage(1);
+          }
+          setBoardContent(res?.list);
+        });
+    }
+  };
 
   useEffect(() => {
-    //console.log(props.state.member.memberId);
-    var end = 0;
-    // TODO 카테고리별 게시물 최대 개수 불러오기
-    if (currentPage * MAX_POSTS > pageN) end = pageN;
-    else end = currentPage * MAX_POSTS;
-    postAPI
-      .getList({
-        category: currentCategoryId,
-        page: currentPage - 1,
-        size: MAX_POSTS,
-      })
-      .then((res) => {
-        if (res?.list) {
-          setPageN(Math.ceil(res.list[0].size / MAX_POSTS));
-        }
-        setBoardContent(res?.list);
-      });
-  }, [currentPage, currentCategoryId, viewStyle]); //currentPage 값이 변경될 때마다
+    // 카테고리 값 변화에 따른 현재 페이지 번호, 총 페이지 개수 갱신
+    if (currentCategoryId) {
+      postAPI
+        .getList({
+          category: currentCategoryId,
+          page: currentPage - 1,
+          size: MAX_POSTS,
+        })
+        .then((res) => {
+          setSearchFlag(false);
+          if (res?.list?.length == 0) {
+            setPageN(0);
+            setCurrentPage(0);
+          } else {
+            setPageN(
+              Math.ceil(
+                (res?.list?.length != 0 ? res.list[0]?.size : 0) / MAX_POSTS
+              )
+            );
+            setCurrentPage(1);
+          }
+          setBoardContent(res?.list);
+        });
+    }
+  }, [currentCategoryId]);
+
+  useEffect(() => {
+    // 현재 페이지 변화에 따른 총 페이지 개수 갱신
+    // 검색중이면 페이지네이션을 검색으로, 검색중이 아니면 기본으로 설정
+    if (searchFlag) {
+      postAPI
+        .search({
+          type: selectedSearchVal,
+          keyword: postingSearchRef.current?.value,
+          category: currentCategoryId,
+          page: currentPage - 1,
+          size: MAX_POSTS,
+        })
+        .then((res) => {
+          setPageN(
+            Math.ceil(
+              (res?.list?.length != 0 ? res.list[0]?.size : 0) / MAX_POSTS
+            )
+          );
+          setBoardContent(res?.list);
+        });
+    } else {
+      if (currentCategoryId) {
+        postAPI
+          .getList({
+            category: currentCategoryId,
+            page: currentPage - 1,
+            size: MAX_POSTS,
+          })
+          .then((res) => {
+            setPageN(
+              Math.ceil(
+                (res?.list?.length != 0 ? res.list[0]?.size : 0) / MAX_POSTS
+              )
+            );
+            setBoardContent(res?.list);
+          });
+      }
+    }
+  }, [currentPage, viewStyle]); //currentPage 값이 변경될 때마다
 
   return (
     <div className="dark:bg-mainBlack dark:text-mainWhite ">
@@ -108,7 +185,10 @@ const Table = (props) => {
         className="items-end flex justify-between"
       >
         <div className="inline-block text-xl my-2">
-          Total <span className="text-mainYellow">{boardContent[0].size}</span>
+          Total{' '}
+          <span className="text-mainYellow">
+            {boardContent?.length != 0 ? boardContent[0]?.size : 0}
+          </span>
         </div>
         <div className="m-2 inline-block w-1/8">
           <p className="text-center m-2 border-b-2 border-divisionGray dark:border-darkComponent">
@@ -266,7 +346,7 @@ const Table = (props) => {
               Showing
               <span class="font-medium">
                 <strong name="현재 보여지는 게시글들 중 첫 게시글 번호">
-                  {' ' + ((currentPage - 1) * MAX_POSTS + 1) + ' '}
+                  {' ' + Math.max(0, (currentPage - 1) * MAX_POSTS + 1) + ' '}
                 </strong>
               </span>
               to
@@ -274,7 +354,9 @@ const Table = (props) => {
                 <strong name="현재 보여지는 게시글들 중 마지막 게시글 번호">
                   {' ' +
                     (currentPage == pageN
-                      ? boardContent[0].size
+                      ? boardContent?.length != 0
+                        ? boardContent[0]?.size
+                        : 0
                       : currentPage * MAX_POSTS) +
                     ' '}
                 </strong>
@@ -283,7 +365,7 @@ const Table = (props) => {
               <span class="font-medium">
                 <strong name="전체 게시글 개수">
                   {' '}
-                  {boardContent[0].size}{' '}
+                  {boardContent?.length != 0 ? boardContent[0]?.size : 0}{' '}
                 </strong>
               </span>
               results
@@ -429,18 +511,23 @@ const Table = (props) => {
           <select
             className="border text-xs focus:ring-mainYellow focus:border-mainYellow dark:border-darkPoint dark:bg-darkComponent dark:text-mainWhite"
             name="search rule"
+            onChange={(e) => SetSelectedSearchVal(e.target.value)}
           >
-            <option value="제목+내용">제목+내용</option>
-            <option value="제목">제목</option>
-            <option value="내용">내용</option>
-            <option value="작성자">작성자</option>
+            <option value="TC">제목+내용</option>
+            <option value="T">제목</option>
+            <option value="C">내용</option>
+            <option value="W">작성자</option>
           </select>
           <input
+            ref={postingSearchRef}
             type="text"
             className="border-2 border-divisionGray m-2 p-1 rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:border-darkComponent dark:text-white"
             placeholder="검색어"
           ></input>
-          <button className="border-2 border-mainYellow rounded-lg  m-2 px-2 shadow-lg text-mainYellow active:mr-1 active:ml-3 active:shadow-none">
+          <button
+            className="border-2 border-mainYellow rounded-lg  m-2 px-2 shadow-lg text-mainYellow active:mr-1 active:ml-3 active:shadow-none"
+            onClick={searchHandler}
+          >
             <SearchIcon className="inline-block h-5 w-5" />
             검색
           </button>
