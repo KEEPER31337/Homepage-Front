@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Notice from './src/Notice'
 import Trends from './src/Trends';
 import Latest from './src/Latest';
@@ -21,7 +21,7 @@ const Home = () => {
 function FirstPage(visible, setVisible) {
   return (
   <div id="main-first-page" className="grid content-around">
-    {Notice()}
+    {<Notice />}
     <img className="m-auto" alt="keeper_logo" src={Logo}></img>
     <div className="text-xl font-semibold text-gray-900 text-center">
       '지키다'라는 의미를 가진 단어 'KEEP'에서 착안하여, <br></br> 
