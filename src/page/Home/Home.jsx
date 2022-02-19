@@ -49,7 +49,7 @@ const Home = () => {
         </a>
       </div>
       <div id="main-second-page" className="pt-16">
-        <a href="#main-first-page">
+        <a href="#">
           <img className="m-auto w-16 h-16" alt="down_arrow" src={require("../../assets/img/up_arrow.png").default}></img>
         </a>
         {Trends()} 
