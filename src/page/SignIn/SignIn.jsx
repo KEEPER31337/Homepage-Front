@@ -47,6 +47,13 @@ const SignIn = (props) => {
     }
   }, [loginInfo]);
 
+  //enter키 눌러도 로그인 되도록
+  const onKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSignIn();
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 dark:text-mainWhite dark:bg-mainBlack">
       <div className="max-w-md w-screen ">
@@ -66,6 +73,7 @@ const SignIn = (props) => {
                 type="text"
                 autoComplete="off"
                 required
+                onKeyPress={onKeyPress}
                 className="appearance-none rounded-md  
               
               relative block w-full px-3 py-4 border border-gray-300 
@@ -84,6 +92,7 @@ const SignIn = (props) => {
                 type="password"
                 autoComplete="off"
                 required
+                onKeyPress={onKeyPress}
                 className="appearance-none rounded-lg 
               relative block w-full px-3 py-4 border 
               border-gray-300 placeholder-gray-500 
