@@ -18,7 +18,7 @@ import {
   isNewPost,
 } from '../BoardUtil';
 
-const MAX_POSTS = 8; //한 페이지당 노출시킬 최대 게시글 수
+const MAX_POSTS = 1; //한 페이지당 노출시킬 최대 게시글 수
 const MAX_PAGES = 6; //한 번에 노출시킬 최대 페이지 버튼 개수
 const styleList = ['text', 'gallary'];
 
@@ -322,14 +322,26 @@ const Table = (props) => {
         <Gallary boards={boardContent} />
       )}
 
-      <div class=" px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 dark:border-darkComponent">
-        <div class="flex-1 flex justify-between sm:hidden">
+      <div
+        name="페이지네이션"
+        class=" px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 dark:border-darkComponent"
+      >
+        <div
+          name="모바일 previous, next 버튼"
+          class={
+            (currentPage == 1 ? 'justify-end' : 'justify-between') +
+            ' flex-1 flex  sm:hidden'
+          }
+        >
           <button
             name="모바일 previous 버튼"
             onClick={() => {
               setCurrentPage(currentPage - 1);
             }}
-            class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700  hover:bg-gray-50"
+            class={
+              hiddenPrevious(currentPage) +
+              ' relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700  hover:bg-gray-50'
+            }
           >
             {' '}
             Previous{' '}
@@ -339,14 +351,20 @@ const Table = (props) => {
             onClick={() => {
               setCurrentPage(currentPage + 1);
             }}
-            class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-50"
+            class={
+              hiddenNext(currentPage) +
+              ' ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-50'
+            }
           >
             {' '}
             Next{' '}
           </button>
         </div>
-        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-          <div>
+        <div
+          name="컴 화면 페이지네이션"
+          className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"
+        >
+          <div className="hidden md:block">
             <p class="text-sm text-gray-700 dark:text-divisionGray">
               Showing
               <span class="font-medium">
@@ -407,79 +425,87 @@ const Table = (props) => {
                   />
                 </svg>
               </button>
-
-              {/*[...Array(pageN).keys()].map((pageNum) => (
-                <button
-                  name="각 페이지 번호"
-                  key={pageNum}
-                  className={
-                    setPageButton(currentPage, pageNum + 1) +
-                    ' relative inline-flex items-center px-4 py-2 border text-sm font-medium'
-                  }
-                  onClick={() => {
-                    setCurrentPage(pageNum + 1);
-                  }}
-                >
-                  {pageNum + 1}
-                </button>
-                ))*/}
-              {startPage > 1 ? (
-                <button
-                  name="첫 페이지"
-                  className="bg-mainWhite border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-mainBlack dark:text-mainWhite relative inline-flex items-center px-4 py-2 border text-sm font-medium"
-                  onClick={() => {
-                    setCurrentPage(1);
-                  }}
-                >
-                  1
-                </button>
-              ) : (
-                ''
-              )}
-              {startPage > 2 ? (
-                <button className="w-10 bg-mainWhite border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-mainBlack dark:text-mainWhite relative inline-flex items-center px-3 py-2 border text-sm font-medium">
-                  ...
-                </button>
-              ) : (
-                ''
-              )}
-              {[...Array(pageN > MAX_PAGES ? MAX_PAGES : pageN).keys()].map(
-                (pageNum) => (
-                  <button
-                    name="각 페이지 번호"
-                    key={pageNum}
-                    className={
-                      setPageButton(currentPage, pageNum + startPage) +
-                      ' w-10 relative inline-flex items-center px-3 py-2 border text-sm font-medium'
-                    }
-                    onClick={() => {
-                      setCurrentPage(pageNum + startPage);
-                    }}
-                  >
-                    {pageNum + startPage}
-                  </button>
+              {
+                /**/ pageN <= MAX_PAGES ? (
+                  <div>
+                    {[...Array(pageN).keys()].map((pageNum) => (
+                      <button
+                        name="각 페이지 번호"
+                        key={pageNum}
+                        className={
+                          setPageButton(currentPage, pageNum + 1) +
+                          ' relative inline-flex items-center px-4 py-2 border text-sm font-medium'
+                        }
+                        onClick={() => {
+                          setCurrentPage(pageNum + 1);
+                        }}
+                      >
+                        {pageNum + 1}
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <div>
+                    {startPage > 1 ? (
+                      <button
+                        name="첫 페이지"
+                        className="bg-mainWhite border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-mainBlack dark:text-mainWhite relative inline-flex items-center px-4 py-2 border text-sm font-medium"
+                        onClick={() => {
+                          setCurrentPage(1);
+                        }}
+                      >
+                        1
+                      </button>
+                    ) : (
+                      ''
+                    )}
+                    {startPage > 2 ? (
+                      <button className="w-10 bg-mainWhite border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-mainBlack dark:text-mainWhite relative inline-flex items-center px-3 py-2 border text-sm font-medium">
+                        ...
+                      </button>
+                    ) : (
+                      ''
+                    )}
+                    {[
+                      ...Array(pageN > MAX_PAGES ? MAX_PAGES : pageN).keys(),
+                    ].map((pageNum) => (
+                      <button
+                        name="각 페이지 번호"
+                        key={pageNum}
+                        className={
+                          setPageButton(currentPage, pageNum + startPage) +
+                          ' w-10 relative inline-flex items-center px-3 py-2 border text-sm font-medium'
+                        }
+                        onClick={() => {
+                          setCurrentPage(pageNum + startPage);
+                        }}
+                      >
+                        {pageNum + startPage}
+                      </button>
+                    ))}
+                    {endPage < pageN - 1 ? (
+                      <button className="w-10 bg-mainWhite border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-mainBlack dark:text-mainWhite relative inline-flex items-center px-3 py-2 border text-sm font-medium">
+                        ...
+                      </button>
+                    ) : (
+                      ''
+                    )}
+                    {endPage < pageN ? (
+                      <button
+                        name="마지막 페이지"
+                        className="bg-mainWhite border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-mainBlack dark:text-mainWhite relative inline-flex items-center px-4 py-2 border text-sm font-medium"
+                        onClick={() => {
+                          setCurrentPage(pageN);
+                        }}
+                      >
+                        {pageN}
+                      </button>
+                    ) : (
+                      ''
+                    )}
+                  </div>
                 )
-              )}
-              {endPage < pageN - 1 ? (
-                <button className="w-10 bg-mainWhite border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-mainBlack dark:text-mainWhite relative inline-flex items-center px-3 py-2 border text-sm font-medium">
-                  ...
-                </button>
-              ) : (
-                ''
-              )}
-              {endPage < pageN ? (
-                <button
-                  name="마지막 페이지"
-                  className="bg-mainWhite border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-mainBlack dark:text-mainWhite relative inline-flex items-center px-4 py-2 border text-sm font-medium"
-                  onClick={() => {
-                    setCurrentPage(pageN);
-                  }}
-                >
-                  {pageN}
-                </button>
-              ) : (
-                ''
-              )}
+              }
 
               <button
                 name="Next 버튼(기본)"
