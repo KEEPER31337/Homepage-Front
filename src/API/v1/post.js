@@ -83,9 +83,20 @@ async function getList({ category, page, size }) {
 }
 
 async function downloadFile({ fileId }) {
+  // const url = API_URL + '/v1/util/thumbnail/' + thumbnailId;
+  // const options = {
+  //   responseType: 'blob',
+  // };
+  // try {
+  //   const response = await axios.get(url, options);
+  //   return response.data;
+  // } catch (error) {
+  //   return error.response.data;
+  // }
   const options = {
     method: 'GET',
     url: API_URL + '/v1/post/download/' + fileId,
+    responseType: 'blob',
   };
   try {
     const response = await axios(options);
@@ -158,53 +169,12 @@ async function remove({ boardId, token }) {
   }
 }
 
-async function searchByTitle({ keyword, category, page, size }) {
+async function search({ type, keyword, category, page, size }) {
+  // type: T, C, TC ,W
   const options = {
     method: 'GET',
     url: API_URL + '/v1/post/search',
-    params: { type: 'T', keyword, category, page, size },
-  };
-  try {
-    const response = await axios(options);
-    return response.data;
-  } catch (error) {
-    return error.response.data;
-  }
-}
-
-async function searchByContent({ keyword, category, page, size }) {
-  const options = {
-    method: 'GET',
-    url: API_URL + '/v1/post/search',
-    params: { type: 'C', keyword, category, page, size },
-  };
-  try {
-    const response = await axios(options);
-    return response.data;
-  } catch (error) {
-    return error.response.data;
-  }
-}
-
-async function searchByTitleOrContent({ keyword, category, page, size }) {
-  const options = {
-    method: 'GET',
-    url: API_URL + '/v1/post/search',
-    params: { type: 'TC', keyword, category, page, size },
-  };
-  try {
-    const response = await axios(options);
-    return response.data;
-  } catch (error) {
-    return error.response.data;
-  }
-}
-
-async function searchByWriter({ keyword, category, page, size }) {
-  const options = {
-    method: 'GET',
-    url: API_URL + '/v1/post/search',
-    params: { type: 'W', keyword, category, page, size },
+    params: { type, keyword, category, page, size },
   };
   try {
     const response = await axios(options);
@@ -271,10 +241,7 @@ export default {
   downloadFile,
   modify,
   remove,
-  searchByTitle,
-  searchByContent,
-  searchByTitleOrContent,
-  searchByWriter,
+  search,
   like,
   dislike,
   check,
