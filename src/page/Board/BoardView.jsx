@@ -46,7 +46,7 @@ const BoardView = (props) => {
             ''
           )}
           {board?.id && prevBoard.id !== board.id ? (
-            <Comments boardId={board.id} />
+            <Comments boardId={board.id} commentCount={board.commentCount} />
           ) : (
             ''
           )}

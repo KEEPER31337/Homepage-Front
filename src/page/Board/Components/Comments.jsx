@@ -10,15 +10,16 @@ import {
 //local
 import ipAPI from 'API/v1/ip';
 import commentAPI from 'API/v1/comment';
-const Comments = ({ boardId: boardId, state }) => {
+const Comments = ({ boardId: boardId, commentCount: commentCount, state }) => {
   const [comments, setComments] = useState([]);
-  const [commentAddFlag, setCommentAddFlag] = useState(false);
+  const [commentAddFlag, setCommentAddFlag] = useState(false); //댓글이 추가/제거됐을 때 페이지를 재 렌더링하기 위함(굳이 필요한가?)
   const [content, setContent] = useState('');
   const [subContent, setSubContent] = useState('');
   const [focusedComment, setFocusedComment] = useState();
   const [isView, setIsView] = useState(false);
   const [dislikedComments, setDislikedComments] = useState([]); //싫어요 표시한 댓글의 리스트
   const [likedComments, setLikedComments] = useState([]); //좋아요 표시한 댓글의 리스트
+  const [numComments, setNumComments] = useState(10);
   const isDark = state.darkMode;
   const token = state.member.token;
   const myId = state.member.userInfo.id;
@@ -27,13 +28,18 @@ const Comments = ({ boardId: boardId, state }) => {
     commentAPI
       .get({
         boardId: boardId,
+        size: numComments,
         token: token,
       })
       .then((res) => {
         setComments(res.list);
       });
-  }, [isDark, commentAddFlag]);
+  }, [isDark, commentAddFlag, numComments]);
 
+  const loadAdditionalComments = () => {
+    setNumComments(numComments + 10);
+    //console.log('댓글 더 불러오기');
+  };
   const commentContentHandler = (e) => {
     setContent(e.target.value);
   };
@@ -160,7 +166,7 @@ const Comments = ({ boardId: boardId, state }) => {
       <p className="text-2xl">
         <strong>
           <ChatAltIcon className="inline-block h-10 w-10 text-mainYellow" />
-          댓글({comments.length})
+          댓글({commentCount})
         </strong>
       </p>
 
@@ -169,17 +175,17 @@ const Comments = ({ boardId: boardId, state }) => {
           <div
             key={comment.id}
             name="댓글"
-            className=" border-b-2 flex border-b my-2 pb-2"
+            className=" border-b-2 flex border-b my-2 pb-2 dark:border-darkComponent"
           >
             <img
               src={
                 'https://avatars.githubusercontent.com/u/23546441?s=400&u=db7abf2929e5518c12189034dc3fed9bda94f0a6&v=4'
               }
-              className="mr-4 mt-2 rounded-full shadow-lg flex-shrink-0 border-4 h-[10%] w-[10%] max-w-[5em] text-mainYellow"
+              className="mr-4 mt-2 rounded-full shadow-lg flex-shrink-0 border-4 h-[10%] w-[10%] max-w-[5em] text-mainYellow dark:border-gray-500"
             />
-            <div className="border-2 rounded-lg shadow-sm inline-block p-1 w-full">
+            <div className="border-2 rounded-lg shadow-sm inline-block p-1 w-full dark:border-darkComponent">
               <div className="flex justify-between">
-                <h4 className="inline-block border font-bold bg-slate-200 rounded-lg px-1">
+                <h4 className="inline-block font-bold bg-slate-200 rounded-lg px-1 dark:bg-gray-500">
                   {comment.writer}
                 </h4>
                 <div>
@@ -205,7 +211,7 @@ const Comments = ({ boardId: boardId, state }) => {
                   </button>
                   <button
                     name="댓글 비추천 버튼"
-                    className="border mx-1 text-blue-400 text-xs sm:text-base hover:text-blue-500"
+                    className="mx-1 text-blue-400 text-xs sm:text-base hover:text-blue-500"
                     onClick={() => clickDislikeHandler(comment.id)}
                   >
                     <svg
@@ -224,7 +230,7 @@ const Comments = ({ boardId: boardId, state }) => {
                     </svg>
                   </button>
                   <button
-                    className="border mx-1 text-mainYellow text-xs sm:text-base hover:text-pointYellow"
+                    className="mx-1 text-mainYellow text-xs sm:text-base hover:text-pointYellow"
                     onClick={() => displayInput(comment.id)}
                   >
                     <PencilIcon className="inline-block h-5 w-5" />
@@ -245,39 +251,18 @@ const Comments = ({ boardId: boardId, state }) => {
                 </div>
               </div>
               <p className="mt-1 px-3">{comment.content}</p>
-              <div
-                name="대댓글 작성창"
-                className={
-                  (isView && focusedComment == comment.id ? '' : 'hidden') +
-                  ' flex pr-2 mb-1'
-                }
-              >
-                <textarea
-                  value={subContent}
-                  onChange={subCommentContentHandler}
-                  className="resize-none border-2 border-divisionGray m-2 p-1 w-full h-20 rounded-md focus:ring-slate-400 focus:border-slate-400 dark:bg-darkComponent dark:border-darkComponent dark:text-white"
-                ></textarea>
-                <button
-                  className="border-4 border-slate-400 my-1 p-2 pr-3 rounded-xl hover:shadow-lg text-slate-400 active:mt-3 active:mb-1 active:shadow-none"
-                  onClick={() => {
-                    addSubCommentHandler(comment.id, subContent);
-                  }}
-                >
-                  <PencilIcon className="inline-block m-1 h-5 w-5 " />
-                  <strong>COMMENT</strong>
-                </button>
-              </div>
+
               {filterChildComment(comments, comment.id).map((childCom) => (
                 <div
                   key={childCom.id}
                   name="대댓글"
-                  className="border-b border-slate-200 p-2 flex w-full bg-slate-50 rounded-lg"
+                  className="border-b border-slate-200 p-2 flex w-full bg-slate-50 rounded-lg dark:bg-gray-700 dark:border-darkComponent"
                 >
                   <img
                     src={
                       'https://avatars.githubusercontent.com/u/23546441?s=400&u=db7abf2929e5518c12189034dc3fed9bda94f0a6&v=4'
                     }
-                    className="mr-4 rounded-full shadow-lg flex-shrink-0 border-2 border-slate-300 h-[10%] w-[10%] max-w-[3em] text-mainYellow"
+                    className="mr-4 rounded-full shadow-lg flex-shrink-0 border-2 border-slate-300 h-[10%] w-[10%] max-w-[3em] text-mainYellow dark:border-gray-500"
                   />
                   <div className="w-full">
                     <div className=" flex justify-between">
@@ -302,10 +287,54 @@ const Comments = ({ boardId: boardId, state }) => {
                   </div>
                 </div>
               ))}
+              <div
+                name="대댓글 작성창"
+                className={
+                  (isView && focusedComment == comment.id ? '' : 'hidden') +
+                  ' flex pr-2 mb-1'
+                }
+              >
+                <textarea
+                  value={subContent}
+                  onChange={subCommentContentHandler}
+                  className="resize-none border-2 border-divisionGray m-2 p-1 w-full h-20 rounded-md focus:ring-slate-400 focus:border-slate-400 dark:bg-darkComponent dark:border-darkComponent dark:text-white"
+                ></textarea>
+                <button
+                  className="border-4 border-slate-400 my-1 p-2 pr-3 rounded-xl hover:shadow-lg text-slate-400 active:mt-3 active:mb-1 active:shadow-none"
+                  onClick={() => {
+                    addSubCommentHandler(comment.id, subContent);
+                  }}
+                >
+                  <PencilIcon className="inline-block m-1 h-5 w-5 " />
+                  <strong>COMMENT</strong>
+                </button>
+              </div>
             </div>
           </div>
         ))}
       </div>
+      {/*TODO 댓글이 현재 표시된 것보다 많이 있을 때 다음 코드 활성화 */}
+      {commentCount > numComments ? (
+        <div name="댓글 더 불러오기" className="relative my-3 mt-5">
+          <div
+            className="absolute inset-0 flex items-center"
+            aria-hidden="true"
+          >
+            <div className="w-full border-t border-gray-300" />
+          </div>
+          <div className="relative flex justify-center">
+            <button
+              className="px-3 bg-white text-lg font-medium text-gray-900 hover:text-slate-300 dark:bg-mainBlack dark:text-mainWhite dark:hover:text-gray-500"
+              onClick={() => loadAdditionalComments()}
+            >
+              댓글 더보기
+            </button>
+          </div>
+        </div>
+      ) : (
+        ''
+      )}
+
       <div name="댓글 작성 창">
         <textarea
           value={content}

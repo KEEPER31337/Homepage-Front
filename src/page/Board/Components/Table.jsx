@@ -10,6 +10,7 @@ import {
 } from '@heroicons/react/solid';
 //local
 import testData from 'page/Board/testData';
+import Gallary from './Gallary';
 import postAPI from 'API/v1/post';
 import {
   getDateWithFormat,
@@ -17,7 +18,7 @@ import {
   isNewPost,
 } from '../BoardUtil';
 
-const MAX_POSTS = 5; //한 페이지당 노출시킬 최대 게시글 수
+const MAX_POSTS = 8; //한 페이지당 노출시킬 최대 게시글 수
 const MAX_PAGES = 6; //한 번에 노출시킬 최대 페이지 버튼 개수
 const pageN = Math.ceil(testData.maxNo / MAX_POSTS); //전체 페이지 수
 const styleList = ['text', 'gallary'];
@@ -123,7 +124,7 @@ const Table = (props) => {
                 ></input>
                 <label
                   htmlFor={item}
-                  className="border-2 rounded-lg  peer-checked:border-mainYellow peer-checked:text-mainYellow dark:border-darkComponent dark:text-darkComponent"
+                  className="border-2 rounded-lg  peer-checked:border-mainYellow peer-checked:text-mainYellow dark:border-darkComponent dark:text-divisionGray"
                 >
                   {getStyleIcon(item)}
                   {/*item*/}
@@ -133,105 +134,109 @@ const Table = (props) => {
           </div>
         </div>
       </div>
-
-      <table className="w-full mb-5">
-        <thead>
-          <tr className="bg-mainYellow ">
-            <th className="border-x border-mainWhite p-1 rounded-tl-xl dark:border-mainBlack">
-              No.
-            </th>
-            <th className="border-x border-mainWhite p-1 rounded-tr-xl sm:rounded-none dark:border-mainBlack ">
-              제목
-            </th>
-            <th className="border-x border-mainWhite p-1 hidden sm:table-cell dark:border-mainBlack">
-              글쓴이
-            </th>
-            <th className="border-x border-mainWhite p-1 hidden sm:table-cell dark:border-mainBlack ">
-              작성 일시
-            </th>
-            <th className="border-x border-mainWhite p-1 rounded-tr-xl hidden sm:table-cell dark:border-mainBlack">
-              조회수
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {boardContent?.map((board, index) => (
-            <tr
-              key={board.id}
-              className={
-                (board.isNotice ? 'bg-slate-100' : '') +
-                ' border-b-2 hover:bg-slate-200 hover:shadow-lg dark:hover:bg-darkComponent dark:border-darkComponent ' +
-                getCurrentBoard(board.id, no)
-              }
-            >
-              {console.log(board)}
-              <td className="w-[3em] border-r border-divisionGray text-center dark:border-darkComponent">
-                {board.isNotice
-                  ? '공지'
-                  : MAX_POSTS * (currentPage - 1) + index + 1}
-              </td>
-
-              <td className="p-2 dark:border-darkComponent">
-                <Link to={`/board/${board.id}`} state={{ test: 'test' }}>
-                  <div className="max-w-[50vw] md:max-w-[40vw] sm:max-w-[20vw] inline-block">
-                    <p className="truncate text-md ">
-                      <strong
-                        className={board.isSecret ? 'text-slate-400' : ''}
-                      >
-                        {board.title}
-                      </strong>
-                    </p>
-                  </div>
-
-                  {!board.isSecret && board.thumbnail ? (
-                    <PhotographIcon className="inline-block h-5 w-5 m-1 text-slate-500 " />
-                  ) : (
-                    ''
-                  )}
-                  {!board.isSecret && board.files.length != 0 ? (
-                    <DocumentTextIcon className="inline-block h-5 w-5" />
-                  ) : (
-                    ''
-                  )}
-                  {!board.isSecret && board.commentCount != 0 ? (
-                    <strong className="text-mainYellow">
-                      {'(' + board.commentN + ')'}
-                    </strong>
-                  ) : (
-                    ''
-                  )}
-                  {isNewPost(board.registerTime) ? (
-                    <strong className="inline-block rounded-full w-5 h-5 align-middle text-center text-xs m-1 bg-red-500 shadow-lg border-2 border-red-200 text-mainWhite dark:text-mainBlack">
-                      n
-                    </strong>
-                  ) : (
-                    ''
-                  )}
-                  <p className="mt-2 text-xs sm:hidden">
-                    글쓴이 : <strong>{board.writer} </strong>| 작성일시 :
-                    <strong>{getDateWithFormat(board.registerTime)} </strong>|{' '}
-                    <span className="inline-block">
-                      조회수 : <strong>{board.visitCount} </strong>
-                    </span>
-                  </p>
-                </Link>
-              </td>
-
-              <td className="min-w-[4em] text-center dark:border-darkComponent hidden sm:table-cell">
-                {board.writer}
-              </td>
-              <td className="min-w-[6em] text-center dark:border-darkComponent hidden sm:table-cell">
-                {/*getDateWithFormat(board.registerTime)
-                <br />*/}
-                {getDiffTimeWithFormat(board.registerTime)}
-              </td>
-              <td className="min-w-[4em] text-center dark:border-darkComponent hidden sm:table-cell">
-                {board.visitCount}
-              </td>
+      {viewStyle == 'text' ? (
+        <table className="w-full mb-5">
+          <thead>
+            <tr className="bg-mainYellow ">
+              <th className="border-x border-mainWhite p-1 rounded-tl-xl dark:border-mainBlack">
+                No.
+              </th>
+              <th className="border-x border-mainWhite p-1 rounded-tr-xl sm:rounded-none dark:border-mainBlack ">
+                제목
+              </th>
+              <th className="border-x border-mainWhite p-1 hidden sm:table-cell dark:border-mainBlack">
+                작성자
+              </th>
+              <th className="border-x border-mainWhite p-1 hidden sm:table-cell dark:border-mainBlack ">
+                작성 일시
+              </th>
+              <th className="border-x border-mainWhite p-1 rounded-tr-xl hidden sm:table-cell dark:border-mainBlack">
+                조회수
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {boardContent?.map((board, index) => (
+              <tr
+                key={board.id}
+                className={
+                  (board.isNotice ? 'bg-slate-100 dark:bg-gray-900' : '') +
+                  ' border-b-2 hover:bg-slate-200 hover:shadow-lg dark:hover:bg-darkComponent dark:border-darkComponent ' +
+                  getCurrentBoard(board.id, no)
+                }
+              >
+                {/*console.log(board)*/}
+                <td className="w-[3em] border-r border-divisionGray text-center dark:border-darkComponent">
+                  {board.isNotice
+                    ? '공지'
+                    : MAX_POSTS * (currentPage - 1) + index + 1}
+                </td>
+
+                <td className="p-2 dark:border-darkComponent">
+                  <Link to={`/board/${board.id}`} state={{ test: 'test' }}>
+                    <div className="max-w-[50vw] md:max-w-[40vw] sm:max-w-[20vw] inline-block">
+                      <p className="truncate text-md ">
+                        <strong
+                          className={board.isSecret ? 'text-slate-400' : ''}
+                        >
+                          {board.title}
+                        </strong>
+                      </p>
+                    </div>
+
+                    {!board.isSecret && board.thumbnail ? (
+                      <PhotographIcon className="inline-block h-5 w-5 m-1 text-slate-500 " />
+                    ) : (
+                      ''
+                    )}
+                    {!board.isSecret && board.files.length != 0 ? (
+                      <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
+                    ) : (
+                      ''
+                    )}
+                    {!board.isSecret && board.commentCount != 0 ? (
+                      <strong className="text-mainYellow">
+                        {'(' + board.commentCount + ')'}
+                      </strong>
+                    ) : (
+                      ''
+                    )}
+                    {isNewPost(board.registerTime) ? (
+                      <strong className="inline-block rounded-full w-5 h-5 align-middle text-center text-xs m-1 bg-red-500 shadow-lg border-2 border-red-200 text-mainWhite dark:text-mainBlack">
+                        n
+                      </strong>
+                    ) : (
+                      ''
+                    )}
+                    <p className="mt-2 text-xs sm:hidden">
+                      글쓴이 : <strong>{board.writer} </strong>| 작성일시 :
+                      <strong>{getDateWithFormat(board.registerTime)} </strong>|{' '}
+                      <span className="inline-block">
+                        조회수 : <strong>{board.visitCount} </strong>
+                      </span>
+                    </p>
+                  </Link>
+                </td>
+
+                <td className="min-w-[4em] text-center dark:border-darkComponent hidden sm:table-cell">
+                  {board.writer}
+                </td>
+                <td className="min-w-[6em] text-center dark:border-darkComponent hidden sm:table-cell">
+                  {/*getDateWithFormat(board.registerTime)
+                <br />*/}
+                  {getDiffTimeWithFormat(board.registerTime)}
+                </td>
+                <td className="min-w-[4em] text-center dark:border-darkComponent hidden sm:table-cell">
+                  {board.visitCount}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <Gallary boards={boardContent} />
+      )}
+
       <div class=" px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 dark:border-darkComponent">
         <div class="flex-1 flex justify-between sm:hidden">
           <button

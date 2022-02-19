@@ -14,6 +14,8 @@ import {
 import { getDateWithFormat } from '../BoardUtil';
 import postAPI from 'API/v1/post';
 
+import utilAPI from 'API/v1/util';
+
 const Content = ({ state, board }) => {
   //board는 게시글 정보가 담긴 객체
   //console.log(state.member.memberId); //(내 아이디)나중에 업데이트 될거임
@@ -21,6 +23,7 @@ const Content = ({ state, board }) => {
   const myId = state.member.userInfo.id; //게시글을 보고 있는 나의 정보
   const [isDisliked, setIsDisliked] = useState(); //싫어요 여부
   const [isLiked, setIsLiked] = useState(); //좋아요 여부
+  const [thumbnailBase64, setThumbnailBase64] = useState(null); // 파일 base64
   const postingId = board.id;
   const token = state.member.token;
   //const files=board.files;
@@ -95,6 +98,21 @@ const Content = ({ state, board }) => {
   };
 
   useEffect(() => {
+    utilAPI.getThumbnail({ thumbnailId: board.thumbnail.id }).then((data) => {
+      console.log(data);
+
+      const reader = new FileReader();
+      reader.onabort = () => console.log('file reading was aborted');
+      reader.onerror = () => console.log('file reading has failed');
+      reader.onloadend = () => {
+        const base64 = reader.result;
+        if (base64) {
+          setThumbnailBase64(base64);
+        }
+      };
+      reader.readAsDataURL(data);
+    });
+
     postAPI
       .check({
         postingId: postingId,
@@ -167,7 +185,19 @@ const Content = ({ state, board }) => {
       ) : (
         ''
       )}
-      <div className="p-5 min-h-[200px] dark:bg-mainBlack">
+      <div
+        name="썸네일"
+        className={(board.thumbnail ? '' : 'hidden') + ' flex justify-center'}
+      >
+        <img
+          className={
+            'border-4 border-slate-500 m-3 p-1 max-h-[300px] max-w-[300px] rounded-xl'
+          }
+          src={thumbnailBase64}
+          alt="thumbnail"
+        />
+      </div>
+      <div className="p-5 min-h-[300px] dark:bg-mainBlack">
         <Viewer
           initialValue={board.content}
           change={board.content}
@@ -175,6 +205,25 @@ const Content = ({ state, board }) => {
           height="100%"
           ref={viwerRef}
         />
+      </div>
+      <div
+        name="첨부파일 폼"
+        className="m-2 w-4/5 shadow-inner shadow-xl rounded-xl"
+      >
+        <table className="w-full">
+          <tr className="bg-slate-300">
+            <th className="rounded-xl">파일명</th>
+          </tr>
+          <tr className="border-b-2 ">
+            <td className=" px-3 hover:bg-slate-50">test.png</td>
+          </tr>
+          <tr className="border-b-2">
+            <td className="px-3">test.png</td>
+          </tr>
+          <tr className="border-b-2">
+            <td className="px-3">test.png</td>
+          </tr>
+        </table>
       </div>
 
       <div className="border-y-2 text-center bg-backGray shadow-lg dark:bg-darkPoint dark:border-darkComponent">
