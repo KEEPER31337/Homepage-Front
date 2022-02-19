@@ -25,10 +25,13 @@ async function create({ boardId, content, ipAddress, parentId, token }) {
   }
 }
 
-async function get({ boardId, page, size }) {
+async function get({ boardId, page, size, token }) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/comment/' + boardId,
+    headers: {
+      Authorization: `${token}`,
+    },
     params: {
       page,
       size,
@@ -47,13 +50,14 @@ async function remove({ commentId, token }) {
     method: 'GET',
     url: API_URL + '/v1/comment/' + commentId,
     headers: {
-      Authorization: `${token}`,
+      Authorization: token,
     },
   };
   try {
     const response = await axios(options);
     return response.data;
   } catch (error) {
+    console.log(error.response.data);
     return error.response.data;
   }
 }
@@ -92,14 +96,14 @@ async function like({ commentId, token }) {
   }
 }
 
-async function dislike({ commentId, token }) {
+async function dislike({ commentId, memberId, token }) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/comment/dislike',
     headers: {
       Authorization: `${token}`,
     },
-    params: { commentId },
+    params: { commentId, memberId },
   };
   try {
     const response = await axios(options);

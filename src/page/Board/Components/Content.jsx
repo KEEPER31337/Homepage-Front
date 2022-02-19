@@ -23,6 +23,42 @@ const Content = ({ state, board }) => {
   const [isLiked, setIsLiked] = useState(); //좋아요 여부
   const postingId = board.id;
   const token = state.member.token;
+  //const files=board.files;
+  const files = [
+    {
+      fileName: 'dwg.png',
+      filePath: 'dwg.png',
+      fileSize: 3496,
+      id: 1645204350432,
+      ipAddress: '1.1.1.1',
+      uploadTime: '2022-1-18T22:16:53',
+    },
+    {
+      fileName: 'jar.png',
+      filePath: 'jar.png',
+      fileSize: 3482,
+      id: 1645204350433,
+      ipAddress: '1.1.1.1',
+      uploadTime: '2022-1-18T22:16:53',
+    },
+    {
+      fileName: 'java.png',
+      filePath: 'java.png',
+      fileSize: 3479,
+      id: 1645204350434,
+      ipAddress: '1.1.1.1',
+      uploadTime: '2022-1-18T22:16:53',
+    },
+    {
+      fileName: 'jpg.png',
+      filePath: 'jpg.png',
+      fileSize: 3478,
+      id: 1645204350435,
+      ipAddress: '1.1.1.1',
+      uploadTime: '2022-1-18T22:16:53',
+    },
+  ];
+
   //console.log(board);
   const viwerRef = useRef();
   const clickLikeHandler = () => {
@@ -76,37 +112,38 @@ const Content = ({ state, board }) => {
 
   return (
     <div className="my-5">
-      <div className="justify-between bg-mainYellow rounded-t-2xl p-3 px-5 sm:flex">
+      <div className="justify-between bg-mainYellow rounded-t-2xl p-3 px-5 md:flex">
         <p className="break-all text-2xl">
           <strong>{board.title}</strong>
         </p>
-        <p className="text-right text-xs">
-          <br />
-          작성자 : <strong>{board.writer ? board.writer : ''}</strong>
-          <br />
-          작성 일시 :{' '}
-          <strong>
-            {board.registerTime ? getDateWithFormat(board.registerTime) : ' '}
-          </strong>
-          {board.registerTime != board.updateTime ? (
-            <>
-              <br />
-              수정 일시 :{' '}
-              <strong>
-                {board.updateTime ? getDateWithFormat(board.updateTime) : ' '}
-              </strong>
-            </>
-          ) : null}
-          <br />
-          조회수 : <strong>{board.visitCount} </strong>
-          댓글수 : <strong>{board.commentCount} </strong>
-          추천수 : <strong>{board.likeCount} </strong>
+        <p className="min-w-[180px] flex flex-col-reverse text-right text-xs">
+          <div>
+            작성자 : <strong>{board.writer ? board.writer : ''}</strong>
+            <br />
+            작성 일시 :{' '}
+            <strong>
+              {board.registerTime ? getDateWithFormat(board.registerTime) : ' '}
+            </strong>
+            {board.registerTime != board.updateTime ? (
+              <>
+                <br />
+                수정 일시 :{' '}
+                <strong>
+                  {board.updateTime ? getDateWithFormat(board.updateTime) : ' '}
+                </strong>
+              </>
+            ) : null}
+            <br />
+            조회수 : <strong>{board.visitCount} </strong>
+            댓글수 : <strong>{board.commentCount} </strong>
+            추천수 : <strong>{board.likeCount} </strong>
+          </div>
         </p>
       </div>
       {board.writerId == myId ? (
-        <div className="px-10 absolute w-full text-xs sm:w-4/5 sm:text-base flex flex-row-reverse ">
-          <div className=" rounded-lg bg-slate-100 my-2">
-            <UserCircleIcon className="inline-block h-5 w-5 m-1 text-divisionGray " />
+        <div className="px-10 absolute w-full text-xs md:w-[75%] sm:text-base flex flex-row-reverse ">
+          <div className="rounded-lg bg-slate-100 my-2 dark:bg-darkComponent">
+            <UserCircleIcon className="inline-block h-5 w-5 m-1 text-divisionGray dark:text-slate-500 " />
 
             <Link
               to="/board/write"

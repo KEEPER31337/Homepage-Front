@@ -52,7 +52,7 @@ const BoardView = (props) => {
           )}
           <Table />
         </div>
-        <div name="left-sideBar" className="hidden m-5 w-1/6 sm:inline-block">
+        <div name="left-sideBar" className="hidden m-5 w-1/6 md:inline-block">
           <WriteButton />
         </div>
       </div>
