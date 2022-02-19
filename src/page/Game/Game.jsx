@@ -1,13 +1,10 @@
-// shared
-import PageContainer from 'shared/PageContainer';
-import LayoutContainer from 'shared/LayoutContainer';
-
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 // component
-import { DiceGame, RuleOfDice } from './Components/Dice';
+import DiceGame from './Components/Dice';
+import RuleOfDice from './Components/RuleOfDice';
 import { Roulette, RuleOfRoulette } from './Components/Roulette';
 import { Lotto, RuleOfLotto } from './Components/Lotto';
 
@@ -102,9 +99,9 @@ const Game = (props) => {
   };
 
   return (
-    <PageContainer>
-      <LayoutContainer>
-        <div className="dark:bg-mainBlack">
+    <div className="min-h-screen bg-backGray  dark:bg-darkPoint dark:text-mainYellow">
+      <div className="container mx-auto">
+        <div className="dark:bg-darkPoint">
           <GameList />
           <div className="flex justify-center items-center">
             <GameLeftNav />
@@ -119,8 +116,8 @@ const Game = (props) => {
           {game === ROULETTE_GAME_ID ? <RuleOfRoulette /> : null}
           {game === LOTTO_GAME_ID ? <RuleOfLotto /> : null}
         </div>
-      </LayoutContainer>
-    </PageContainer>
+      </div>
+    </div>
   );
 };
 
