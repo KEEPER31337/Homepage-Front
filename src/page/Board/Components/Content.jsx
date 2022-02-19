@@ -8,6 +8,9 @@ import {
   ThumbUpIcon,
   ThumbDownIcon,
   UserCircleIcon,
+  ChevronDoubleRightIcon,
+  ChevronDoubleDownIcon,
+  DocumentDownloadIcon,
 } from '@heroicons/react/solid';
 
 //local
@@ -16,6 +19,8 @@ import postAPI from 'API/v1/post';
 
 import utilAPI from 'API/v1/util';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 const Content = ({ state, board }) => {
   //board는 게시글 정보가 담긴 객체
   //console.log(state.member.memberId); //(내 아이디)나중에 업데이트 될거임
@@ -23,44 +28,12 @@ const Content = ({ state, board }) => {
   const myId = state.member.userInfo.id; //게시글을 보고 있는 나의 정보
   const [isDisliked, setIsDisliked] = useState(); //싫어요 여부
   const [isLiked, setIsLiked] = useState(); //좋아요 여부
+  const [files, setFiles] = useState([]);
   const [thumbnailBase64, setThumbnailBase64] = useState(null); // 파일 base64
+  const [toggle, setToggle] = useState(false);
   const postingId = board.id;
   const token = state.member.token;
   //const files=board.files;
-  const files = [
-    {
-      fileName: 'dwg.png',
-      filePath: 'dwg.png',
-      fileSize: 3496,
-      id: 1645204350432,
-      ipAddress: '1.1.1.1',
-      uploadTime: '2022-1-18T22:16:53',
-    },
-    {
-      fileName: 'jar.png',
-      filePath: 'jar.png',
-      fileSize: 3482,
-      id: 1645204350433,
-      ipAddress: '1.1.1.1',
-      uploadTime: '2022-1-18T22:16:53',
-    },
-    {
-      fileName: 'java.png',
-      filePath: 'java.png',
-      fileSize: 3479,
-      id: 1645204350434,
-      ipAddress: '1.1.1.1',
-      uploadTime: '2022-1-18T22:16:53',
-    },
-    {
-      fileName: 'jpg.png',
-      filePath: 'jpg.png',
-      fileSize: 3478,
-      id: 1645204350435,
-      ipAddress: '1.1.1.1',
-      uploadTime: '2022-1-18T22:16:53',
-    },
-  ];
 
   //console.log(board);
   const viwerRef = useRef();
@@ -96,6 +69,9 @@ const Content = ({ state, board }) => {
       console.log(res);
     });
   };
+  const toggleFiles = () => {
+    setToggle(!toggle);
+  };
 
   useEffect(() => {
     utilAPI.getThumbnail({ thumbnailId: board.thumbnail.id }).then((data) => {
@@ -119,13 +95,13 @@ const Content = ({ state, board }) => {
         token: token,
       })
       .then((res) => {
-        console.log('is dislike?');
-        console.log(res);
+        //console.log(res);
         setIsLiked(res.data.liked);
         setIsDisliked(res.data.disliked);
       });
     const viwerInstance = viwerRef.current.getInstance();
     viwerInstance.setMarkdown(board.content);
+    setFiles(board.files);
   }, [board.content]);
 
   return (
@@ -162,7 +138,6 @@ const Content = ({ state, board }) => {
         <div className="px-10 absolute w-full text-xs md:w-[75%] sm:text-base flex flex-row-reverse ">
           <div className="rounded-lg bg-slate-100 my-2 dark:bg-darkComponent">
             <UserCircleIcon className="inline-block h-5 w-5 m-1 text-divisionGray dark:text-slate-500 " />
-
             <Link
               to="/board/write"
               state={{
@@ -208,22 +183,52 @@ const Content = ({ state, board }) => {
       </div>
       <div
         name="첨부파일 폼"
-        className="m-2 w-4/5 shadow-inner shadow-xl rounded-xl"
+        className={
+          (board.files ? '' : 'hidden') +
+          ' m-2 w-4/5 shadow-inner shadow-xl rounded-xl'
+        }
       >
-        <table className="w-full">
-          <tr className="bg-slate-300">
-            <th className="rounded-xl">파일명</th>
-          </tr>
-          <tr className="border-b-2 ">
-            <td className=" px-3 hover:bg-slate-50">test.png</td>
-          </tr>
-          <tr className="border-b-2">
-            <td className="px-3">test.png</td>
-          </tr>
-          <tr className="border-b-2">
-            <td className="px-3">test.png</td>
-          </tr>
-        </table>
+        <button className="" onClick={() => toggleFiles()}>
+          {toggle ? (
+            <ChevronDoubleDownIcon className="inline-block h-5 w-5 m-1 text-divisionGray dark:text-slate-500 " />
+          ) : (
+            <ChevronDoubleRightIcon className="inline-block h-5 w-5 m-1 text-divisionGray dark:text-slate-500 " />
+          )}
+          첨부파일({files.length})
+        </button>
+        {toggle ? (
+          <table className="border border-mainBlack w-full">
+            <thead>
+              <tr className="bg-slate-300">
+                <th className="rounded-lt-xl">파일명</th>
+                <th className="rounded-rt-xl min-w-[100px]">다운로드</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {files?.map((file) => {
+                return (
+                  <tr
+                    key={file.id}
+                    className="border-b-2 w-full hover:bg-slate-100"
+                  >
+                    <td className="border w-full">{file.fileName}</td>
+                    <td>
+                      <a
+                        href={API_URL + '/v1/post/download/' + file.id}
+                        className="border w-full "
+                      >
+                        <DocumentDownloadIcon className="inline-block h-5 w-5 text-slate-400 dark:text-slate-500 " />
+                      </a>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        ) : (
+          ''
+        )}
       </div>
 
       <div className="border-y-2 text-center bg-backGray shadow-lg dark:bg-darkPoint dark:border-darkComponent">

@@ -47,7 +47,7 @@ async function get({ boardId, page, size, token }) {
 
 async function remove({ commentId, token }) {
   const options = {
-    method: 'GET',
+    method: 'DELETE',
     url: API_URL + '/v1/comment/' + commentId,
     headers: {
       Authorization: token,
