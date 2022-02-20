@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ProfileFrame from './Components/Frames/ProfileFrame';
-import blogImg from '../../assets/img/profileImg/social/blog.png';
-import githubImg from '../../assets/img/profileImg/social/github.png';
-import homePageImg from '../../assets/img/profileImg/social/homepage.png';
-import instargramImg from '../../assets/img/profileImg/social/instargram.png';
 import InfoBox from './Components/InfoBox';
-import { useSelector } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 
 const dummyUser = {
   userId: '1',
@@ -36,46 +32,15 @@ const dummyUser = {
       img: 'https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/400630/276a940028f208f167c3b8790eb11031d552f384.png',
     },
   ],
-  levelUp: 100,
-  socialList: [
-    {
-      text: '블로그',
-      img: blogImg,
-      onClick: () => {
-        console.log('blog');
-      },
-    },
-    {
-      text: 'jasper200207',
-      img: githubImg,
-      onClick: () => {
-        console.log('github');
-      },
-    },
-    {
-      text: '홈페이지',
-      img: homePageImg,
-      onClick: () => {
-        console.log('homepage');
-      },
-    },
-    {
-      text: '@인스타그램',
-      img: instargramImg,
-      onClick: () => {
-        console.log('instargram');
-      },
-    },
-  ],
 };
-const isMe = true;
-const isFriend = false;
+const isFollower = false;
 
-const Profile = () => {
+const Profile = ({ token, memberInfo }) => {
   const user = dummyUser;
   const params = useParams();
   const navigate = useNavigate();
   const [btns, setBtns] = useState(new Array());
+  const [isMe, setIsMe] = useState(false);
 
   const myBtns = [
     {
@@ -91,9 +56,9 @@ const Profile = () => {
       },
     },
   ];
-  const otherBtns = [
+  const unFollowerBtns = [
     {
-      text: '친구 등록',
+      text: '팔로우하기',
       onClick: () => {
         console.log('friend');
       },
@@ -105,9 +70,9 @@ const Profile = () => {
       },
     },
   ];
-  const friendBtns = [
+  const followerBtns = [
     {
-      text: '친구 삭제',
+      text: '팔로우취소',
       onClick: () => {
         console.log('friend');
       },
@@ -120,11 +85,15 @@ const Profile = () => {
     },
   ];
 
+  useEffect(() => {
+    setIsMe(params.userId == memberInfo.id);
+  }, [params.userId, memberInfo.id]);
+
   useEffect(async () => {
     if (isMe) setBtns(myBtns);
-    else if (isFriend) setBtns(friendBtns);
-    else setBtns(otherBtns);
-  }, [isMe, isFriend]);
+    else if (isFollower) setBtns(followerBtns);
+    else setBtns(unFollowerBtns);
+  }, [isMe, isFollower]);
 
   const renderBody = () => (
     <div className="w-full">
@@ -133,8 +102,20 @@ const Profile = () => {
   );
 
   return (
-    <ProfileFrame user={user} profileBtns={btns} renderBody={renderBody} />
+    <ProfileFrame
+      user={user}
+      profileBtns={btns}
+      renderBody={renderBody}
+      memberInfo={memberInfo}
+    />
   );
 };
 
-export default Profile;
+const mapStateToProps = (state) => {
+  return {
+    token: state.member.token,
+    memberInfo: state.member.memberInfo,
+  };
+};
+
+export default connect(mapStateToProps)(Profile);

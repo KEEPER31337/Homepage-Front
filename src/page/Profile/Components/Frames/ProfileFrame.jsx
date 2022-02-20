@@ -3,6 +3,7 @@ import CircularGauge from '../CircularGauge';
 import Group from '../Group';
 import InfoBtn from '../InfoBtn';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 const ProfileFrame = ({
   renderHeadLeft,
@@ -12,6 +13,7 @@ const ProfileFrame = ({
   renderFooter,
   profileBtns,
   user,
+  memberInfo,
 }) => {
   const defaultHeadLeft = () => (
     <div className="pr-2 w-3/12 object-cover">
@@ -23,9 +25,13 @@ const ProfileFrame = ({
     <div className="w-full h-3/4 pt-3">
       <div className="w-full h-full bg-divisionGray dark:bg-darkComponent dark:text-mainWhite rounded-2xl overflow-y-scroll scrollbar-hide">
         {/*profile type*/}
-        {user.groups.map((group) => (
-          <Group group={group} />
-        ))}
+        {memberInfo.rank ? <Group groupName={memberInfo.rank} /> : <></>}
+        {memberInfo.type ? <Group groupName={memberInfo.type} /> : <></>}
+        {memberInfo.jobs ? (
+          memberInfo.jobs.map((job) => <Group groupName={job} />)
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
@@ -40,7 +46,7 @@ const ProfileFrame = ({
             {user.name}
           </div>
           <div className="mt-3 text-left text-lg h-1/5 dark:text-mainYellow">
-            {user.nickName + ' ' + user.email}
+            {memberInfo.nickName + ' ' + memberInfo.emailAddress}
           </div>
         </div>
         {/*profile Btn type rank job*/}

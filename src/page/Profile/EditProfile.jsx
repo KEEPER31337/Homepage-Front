@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import ProfileFrame from './Components/Frames/ProfileFrame';
 import InfoBox from './Components/InfoBox';
@@ -64,21 +65,19 @@ const dummyUser = {
   ],
 };
 
-const EditProfile = () => {
+const EditProfile = ({ token, memberInfo }) => {
   const user = dummyUser;
   const params = useParams();
   const navigate = useNavigate();
 
-  const cancleBtn = { text: '취소', onClick: () => navigate(-1) };
-  const submitBtn = { text: '저장', onClick: () => navigate(-1) };
+  console.log(memberInfo);
 
   const setProfileImg = async () => {
     console.log('setProfileImg');
   };
 
   const headBtns = [
-    { text: '취소', onClick: () => navigate(-1) },
-    { text: '저장', onClick: () => navigate(-1) },
+    { text: '돌아가기', onClick: () => navigate(-1) },
     {
       text: '탈퇴',
       onClick: () => {
@@ -98,20 +97,34 @@ const EditProfile = () => {
 
   const renderBody = () => (
     <div className="w-full">
-      <InfoBox type="setPwd" params={{}} />
-      <InfoBox type="setInfo" params={{}} />
-      <InfoBox type="setSocial" params={{}} />
+      <InfoBox
+        type="setInfo"
+        params={{ token: token, memberInfo: memberInfo }}
+      />
+      <InfoBox type="setEmail" params={{ token: token }} />
+      <InfoBox type="setPwd" params={{ token: token }} />
     </div>
   );
-
-  return (
-    <ProfileFrame
-      user={user}
-      profileBtns={headBtns}
-      renderHeadLeft={renderImgBtn}
-      renderBody={renderBody}
-    />
-  );
+  if (params.userId != memberInfo.id) {
+    return <div>접근할수 없습니다</div>;
+  } else {
+    return (
+      <ProfileFrame
+        user={user}
+        profileBtns={headBtns}
+        renderHeadLeft={renderImgBtn}
+        renderBody={renderBody}
+        memberInfo={memberInfo}
+      />
+    );
+  }
 };
 
-export default EditProfile;
+const mapStateToProps = (state) => {
+  return {
+    token: state.member.token,
+    memberInfo: state.member.memberInfo,
+  };
+};
+
+export default connect(mapStateToProps)(EditProfile);
