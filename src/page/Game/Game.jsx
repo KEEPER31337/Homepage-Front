@@ -1,10 +1,13 @@
+import React, { useEffect } from 'react';
+
 // shared
 import PageContainer from 'shared/PageContainer';
 import LayoutContainer from 'shared/LayoutContainer';
 
-import React, { useEffect } from 'react';
+// component
 import { DiceGame, RuleOfDice } from './Components/Dice';
-import { Roulette, RuleOfRoulette } from './Components/Roulette';
+import Roulette from './Components/Roulette';
+import RuleOfRoulette from './Components/RuleOfRoulette';
 import { Lotto, RuleOfLotto } from './Components/Lotto';
 import { useState } from 'react';
 

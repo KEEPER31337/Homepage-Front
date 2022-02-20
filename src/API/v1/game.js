@@ -75,7 +75,7 @@ async function diceCheck({ token }) {
 }
 
 // Roulette
-async function roulettePlay({ token }) {
+async function playRoulette({ token }) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/game/roulette/play',
@@ -91,7 +91,23 @@ async function roulettePlay({ token }) {
   }
 }
 
-async function rouletteCheck({ token }) {
+async function getInfoRoulette({ token }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/game/roulette/info',
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+async function checkRouletteCount({ token }) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/game/roulette/check',
@@ -175,8 +191,9 @@ export default {
   dicePlay,
   diceResult,
   diceCheck,
-  roulettePlay,
-  rouletteCheck,
+  playRoulette,
+  getInfoRoulette,
+  checkRouletteCount,
   lottoInfo,
   lottoPlay,
   lottoCheck,
