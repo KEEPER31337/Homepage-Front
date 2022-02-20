@@ -89,10 +89,12 @@ async function getAttendInfo({ date, token }) {
       Authorization: token,
     },
   };
+  console.log('attendInfo', options);
   try {
     const response = await axios(options);
     return response.data;
   } catch (error) {
+    console.log('attendInfoError', error.response.data);
     return error.response.data;
   }
 }

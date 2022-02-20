@@ -19,6 +19,7 @@ import SignIn from 'page/SignIn/SignIn';
 import FindId from 'page/SignIn/Components/FindId';
 import FindPassword from 'page/SignIn/Components/FindPassword';
 import SignUp from 'page/SignUp/SignUp';
+import Ranking from 'page/Ranking/Ranking';
 
 // API
 import attendanceAPI from 'API/v1/attendance';
@@ -51,6 +52,7 @@ const App = (props) => {
           <Route path="/signin/findid" element={<FindId />} />
           <Route path="/signin/findpassword" element={<FindPassword />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/ranking" element={<Ranking />} />
         </Routes>
       </>
     </div>
