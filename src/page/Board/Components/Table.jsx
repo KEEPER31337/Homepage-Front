@@ -118,6 +118,14 @@ const Table = (props) => {
   useEffect(() => {
     // 카테고리 값 변화에 따른 현재 페이지 번호, 총 페이지 개수 갱신
     if (currentCategoryId) {
+      postAPI //공지사항 가져오기
+        .getNoticeList({
+          category: currentCategoryId,
+        })
+        .then((res) => {
+          setNoticeBoardContent(res?.list);
+        });
+
       postAPI
         .getList({
           category: currentCategoryId,
