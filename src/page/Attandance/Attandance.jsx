@@ -82,7 +82,7 @@ const Attandance = ({ member }) => {
           <Box />
           <ContinuousModal ref={continuousModalRef} />
           <RankModal ref={rankModalRef} />
-          <PointModal ref={pointModalRef} />
+          <PointModal ref={pointModalRef} attendInfo={attendInfo} />
         </div>
         <div className="container py-6">
           <AttandanceTable attendLogList={attendLogList} />

@@ -90,9 +90,9 @@ async function getAttendInfo({ date, token }) {
   console.log('attendInfo', options);
   try {
     const response = await axios(options);
+    console.log('message', response.data);
     return response.data;
   } catch (error) {
-    console.log('attendInfoError', error.response.data);
     return error.response.data;
   }
 }
