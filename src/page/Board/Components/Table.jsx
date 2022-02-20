@@ -7,6 +7,7 @@ import {
   ViewListIcon,
   DocumentTextIcon,
   PhotographIcon,
+  LockClosedIcon,
 } from '@heroicons/react/solid';
 //local
 import testData from 'page/Board/testData';
@@ -18,7 +19,7 @@ import {
   isNewPost,
 } from '../BoardUtil';
 
-const MAX_POSTS = 1; //한 페이지당 노출시킬 최대 게시글 수
+const MAX_POSTS = 8; //한 페이지당 노출시킬 최대 게시글 수
 const MAX_PAGES = 6; //한 번에 노출시킬 최대 페이지 버튼 개수
 const styleList = ['text', 'gallary'];
 
@@ -40,6 +41,7 @@ const getStyleIcon = (item) => {
 
 const Table = (props) => {
   const [boardContent, setBoardContent] = useState([]);
+  const [noticeBoardContent, setNoticeBoardContent] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [viewStyle, setViewStyle] = useState('text');
   const { no } = useParams();
@@ -162,7 +164,20 @@ const Table = (props) => {
         });
     } else {
       if (currentCategoryId) {
-        postAPI
+        postAPI //공지사항 가져오기
+          .getNoticeList({
+            category: currentCategoryId,
+          })
+          .then((res) => {
+            setPageN(
+              Math.ceil(
+                (res?.list?.length != 0 ? res.list[0]?.size : 0) / MAX_POSTS
+              )
+            );
+            setNoticeBoardContent(res?.list);
+          });
+
+        postAPI //일반 글 가져오기
           .getList({
             category: currentCategoryId,
             page: currentPage - 1,
@@ -243,23 +258,20 @@ const Table = (props) => {
             </tr>
           </thead>
           <tbody>
-            {boardContent?.map((board, index) => (
+            {noticeBoardContent?.map((board, index) => (
               <tr
                 key={board.id}
                 className={
-                  (board.isNotice ? 'bg-slate-100 dark:bg-gray-900' : '') +
-                  ' border-b-2 hover:bg-slate-200 hover:shadow-lg dark:hover:bg-darkComponent dark:border-darkComponent ' +
+                  'bg-slate-100 dark:bg-gray-900 border-b-2 hover:bg-slate-200 hover:shadow-lg dark:hover:bg-darkComponent dark:border-darkComponent ' +
                   getCurrentBoard(board.id, no)
                 }
               >
                 {/*console.log(board)*/}
                 <td className="w-[3em] border-r border-divisionGray text-center dark:border-darkComponent">
-                  {board.isNotice
-                    ? '공지'
-                    : MAX_POSTS * (currentPage - 1) + index + 1}
+                  공지
                 </td>
                 <td className="p-2 dark:border-darkComponent">
-                  <Link to={`/board/${board.id}`} state={{ test: 'test' }}>
+                  <Link to={`/board/${board.id}`}>
                     <div className="max-w-[50vw] md:max-w-[40vw] sm:max-w-[20vw] inline-block">
                       <p className="truncate text-md ">
                         <strong
@@ -269,17 +281,93 @@ const Table = (props) => {
                         </strong>
                       </p>
                     </div>
-                    {!board.isSecret && board.thumbnail ? (
+                    {board.thumbnail ? (
                       <PhotographIcon className="inline-block h-5 w-5 m-1 text-slate-500 " />
                     ) : (
                       ''
                     )}
-                    {!board.isSecret && board.files.length != 0 ? (
+                    {board.files.length != 0 ? (
                       <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
                     ) : (
                       ''
                     )}
-                    {!board.isSecret && board.commentCount != 0 ? (
+                    {board.commentCount != 0 ? (
+                      <strong className="text-mainYellow">
+                        {'(' + board.commentCount + ')'}
+                      </strong>
+                    ) : (
+                      ''
+                    )}
+                    {isNewPost(board.registerTime) ? (
+                      <strong className="inline-block rounded-full w-5 h-5 align-middle text-center text-xs m-1 bg-red-500 shadow-lg border-2 border-red-200 text-mainWhite dark:text-mainBlack">
+                        n
+                      </strong>
+                    ) : (
+                      ''
+                    )}
+                    <p className="mt-2 text-xs sm:hidden">
+                      글쓴이 : <strong>{board.writer} </strong>| 작성일시 :
+                      <strong>{getDateWithFormat(board.registerTime)} </strong>|{' '}
+                      <span className="inline-block">
+                        조회수 : <strong>{board.visitCount} </strong>
+                      </span>
+                    </p>
+                  </Link>
+                </td>
+
+                <td className="min-w-[4em] text-center dark:border-darkComponent hidden sm:table-cell">
+                  {board.writer}
+                </td>
+                <td className="min-w-[6em] text-center dark:border-darkComponent hidden sm:table-cell">
+                  {/*getDateWithFormat(board.registerTime)
+                <br />*/}
+                  {getDiffTimeWithFormat(board.registerTime)}
+                </td>
+                <td className="min-w-[4em] text-center dark:border-darkComponent hidden sm:table-cell">
+                  {board.visitCount}
+                </td>
+              </tr>
+            ))}
+            {/*=============================================================================================*/}
+            {boardContent?.map((board, index) => (
+              <tr
+                key={board.id}
+                className={
+                  ' border-b-2 hover:bg-slate-200 hover:shadow-lg dark:hover:bg-darkComponent dark:border-darkComponent ' +
+                  getCurrentBoard(board.id, no)
+                }
+              >
+                {/*console.log(board)*/}
+                <td className="w-[3em] border-r border-divisionGray text-center dark:border-darkComponent">
+                  {MAX_POSTS * (currentPage - 1) + index + 1}
+                </td>
+                <td className="p-2 dark:border-darkComponent">
+                  <Link to={`/board/${board.id}`}>
+                    <div className="max-w-[50vw] md:max-w-[40vw] sm:max-w-[20vw] inline-block">
+                      <p className="truncate text-md ">
+                        {board.isSecret ? (
+                          <LockClosedIcon className="inline-block h-5 w-5 m-1 text-slate-400 " />
+                        ) : (
+                          ''
+                        )}
+                        <strong
+                          className={board.isSecret ? 'text-slate-400' : ''}
+                        >
+                          {board.title}
+                        </strong>
+                      </p>
+                    </div>
+                    {board.thumbnail ? (
+                      <PhotographIcon className="inline-block h-5 w-5 m-1 text-slate-500 " />
+                    ) : (
+                      ''
+                    )}
+                    {board.files.length != 0 ? (
+                      <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
+                    ) : (
+                      ''
+                    )}
+                    {board.commentCount != 0 ? (
                       <strong className="text-mainYellow">
                         {'(' + board.commentCount + ')'}
                       </strong>

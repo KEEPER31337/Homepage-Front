@@ -81,6 +81,21 @@ async function getList({ category, page, size }) {
     return error.response.data;
   }
 }
+async function getNoticeList({ category }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/post/notice',
+    params: {
+      category,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
 
 async function downloadFile({ fileId }) {
   // const url = API_URL + '/v1/util/thumbnail/' + thumbnailId;
@@ -238,6 +253,7 @@ export default {
   create,
   getOne,
   getList,
+  getNoticeList,
   downloadFile,
   modify,
   remove,
