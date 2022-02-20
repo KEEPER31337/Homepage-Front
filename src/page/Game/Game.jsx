@@ -9,7 +9,8 @@ import { connect } from 'react-redux';
 // component
 import { DiceGame, RuleOfDice } from './Components/Dice';
 import { Roulette, RuleOfRoulette } from './Components/Roulette';
-import { Lotto, RuleOfLotto } from './Components/Lotto';
+import Lotto from './Components/Lotto';
+import RuleOfLotto from './Components/RuleOfLotto';
 
 // image
 import LeftNav from './img/dice/nav_left.png';

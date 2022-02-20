@@ -9,14 +9,21 @@ import win4 from '../img/Lotto/win4.png';
 import win5 from '../img/Lotto/win5.png';
 import win6 from '../img/Lotto/win6.png';
 
+// local
+import lottoAPI from 'API/v1/game';
+import { connect } from 'react-redux';
+import MessageModal from 'shared/MessageModal';
+
 const width = 350;
 const height = 500;
-const strokeWidth = 100; //브러쉬 굵기
-const completedAt = 80; //80% 이상 긁어야함
+const strokeWidth = 130; //브러쉬 굵기
+const completedAt = 20; //80% 이상 긁어야함
 
-const Lotto = ({ gameInfo }) => {
+const Lotto = ({ member }) => {
+  // ref
   const backgroundCanvasRef = useRef(null);
   const scratchCardCanvasRef = useRef(null);
+  const rankModalRef = useRef({});
 
   const [isDrawing, setIsDrawing] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -54,37 +61,67 @@ const Lotto = ({ gameInfo }) => {
       backgroundContext.drawImage(this, 0, 0);
     };
 
-    const randomNum = Math.floor(Math.random() * 6 + 1);
+    //일단 랜덤으로 아무 값 (1~3) 가져옴
 
-    setRank(randomNum);
-    console.log('randomNum : ', randomNum);
-    console.log('rank : ', rank);
-    //일단 랜덤으로 아무 값(1~3) 가져옴
+    //횟수 불러오기
+    // lottoAPI.lottoInfo({ token: member.token }).then((data) => {
+    //   console.log('a', data.data);
+    // });
 
-    setIsPop(true);
+    //횟수제한
+    lottoAPI.lottoCheck({ token: member.token }).then((data) => {
+      console.log('b', data.data);
+
+      //false일경우 == 횟수가 0번,
+      if (!data.data) {
+        //나중에 ! 추가해라..
+        setIsPop(true);
+        //api 로또 게임 횟수 제한에서, 하루에 1번만 실행되도록 하는데,
+        // 실행해보니, 게임을 총 2번 할 수 있는 것 같습니다
+        //
+
+        lottoAPI.lottoPlay({ token: member.token }).then((data) => {
+          console.log('등수는 : ', data);
+
+          setRank(data.data);
+
+          switch (data.data) {
+            case 1:
+              backgroundImage.src = win1;
+              console.log('1');
+              break;
+            case 2:
+              backgroundImage.src = win2;
+              console.log('2');
+              break;
+            case 3:
+              backgroundImage.src = win3;
+              console.log('3');
+              break;
+            case 4:
+              backgroundImage.src = win4;
+              console.log('4');
+              break;
+            case 5:
+              backgroundImage.src = win5;
+              console.log('5');
+              break;
+            case 6:
+              backgroundImage.src = win6;
+              console.log('6');
+              break;
+          }
+        });
+      } else {
+        setIsPop(false);
+        alert('오늘은 마감이오! 이미 1회 다했디~');
+        //하루 1번만 가능합니다1
+      }
+    });
+
     //setCompleted(false);
     //setProgress(0)
     //console.log(isPop)
-    switch (randomNum) {
-      case 0:
-        backgroundImage.src = win1;
-        break;
-      case 1:
-        backgroundImage.src = win2;
-        break;
-      case 2:
-        backgroundImage.src = win3;
-        break;
-      case 3:
-        backgroundImage.src = win4;
-        break;
-      case 4:
-        backgroundImage.src = win5;
-        break;
-      case 5:
-        backgroundImage.src = win6;
-        break;
-    }
   };
 
   useEffect(() => {
@@ -107,6 +144,10 @@ const Lotto = ({ gameInfo }) => {
       backgroundContext.drawImage(this, 0, 0);
     };
     scratchCardImage.src = scratchCardImageSrc;
+
+    lottoAPI.lottoInfo({ token: member.token }).then((data) => {
+      console.log('몇회 했냐 : ', data.data);
+    });
   }, []);
 
   const scratchStart = ({ nativeEvent }) => {
@@ -159,7 +200,9 @@ const Lotto = ({ gameInfo }) => {
     if (percent >= completedAt && !isCompleted) {
       setIsCompleted(true);
       onCompleted();
-      alert(rank + ' 등 축하합니다!');
+      //setIsPop(false);
+      // alert(rank + ' 등 축하합니다!');
+      rankModalRef.current.open();
     }
   };
 
@@ -167,7 +210,7 @@ const Lotto = ({ gameInfo }) => {
     setIsDrawing(false);
   };
   return (
-    <div className="relative md:w-3/5 lg:w-3/5 w-full space-y-4 pb-10 sm:p-10 mb-10 flex flex-wrap justify-center bg-gradient-radial from-gray-700 to-gray-900 rounded-md border-[16px] border-mainBlack dark:border-divisionGray">
+    <div className="relative md:w-3/5 lg:w-3/5 w-full space-y-4 pb-10 sm:p-10 mb-10 flex flex-col text-center items-center justify-center bg-gradient-radial from-gray-700 to-gray-900 rounded-md border-[16px] border-mainBlack dark:border-divisionGray">
       <div className="inset-y-5 py-2 pl-5  w-full   bg-gray-900 rounded-md shadow-md text-amber-200 text-xs sm:text-base">
         <p>
           성공여부: {completed ? 'Yes' : 'No'}
@@ -201,13 +244,12 @@ const Lotto = ({ gameInfo }) => {
           />
         </div>
       </div>
-
       <button
         disabled={isPop}
         onClick={backEnd}
-        className={` relative w-full 
-          flex justify-center px-4 py-4 border 
-          border-transparent text-sm font-bold
+        className={` relative  sm:w-[350px] w-full
+          flex justify-center px-2 py-2 border 
+          border-transparent text-lg 
           rounded-lg text-white 
          
           ${
@@ -218,63 +260,13 @@ const Lotto = ({ gameInfo }) => {
       >
         복권 뽑기
       </button>
+      <MessageModal ref={rankModalRef}>{rank}등 입니당!</MessageModal>
     </div>
   );
 };
 
-const RuleOfLotto = ({ gameInfo }) => {
-  return (
-    <div className="flex justify-center items-center">
-      <div className="relative w-2/5 my-5 p-5 border-2 border-divisionGray">
-        <div className="flex  border-b bg-white  rounded-lg">
-          <table className="relative w-full divide-y divide-gray-200">
-            <tr key="1">
-              <td className="px- py-4 whitespace-nowrap">
-                <div className="flex items-center">
-                  <div className="ml-4">
-                    <span className=" px-2 py-1 leading-5 text-sm font-bold rounded-full bg-amber-100 text-amber-600">
-                      1등
-                    </span>
-
-                    <div className="text-lg text-gray-500">
-                      {gameInfo.FIRST_POINT}
-                    </div>
-                  </div>
-                </div>
-              </td>
-
-              <td className="px-6 py-4 whitespace-nowrap">
-                <span className="px-2 inline-flex text-lg leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                  {gameInfo.FIRST_PROB}%
-                </span>
-              </td>
-            </tr>
-            <tr key="1">
-              <td className="px- py-4 whitespace-nowrap">
-                <div className="flex items-center">
-                  <div className="ml-4">
-                    <span className=" px-2 py-1 leading-5 text-sm font-bold rounded-full bg-amber-100 text-amber-600">
-                      2등
-                    </span>
-
-                    <div className="text-lg text-gray-500">
-                      {gameInfo.SECOND_POINT}
-                    </div>
-                  </div>
-                </div>
-              </td>
-
-              <td className="px-6 py-4 whitespace-nowrap">
-                <span className="px-2 inline-flex text-lg leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                  {gameInfo.SECOND_PROB}%
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-    </div>
-  );
+const mapStateToProps = (state, OwnProps) => {
+  return { member: state.member };
 };
 
-export { Lotto, RuleOfLotto };
+export default connect(mapStateToProps)(Lotto);
