@@ -17,7 +17,7 @@ import MessageModal from 'shared/MessageModal';
 const width = 350;
 const height = 500;
 const strokeWidth = 130; //브러쉬 굵기
-const completedAt = 20; //80% 이상 긁어야함
+const completedAt = 70; //70% 이상 긁어야함
 
 const Lotto = ({ member, gameInfo }) => {
   // ref
@@ -29,11 +29,14 @@ const Lotto = ({ member, gameInfo }) => {
   const [startX, setStartX] = useState(0);
   const [startY, setStartY] = useState(0);
   const [isPop, setIsPop] = useState(false);
+
+  //게임 후, 등수와 포인트 띄워줌
   const [rank, setRank] = useState(0);
   const [point, setPoint] = useState(0);
 
-  const [win, setWin] = useState('');
-  //win 이미지 url 저장
+  // 게임 상에서 띄워줄 정보
+  const [memberPoint, setMemberPoint] = useState(member.memberInfo.point);
+  const [remainingCount, setRemainingCount] = useState(3);
 
   const [completed, setCompleted] = useState(false);
   //완료했는지 안했는지 bool값으로
@@ -50,8 +53,6 @@ const Lotto = ({ member, gameInfo }) => {
   };
 
   const backEnd = () => {
-    //output : rank
-
     //이미지 변경
     const backgroundCanvas = backgroundCanvasRef.current;
     const backgroundContext = backgroundCanvas.getContext('2d');
@@ -61,13 +62,6 @@ const Lotto = ({ member, gameInfo }) => {
     backgroundImage.onload = function () {
       backgroundContext.drawImage(this, 0, 0);
     };
-
-    //일단 랜덤으로 아무 값 (1~3) 가져옴
-
-    //횟수 불러오기
-    // lottoAPI.lottoInfo({ token: member.token }).then((data) => {
-    //   console.log('a', data.data);
-    // });
 
     //횟수제한
     lottoAPI.checkLottoCount({ token: member.token }).then((data) => {
@@ -82,40 +76,34 @@ const Lotto = ({ member, gameInfo }) => {
         //
 
         lottoAPI.playLotto({ token: member.token }).then((data) => {
-          console.log('등수는 : ', data);
+          console.log('등수는 : ', data.data.lottoPointIdx);
 
-          setRank(data.data);
+          setRank(data.data.lottoPointIdx);
 
-          switch (data.data) {
+          switch (data.data.lottoPointIdx) {
             case 1:
               backgroundImage.src = win1;
               setPoint(gameInfo.FIRST_POINT);
-              console.log('1');
               break;
             case 2:
               backgroundImage.src = win2;
               setPoint(gameInfo.SECOND_POINT);
-              console.log('2');
               break;
             case 3:
               backgroundImage.src = win3;
               setPoint(gameInfo.THIRD_POINT);
-              console.log('3');
               break;
             case 4:
               backgroundImage.src = win4;
               setPoint(gameInfo.FOURTH_POINT);
-              console.log('4');
               break;
             case 5:
               backgroundImage.src = win5;
               setPoint(gameInfo.FIFTH_POINT);
-              console.log('5');
               break;
             case 6:
               backgroundImage.src = win6;
               setPoint(gameInfo.LAST_POINT);
-              console.log('6');
               break;
           }
         });
@@ -216,9 +204,9 @@ const Lotto = ({ member, gameInfo }) => {
     <div className="relative md:w-3/5 lg:w-3/5 w-full space-y-4 pb-10 sm:p-10 mb-10 flex flex-col text-center items-center justify-center bg-gradient-radial from-gray-700 to-gray-900 rounded-md border-[16px] border-mainBlack dark:border-divisionGray">
       <div className="inset-y-5 py-2 pl-5  w-full   bg-gray-900 rounded-md shadow-md text-amber-200 text-xs sm:text-base">
         <p>
-          성공여부: {completed ? 'Yes' : 'No'}
-          <br />
-          진행상황: {progress}% ({completedAt}%이상 넘어야 합니다)
+          {isPop
+            ? `${progress}% (${completedAt}%이상 긁어야 합니다)`
+            : '복권을 뽑아주세요'}
         </p>
       </div>
 
