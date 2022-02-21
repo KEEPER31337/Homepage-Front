@@ -91,7 +91,7 @@ async function playRoulette({ token }) {
   }
 }
 
-async function getInfoRoulette({ token }) {
+async function getRouletteInfo({ token }) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/game/roulette/info',
@@ -187,9 +187,8 @@ async function getGameInfo() {
 }
 
 export default {
-
   playRoulette,
-  getInfoRoulette,
+  getRouletteInfo,
   checkRouletteCount,
 
   getDiceInfo,

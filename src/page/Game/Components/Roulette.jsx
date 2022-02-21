@@ -13,7 +13,7 @@ const Roulette = ({ gameInfo, member }) => {
       }
     });
     rouletteAPI
-      .getInfoRoulette({
+      .getRouletteInfo({
         token: member.token,
       })
       .then((data) => {
@@ -56,7 +56,7 @@ const Roulette = ({ gameInfo, member }) => {
           }
         });
         rouletteAPI
-          .getInfoRoulette({
+          .getRouletteInfo({
             token: member.token,
           })
           .then((data) => {
@@ -126,50 +126,50 @@ const Roulette = ({ gameInfo, member }) => {
   ];
 
   return (
-    <div className="relative w-3/5 pb-10 sm:p-10 mb-10 flex flex-wrap justify-center sm:justify-start bg-gradient-radial from-gray-700 to-gray-900 rounded-md border-[16px] border-mainBlack dark:border-divisionGray">
+    <div className="relative w-full md:w-3/5 pb-10 sm:p-10 mb-10 flex flex-wrap justify-center sm:justify-start bg-gradient-radial from-gray-700 to-gray-900 rounded-md border-[16px] border-mainBlack dark:border-divisionGray">
       <div className="relative">
         <div className="shadow-inner shadow-[#725d19] [clip-path:polygon(95%_0,_50%_100%,_5%_0)] rotate-[180deg] top-8 bg-gradient-radial from-amber-900 to-yellow-300 brightness-110 h-1/2 w-2/3 absolute left-1/2 -translate-x-1/2 origin-bottom rounded-3xl"></div>
         <div className="my-2 mx-2 sm:m-0 shadow-md shadow-[#725d19] rounded-full bg-gradient-to-tr from-amber-900 to-yellow-300 brightness-125">
           <div
-            className={`${ani} w-52 h-52 brightness-125 border-white border-solid border-8 border-opacity-0 rounded-full relative overflow-hidden`}
+            className={`${ani} w-52 h-52 xl:w-80 xl:h-80 brightness-125 border-white border-solid border-8 border-opacity-0 rounded-full relative overflow-hidden`}
           >
             <div
-              className={`pb-10 shadow-inner [clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-gradient-to-t from-[#850808] to-[#780103] rotate-[0deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-[#cdb672] text-center text-lg font-bold flex items-center justify-center left-1/2`}
+              className={`pb-10 shadow-inner [clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-gradient-to-t from-[#850808] to-[#780103] rotate-[0deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-[#cdb672] text-center text-lg xl:text-2xl font-bold flex items-center justify-center left-1/2`}
             >
               {points[0]}
             </div>
             <div
-              className={`pb-10 shadow-inner [clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-gradient-to-t from-[#780103] to-[#5a0606] rotate-[45deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-[#cdb672] text-center text-lg font-bold flex items-center justify-center left-24`}
+              className={`pb-10 shadow-inner [clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-gradient-to-t from-[#780103] to-[#5a0606] rotate-[45deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-[#cdb672] text-center text-lg xl:text-2xl font-bold flex items-center justify-center left-1/2`}
             >
               {points[1]}
             </div>
             <div
-              className={`pb-10 shadow-inner [clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-gradient-to-t from-[#5a0606] to-[#500305] rotate-[90deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-[#cdb672] text-center text-lg font-bold flex items-center justify-center left-24`}
+              className={`pb-10 shadow-inner [clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-gradient-to-t from-[#5a0606] to-[#500305] rotate-[90deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-[#cdb672] text-center text-lg xl:text-2xl font-bold flex items-center justify-center left-1/2`}
             >
               {points[2]}
             </div>
             <div
-              className={`pb-10 shadow-inner [clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-gradient-to-t from-[#500305] to-[#940202f3] rotate-[135deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-[#cdb672] text-center text-lg font-bold flex items-center justify-center left-24`}
+              className={`pb-10 shadow-inner [clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-gradient-to-t from-[#500305] to-[#940202f3] rotate-[135deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-[#cdb672] text-center text-lg xl:text-2xl font-bold flex items-center justify-center left-1/2`}
             >
               {points[3]}
             </div>
             <div
-              className={`pb-10 shadow-inner [clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-gradient-to-t from-[#940202] to-[#780103] rotate-[180deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-[#cdb672] text-center text-lg font-bold flex items-center justify-center left-24`}
+              className={`pb-10 shadow-inner [clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-gradient-to-t from-[#940202] to-[#780103] rotate-[180deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-[#cdb672] text-center text-lg xl:text-2xl font-bold flex items-center justify-center left-1/2`}
             >
               {points[4]}
             </div>
             <div
-              className={`pb-10 shadow-inner [clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-gradient-to-t from-[#780103] to-[#5a0606] rotate-[225deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-[#cdb672] text-center text-lg font-bold flex items-center justify-center left-24`}
+              className={`pb-10 shadow-inner [clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-gradient-to-t from-[#780103] to-[#5a0606] rotate-[225deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-[#cdb672] text-center text-lg xl:text-2xl font-bold flex items-center justify-center left-1/2`}
             >
               {points[5]}
             </div>
             <div
-              className={`pb-10 shadow-inner [clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-gradient-to-t from-[#5a0606] to-[#500305] rotate-[270deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-[#cdb672] text-center text-lg font-bold flex items-center justify-center left-24`}
+              className={`pb-10 shadow-inner [clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-gradient-to-t from-[#5a0606] to-[#500305] rotate-[270deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-[#cdb672] text-center text-lg xl:text-2xl font-bold flex items-center justify-center left-1/2`}
             >
               {points[6]}
             </div>
             <div
-              className={`pb-10 shadow-inner [clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-gradient-to-t from-[#500305] to-[#940202f3] rotate-[315deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-[#cdb672] text-center text-lg font-bold flex items-center justify-center left-24`}
+              className={`pb-10 shadow-inner [clip-path:polygon(92%_0,_50%_100%,_8%_0)] bg-gradient-to-t from-[#500305] to-[#940202f3] rotate-[315deg] h-1/2 w-1/2 absolute -translate-x-1/2 origin-bottom text-[#cdb672] text-center text-lg xl:text-2xl font-bold flex items-center justify-center left-1/2`}
             >
               {points[7]}
             </div>
@@ -180,19 +180,19 @@ const Roulette = ({ gameInfo, member }) => {
         </div>
         <button
           onClick={onClick}
-          className="brightness-110 shadow-xl shadow-[#5c0806] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black uppercase border-[5px] border-solid border-mainYellow font-bold text-[#cdb672] text-sm w-12 h-12 rounded-full cursor-pointer outline-none"
+          className="brightness-110 shadow-xl shadow-[#5c0806] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black uppercase border-[5px] xl:border-8 border-solid border-mainYellow font-bold text-[#cdb672] text-sm xl:text-lg w-12 h-12 xl:w-20 xl:h-20 rounded-full cursor-pointer outline-none"
         >
           Spin
         </button>
       </div>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-none order-first sm:order-none sm:absolute sm:inset-y-5 sm:right-5 py-2 sm:py-3 pl-5 sm:px-5 lg:p-5 w-full sm:w-1/2 xl:w-1/3 h-fit sm:h-auto bg-gray-900 rounded-md shadow-md text-amber-200 text-xs sm:text-base">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-none order-first sm:order-none sm:absolute sm:inset-y-5 sm:right-5 py-2 sm:py-3 pl-5 sm:px-5 lg:p-5 w-full sm:w-1/2 md:w-1/3 lg:w-1/2 xl:w-1/3 h-fit sm:h-auto bg-gray-900 rounded-md shadow-md text-amber-200 text-xs sm:text-base xl:text-lg">
         {infos.map((info) => (
           <div
             key={info.subtitle}
             className="items-center inline-block sm:block lg:flex"
           >
             <div className="sm:flex-shrink-0">
-              <div className="sm:w-24">{info.subtitle}</div>
+              <div className="md:w-24 lg:w-32">{info.subtitle}</div>
             </div>
             <div className="w-16 sm:w-auto px-2 tabular-nums bg-gray-300 bg-opacity-10 rounded-md">
               {info.content}
