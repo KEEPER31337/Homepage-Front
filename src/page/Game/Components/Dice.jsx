@@ -24,8 +24,8 @@ import equalA from '../sound/equal.mp3';
 import loseA from '../sound/lose.mp3';
 
 // API
-import DiceAPI from 'API/v1/game';
-import MEMBER from 'API/v1/member';
+import diceAPI from 'API/v1/game';
+import memberAPI from 'API/v1/member';
 
 // style
 import './dice.css';
@@ -40,7 +40,7 @@ const MAX_PLAY_DICE = 6;
 
 const DiceGame = ({ gameInfo, member, updateInfo }) => {
   const [fixed, setFixed] = useState(false); // 게임 결과 놨는지 확인 + reset 버튼 보여줄지 말지 정함
-  const [betting, setBet] = useState(250); // 배팅 포인트 저장
+  const [betting, setBet] = useState(500); // 배팅 포인트 저장
   const [score, setScore] = useState(0); // user의 주사위 게임 점수 저장
   const [confirm, setConfirm] = useState(true); // 배팅 포인트 확정
   const [count, setCount] = useState(); // 하루 주사위 한 횟수 저장
@@ -50,22 +50,25 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
   const alertCountModalRef = useRef({});
 
   useEffect(() => {
-    console.log('point : ', member.memberInfo.point);
-    DiceAPI.getDiceInfo({
-      token: member.token,
-    }).then((data) => {
-      if (data.success) {
-        setCount(data.data);
-      }
-    });
+    diceAPI
+      .getDiceInfo({
+        token: member.token,
+      })
+      .then((data) => {
+        if (data.success) {
+          setCount(data.data);
+        }
+      });
 
-    DiceAPI.checkDiceCount({
-      token: member.token,
-    }).then((data) => {
-      if (data.success) {
-        setCheck(data.data);
-      }
-    });
+    diceAPI
+      .checkDiceCount({
+        token: member.token,
+      })
+      .then((data) => {
+        if (data.success) {
+          setCheck(data.data);
+        }
+      });
   }, [member]);
 
   const refresh = () => {
@@ -104,26 +107,28 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
       alertBettingPointModalRef.current.open();
       return;
     }
-
     if (rollNum === 0) {
       setConfirm((tmp) => !tmp);
-      DiceAPI.playDice({
-        bet: betting,
-        token: member.token,
-      }).then((data) => {
-        if (data.success) {
-          console.log('play Dice 실행!, betting point : ', betting);
-          MEMBER.getMember({
-            token: member.token,
-          }).then((data) => {
-            if (data.success) {
-              const token = member.token;
-              const memberInfo = data.data;
-              updateInfo({ token, memberInfo });
-            }
-          });
-        }
-      });
+      diceAPI
+        .playDice({
+          bet: betting,
+          token: member.token,
+        })
+        .then((data) => {
+          if (data.success) {
+            memberAPI
+              .getMember({
+                token: member.token,
+              })
+              .then((data) => {
+                if (data.success) {
+                  const token = member.token;
+                  const memberInfo = data.data;
+                  updateInfo({ token, memberInfo });
+                }
+              });
+          }
+        });
     }
 
     if (rollNum < 3 && scoreFlag === 1) {
@@ -177,61 +182,76 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
 
       if (userScore > cValue) {
         new Audio(winA).play();
-        DiceAPI.setDiceResult({
-          bet: betting,
-          result: DICE_GAME_WIN,
-          token: member.token,
-        }).then((data) => {
-          console.log('승리 : ', data.success);
-          MEMBER.getMember({
+        diceAPI
+          .setDiceResult({
+            bet: betting,
+            result: DICE_GAME_WIN,
             token: member.token,
-          }).then((data) => {
+          })
+          .then((data) => {
             if (data.success) {
-              const token = member.token;
-              const memberInfo = data.data;
-              updateInfo({ token, memberInfo });
+              memberAPI
+                .getMember({
+                  token: member.token,
+                })
+                .then((data) => {
+                  if (data.success) {
+                    const token = member.token;
+                    const memberInfo = data.data;
+                    updateInfo({ token, memberInfo });
+                  }
+                });
             }
           });
-        });
-        resultImg(1);
+        resultImg(DICE_GAME_WIN);
       } else if (userScore === cValue) {
         new Audio(equalA).play();
-        DiceAPI.setDiceResult({
-          bet: betting,
-          result: DICE_GAME_DRAW,
-          token: member.token,
-        }).then((data) => {
-          console.log('무승부 : ', data.success);
-          MEMBER.getMember({
+        diceAPI
+          .setDiceResult({
+            bet: betting,
+            result: DICE_GAME_DRAW,
             token: member.token,
-          }).then((data) => {
+          })
+          .then((data) => {
             if (data.success) {
-              const token = member.token;
-              const memberInfo = data.data;
-              updateInfo({ token, memberInfo });
+              memberAPI
+                .getMember({
+                  token: member.token,
+                })
+                .then((data) => {
+                  if (data.success) {
+                    const token = member.token;
+                    const memberInfo = data.data;
+                    updateInfo({ token, memberInfo });
+                  }
+                });
             }
           });
-        });
-        resultImg(0);
+        resultImg(DICE_GAME_DRAW);
       } else {
         new Audio(loseA).play();
-        DiceAPI.setDiceResult({
-          bet: betting,
-          result: DICE_GAME_LOSE,
-          token: member.token,
-        }).then((data) => {
-          console.log('패배 : ', data.success);
-          MEMBER.getMember({
+        diceAPI
+          .setDiceResult({
+            bet: betting,
+            result: DICE_GAME_LOSE,
             token: member.token,
-          }).then((data) => {
+          })
+          .then((data) => {
             if (data.success) {
-              const token = member.token;
-              const memberInfo = data.data;
-              updateInfo({ token, memberInfo });
+              memberAPI
+                .getMember({
+                  token: member.token,
+                })
+                .then((data) => {
+                  if (data.success) {
+                    const token = member.token;
+                    const memberInfo = data.data;
+                    updateInfo({ token, memberInfo });
+                  }
+                });
             }
           });
-        });
-        resultImg(-1);
+        resultImg(DICE_GAME_LOSE);
       }
       setFixed(true);
     }
