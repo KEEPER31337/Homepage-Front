@@ -17,6 +17,7 @@ const BoardView = (props) => {
   const [board, setBoard] = useState({});
   const [prevBoard, setPrevBoard] = useState(null);
   const [commentChangeFlag, setCommentChangeFlag] = useState(false); //댓글이 추가/제거됐을 때 페이지를 재 렌더링하기 위함(굳이 필요한가?)
+  const [likeChangeFlag, setLikeChangeFlag] = useState(false); //게시글의 추천/비추천 여부의 변경을 감지하기 위한 플래그
   const token = props.state.member.token;
   useEffect(() => {
     prevBoard ? setPrevBoard({ id: -1 }) : setPrevBoard(board);
@@ -32,7 +33,7 @@ const BoardView = (props) => {
           setBoard(res.data);
         });
     }
-  }, [no, token, commentChangeFlag]);
+  }, [no, token, commentChangeFlag, likeChangeFlag]);
 
   // const board = testData.boards[no - 1]; //해당 게시글 관련 정보
 
@@ -42,7 +43,12 @@ const BoardView = (props) => {
         <div className="inline-block m-5 w-full">
           <Info />
           {board?.id && prevBoard.id !== board.id ? (
-            <Content board={board} commentChangeFlag={commentChangeFlag} />
+            <Content
+              board={board}
+              commentChangeFlag={commentChangeFlag}
+              likeChangeFlag={likeChangeFlag}
+              setLikeChangeFlag={setLikeChangeFlag}
+            />
           ) : (
             ''
           )}

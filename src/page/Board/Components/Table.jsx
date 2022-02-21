@@ -10,7 +10,6 @@ import {
   LockClosedIcon,
 } from '@heroicons/react/solid';
 //local
-import testData from 'page/Board/testData';
 import Gallary from './Gallary';
 import postAPI from 'API/v1/post';
 import {

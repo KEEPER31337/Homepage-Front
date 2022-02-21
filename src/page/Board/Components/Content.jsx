@@ -21,16 +21,17 @@ import utilAPI from 'API/v1/util';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-const Content = ({ state, board }) => {
+const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
   //board는 게시글 정보가 담긴 객체
   //console.log(state.member.memberId); //(내 아이디)나중에 업데이트 될거임
   const isDark = state.darkMode; //Dark모드 여부
   const myId = state.member.userInfo.id; //게시글을 보고 있는 나의 정보
-  const [isDisliked, setIsDisliked] = useState(); //싫어요 여부
-  const [isLiked, setIsLiked] = useState(); //좋아요 여부
-  const [files, setFiles] = useState([]);
-  const [thumbnailBase64, setThumbnailBase64] = useState(null); // 파일 base64
-  const [toggle, setToggle] = useState(false);
+  const [isDisliked, setIsDisliked] = useState(); //비추천을 눌렀는지 여부
+  const [isLiked, setIsLiked] = useState(); //추천을 눌렀는지 여부
+  const [files, setFiles] = useState([]); //게시글에 첨부된 파일 목록
+  const [thumbnailBase64, setThumbnailBase64] = useState(null); // 섬네일 이미지 base64
+  const [toggle, setToggle] = useState(false); //첨부파일 토글이 열렸는지 여부
+
   const postingId = board.id;
   const token = state.member.token;
   const navigate = useNavigate();
@@ -39,6 +40,7 @@ const Content = ({ state, board }) => {
   //console.log(board);
   const viwerRef = useRef();
   const clickLikeHandler = () => {
+    //게시글 추천버튼 눌렀을 경우
     const type = isLiked ? 'DEC' : 'INC';
     postAPI
       .like({
@@ -48,10 +50,12 @@ const Content = ({ state, board }) => {
       })
       .then((res) => {
         console.log(res);
+        setLikeChangeFlag(!likeChangeFlag);
       });
     setIsLiked(!isLiked);
   };
   const clickDislikeHandler = () => {
+    //게시글 비추천버튼 눌렀을 경우
     const type = isDisliked ? 'DEC' : 'INC';
     postAPI
       .dislike({
@@ -61,11 +65,13 @@ const Content = ({ state, board }) => {
       })
       .then((res) => {
         console.log(res);
+        setLikeChangeFlag(!likeChangeFlag);
       });
     setIsDisliked(!isDisliked);
   };
 
   const deletePostingHandler = () => {
+    //게시글 삭제 버튼 눌렀을 시
     postAPI.remove({ boardId: postingId, token: token }).then((res) => {
       if (res.success) {
         navigate('/board');
@@ -79,6 +85,7 @@ const Content = ({ state, board }) => {
   };
 
   useEffect(() => {
+    console.log('Content:reload');
     utilAPI.getThumbnail({ thumbnailId: board.thumbnail.id }).then((data) => {
       console.log(data);
 
@@ -107,7 +114,7 @@ const Content = ({ state, board }) => {
     const viwerInstance = viwerRef.current.getInstance();
     viwerInstance.setMarkdown(board.content);
     setFiles(board.files);
-  }, [board.content]);
+  }, []);
 
   return (
     <div className="my-5">
@@ -267,7 +274,7 @@ const Content = ({ state, board }) => {
               ' inline-block h-5 w-5 m-1 text-mainWhite dark:text-mainBlack '
             }
           />
-          추천
+          추천({board.likeCount})
         </button>
         <button
           className={
@@ -286,7 +293,7 @@ const Content = ({ state, board }) => {
               ' inline-block h-5 w-5 m-1 text-mainWhite dark:text-mainBlack '
             }
           />
-          비추천
+          비추천({board.dislikeCount})
         </button>
       </div>
     </div>
