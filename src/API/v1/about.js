@@ -2,7 +2,6 @@ import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-// Dice
 async function getIntroInfo() {
   const options = {
     method: 'GET',
