@@ -125,7 +125,7 @@ const posts = [
             <h2 className="text-3xl tracking-tight font-extrabold sm:text-4xl ">최근</h2>
           </div>
           <ScrollContainer vertical={false} className="overflow-hidden">
-            <div className="flex flex-nowrap mt-12 max-w-lg mx-auto gap-3 lg:max-w-none">
+            <div className="flex flex-nowrap mt-12 m-3 max-w-lg mx-auto gap-3 lg:max-w-none">
               {posts.map((post) => (
                 <div key={post.title} className="grow-0 shrink-0 basis-1/2 lg:basis-1/4 flex flex-col rounded-lg shadow-lg overflow-hidden">
                   <div className="flex-shrink-0">
