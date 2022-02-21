@@ -42,13 +42,13 @@ const Roulette = ({ gameInfo, member }) => {
 
   // 게임 동작 관련
   const [ani, setAni] = useState('animate-none');
-  const rotateDegree = (0 + 45 * (points.length - pointIdx)) % 360;
-  const spinAndStop = () => {
+  const spinAndStop = (points, pointIdx) => {
     setAni('animate-[spin_0.3s_linear_infinite]');
     setTimeout(function () {
+      const rotateDegree = (0 + 45 * (points.length - pointIdx)) % 360;
       setAni(`animate-none rotate-[${rotateDegree}deg]`);
       setTimeout(function () {
-        alert('획득 포인트' + points[pointIdx]);
+        alert('획득 포인트 : ' + points[pointIdx]);
         memberAPI.getMember({ token: member.token }).then((data) => {
           // 포인트 정보 업데이트
           if (data.success) {
@@ -89,9 +89,11 @@ const Roulette = ({ gameInfo, member }) => {
                   setRemainingCount(3 - data.data.roulettePerDay);
                   setPoints(data.data.roulettePoints);
                   setPointIdx(data.data.roulettePointIdx);
-                  // NOTE setMemberPoint 제대로 되는 지 확인
                   setMemberPoint((prev) => prev - gameInfo.ROULETTE_FEE); // 참가 포인트 차감되는 거 보여주기
-                  spinAndStop();
+                  spinAndStop(
+                    data.data.roulettePoints,
+                    data.data.roulettePointIdx
+                  );
                 } else console.log('no play');
               });
           } else {
