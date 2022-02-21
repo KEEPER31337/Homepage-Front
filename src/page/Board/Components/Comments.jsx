@@ -10,9 +10,14 @@ import {
 //local
 import ipAPI from 'API/v1/ip';
 import commentAPI from 'API/v1/comment';
-const Comments = ({ boardId: boardId, commentCount: commentCount, state }) => {
+const Comments = ({
+  boardId,
+  commentCount: commentCount,
+  state,
+  commentChangeFlag,
+  setCommentChangeFlag,
+}) => {
   const [comments, setComments] = useState([]);
-  const [commentAddFlag, setCommentAddFlag] = useState(false); //댓글이 추가/제거됐을 때 페이지를 재 렌더링하기 위함(굳이 필요한가?)
   const [content, setContent] = useState('');
   const [subContent, setSubContent] = useState('');
   const [focusedComment, setFocusedComment] = useState();
@@ -34,7 +39,7 @@ const Comments = ({ boardId: boardId, commentCount: commentCount, state }) => {
       .then((res) => {
         setComments(res.list);
       });
-  }, [isDark, commentAddFlag, numComments]);
+  }, [isDark, commentChangeFlag, numComments]);
 
   const loadAdditionalComments = () => {
     setNumComments(numComments + 10);
@@ -56,7 +61,7 @@ const Comments = ({ boardId: boardId, commentCount: commentCount, state }) => {
       .then((res) => {
         if (res.success) {
           console.log('delete comment');
-          setCommentAddFlag(!commentAddFlag);
+          setCommentChangeFlag(!commentChangeFlag);
         } else {
           alert('댓글 삭제 실패!');
         }
@@ -75,7 +80,7 @@ const Comments = ({ boardId: boardId, commentCount: commentCount, state }) => {
         })
         .then((res) => {
           if (res.success) {
-            setCommentAddFlag(!commentAddFlag);
+            setCommentChangeFlag(!commentChangeFlag);
             setSubContent('');
           } else {
             alert('댓글 달기 실패! 전산관리자에게 문의하세요~');
@@ -95,7 +100,7 @@ const Comments = ({ boardId: boardId, commentCount: commentCount, state }) => {
         })
         .then((res) => {
           if (res.success) {
-            setCommentAddFlag(!commentAddFlag);
+            setCommentChangeFlag(!commentChangeFlag);
             setContent('');
           } else {
             alert('댓글 달기 실패! 전산관리자에게 문의하세요~');

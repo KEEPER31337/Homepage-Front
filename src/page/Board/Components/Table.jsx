@@ -178,7 +178,7 @@ const Table = (props) => {
           });
       }
     }
-  }, [currentPage, viewStyle]); //currentPage 값이 변경될 때마다
+  }, [currentPage, viewStyle, props.commentChangeFlag]); //currentPage 값이 변경될 때마다
 
   return (
     <div className="dark:bg-mainBlack dark:text-mainWhite ">
