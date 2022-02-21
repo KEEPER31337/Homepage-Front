@@ -19,7 +19,7 @@ import {
   isNewPost,
 } from '../BoardUtil';
 
-const MAX_POSTS = 8; //한 페이지당 노출시킬 최대 게시글 수
+const MAX_POSTS = 4 * 2; //한 페이지당 노출시킬 최대 게시글 수
 const MAX_PAGES = 6; //한 번에 노출시킬 최대 페이지 버튼 개수
 const styleList = ['text', 'gallary'];
 
@@ -201,7 +201,7 @@ const Table = (props) => {
           });
       }
     }
-  }, [currentPage, viewStyle]); //currentPage 값이 변경될 때마다
+  }, [currentPage, viewStyle, props.commentChangeFlag]); //currentPage 값이 변경될 때마다
 
   return (
     <div className="dark:bg-mainBlack dark:text-mainWhite ">

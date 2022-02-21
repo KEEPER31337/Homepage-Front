@@ -21,6 +21,8 @@ import {
   isNewPost,
 } from '../BoardUtil';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 const Gallary = (boards) => {
   const [thumbnails, setThumbnails] = [];
   useEffect(() => {}, []);
@@ -47,12 +49,22 @@ const Gallary = (boards) => {
                         비밀글입니다.
                       </div>
                     </div>
+                  ) : board.writerThumbnailId ? (
+                    <img
+                      src={
+                        API_URL +
+                        '/v1/util/thumbnail/' +
+                        board.writerThumbnailId
+                      }
+                      alt="썸네일 이미지"
+                      className="w-full h-full object-center object-cover rounded-lg"
+                    />
                   ) : (
                     <img
                       src={
                         'https://avatars.githubusercontent.com/u/23546441?s=400&u=db7abf2929e5518c12189034dc3fed9bda94f0a6&v=4'
                       }
-                      alt="섬네일 이미지"
+                      alt="썸네일 이미지"
                       className="w-full h-full object-center object-cover rounded-lg"
                     />
                   )}
