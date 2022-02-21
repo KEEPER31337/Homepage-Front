@@ -16,7 +16,7 @@ import GrayDownArrow from 'assets/img/gray-down-arrow.png';
 const Home = () => {
   const [visible, setVisible] = useState(true);
   return (
-    <div className="bg-mainWhite dark:bg-mainBlack text-mainBlack dark:text-mainWhite">
+    <div className="bg-mainWhite dark:bg-mainBlack text-mainBlack dark:text-mainWhite overflow-x-hidden">
         {visible && FirstPage(visible, setVisible)}
         {SecondPage(visible, setVisible)}
     </div>
