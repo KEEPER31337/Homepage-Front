@@ -17,7 +17,7 @@ const SignIn = (props) => {
   const loginFailModalRef = useRef({});
   const navigate = useNavigate();
 
-  const handleBlur = (e) => {
+  const handleChange = (e) => {
     setLoginInfo({ ...loginInfo, [e.target.name]: e.target.value });
   };
   const handleSignIn = () => {
@@ -58,7 +58,7 @@ const SignIn = (props) => {
               focus:bg-backGray focus:border-backGray  focus:ring-backGray dark:bg-darkPoint dark:outline-white  dark:border-transparent
               "
                 placeholder="아이디"
-                onBlur={handleBlur}
+                onChange={handleChange}
               />
             </div>
 
@@ -75,10 +75,9 @@ const SignIn = (props) => {
                rounded-b-md focus:outline-none 
                
               focus:bg-backGray focus:border-backGray  focus:ring-backGray dark:bg-darkPoint dark:outline-white  dark:border-transparent
-
               focus:z-10 sm:text-sm"
                 placeholder="비밀번호"
-                onBlur={handleBlur}
+                onChange={handleChange}
               />
             </div>
           </div>
