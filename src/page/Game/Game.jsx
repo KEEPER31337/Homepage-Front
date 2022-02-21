@@ -1,28 +1,15 @@
-import React, { useState, useEffect } from 'react';
-
-// shared
-import PageContainer from 'shared/PageContainer';
-import LayoutContainer from 'shared/LayoutContainer';
-
-//import React from 'react';
-//import { useState, useEffect } from 'react';
+import React from 'react';
+import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 // component
-import { DiceGame, RuleOfDice } from './Components/Dice';
+import DiceGame from './Components/Dice';
+import RuleOfDice from './Components/RuleOfDice';
 import Roulette from './Components/Roulette';
 import RuleOfRoulette from './Components/RuleOfRoulette';
 import Lotto from './Components/Lotto';
 import RuleOfLotto from './Components/RuleOfLotto';
 
-/*
-// component
-import { DiceGame, RuleOfDice } from './Components/Dice';
-import Roulette from './Components/Roulette';
-import RuleOfRoulette from './Components/RuleOfRoulette';
-import { Lotto, RuleOfLotto } from './Components/Lotto';
-import { useState } from 'react';
-*/
 // image
 import LeftNav from './img/dice/nav_left.png';
 import RightNav from './img/dice/nav_right.png';
@@ -114,9 +101,9 @@ const Game = (props) => {
   };
 
   return (
-    <PageContainer>
-      <LayoutContainer>
-        <div className="dark:bg-mainBlack">
+    <div className="min-h-screen bg-backGray  dark:bg-darkPoint dark:text-mainYellow">
+      <div className="container mx-auto">
+        <div className="dark:bg-darkPoint">
           <GameList />
           <div className="flex justify-center items-center">
             <GameLeftNav />
@@ -131,8 +118,8 @@ const Game = (props) => {
           {game === ROULETTE_GAME_ID ? <RuleOfRoulette /> : null}
           {game === LOTTO_GAME_ID ? <RuleOfLotto gameInfo={gameInfo} /> : null}
         </div>
-      </LayoutContainer>
-    </PageContainer>
+      </div>
+    </div>
   );
 };
 

@@ -69,7 +69,7 @@ const Lotto = ({ member }) => {
     // });
 
     //횟수제한
-    lottoAPI.lottoCheck({ token: member.token }).then((data) => {
+    lottoAPI.checkLottoCount({ token: member.token }).then((data) => {
       console.log('b', data.data);
 
       //false일경우 == 횟수가 0번,
@@ -80,7 +80,7 @@ const Lotto = ({ member }) => {
         // 실행해보니, 게임을 총 2번 할 수 있는 것 같습니다
         //
 
-        lottoAPI.lottoPlay({ token: member.token }).then((data) => {
+        lottoAPI.playLotto({ token: member.token }).then((data) => {
           console.log('등수는 : ', data);
 
           setRank(data.data);
@@ -145,7 +145,7 @@ const Lotto = ({ member }) => {
     };
     scratchCardImage.src = scratchCardImageSrc;
 
-    lottoAPI.lottoInfo({ token: member.token }).then((data) => {
+    lottoAPI.getLottoInfo({ token: member.token }).then((data) => {
       console.log('몇회 했냐 : ', data.data);
     });
   }, []);
