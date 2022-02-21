@@ -1,17 +1,19 @@
 import React from 'react';
 import './dice.css';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { connect } from 'react-redux';
+import MessageModal from 'shared/MessageModal';
 
-//img
-import one from '../img/dice_one.png';
-import two from '../img/dice_two.png';
-import three from '../img/dice_three.png';
-import four from '../img/dice_four.png';
-import five from '../img/dice_five.png';
-import six from '../img/dice_six.png';
-import win from '../img/result_win.png';
-import lose from '../img/result_lose.png';
-import draw from '../img/result_draw.png';
+// img
+import one from '../img/dice/dice_one.png';
+import two from '../img/dice/dice_two.png';
+import three from '../img/dice/dice_three.png';
+import four from '../img/dice/dice_four.png';
+import five from '../img/dice/dice_five.png';
+import six from '../img/dice/dice_six.png';
+import win from '../img/dice/result_win.png';
+import lose from '../img/dice/result_lose.png';
+import draw from '../img/dice/result_draw.png';
 
 // audio
 import rollDiceA from '../sound/roll.wav';
@@ -19,15 +21,50 @@ import winA from '../sound/win.mp3';
 import equalA from '../sound/equal.mp3';
 import loseA from '../sound/lose.mp3';
 
+// API
+import DiceAPI from 'API/v1/game';
+import MEMBER from 'API/v1/member';
+
 var rollNum = 0;
 var scoreFlag = 1;
 
-const DiceGame = () => {
-  const [fixed, setFixed] = useState(false);
-  const [betting, setBet] = useState(0);
-  const [score, setScore] = useState(0);
+const DiceGame = ({ gameInfo, member }) => {
+  const [fixed, setFixed] = useState(false); // 게임 결과 놨는지 확인 + reset 버튼 보여줄지 말지 정함
+  const [betting, setBet] = useState(0); // 배팅 포인트 저장
+  const [score, setScore] = useState(0); // user의 주사위 게임 점수 저장
+  const [confirm, setConfirm] = useState(true); // 배팅 포인트 확정
+  const [count, setCount] = useState(); // 하루 주사위 한 횟수 저장
+  const [check, setCheck] = useState(); // 하루 제한된 횟수만큼 했는지 확인
+  const [point, setPoint] = useState(); // 보유 포인트 저장
   const onChange = (event) => setBet(event.target.value);
-  const [confirm, setConfirm] = useState(true);
+  const alertBettingPointModalRef = useRef({});
+  const alertCountModalRef = useRef({});
+
+  useEffect(() => {
+    MEMBER.getMember({
+      token: member.token,
+    }).then((data) => {
+      if (data.success) {
+        setPoint(data.data.point);
+      }
+    });
+
+    DiceAPI.getDiceInfo({
+      token: member.token,
+    }).then((data) => {
+      if (data.success) {
+        setCount(data.data);
+      }
+    });
+
+    DiceAPI.checkDiceCount({
+      token: member.token,
+    }).then((data) => {
+      if (data.success) {
+        setCheck(data.data);
+      }
+    });
+  }, [member]);
 
   const refresh = () => {
     window.location.reload();
@@ -57,6 +94,30 @@ const DiceGame = () => {
   }
 
   function rollDiceOnClick() {
+    if (check) {
+      alertCountModalRef.current.open();
+      return;
+    }
+    if (!(0 < betting && betting <= gameInfo.DICE_BET_MAX)) {
+      alertBettingPointModalRef.current.open();
+      return;
+    }
+
+    if (rollNum == 0) {
+      setConfirm((tmp) => !tmp);
+      DiceAPI.playDice({
+        bet: betting,
+        token: member.token,
+      });
+      DiceAPI.getDiceInfo({
+        token: member.token,
+      }).then((data) => {
+        if (data.success) {
+          setCount(data.data);
+        }
+      });
+    }
+
     if (rollNum < 3 && scoreFlag === 1) {
       new Audio(rollDiceA).play();
       rollNum++;
@@ -83,7 +144,7 @@ const DiceGame = () => {
     }
   }
   function result() {
-    if (scoreFlag === 1 && rollNum > 0) {
+    if (scoreFlag === 1 && rollNum > 0 && !fixed) {
       scoreFlag = 0;
       var user = [];
       const dice = [...document.querySelectorAll('.die-list')];
@@ -105,14 +166,42 @@ const DiceGame = () => {
       }
       var userScore = calculate(user);
       Computer(computer);
+
       if (userScore > cValue) {
         new Audio(winA).play();
+        DiceAPI.setDiceResult({
+          bet: betting,
+          result: 1,
+          token: member.token,
+        }).then((data) => {
+          if (data.success) {
+            console.log('승리', data);
+          }
+        });
         resultImg(1);
       } else if (userScore === cValue) {
         new Audio(equalA).play();
+        DiceAPI.setDiceResult({
+          bet: betting,
+          result: 0,
+          token: member.token,
+        }).then((data) => {
+          if (data.success) {
+            console.log('무승부', data);
+          }
+        });
         resultImg(0);
       } else {
         new Audio(loseA).play();
+        DiceAPI.setDiceResult({
+          bet: betting,
+          result: -1,
+          token: member.token,
+        }).then((data) => {
+          if (data.success) {
+            console.log('패배', data);
+          }
+        });
         resultImg(-1);
       }
       setFixed(true);
@@ -238,77 +327,76 @@ const DiceGame = () => {
     else return 0;
   }
 
-  function resultImg(tmp){
-    var screen = document.getElementById("result_img");
-    if(tmp === 1){
-      var img_win = document.createElement("img");
+  function resultImg(tmp) {
+    var screen = document.getElementById('result_img');
+    if (tmp === 1) {
+      var img_win = document.createElement('img');
       img_win.src = win;
-        screen.appendChild(img_win);
-    } else if(tmp === 0){
-      var img_draw = document.createElement("img");
+      screen.appendChild(img_win);
+    } else if (tmp === 0) {
+      var img_draw = document.createElement('img');
       img_draw.src = draw;
-        screen.appendChild(img_draw);
-    } else if(tmp === -1){
-      var img_lose = document.createElement("img");
+      screen.appendChild(img_draw);
+    } else if (tmp === -1) {
+      var img_lose = document.createElement('img');
       img_lose.src = lose;
-        screen.appendChild(img_lose);
+      screen.appendChild(img_lose);
     }
   }
 
-  function Computer(items){
+  function Computer(items) {
     items.sort(function (a, b) {
       if (a > b) return 1;
       if (a === b) return 0;
       if (a < b) return -1;
     });
-    var screen = document.getElementById("com_result");
-    var i=0;
-    for(; i<items.length; i++){
-      if(items[i] === 1){
-        var tmp1 = document.createElement("img");
+    var screenTotal = document.getElementById('com_result');
+    var screen = document.createElement('div');
+    screen.className = 'h-10 mb-2 flex md:flex-wrap';
+    var i = 0;
+    for (; i < items.length; i++) {
+      if (items[i] === 1) {
+        var tmp1 = document.createElement('img');
         tmp1.src = one;
-        tmp1.className = "w-8 mr-1";
+        tmp1.className = 'w-[15%] h-fit max-w-[40px] mr-1';
         screen.appendChild(tmp1);
-      } else if(items[i] === 2){
-        var tmp2 = document.createElement("img");
+      } else if (items[i] === 2) {
+        var tmp2 = document.createElement('img');
         tmp2.src = two;
-        tmp2.className = "w-8 mr-1";
+        tmp2.className = 'w-[15%] h-fit max-w-[40px] mr-1';
         screen.appendChild(tmp2);
-      } else if(items[i] === 3){
-        var tmp3 = document.createElement("img");
+      } else if (items[i] === 3) {
+        var tmp3 = document.createElement('img');
         tmp3.src = three;
-        tmp3.className = "w-8 mr-1";
+        tmp3.className = 'w-[15%] h-fit max-w-[40px] mr-1';
         screen.appendChild(tmp3);
-      } else if(items[i] === 4){
-        var tmp4 = document.createElement("img");
+      } else if (items[i] === 4) {
+        var tmp4 = document.createElement('img');
         tmp4.src = four;
-        tmp4.className = "w-8 mr-1";
+        tmp4.className = 'w-[15%] h-fit max-w-[40px] mr-1';
         screen.appendChild(tmp4);
-      } else if(items[i] === 5){
-        var tmp5 = document.createElement("img");
+      } else if (items[i] === 5) {
+        var tmp5 = document.createElement('img');
         tmp5.src = five;
-        tmp5.className = "w-8 mr-1";
+        tmp5.className = 'w-[15%] h-fit max-w-[40px] mr-1';
         screen.appendChild(tmp5);
       } else {
-        var tmp6 = document.createElement("img");
+        var tmp6 = document.createElement('img');
         tmp6.src = six;
-        tmp6.className = "w-8 mr-1";
+        tmp6.className = 'w-[15%] h-fit max-w-[40px] mr-1';
         screen.appendChild(tmp6);
       }
     }
-    var tmp = document.createElement("div");
+    var tmp = document.createElement('div');
     tmp.innerHTML = calculate(items);
+    tmp.className = 'text-orange-300 text-2xl';
     screen.appendChild(tmp);
+    screenTotal.appendChild(screen);
   }
 
   return (
-    <div className="w-3/5 mb-10 flex flex-wrap items-end bg-gradient-radial from-red-600 to-red-900  rounded-md border-[16px] border-mainBlack dark:border-divisionGray">
-      {/* <div className="w-full border-2 border-divisionGray">
-        보유 포인트 : 
-        배팅 포인트 : 
-        잔여 횟수 : ?/6
-      </div> */}
-      <div className="w-2/3 items-center flex-initial">
+    <div className="md:w-3/5 lg:w-3/5 w-full mb-10 flex flex-wrap items-end bg-gradient-radial from-red-600 to-red-900  rounded-md border-[16px] border-mainBlack">
+      <div className="sm:w-2/3 w-full items-center flex-initial">
         <div className="dice">
           <ol
             className="die-list odd-roll shadow-lg"
@@ -518,11 +606,17 @@ const DiceGame = () => {
             </li>
           </ol>
         </div>
-        <div id="buttonDiv">
+        <MessageModal ref={alertCountModalRef}>
+          하루에 6번만 가능합니다!
+        </MessageModal>
+        <MessageModal ref={alertBettingPointModalRef}>
+          배팅포인트를 1 ~ 1000 사이로 입력해주세요
+        </MessageModal>
+        <div id="buttonDiv" className="flex justify-around sm:inline-block">
           <button
             id="rollDice"
             onClick={rollDiceOnClick}
-            className="ml-3 mr-5 mt-10 mb-3 bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded dark:bg-divisionGray dark:text-mainBlack dark:hover:bg-slate-400"
+            className="sm:ml-3 sm:mr-5 mt-10 mb-3 bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded dark:bg-divisionGray dark:text-mainBlack dark:hover:bg-slate-400"
           >
             start
           </button>
@@ -537,71 +631,60 @@ const DiceGame = () => {
             <button
               id="chooseDice"
               onClick={refresh}
-              className="mx-5 mt-10 mb-3 bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded dark:bg-divisionGray dark:text-mainBlack dark:hover:bg-slate-400"
+              className="sm:mx-5 mt-10 mb-3 bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded dark:bg-divisionGray dark:text-mainBlack dark:hover:bg-slate-400"
             >
               reset
             </button>
           ) : null}
         </div>
       </div>
-      <div className="w-1/3">
+      <div className="sm:w-1/3 w-full ">
         <div id="result_img"></div>
-      <div className="h-10 mb-2 border-2 border-black flex" id="com_result">
-      </div>
-      <div className="h-fit bg-white/20 rounded-md border-2 border-white ">
-        <div className="p-2 flex flex-col justify-center">
-          <div className="flex justify-between my-1">
-            <strong className="big text-slate-200">현재 포인트 :</strong>
-            <div className="text-yellow-500">10000000</div>
-          </div>
-          <div className="flex justify-between my-1">
-            <strong className="big text-slate-200">배팅 포인트 :</strong>
-            {confirm ? (
-              <input
-                id="point"
-                value={betting}
-                className="big border-2 border-divisionGray rounded-md text-yellow-500"
-                onChange={onChange}
-                style={{ width: '6vw', textAlign: 'right' }}
-              ></input>
-            ) : (
-              <div className="text-yellow-500">{betting}</div>
-            )}
-          </div>
-          <div className="flex justify-between my-1">
-            <strong className="big text-slate-200">점수 :</strong>
-            <div className="big text-yellow-500">{score}</div>
-          </div>
-          <div className="flex justify-between my-1">
-            <strong className="big text-slate-200">오늘 한 횟수 :</strong>
-            <div className="big text-yellow-500">1</div>
+        <div id="com_result"></div>
+        <div className="lg:text-base md:text-xs h-fit bg-white/20 rounded-md border-2 border-white ">
+          <div className="p-2 flex flex-col justify-center ">
+            <div className="flex justify-between md:flex-wrap my-1">
+              <strong className="big text-slate-200">보유 포인트 :</strong>
+              <div className="text-right text-yellow-500 min-w-[64px] w-auto px-2 bg-white bg-opacity-20 rounded-md">
+                {point}
+              </div>
+            </div>
+            <div className="flex justify-between md:flex-wrap my-1">
+              <strong className="big text-slate-200">배팅 포인트 :</strong>
+              {confirm ? (
+                <input
+                  id="point"
+                  value={betting}
+                  className="w-16 px-2 bg-white text-right h-fit big rounded-md text-yellow-500"
+                  onChange={onChange}
+                ></input>
+              ) : (
+                <div className="text-yellow-500 min-w-[64px] text-right w-auto px-2 bg-white bg-opacity-20 rounded-md">
+                  {betting}
+                </div>
+              )}
+            </div>
+            <div className="flex justify-between md:flex-wrap my-1">
+              <strong className="big text-slate-200">점수 :</strong>
+              <div className="text-yellow-500 min-w-[64px] w-auto px-2 bg-white bg-opacity-20 rounded-md text-right">
+                {score}
+              </div>
+            </div>
+            <div className="flex justify-between md:flex-wrap my-1">
+              <strong className="big text-slate-200">잔여횟수 :</strong>
+              <div className="big text-yellow-500 min-w-[64px] w-auto px-2 bg-white bg-opacity-20 rounded-md text-right">
+                {count}
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      </div>
     </div>
   );
 };
 
-const RuleOfDice = () => {
-  return (
-    <div className="flex justify-center items-center ">
-      <div className="w-4/5 my-5 p-5 border-2 shadow-lg border-divisionGray rounded-md dark:border-pointYellow">
-        게임 규칙
-        <br />
-        총 3번 주사위를 굴릴 수 있습니다.
-        <br />
-        주사위의 눈을 클릭하면 확정 할 수 있습니다.
-        <br />
-        <br />
-        매일 6번까지 구매 가능합니다.
-        <br />
-        start 버튼을 눌려 주사위를 굴립니다.
-        <br />
-        수령을 클릭하면 당첨 포인트가 수령됩니다.
-      </div>
-    </div>
-  );
+const mapStateToProps = (state, OwnProps) => {
+  return { member: state.member };
 };
 
-export { DiceGame, RuleOfDice };
+export default connect(mapStateToProps)(DiceGame);

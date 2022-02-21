@@ -2,19 +2,28 @@ import React from 'react';
 import '../lotto.css';
 import { useState, useRef, useEffect } from 'react';
 import scratchCardImageSrc from '../img/Lotto/scratchCard.png';
-import backgroundImageSrc from '../img/Lotto/backGround.png';
 import win1 from '../img/Lotto/win1.png';
 import win2 from '../img/Lotto/win2.png';
 import win3 from '../img/Lotto/win3.png';
+import win4 from '../img/Lotto/win4.png';
+import win5 from '../img/Lotto/win5.png';
+import win6 from '../img/Lotto/win6.png';
 
-const width = 700;
-const height = 400;
-const strokeWidth = 100; //브러쉬 굵기
-const completedAt = 20; //20% 이상 긁어야함
+// local
+import lottoAPI from 'API/v1/game';
+import { connect } from 'react-redux';
+import MessageModal from 'shared/MessageModal';
 
-const Lotto = () => {
+const width = 350;
+const height = 500;
+const strokeWidth = 130; //브러쉬 굵기
+const completedAt = 20; //80% 이상 긁어야함
+
+const Lotto = ({ member }) => {
+  // ref
   const backgroundCanvasRef = useRef(null);
   const scratchCardCanvasRef = useRef(null);
+  const rankModalRef = useRef({});
 
   const [isDrawing, setIsDrawing] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -41,25 +50,78 @@ const Lotto = () => {
 
   const backEnd = () => {
     //output : rank
-    const randomNum = Math.floor(Math.random() * 3 + 1);
-    setRank(randomNum);
-    //일단 랜덤으로 아무 값(1~3) 가져옴
 
-    setIsPop(true);
+    //이미지 변경
+    const backgroundCanvas = backgroundCanvasRef.current;
+    const backgroundContext = backgroundCanvas.getContext('2d');
+
+    const backgroundImage = new Image();
+
+    backgroundImage.onload = function () {
+      backgroundContext.drawImage(this, 0, 0);
+    };
+
+    //일단 랜덤으로 아무 값 (1~3) 가져옴
+
+    //횟수 불러오기
+    // lottoAPI.lottoInfo({ token: member.token }).then((data) => {
+    //   console.log('a', data.data);
+    // });
+
+    //횟수제한
+    lottoAPI.checkLottoCount({ token: member.token }).then((data) => {
+      console.log('b', data.data);
+
+      //false일경우 == 횟수가 0번,
+      if (!data.data) {
+        //나중에 ! 추가해라..
+        setIsPop(true);
+        //api 로또 게임 횟수 제한에서, 하루에 1번만 실행되도록 하는데,
+        // 실행해보니, 게임을 총 2번 할 수 있는 것 같습니다
+        //
+
+        lottoAPI.playLotto({ token: member.token }).then((data) => {
+          console.log('등수는 : ', data);
+
+          setRank(data.data);
+
+          switch (data.data) {
+            case 1:
+              backgroundImage.src = win1;
+              console.log('1');
+              break;
+            case 2:
+              backgroundImage.src = win2;
+              console.log('2');
+              break;
+            case 3:
+              backgroundImage.src = win3;
+              console.log('3');
+              break;
+            case 4:
+              backgroundImage.src = win4;
+              console.log('4');
+              break;
+            case 5:
+              backgroundImage.src = win5;
+              console.log('5');
+              break;
+            case 6:
+              backgroundImage.src = win6;
+              console.log('6');
+              break;
+          }
+        });
+      } else {
+        setIsPop(false);
+        alert('오늘은 마감이오! 이미 1회 다했디~');
+        //하루 1번만 가능합니다1
+      }
+    });
+
     //setCompleted(false);
     //setProgress(0)
     //console.log(isPop)
-    switch (rank) {
-      case 0:
-        setWin(win1);
-        break;
-      case 1:
-        setWin(win2);
-        break;
-      case 2:
-        setWin(win3);
-        break;
-    }
   };
 
   useEffect(() => {
@@ -74,7 +136,7 @@ const Lotto = () => {
       scratchCardContext.drawImage(this, 0, 0);
       scratchCardContext.globalCompositeOperation = 'destination-out';
       scratchCardContext.lineWidth = strokeWidth;
-      backgroundImage.src = backgroundImageSrc;
+      backgroundImage.src = win6;
     };
 
     const backgroundImage = new Image();
@@ -82,6 +144,10 @@ const Lotto = () => {
       backgroundContext.drawImage(this, 0, 0);
     };
     scratchCardImage.src = scratchCardImageSrc;
+
+    lottoAPI.getLottoInfo({ token: member.token }).then((data) => {
+      console.log('몇회 했냐 : ', data.data);
+    });
   }, []);
 
   const scratchStart = ({ nativeEvent }) => {
@@ -134,7 +200,9 @@ const Lotto = () => {
     if (percent >= completedAt && !isCompleted) {
       setIsCompleted(true);
       onCompleted();
-      alert(rank + ' 등 축하합니다!');
+      //setIsPop(false);
+      // alert(rank + ' 등 축하합니다!');
+      rankModalRef.current.open();
     }
   };
 
@@ -142,45 +210,29 @@ const Lotto = () => {
     setIsDrawing(false);
   };
   return (
-    <div className="bg-divisionGray h-full w-1/2 items-center m-10">
-      Lotto 게임 화면! 여기다가 만들면 됩니당!
-      <div>
+    <div className="relative md:w-3/5 lg:w-3/5 w-full space-y-4 pb-10 sm:p-10 mb-10 flex flex-col text-center items-center justify-center bg-gradient-radial from-gray-700 to-gray-900 rounded-md border-[16px] border-mainBlack dark:border-divisionGray">
+      <div className="inset-y-5 py-2 pl-5  w-full   bg-gray-900 rounded-md shadow-md text-amber-200 text-xs sm:text-base">
         <p>
           성공여부: {completed ? 'Yes' : 'No'}
           <br />
           진행상황: {progress}% ({completedAt}%이상 넘어야 합니다)
         </p>
-        <button
-          disabled={isPop}
-          onClick={backEnd}
-          className={`group relative w-full 
-          flex justify-center px-4 py-4 border 
-          border-transparent text-lg font-bold
-          rounded-lg text-white 
-         
-          ${
-            !isPop
-              ? 'bg-mainYellow hover:bg-pointYellow'
-              : 'bg-divisionGray dark:bg-darkPoint'
-          }`}
-        >
-          복권 뽑기
-        </button>
+      </div>
 
-        <div class="lotto_container">
+      <div className="relative flex justify-start">
+        <div>
           <canvas
-            id="scratch-canvas"
-            className="group relative w-full 
-            flex justify-center z-10"
+            className="w-full h-full pl-2 pr-2"
             ref={backgroundCanvasRef}
             width={width}
             height={height}
           />
+        </div>
+
+        <div className="absolute w-full h-full">
           <canvas
-            className="group absolute w-full 
-            flex justify-center top-6 left-6   z-30"
+            className="w-full h-full pl-2 pr-2"
             ref={scratchCardCanvasRef}
-            id="canvas"
             width={width}
             height={height}
             onMouseDown={scratchStart}
@@ -190,29 +242,31 @@ const Lotto = () => {
             onTouchMove={scratch}
             onTouchEnd={scratchEnd}
           />
-
-          <div
-            className="group absolute w-full 
-            flex justify-center top-6 left-6 z-20"
-          >
-            <img src={win}></img>
-          </div>
         </div>
       </div>
+      <button
+        disabled={isPop}
+        onClick={backEnd}
+        className={` relative  sm:w-[350px] w-full
+          flex justify-center px-2 py-2 border 
+          border-transparent text-lg 
+          rounded-lg text-white 
+         
+          ${
+            !isPop
+              ? 'bg-mainYellow hover:bg-pointYellow'
+              : 'bg-divisionGray dark:bg-darkPoint'
+          }`}
+      >
+        복권 뽑기
+      </button>
+      <MessageModal ref={rankModalRef}>{rank}등 입니당!</MessageModal>
     </div>
   );
 };
 
-const RuleOfLotto = () => {
-  return (
-    <div className="flex justify-center items-center">
-      <div className="w-3/5 my-5 p-5 border-2 border-divisionGray">
-        게임 규칙
-        <br />
-        적어주시면 됩니당!
-      </div>
-    </div>
-  );
+const mapStateToProps = (state, OwnProps) => {
+  return { member: state.member };
 };
 
-export { Lotto, RuleOfLotto };
+export default connect(mapStateToProps)(Lotto);

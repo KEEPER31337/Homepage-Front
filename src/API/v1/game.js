@@ -3,7 +3,7 @@ import axios from 'axios';
 const API_URL = process.env.REACT_APP_API_URL;
 
 // Dice
-async function diceInfo({ token }) {
+async function getDiceInfo({ token }) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/game/dice/info',
@@ -19,7 +19,7 @@ async function diceInfo({ token }) {
   }
 }
 
-async function dicePlay({ bet, token }) {
+async function playDice({ bet, token }) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/game/dice/play',
@@ -38,10 +38,10 @@ async function dicePlay({ bet, token }) {
   }
 }
 
-async function diceResult({ bet, result, token }) {
+async function setDiceResult({ bet, result, token }) {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/game/dice/play',
+    url: API_URL + '/v1/game/dice/save',
     params: {
       bet,
       result,
@@ -58,7 +58,7 @@ async function diceResult({ bet, result, token }) {
   }
 }
 
-async function diceCheck({ token }) {
+async function checkDiceCount({ token }) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/game/dice/check',
@@ -124,7 +124,7 @@ async function checkRouletteCount({ token }) {
 }
 
 // Lotto
-async function lottoInfo({ token }) {
+async function getLottoInfo({ token }) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/game/lotto/info',
@@ -140,7 +140,7 @@ async function lottoInfo({ token }) {
   }
 }
 
-async function lottoPlay({ token }) {
+async function playLotto({ token }) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/game/lotto/play',
@@ -156,7 +156,7 @@ async function lottoPlay({ token }) {
   }
 }
 
-async function lottoCheck({ token }) {
+async function checkLottoCount({ token }) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/game/lotto/check',
@@ -187,15 +187,19 @@ async function getGameInfo() {
 }
 
 export default {
-  diceInfo,
-  dicePlay,
-  diceResult,
-  diceCheck,
+
   playRoulette,
   getInfoRoulette,
   checkRouletteCount,
-  lottoInfo,
-  lottoPlay,
-  lottoCheck,
+
+  getDiceInfo,
+  playDice,
+  setDiceResult,
+  checkDiceCount,
+
+  getLottoInfo,
+  playLotto,
+  checkLottoCount,
+
   getGameInfo,
 };
