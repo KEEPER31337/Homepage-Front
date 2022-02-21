@@ -58,7 +58,7 @@ const Attandance = ({ member }) => {
             icon={LeafIcon}
             text={
               attendInfo.continuousDay
-                ? `개근 ${attendInfo.continuousDay + 1}일차`
+                ? `개근 ${attendInfo.continuousDay}일차`
                 : '-'
             }
             onClick={() => {
