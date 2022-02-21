@@ -14,6 +14,8 @@ const reducerMember = (state = initialState, action) => {
       };
     case actionMember.signOut.type:
       return initialState;
+    case actionMember.updateInfo.type:
+      return { ...state, memberInfo: action.payload.memberInfo };
   }
   return state;
 };
