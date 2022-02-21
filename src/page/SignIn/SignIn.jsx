@@ -24,8 +24,8 @@ const SignIn = (props) => {
     authAPI.signIn(loginInfo).then((data) => {
       if (data.success) {
         const token = data.data.token;
-        const userInfo = data.data.member;
-        props.memberSignIn({ token, userInfo });
+        const memberInfo = data.data.member;
+        props.memberSignIn({ token, memberInfo });
         navigate(BACK);
       } else {
         loginFailModalRef.current.open();
@@ -160,8 +160,8 @@ const mapDispatchToProps = (dispatch, OwnProps) => {
     updateToken: (token) => {
       dispatch(actionMember.updateToken(token));
     },
-    memberSignIn: ({ token, userInfo }) => {
-      dispatch(actionMember.signIn({ token, userInfo }));
+    memberSignIn: ({ token, memberInfo }) => {
+      dispatch(actionMember.signIn({ token, memberInfo }));
     },
   };
 };

@@ -1,43 +1,125 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 
-const Roulette = () => {
-  const points = [40, 90, 100, 300, 400, 500, 900, 5000];
-  const pointIdx = 4;
-  const [stopPoint, setStopPoint] = useState(0);
+// API
+import rouletteAPI from 'API/v1/game';
+import memberAPI from 'API/v1/member';
+
+const Roulette = ({ gameInfo, member }) => {
+  useEffect(() => {
+    memberAPI.getMember({ token: member.token }).then((data) => {
+      if (data.success) {
+        setMemberPoint(data.data.point);
+      }
+    });
+    rouletteAPI
+      .getInfoRoulette({
+        token: member.token,
+      })
+      .then((data) => {
+        setRemainingCount(3 - data.data.roulettePerDay);
+        //TODO setTodayResult(data.data.todayResult);
+      });
+  }, [member]);
+
+  // 게임 상에서 띄워줄 정보
+  const [memberPoint, setMemberPoint] = useState(member.memberInfo.point);
+  const [todayResult, setTodayResult] = useState(0); // TODO api 업데이트 되면 받아오기
+  const [remainingCount, setRemainingCount] = useState(3);
+
+  // 게임 실행 후 띄워줄 정보
+  const [points, setPoints] = useState([
+    '?',
+    '?',
+    '?',
+    '?',
+    '?',
+    '?',
+    '?',
+    '?',
+  ]);
+  const [pointIdx, setPointIdx] = useState(0);
+
+  // 게임 동작 관련
   const [ani, setAni] = useState('animate-none');
-  const onClick = () => {
-    console.log('click');
+  const rotateDegree = (0 + 45 * (points.length - pointIdx)) % 360;
+  const spinAndStop = () => {
     setAni('animate-[spin_0.3s_linear_infinite]');
-    setStopPoint(points.length - pointIdx);
     setTimeout(function () {
-      setAni(
-        'animate-none' +
-          ' rotate-[' +
-          ((0 + 45 * (points.length - pointIdx)) % 360) +
-          'deg]'
-        // 'animate-none' + ' rotate-[' + ((0 + 45 * stopPoint) % 360) + 'deg]'
-        // FIXME stopPoint setStopPoint 적용한 값 안 돼서 일단 계산식으로 바로 박아 놓음
-      );
-    }, 3000);
+      setAni(`animate-none rotate-[${rotateDegree}deg]`);
+      setTimeout(function () {
+        alert('획득 포인트' + points[pointIdx]);
+        memberAPI.getMember({ token: member.token }).then((data) => {
+          // 포인트 정보 업데이트
+          if (data.success) {
+            setMemberPoint(data.data.point);
+          }
+        });
+        rouletteAPI
+          .getInfoRoulette({
+            token: member.token,
+          })
+          .then((data) => {
+            // TODO 오늘 결과 업데이트
+            //setTodayResult(data.data.todayResult);
+          });
+      }, 500);
+    }, 2000);
+  };
+
+  const onClick = () => {
+    rouletteAPI
+      .checkRouletteCount({
+        token: member.token,
+      })
+      .then((data) => {
+        if (data.success) {
+          console.log('횟수 제한', data);
+          if (!data.data) {
+            // 3회 초과 안 했을 때
+            console.log('실행');
+            rouletteAPI
+              // ANCHOR API 지금 안 되는 상태
+              .playRoulette({
+                token: member.token,
+              })
+              .then((data) => {
+                if (data.success) {
+                  console.log('play', data);
+                  setRemainingCount(3 - data.data.roulettePerDay);
+                  setPoints(data.data.roulettePoints);
+                  setPointIdx(data.data.roulettePointIdx);
+                  // NOTE setMemberPoint 제대로 되는 지 확인
+                  setMemberPoint((prev) => prev - gameInfo.ROULETTE_FEE); // 참가 포인트 차감되는 거 보여주기
+                  spinAndStop();
+                } else console.log('no play');
+              });
+          } else {
+            //3회 초과했을 때
+            console.log('오늘 할당된 횟수를 다 하셨습니다.');
+          }
+        } else {
+          alert('로그인 후 이용해주십시오.');
+        }
+      });
   };
 
   const infos = [
     {
       subtitle: '보유 포인트',
-      content: 2466897,
+      content: memberPoint,
     },
     {
       subtitle: '참가 포인트',
-      content: 100,
+      content: gameInfo.ROULETTE_FEE,
     },
     {
       subtitle: '오늘 결과',
-      content: 10000,
+      content: todayResult,
     },
     {
       subtitle: '잔여 횟수',
-      content: 3,
+      content: remainingCount,
     },
   ];
 
@@ -120,20 +202,7 @@ const Roulette = () => {
   );
 };
 
-const RuleOfRoulette = () => {
-  return (
-    <div className="flex justify-center items-center">
-      <div className="w-3/5 my-5 p-5 border-2 border-divisionGray">
-        게임 규칙
-        <br />
-        매일 3번까지 실행 가능합니다.
-        <br />
-        SPIN 버튼을 눌려 룰렛을 돌립니다.
-        <br />
-        룰렛이 멈춘 후 당첨 포인트가 수령됩니다.
-      </div>
-    </div>
-  );
+const mapStateToProps = (state, OwnProps) => {
+  return { member: state.member };
 };
-
-export { Roulette, RuleOfRoulette };
+export default connect(mapStateToProps)(Roulette);

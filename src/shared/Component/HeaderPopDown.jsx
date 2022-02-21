@@ -23,7 +23,9 @@ const PopDown = ({ category, currentCategory, updateCurrentCategory }) => {
               'group rounded-md inline-flex items-center text-base font-semibold hover:text-mainYellow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mainYellow'
             )}
           >
-            <span>{category.name}</span>
+            <span className="overflow-hidden whitespace-nowrap">
+              {category.name}
+            </span>
             <ChevronDownIcon
               className={classNames(
                 open ? 'text-mainWhite' : 'text-mainWhite',

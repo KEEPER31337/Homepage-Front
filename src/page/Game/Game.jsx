@@ -1,17 +1,28 @@
+import React, { useState, useEffect } from 'react';
+
 // shared
 import PageContainer from 'shared/PageContainer';
 import LayoutContainer from 'shared/LayoutContainer';
 
-import React from 'react';
-import { useState, useEffect } from 'react';
+//import React from 'react';
+//import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 // component
 import { DiceGame, RuleOfDice } from './Components/Dice';
-import { Roulette, RuleOfRoulette } from './Components/Roulette';
+import Roulette from './Components/Roulette';
+import RuleOfRoulette from './Components/RuleOfRoulette';
 import Lotto from './Components/Lotto';
 import RuleOfLotto from './Components/RuleOfLotto';
 
+/*
+// component
+import { DiceGame, RuleOfDice } from './Components/Dice';
+import Roulette from './Components/Roulette';
+import RuleOfRoulette from './Components/RuleOfRoulette';
+import { Lotto, RuleOfLotto } from './Components/Lotto';
+import { useState } from 'react';
+*/
 // image
 import LeftNav from './img/dice/nav_left.png';
 import RightNav from './img/dice/nav_right.png';
