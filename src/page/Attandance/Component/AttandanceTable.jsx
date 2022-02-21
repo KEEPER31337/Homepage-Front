@@ -39,7 +39,11 @@ const AttandanceTable = ({ member }) => {
         token: member.token,
       })
       .then((data) => {
-        if (data.success) setAttendLogList(data.list);
+        if (data.success) {
+          console.log(member);
+          console.log(data.list);
+          setAttendLogList(data.list);
+        }
       });
   }, [member, reload]);
 
@@ -105,12 +109,14 @@ const AttandanceTable = ({ member }) => {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-xl font-medium">
-                      <button
-                        className="text-mainYellow hover:text-pointYellow"
-                        onClick={() => editModalRef.current.open()}
-                      >
-                        <img className="w-6" src={iconPencilAlt} />
-                      </button>
+                      {log.memberId === member.memberInfo.id ? (
+                        <button
+                          className="text-mainYellow hover:text-pointYellow"
+                          onClick={() => editModalRef.current.open()}
+                        >
+                          <img className="w-6" src={iconPencilAlt} />
+                        </button>
+                      ) : null}
                     </td>
                   </tr>
                 ))}
