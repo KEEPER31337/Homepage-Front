@@ -10,6 +10,9 @@ import {
 //local
 import ipAPI from 'API/v1/ip';
 import commentAPI from 'API/v1/comment';
+
+const API_URL = process.env.REACT_APP_API_URL;
+
 const Comments = ({
   boardId,
   commentCount: commentCount,
@@ -182,12 +185,21 @@ const Comments = ({
             name="댓글"
             className=" border-b-2 flex border-b my-2 pb-2 dark:border-darkComponent"
           >
-            <img
-              src={
-                'https://avatars.githubusercontent.com/u/23546441?s=400&u=db7abf2929e5518c12189034dc3fed9bda94f0a6&v=4'
-              }
-              className="mr-4 mt-2 rounded-full shadow-lg flex-shrink-0 border-4 h-[10%] w-[10%] max-w-[5em] text-mainYellow dark:border-gray-500"
-            />
+            {comment.writerThumbnailId ? (
+              <img
+                src={
+                  API_URL + '/v1/util/thumbnail/' + comment.writerThumbnailId
+                }
+                className="mr-4 mt-2 rounded-full shadow-lg flex-shrink-0 border-4 h-[10%] w-[10%] max-w-[5em] text-mainYellow dark:border-gray-500"
+              />
+            ) : (
+              <img
+                src={
+                  'https://avatars.githubusercontent.com/u/23546441?s=400&u=db7abf2929e5518c12189034dc3fed9bda94f0a6&v=4'
+                }
+                className="mr-4 mt-2 rounded-full shadow-lg flex-shrink-0 border-4 h-[10%] w-[10%] max-w-[5em] text-mainYellow dark:border-gray-500"
+              />
+            )}
             <div className="border-2 rounded-lg shadow-sm inline-block p-1 w-full dark:border-darkComponent">
               <div className="flex justify-between">
                 <h4 className="inline-block font-bold bg-slate-200 rounded-lg px-1 dark:bg-gray-500">
@@ -263,12 +275,23 @@ const Comments = ({
                   name="대댓글"
                   className="border-b border-slate-200 p-2 flex w-full bg-slate-50 rounded-lg dark:bg-gray-700 dark:border-darkComponent"
                 >
-                  <img
-                    src={
-                      'https://avatars.githubusercontent.com/u/23546441?s=400&u=db7abf2929e5518c12189034dc3fed9bda94f0a6&v=4'
-                    }
-                    className="mr-4 rounded-full shadow-lg flex-shrink-0 border-2 border-slate-300 h-[10%] w-[10%] max-w-[3em] text-mainYellow dark:border-gray-500"
-                  />
+                  {comment.writerThumbnailId ? (
+                    <img
+                      src={
+                        API_URL +
+                        '/v1/util/thumbnail/' +
+                        comment.writerThumbnailId
+                      }
+                      className="mr-4 mt-2 rounded-full shadow-lg flex-shrink-0 border-4 h-[10%] w-[10%] max-w-[5em] text-mainYellow dark:border-gray-500"
+                    />
+                  ) : (
+                    <img
+                      src={
+                        'https://avatars.githubusercontent.com/u/23546441?s=400&u=db7abf2929e5518c12189034dc3fed9bda94f0a6&v=4'
+                      }
+                      className="mr-4 mt-2 rounded-full shadow-lg flex-shrink-0 border-4 h-[10%] w-[10%] max-w-[5em] text-mainYellow dark:border-gray-500"
+                    />
+                  )}
                   <div className="w-full">
                     <div className=" flex justify-between">
                       <h4 className="inline-block text-xs font-bold rounded-lg">
