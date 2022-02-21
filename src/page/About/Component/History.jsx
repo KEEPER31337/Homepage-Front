@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-const articles = [
+// API
+import aboutAPI from 'API/v1/about';
+
+const temp = [
   {
     subtitle: '2020',
     content: (
@@ -85,26 +88,83 @@ function classNames(...classes) {
 }
 
 export default function History() {
-  const sectionTitle = '동아리 연혁';
+  const [historyInfo, setHistoryInfo] = useState([
+    {
+      id: null,
+      title: null,
+      type: null,
+      subtitleImageResults: [
+        {
+          id: null,
+          subtitle: null,
+          staticWriteTitleId: null,
+          thumbnail: {
+            id: null,
+          },
+          displayOrder: null,
+          staticWriteContentResults: [
+            {
+              id: null,
+              content: null,
+              staticWriteSubtitleImageId: null,
+              displayOrder: null,
+            },
+          ],
+        },
+      ],
+    },
+  ]);
+
+  useEffect(() => {
+    aboutAPI.getHistoryInfo().then((data) => {
+      if (data.success) {
+        data.list.map((title) => {
+          // Subtitle display order 순서로 정렬
+          title.subtitleImageResults.sort(function (a, b) {
+            if (a.displayOrder > b.displayOrder) {
+              return 1;
+            }
+            if (a.displayOrder < b.displayOrder) {
+              return -1;
+            }
+            return 0;
+          });
+          title.subtitleImageResults.map((content) => {
+            // Content display order 순서로 정렬
+            content.staticWriteContentResults.sort(function (a, b) {
+              if (a.displayOrder > b.displayOrder) {
+                return 1;
+              }
+              if (a.displayOrder < b.displayOrder) {
+                return -1;
+              }
+              return 0;
+            });
+          });
+        });
+        setHistoryInfo(data.list);
+      }
+    });
+  }, []);
 
   return (
     <div className="py-4 lg:py-5 / my-5">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-6 lg:py-10 px-12 lg:px-16">
           <h2 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow">
-            {sectionTitle}
+            {historyInfo[0].title}
           </h2>
           <div className="px-2 lg:px-4 overflow-hidden">
-            {articles.map((article, articleIdx) => (
+            {historyInfo[0].subtitleImageResults.map((article, articleIdx) => (
               <div
                 key={article.subtitle}
                 className={classNames(
-                  articleIdx !== articles.length - 1 ? 'pb-10' : '',
+                  articleIdx !== historyInfo[0].length - 1 ? 'pb-10' : '',
                   'relative'
                 )}
               >
                 <>
-                  {articleIdx !== articles.length - 1 ? ( // 원 사이 잇는 짝대기
+                  {articleIdx !== historyInfo[0].length - 1 ? ( // 원 사이 잇는 짝대기
                     <div
                       className="-ml-px absolute mt-0.5 top-4 left-3.5 w-1.5 h-full bg-mainYellow"
                       aria-hidden="true"
@@ -119,7 +179,13 @@ export default function History() {
                         {article.subtitle}
                       </span>
                       <span className="text-gray-500 dark:text-white">
-                        {article.content}
+                        <ul>
+                          {article.staticWriteContentResults.map(
+                            (contentInfo, index) => (
+                              <li key={index}>{contentInfo.content}</li>
+                            )
+                          )}
+                        </ul>
                       </span>
                     </span>
                   </div>

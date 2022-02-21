@@ -1,11 +1,14 @@
 // TODO 화면 크기 조정 시 단어 단위로 줄바꿈 되도록 하기
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 // asset
 import seminarImg from 'assets/img/aboutImg/seminar.png';
 import mentoringImg from 'assets/img/aboutImg/mentoring.png';
 
-const articles = [
+// API
+import aboutAPI from 'API/v1/about';
+
+const temp = [
   // TODO 이미지 넣기
   {
     subtitle: '세미나',
@@ -56,16 +59,72 @@ function classNames(...classes) {
 }
 
 export default function Activity() {
-  const sectionTitle = '정기 활동';
+  const [activityInfo, setActivityInfo] = useState([
+    {
+      id: null,
+      title: null,
+      type: null,
+      subtitleImageResults: [
+        {
+          id: null,
+          subtitle: null,
+          staticWriteTitleId: null,
+          thumbnail: {
+            id: null,
+          },
+          displayOrder: null,
+          staticWriteContentResults: [
+            {
+              id: null,
+              content: null,
+              staticWriteSubtitleImageId: null,
+              displayOrder: null,
+            },
+          ],
+        },
+      ],
+    },
+  ]);
+  useEffect(() => {
+    aboutAPI.getActivityInfo().then((data) => {
+      if (data.success) {
+        data.list.map((title) => {
+          // Subtitle display order 순서로 정렬
+          title.subtitleImageResults.sort(function (a, b) {
+            if (a.displayOrder > b.displayOrder) {
+              return 1;
+            }
+            if (a.displayOrder < b.displayOrder) {
+              return -1;
+            }
+            return 0;
+          });
+          title.subtitleImageResults.map((content) => {
+            // Content display order 순서로 정렬
+            content.staticWriteContentResults.sort(function (a, b) {
+              if (a.displayOrder > b.displayOrder) {
+                return 1;
+              }
+              if (a.displayOrder < b.displayOrder) {
+                return -1;
+              }
+              return 0;
+            });
+          });
+        });
+        setActivityInfo(data.list);
+      }
+    });
+  }, []);
   return (
     <div className="">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-6 lg:py-10 px-12 lg:px-16">
           <h2 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow">
-            {sectionTitle}
+            {activityInfo[0].title}
           </h2>
           <div className="px-2 lg:px-4 space-y-16 text-black dark:text-white">
-            {articles.map((article, articleIdx) => (
+            {activityInfo[0].subtitleImageResults.map((article, articleIdx) => (
               <div
                 key={article.subtitle}
                 className="flex flex-col-reverse lg:grid lg:grid-cols-6 lg:gap-x-16 lg:items-center"
@@ -79,7 +138,15 @@ export default function Activity() {
                   <h3 className="text-lg font-bold dark:text-pointYellow">
                     {article.subtitle}
                   </h3>
-                  <div className="mt-2 text-base">{article.content}</div>
+                  <div className="mt-2 text-base">
+                    <ul>
+                      {article.staticWriteContentResults.map(
+                        (contentInfo, index) => (
+                          <li key={index}>{contentInfo.content}</li>
+                        )
+                      )}
+                    </ul>
+                  </div>
                 </div>
                 <div
                   className={classNames(
@@ -89,8 +156,8 @@ export default function Activity() {
                 >
                   <div className="rounded-xl overflow-hidden">
                     <img
-                      src={article.imageSrc}
-                      alt={article.imageAlt}
+                      src={temp[2].imageSrc}
+                      alt={temp[2].imageAlt}
                       className="object-center object-cover"
                     />
                   </div>
