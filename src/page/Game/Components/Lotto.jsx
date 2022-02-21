@@ -19,7 +19,7 @@ const height = 500;
 const strokeWidth = 130; //브러쉬 굵기
 const completedAt = 20; //80% 이상 긁어야함
 
-const Lotto = ({ member }) => {
+const Lotto = ({ member, gameInfo }) => {
   // ref
   const backgroundCanvasRef = useRef(null);
   const scratchCardCanvasRef = useRef(null);
@@ -30,6 +30,7 @@ const Lotto = ({ member }) => {
   const [startY, setStartY] = useState(0);
   const [isPop, setIsPop] = useState(false);
   const [rank, setRank] = useState(0);
+  const [point, setPoint] = useState(0);
 
   const [win, setWin] = useState('');
   //win 이미지 url 저장
@@ -72,11 +73,11 @@ const Lotto = ({ member }) => {
     lottoAPI.checkLottoCount({ token: member.token }).then((data) => {
       console.log('b', data.data);
 
-      //false일경우 == 횟수가 0번,
+      //false일경우 == 횟수가 1번을 안넘어갔음,
       if (!data.data) {
         //나중에 ! 추가해라..
         setIsPop(true);
-        //api 로또 게임 횟수 제한에서, 하루에 1번만 실행되도록 하는데,
+        //NOTE api 로또 게임 횟수 제한에서, 하루에 1번만 실행되도록 하는데,
         // 실행해보니, 게임을 총 2번 할 수 있는 것 같습니다
         //
 
@@ -88,26 +89,32 @@ const Lotto = ({ member }) => {
           switch (data.data) {
             case 1:
               backgroundImage.src = win1;
+              setPoint(gameInfo.FIRST_POINT);
               console.log('1');
               break;
             case 2:
               backgroundImage.src = win2;
+              setPoint(gameInfo.SECOND_POINT);
               console.log('2');
               break;
             case 3:
               backgroundImage.src = win3;
+              setPoint(gameInfo.THIRD_POINT);
               console.log('3');
               break;
             case 4:
               backgroundImage.src = win4;
+              setPoint(gameInfo.FOURTH_POINT);
               console.log('4');
               break;
             case 5:
               backgroundImage.src = win5;
+              setPoint(gameInfo.FIFTH_POINT);
               console.log('5');
               break;
             case 6:
               backgroundImage.src = win6;
+              setPoint(gameInfo.LAST_POINT);
               console.log('6');
               break;
           }
@@ -118,10 +125,6 @@ const Lotto = ({ member }) => {
         //하루 1번만 가능합니다1
       }
     });
-
-    //setCompleted(false);
-    //setProgress(0)
-    //console.log(isPop)
   };
 
   useEffect(() => {
@@ -248,19 +251,21 @@ const Lotto = ({ member }) => {
         disabled={isPop}
         onClick={backEnd}
         className={` relative  sm:w-[350px] w-full
-          flex justify-center px-2 py-2 border 
-          border-transparent text-lg 
-          rounded-lg text-white 
+          flex justify-center px-2 py-2  
+         text-2xl 
+          rounded-lg text-white font-bold
          
           ${
             !isPop
-              ? 'bg-mainYellow hover:bg-pointYellow'
+              ? 'bg-gradient-to-r from-amber-400 via-red-800 to-black hover:bg-pointYellow'
               : 'bg-divisionGray dark:bg-darkPoint'
           }`}
       >
-        복권 뽑기
+        뽑기
       </button>
-      <MessageModal ref={rankModalRef}>{rank}등 입니당!</MessageModal>
+      <MessageModal ref={rankModalRef}>
+        {rank}등 입니다! {point.toLocaleString('ko-KR')}point를 획득하셨습니다.
+      </MessageModal>
     </div>
   );
 };
