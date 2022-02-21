@@ -199,7 +199,7 @@ const categories = [
       {
         id: 30,
         name: '랭킹',
-        href: 'attandance',
+        href: 'ranking',
         description: '',
         icon: ViewGridIcon,
       },
