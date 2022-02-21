@@ -14,7 +14,7 @@ import WriteButtonMobile from 'page/Board/Components/MobileWriteButton';
 const Board = () => {
   return (
     <>
-      <div className="flex justify-center h-screen dark:bg-mainBlack">
+      <div className="flex justify-center h-full dark:bg-mainBlack">
         <div className="inline-block m-5 w-full">
           <Info />
           <Table />

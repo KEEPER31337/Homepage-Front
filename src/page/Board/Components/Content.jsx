@@ -189,48 +189,61 @@ const Content = ({ state, board }) => {
       <div
         name="첨부파일 폼"
         className={
-          (board.files ? '' : 'hidden') +
-          ' m-2 w-4/5 shadow-inner shadow-xl rounded-xl'
+          (board.files.length != 0 ? '' : 'hidden') +
+          ' m-3 my-5 w-4/5 border-y-2 bg-opacity-50 dark:border-gray-600'
         }
       >
-        <button className="" onClick={() => toggleFiles()}>
+        <button className="dark:text-mainWhite" onClick={() => toggleFiles()}>
           {toggle ? (
             <ChevronDoubleDownIcon className="inline-block h-5 w-5 m-1 text-divisionGray dark:text-slate-500 " />
           ) : (
-            <ChevronDoubleRightIcon className="inline-block h-5 w-5 m-1 text-divisionGray dark:text-slate-500 " />
+            <ChevronDoubleRightIcon className="inline-block h-5 w-5 m-1 text-mainYellow" />
           )}
-          첨부파일({files.length})
+          첨부파일 <span className="text-mainYellow">({files.length})</span>
         </button>
         {toggle ? (
-          <table className="border border-mainBlack w-full">
-            <thead>
-              <tr className="bg-slate-300">
-                <th className="rounded-lt-xl">파일명</th>
-                <th className="rounded-rt-xl min-w-[100px]">다운로드</th>
-              </tr>
-            </thead>
+          <div className="ml-5 pb-2">
+            <table className="w-full rounded-lg dark:text-mainWhite">
+              <thead>
+                <tr className="bg-slate-300 dark:bg-slate-600">
+                  <th className="rounded-t-lg py-1">
+                    파일명
+                    <span className="inline-block sm:hidden">
+                      (터치하여 다운로드)
+                    </span>
+                    <span className="hidden sm:inline-block">
+                      (클릭하여 다운로드)
+                    </span>
+                  </th>
+                </tr>
+              </thead>
 
-            <tbody>
-              {files?.map((file) => {
-                return (
-                  <tr
-                    key={file.id}
-                    className="border-b-2 w-full hover:bg-slate-100"
-                  >
-                    <td className="border w-full">{file.fileName}</td>
-                    <td>
+              <tbody>
+                {files?.map((file) => {
+                  return (
+                    <tr
+                      key={file.id}
+                      className="border-b  hover:bg-slate-100 dark:hover:bg-darkComponent dark:border-darkComponent"
+                    >
                       <a
                         href={API_URL + '/v1/post/download/' + file.id}
-                        className="border w-full "
+                        className=" w-full inline-block "
                       >
-                        <DocumentDownloadIcon className="inline-block h-5 w-5 text-slate-400 dark:text-slate-500 " />
+                        <td className="border-b px-2 flex justify-between dark:border-darkComponent ">
+                          <div className="w-[50vw] md:w-[40vw] ">
+                            <p className="truncate">{file.fileName}</p>
+                          </div>
+                          <span>
+                            <DocumentDownloadIcon className="inline-block h-5 w-5 m-1 text-mainYellow" />
+                          </span>
+                        </td>
                       </a>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         ) : (
           ''
         )}
