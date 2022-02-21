@@ -8,29 +8,19 @@ import { connect } from 'react-redux';
 // redux
 import actionCategory from 'redux/action/category';
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
-
 const PopDown = ({ category, currentCategory, updateCurrentCategory }) => {
   return (
     <Popover className="relative">
       {({ open }) => (
         <>
-          <Popover.Button
-            className={classNames(
-              open ? 'text-mainYellow' : 'text-mainYellow',
-              'group rounded-md inline-flex items-center text-base font-semibold hover:text-mainYellow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mainYellow'
-            )}
-          >
+          <Popover.Button className="text-mainYellow group rounded-md inline-flex items-center text-base font-semibold hover:text-mainYellow focus:outline-none">
             <span className="overflow-hidden whitespace-nowrap">
               {category.name}
             </span>
             <ChevronDownIcon
-              className={classNames(
-                open ? 'text-mainWhite' : 'text-mainWhite',
-                'ml-2 h-5 w-5 group-hover:text-mainYellow'
-              )}
+              className={`text-mainYellow ml-2 h-5 w-5 ${
+                open ? 'visible' : 'invisible'
+              } group-hover:visible`}
               aria-hidden="true"
             />
           </Popover.Button>
