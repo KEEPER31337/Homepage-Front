@@ -40,7 +40,7 @@ const MAX_PLAY_DICE = 6;
 
 const DiceGame = ({ gameInfo, member, updateInfo }) => {
   const [fixed, setFixed] = useState(false); // 게임 결과 놨는지 확인 + reset 버튼 보여줄지 말지 정함
-  const [betting, setBet] = useState(500); // 배팅 포인트 저장
+  const [betting, setBet] = useState(0); // 배팅 포인트 저장
   const [score, setScore] = useState(0); // user의 주사위 게임 점수 저장
   const [confirm, setConfirm] = useState(true); // 배팅 포인트 확정
   const [count, setCount] = useState(); // 하루 주사위 한 횟수 저장
@@ -49,6 +49,7 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
   const alertBettingPointModalRef = useRef({});
   const alertCountModalRef = useRef({});
   const alertLoginModalRef = useRef({});
+  const alertPointLackModalRef = useRef({});
 
   useEffect(() => {
     diceAPI
@@ -103,6 +104,9 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
     if (member.token === '') {
       alertLoginModalRef.current.open();
       return;
+    }
+    if (member.memberInfo.point < betting) {
+      alertPointLackModalRef.current.open();
     }
     if (check) {
       alertCountModalRef.current.open();
@@ -676,6 +680,9 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
         </MessageModal>
         <MessageModal ref={alertLoginModalRef}>
           로그인 후 이용해주세요!
+        </MessageModal>
+        <MessageModal ref={alertPointLackModalRef}>
+          포인트가 부족합니다ㅜㅜ
         </MessageModal>
         <div id="buttonDiv" className="flex justify-around sm:inline-block">
           <button
