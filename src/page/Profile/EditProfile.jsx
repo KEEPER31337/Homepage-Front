@@ -1,9 +1,11 @@
 import React from 'react';
+import { useRef } from 'react';
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import ProfileFrame from './Components/Frames/ProfileFrame';
 import InfoBox from './Components/InfoBox';
+import DeleteUserModal from './Components/DeleteUserModal';
 
 const dummyUser = {
   userId: '1',
@@ -70,7 +72,8 @@ const EditProfile = ({ token, memberInfo }) => {
   const params = useParams();
   const navigate = useNavigate();
 
-  console.log(memberInfo);
+  const deleteModalRef = useRef({});
+  const [password, setPassword] = useState('');
 
   const setProfileImg = async () => {
     console.log('setProfileImg');
@@ -80,7 +83,9 @@ const EditProfile = ({ token, memberInfo }) => {
     { text: '돌아가기', onClick: () => navigate(-1) },
     {
       text: '탈퇴',
-      onClick: () => {},
+      onClick: () => {
+        deleteModalRef.current.open();
+      },
     },
   ];
 
@@ -104,17 +109,42 @@ const EditProfile = ({ token, memberInfo }) => {
     </div>
   );
 
+  const deleteUser = async () => {};
+
   if (params.userId != memberInfo.id) {
     return <div>접근할수 없습니다</div>;
   } else {
     return (
-      <ProfileFrame
-        user={user}
-        profileBtns={headBtns}
-        renderHeadLeft={renderImgBtn}
-        renderBody={renderBody}
-        memberInfo={memberInfo}
-      />
+      <div>
+        <ProfileFrame
+          user={user}
+          profileBtns={headBtns}
+          renderHeadLeft={renderImgBtn}
+          renderBody={renderBody}
+          memberInfo={memberInfo}
+        />
+        <DeleteUserModal
+          ref={deleteModalRef}
+          onClose={() => {
+            console.log(password);
+          }}
+        >
+          <div>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              className="bg-backGray dark:bg-darkPoint 
+                        rounded-xl border-0 w-5/6 h-full 
+                        px-3 focus:ring-0
+                        text-mainBlack dark:text-mainWhite"
+            />
+          </div>
+        </DeleteUserModal>
+      </div>
     );
   }
 };

@@ -99,7 +99,7 @@ function SetPwd({ member }) {
         </div>
         <button
           onClick={changePwd}
-          disabled={isChanging}
+          disabled={isChanging || !pass}
           className="bg-mainYellow hover:bg-pointYellow 
                       ml-auto w-16 h-10 rounded-xl"
         >
@@ -121,7 +121,7 @@ function SetPwd({ member }) {
               onChange={(event) => setPassword(event.target.value)}
               className="bg-backGray dark:bg-darkPoint 
                         rounded-xl border-0 w-5/6 h-full 
-                        px-3 focus:outline-none
+                        px-3 focus:ring-0
                         text-mainBlack dark:text-mainWhite"
             />
           </div>

@@ -184,7 +184,7 @@ function SetEmail({ member }) {
                         text-mainBlack dark:text-mainWhite"
             />
             <button
-              disabled={isChanging}
+              disabled={isChanging || !passEmail}
               onClick={changeEmail}
               className="bg-mainYellow rounded-xl rounded-l-none h-full w-1/6 hover:bg-pointYellow"
             >
