@@ -42,7 +42,7 @@ const UserBox = ({ member, signOut }) => {
               {({ active }) => (
                 <Link
                   // TODO : 링크 수정
-                  to="/profile/1"
+                  to={`/profile/${member.memberInfo.id}`}
                   className={classNames(
                     active ? 'bg-gray-100' : '',
                     'block px-4 py-2 text-sm text-gray-700'
@@ -56,7 +56,7 @@ const UserBox = ({ member, signOut }) => {
               {({ active }) => (
                 <Link
                   // TODO : 링크 수정
-                  to="/profile/1/edit"
+                  to={`/profile/${member.memberInfo.id}/edit`}
                   className={classNames(
                     active ? 'bg-gray-100' : '',
                     'block px-4 py-2 text-sm text-gray-700'

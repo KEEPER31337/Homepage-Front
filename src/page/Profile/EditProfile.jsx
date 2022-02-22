@@ -6,6 +6,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import ProfileFrame from './Components/Frames/ProfileFrame';
 import InfoBox from './Components/InfoBox';
 import DeleteUserModal from './Components/DeleteUserModal';
+import actionMember from 'redux/action/member';
 
 const dummyUser = {
   userId: '1',
@@ -67,13 +68,13 @@ const dummyUser = {
   ],
 };
 
-const EditProfile = ({ token, memberInfo }) => {
+const EditProfile = ({ token, memberInfo, signOut }) => {
+  console.log(memberInfo);
   const user = dummyUser;
   const params = useParams();
   const navigate = useNavigate();
 
   const deleteModalRef = useRef({});
-  const [password, setPassword] = useState('');
 
   const setProfileImg = async () => {
     console.log('setProfileImg');
@@ -124,26 +125,10 @@ const EditProfile = ({ token, memberInfo }) => {
           memberInfo={memberInfo}
         />
         <DeleteUserModal
+          token={token}
+          signOut={signOut}
           ref={deleteModalRef}
-          onClose={() => {
-            console.log(password);
-          }}
-        >
-          <div>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              required
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              className="bg-backGray dark:bg-darkPoint 
-                        rounded-xl border-0 w-5/6 h-full 
-                        px-3 focus:ring-0
-                        text-mainBlack dark:text-mainWhite"
-            />
-          </div>
-        </DeleteUserModal>
+        ></DeleteUserModal>
       </div>
     );
   }
@@ -155,5 +140,12 @@ const mapStateToProps = (state) => {
     memberInfo: state.member.memberInfo,
   };
 };
+const mapDispatchToProps = (dispatch, OwnProps) => {
+  return {
+    signOut: () => {
+      dispatch(actionMember.signOut());
+    },
+  };
+};
 
-export default connect(mapStateToProps)(EditProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(EditProfile);

@@ -3,17 +3,18 @@ import { Fragment, useState, forwardRef, useImperativeHandle } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // API
+import memberAPI from 'API/v1/member';
 
-const DeleteUserModal = forwardRef((props, ref) => {
+const DeleteUserModal = forwardRef(({ token, signOut }, ref) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [password, setPassword] = useState('');
 
   // navigate
   const navigate = useNavigate();
 
   const closeModal = () => {
     setIsOpen(false);
-    if (props.link) navigate(props.link);
   };
 
   const openModal = () => {
@@ -26,11 +27,16 @@ const DeleteUserModal = forwardRef((props, ref) => {
     },
   }));
 
-  const beforeClose = async () => {
+  const submitDelete = () => {
     setIsClosing(true);
-    await props.onClose();
-    setIsClosing(false);
-    closeModal();
+    memberAPI.deleteMember(token, password).then((data) => {
+      // NOTE : 삭제는 시켜버리고 error return 해주는 backend 업데이트 요청
+      if (data.success) {
+        closeModal();
+        signOut();
+      }
+      setIsClosing(false);
+    });
   };
 
   return (
@@ -75,13 +81,27 @@ const DeleteUserModal = forwardRef((props, ref) => {
                 >
                   계정 탈퇴하기
                 </Dialog.Title>
-                <p className="pb-2">{props.children}</p>
+
+                <div className="pb-2">
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    required
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    className="bg-backGray dark:bg-darkPoint 
+                        rounded-xl border-0 w-5/6 h-full 
+                        px-3 focus:ring-0
+                        text-mainBlack dark:text-mainWhite"
+                  />
+                </div>
                 <div className="m-auto mt-4 w-fit">
                   <button
                     disabled={isClosing}
                     type="button"
                     className="inline-flex justify-center px-4 py-2 text-sm font-bold border-2 border-amber-400 rounded-md text-amber-900 bg-amber-100 hover:bg-amber-200"
-                    onClick={beforeClose}
+                    onClick={submitDelete}
                   >
                     탈퇴하기
                   </button>

@@ -5,6 +5,8 @@ import InfoBox from './Components/InfoBox';
 import { connect } from 'react-redux';
 import memberAPI from 'API/v1/member';
 
+import AuthUser from 'shared/AuthUser';
+
 const dummyUser = {
   userId: '1',
   img: 'https://cdn.akamai.steamstatic.com/steamcommunity/public/images/avatars/ad/ad3763fd50aff9d64b8f2a5619b2db9f43420ae2_full.jpg',
@@ -87,22 +89,23 @@ const Profile = ({ token, memberInfo }) => {
     },
   ];
 
-  useEffect(async () => {
+  useEffect(() => {
     if (params.userId == memberInfo.id) {
       setIsMe(true);
       setUser(memberInfo);
     } else {
       setIsMe(false);
-      const getOtherResult = await memberAPI.getOtherById(token, params.userId);
-      if (getOtherResult.success) {
-        setUser(getOtherResult.data);
-      } else {
-        setError(`${getOtherResult.code}:${getOtherResult.msg}`);
-      }
+      memberAPI.getOtherById(token, params.userId).then((getOtherResult) => {
+        if (getOtherResult.success) {
+          setUser(getOtherResult.data);
+        } else {
+          setError(`${getOtherResult.code}:${getOtherResult.msg}`);
+        }
+      });
     }
   }, [params.userId, memberInfo.id]);
 
-  useEffect(async () => {
+  useEffect(() => {
     if (isMe) setBtns(myBtns);
     else if (isFollower) setBtns(followerBtns);
     else setBtns(unFollowerBtns);
@@ -115,7 +118,11 @@ const Profile = ({ token, memberInfo }) => {
   );
 
   if (user == null) {
-    return <div className="text-red-500">{error}</div>;
+    return (
+      <AuthUser>
+        <div className="text-red-500">{error}</div>
+      </AuthUser>
+    );
   } else {
     return (
       <ProfileFrame
