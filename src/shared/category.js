@@ -1,6 +1,6 @@
 import { ViewGridIcon } from '@heroicons/react/outline';
 
-const categories = [
+const categoriesAll = [
   {
     id: 1,
     name: 'KEEPER',
@@ -199,7 +199,7 @@ const categories = [
       {
         id: 30,
         name: '랭킹',
-        href: 'attandance',
+        href: 'ranking',
         description: '',
         icon: ViewGridIcon,
       },
@@ -221,4 +221,20 @@ const categories = [
   },
 ];
 
-export default categories;
+const categoriesHidden = [
+  {
+    id: 1,
+    name: 'KEEPER',
+    subs: [
+      {
+        id: 7,
+        name: '동아리 소개',
+        href: 'about',
+        description: '',
+        icon: ViewGridIcon,
+      },
+    ],
+  },
+];
+
+export { categoriesAll, categoriesHidden };

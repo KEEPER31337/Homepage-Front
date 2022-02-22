@@ -1,9 +1,9 @@
 import React from 'react';
 import CircularGauge from '../CircularGauge';
 import Group from '../Group';
-import InfoBox from '../InfoBox';
 import InfoBtn from '../InfoBtn';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 const ProfileFrame = ({
   renderHeadLeft,
@@ -13,6 +13,7 @@ const ProfileFrame = ({
   renderFooter,
   profileBtns,
   user,
+  memberInfo,
 }) => {
   const defaultHeadLeft = () => (
     <div className="pr-2 w-3/12 object-cover">
@@ -24,9 +25,13 @@ const ProfileFrame = ({
     <div className="w-full h-3/4 pt-3">
       <div className="w-full h-full bg-divisionGray dark:bg-darkComponent dark:text-mainWhite rounded-2xl overflow-y-scroll scrollbar-hide">
         {/*profile type*/}
-        {user.groups.map((group) => (
-          <Group group={group} />
-        ))}
+        {memberInfo.rank ? <Group groupName={memberInfo.rank} /> : <></>}
+        {memberInfo.type ? <Group groupName={memberInfo.type} /> : <></>}
+        {memberInfo.jobs ? (
+          memberInfo.jobs.map((job) => <Group groupName={job} />)
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
@@ -41,21 +46,7 @@ const ProfileFrame = ({
             {user.name}
           </div>
           <div className="mt-3 text-left text-lg h-1/5 dark:text-mainYellow">
-            {user.nickName + ' ' + user.loginId}
-          </div>
-          {/*profile Level*/}
-          <div className="mt-10 pr-2 w-full h-2/6">
-            <div className="pt-2 text-center float-left text-3xl dark:text-pointYellow">
-              Level
-            </div>
-            <div className="pl-5 h-full float-left flex">
-              <CircularGauge
-                inRad={20}
-                outRad={24}
-                parcent={user.point / user.levelUp}
-                text={user.level}
-              />
-            </div>
+            {memberInfo.nickName + ' ' + memberInfo.emailAddress}
           </div>
         </div>
         {/*profile Btn type rank job*/}
@@ -71,13 +62,7 @@ const ProfileFrame = ({
       </div>
     </div>
   );
-  const defaultBody = () => (
-    <div className="w-full">
-      <InfoBox type="github" params={{ gitId: user.github }} />
-      <InfoBox type="postlist" params={{ userId: user.userId }} />
-      <InfoBox type="social" params={{ socialList: user.socialList }} />
-    </div>
-  );
+  const defaultBody = () => <></>;
   const defaultFooter = () => (
     <footer className="w-full h-[50px]">
       <div className="text-center dark:text-mainWhite"></div>
@@ -85,7 +70,7 @@ const ProfileFrame = ({
   );
 
   return (
-    <div className="bg-mainWhite dark:bg-mainBlack pt-20 overflow-auto">
+    <div className="bg-mainWhite dark:bg-mainBlack pt-20 overflow-auto min-h-screen">
       <div className="mx-auto w-[900px] bg-backGray dark:bg-darkPoint rounded-3xl shadow-2xl overflow-auto">
         {renderHead != null ? renderHead() : defaultHead()}
         {renderBody != null ? renderBody() : defaultBody()}

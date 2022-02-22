@@ -5,12 +5,43 @@ import PropTypes from 'prop-types';
 const MyPageFrame = ({ renderHead, items, itemHeads }) => {
   const defaultHead = () => <></>;
 
+  const renderItemComponents = (item) => {
+    const itemComponents = new Array();
+    for (const key in item) {
+      itemComponents.push(<td className="text-center">{item[key]}</td>);
+    }
+    return itemComponents.map((component) => component);
+  };
+
   return (
-    <div className="bg-mainWhite dark:bg-mainBlack pt-20 overflow-auto flex-row">
-      <div className="flex justify-start mx-auto w-[900px] bg-backGray dark:bg-darkPoint rounded-3xl shadow-2xl overflow-auto p-5">
+    <div className="bg-mainWhite dark:bg-mainBlack pt-20 overflow-auto min-h-screen">
+      <div className="flex justify-start mx-auto w-[1200px] bg-backGray dark:bg-darkPoint dark:text-mainWhite rounded-3xl shadow-2xl overflow-auto p-5">
         <MyPageNav />
         <div className="w-full h-full mr-5">
           {renderHead != null ? renderHead() : defaultHead()}
+          <div className="w-full h-full inline-block rounded-lg overflow-hidden dark:text-mainWhite">
+            <table className="w-full">
+              <thead>
+                <tr className="h-10">
+                  {itemHeads.map((thead) => (
+                    <th className="bg-[#c0c0c0] dark:bg-[#3f4957]">{thead}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {items.map((item) => (
+                  <tr
+                    className="w-full h-10 bg-divisionGray dark:bg-darkComponent hover:bg-[#f4f4f4] dark:hover:bg-[#0b1523] select-none"
+                    onClick={() => {
+                      console.log(item);
+                    }}
+                  >
+                    {renderItemComponents(item)}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

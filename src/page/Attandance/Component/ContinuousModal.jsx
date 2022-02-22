@@ -3,11 +3,9 @@ import { Fragment, useState, forwardRef, useImperativeHandle } from 'react';
 import LeafIcon from 'assets/img/leaf.png';
 
 const continuous = [
-  { days: 1, point: 0, icon: LeafIcon },
-  { days: 5, point: 300, icon: LeafIcon },
-  { days: 10, point: 500, icon: LeafIcon },
-  { days: 50, point: 1000, icon: LeafIcon },
-  { days: 100, point: 5000, icon: LeafIcon },
+  { days: '주 개근', point: 3000, icon: LeafIcon },
+  { days: '월 개근', point: 10000, icon: LeafIcon },
+  { days: '년 개근', point: 100000, icon: LeafIcon },
 ];
 
 const ContinuousModal = forwardRef((props, ref) => {
@@ -77,7 +75,7 @@ const ContinuousModal = forwardRef((props, ref) => {
                           <img className="w-6 h-6" src={item.icon} />
                         </td>
                         <td>
-                          {`${item.days}일 개근`} <br />
+                          {`${item.days}`} <br />
                         </td>
                         <td>{`Point: ${item.point}`}</td>
                       </tr>
