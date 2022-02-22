@@ -4,15 +4,18 @@ import React from 'react';
 import MemberGrid from './Component/MemberGrid';
 import RankingTable from './Component/RankingTable';
 import PageContainer from './Component/PageContainer';
+import AuthUser from 'shared/AuthUser';
 
 const Ranking = () => {
   return (
-    <div className="bg-mainWhite dark:bg-mainBlack">
-      <PageContainer>
-        <MemberGrid />
-        <RankingTable />
-      </PageContainer>
-    </div>
+    <AuthUser>
+      <div className="bg-mainWhite dark:bg-mainBlack">
+        <PageContainer>
+          <MemberGrid />
+          <RankingTable />
+        </PageContainer>
+      </div>
+    </AuthUser>
   );
 };
 
