@@ -48,6 +48,7 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
   const onChange = (event) => setBet(event.target.value);
   const alertBettingPointModalRef = useRef({});
   const alertCountModalRef = useRef({});
+  const alertLoginModalRef = useRef({});
 
   useEffect(() => {
     diceAPI
@@ -99,6 +100,10 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
   }
 
   function rollDiceOnClick() {
+    if (member.token === '') {
+      alertLoginModalRef.current.open();
+      return;
+    }
     if (check) {
       alertCountModalRef.current.open();
       return;
@@ -669,6 +674,9 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
         <MessageModal ref={alertBettingPointModalRef}>
           배팅포인트를 1 ~ 1000 사이로 입력해주세요
         </MessageModal>
+        <MessageModal ref={alertLoginModalRef}>
+          로그인 후 이용해주세요!
+        </MessageModal>
         <div id="buttonDiv" className="flex justify-around sm:inline-block">
           <button
             id="rollDice"
@@ -707,7 +715,7 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
               </div>
             </div>
             <div className="flex justify-between md:flex-wrap my-1">
-              <strong className="big text-slate-200">배팅 포인트 :</strong>
+              <strong className="big text-slate-200">참가 포인트 :</strong>
               {confirm ? (
                 <input
                   id="point"
@@ -728,7 +736,7 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
               </div>
             </div>
             <div className="flex justify-between md:flex-wrap my-1">
-              <strong className="big text-slate-200">잔여횟수 :</strong>
+              <strong className="big text-slate-200">잔여 횟수 :</strong>
               <div className="big text-yellow-500 min-w-[64px] w-auto px-2 bg-white bg-opacity-20 rounded-md text-right">
                 {MAX_PLAY_DICE - count}
               </div>
