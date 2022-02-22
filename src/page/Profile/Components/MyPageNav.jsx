@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const navList = [
-  { title: '스크랩 게시물 조회', link: '../clipping' },
   { title: '글쓰기 임시저장', link: '../drafts' },
   { title: '작성글 조회', link: '../posts' },
   { title: '팔로우 목록', link: '../follows' },

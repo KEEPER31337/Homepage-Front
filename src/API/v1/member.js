@@ -88,10 +88,47 @@ async function changePassword(token, data) {
   }
 }
 
+async function getOtherById(token, id) {
+  const options = {
+    method: 'GET',
+    url: API_URL + `/v1/member/other-id/${id}`,
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    console.log(error.response);
+    return error.response.data;
+  }
+}
+
+async function deleteMember(token, password) {
+  const options = {
+    method: 'GET',
+    url: API_URL + `/v1/member/delete`,
+    params: { password: password },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    console.log(error.response);
+    return error.response.data;
+  }
+}
+
 export default {
   getMember,
   getMembers,
   updateEmail,
   updateProfile,
   changePassword,
+  getOtherById,
+  deleteMember,
 };

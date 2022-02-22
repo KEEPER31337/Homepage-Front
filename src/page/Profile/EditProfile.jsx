@@ -1,9 +1,9 @@
 import React from 'react';
+import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import ProfileFrame from './Components/Frames/ProfileFrame';
 import InfoBox from './Components/InfoBox';
-import InfoBtn from './Components/InfoBtn';
 
 const dummyUser = {
   userId: '1',
@@ -80,9 +80,7 @@ const EditProfile = ({ token, memberInfo }) => {
     { text: '돌아가기', onClick: () => navigate(-1) },
     {
       text: '탈퇴',
-      onClick: () => {
-        console.log('remove');
-      },
+      onClick: () => {},
     },
   ];
 
@@ -105,6 +103,7 @@ const EditProfile = ({ token, memberInfo }) => {
       <InfoBox type="setPwd" params={{ token: token }} />
     </div>
   );
+
   if (params.userId != memberInfo.id) {
     return <div>접근할수 없습니다</div>;
   } else {

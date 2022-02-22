@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ProfileFrame from './Components/Frames/ProfileFrame';
 import InfoBox from './Components/InfoBox';
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
+import memberAPI from 'API/v1/member';
 
 const dummyUser = {
   userId: '1',
@@ -36,11 +37,12 @@ const dummyUser = {
 const isFollower = false;
 
 const Profile = ({ token, memberInfo }) => {
-  const user = dummyUser;
   const params = useParams();
   const navigate = useNavigate();
   const [btns, setBtns] = useState(new Array());
   const [isMe, setIsMe] = useState(false);
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState('');
 
   const myBtns = [
     {
@@ -52,7 +54,7 @@ const Profile = ({ token, memberInfo }) => {
     {
       text: '마이페이지',
       onClick: () => {
-        navigate('mypage/clipping');
+        navigate('mypage/drafts');
       },
     },
   ];
@@ -85,8 +87,19 @@ const Profile = ({ token, memberInfo }) => {
     },
   ];
 
-  useEffect(() => {
-    setIsMe(params.userId == memberInfo.id);
+  useEffect(async () => {
+    if (params.userId == memberInfo.id) {
+      setIsMe(true);
+      setUser(memberInfo);
+    } else {
+      setIsMe(false);
+      const getOtherResult = await memberAPI.getOtherById(token, params.userId);
+      if (getOtherResult.success) {
+        setUser(getOtherResult.data);
+      } else {
+        setError(`${getOtherResult.code}:${getOtherResult.msg}`);
+      }
+    }
   }, [params.userId, memberInfo.id]);
 
   useEffect(async () => {
@@ -101,14 +114,18 @@ const Profile = ({ token, memberInfo }) => {
     </div>
   );
 
-  return (
-    <ProfileFrame
-      user={user}
-      profileBtns={btns}
-      renderBody={renderBody}
-      memberInfo={memberInfo}
-    />
-  );
+  if (user == null) {
+    return <div className="text-red-500">{error}</div>;
+  } else {
+    return (
+      <ProfileFrame
+        user={dummyUser}
+        profileBtns={btns}
+        renderBody={renderBody}
+        memberInfo={user}
+      />
+    );
+  }
 };
 
 const mapStateToProps = (state) => {
