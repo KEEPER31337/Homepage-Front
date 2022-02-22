@@ -13,7 +13,6 @@ const MessageModal = forwardRef(({ handleUpdateMessage }, ref) => {
       setIsOpen(false);
       setMessage('');
     } else {
-      console.log('error');
       setIsError(true);
     }
   };
