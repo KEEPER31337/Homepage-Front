@@ -1,8 +1,10 @@
 import React from 'react';
-import './dice.css';
 import { useState, useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
+
+// local
 import MessageModal from 'shared/MessageModal';
+import actionMember from 'redux/action/member';
 
 // img
 import one from '../img/dice/dice_one.png';
@@ -22,48 +24,52 @@ import equalA from '../sound/equal.mp3';
 import loseA from '../sound/lose.mp3';
 
 // API
-import DiceAPI from 'API/v1/game';
-import MEMBER from 'API/v1/member';
+import diceAPI from 'API/v1/game';
+import memberAPI from 'API/v1/member';
+
+// style
+import './dice.css';
 
 var rollNum = 0;
 var scoreFlag = 1;
 
-const DiceGame = ({ gameInfo, member }) => {
+const DICE_GAME_WIN = 1;
+const DICE_GAME_DRAW = 0;
+const DICE_GAME_LOSE = -1;
+const MAX_PLAY_DICE = 6;
+
+const DiceGame = ({ gameInfo, member, updateInfo }) => {
   const [fixed, setFixed] = useState(false); // 게임 결과 놨는지 확인 + reset 버튼 보여줄지 말지 정함
-  const [betting, setBet] = useState(0); // 배팅 포인트 저장
+  const [betting, setBet] = useState(500); // 배팅 포인트 저장
   const [score, setScore] = useState(0); // user의 주사위 게임 점수 저장
   const [confirm, setConfirm] = useState(true); // 배팅 포인트 확정
   const [count, setCount] = useState(); // 하루 주사위 한 횟수 저장
   const [check, setCheck] = useState(); // 하루 제한된 횟수만큼 했는지 확인
-  const [point, setPoint] = useState(); // 보유 포인트 저장
   const onChange = (event) => setBet(event.target.value);
   const alertBettingPointModalRef = useRef({});
   const alertCountModalRef = useRef({});
+  const alertLoginModalRef = useRef({});
 
   useEffect(() => {
-    MEMBER.getMember({
-      token: member.token,
-    }).then((data) => {
-      if (data.success) {
-        setPoint(data.data.point);
-      }
-    });
+    diceAPI
+      .getDiceInfo({
+        token: member.token,
+      })
+      .then((data) => {
+        if (data.success) {
+          setCount(data.data);
+        }
+      });
 
-    DiceAPI.getDiceInfo({
-      token: member.token,
-    }).then((data) => {
-      if (data.success) {
-        setCount(data.data);
-      }
-    });
-
-    DiceAPI.checkDiceCount({
-      token: member.token,
-    }).then((data) => {
-      if (data.success) {
-        setCheck(data.data);
-      }
-    });
+    diceAPI
+      .checkDiceCount({
+        token: member.token,
+      })
+      .then((data) => {
+        if (data.success) {
+          setCheck(data.data);
+        }
+      });
   }, [member]);
 
   const refresh = () => {
@@ -94,6 +100,10 @@ const DiceGame = ({ gameInfo, member }) => {
   }
 
   function rollDiceOnClick() {
+    if (member.token === '') {
+      alertLoginModalRef.current.open();
+      return;
+    }
     if (check) {
       alertCountModalRef.current.open();
       return;
@@ -102,20 +112,28 @@ const DiceGame = ({ gameInfo, member }) => {
       alertBettingPointModalRef.current.open();
       return;
     }
-
-    if (rollNum == 0) {
+    if (rollNum === 0) {
       setConfirm((tmp) => !tmp);
-      DiceAPI.playDice({
-        bet: betting,
-        token: member.token,
-      });
-      DiceAPI.getDiceInfo({
-        token: member.token,
-      }).then((data) => {
-        if (data.success) {
-          setCount(data.data);
-        }
-      });
+      diceAPI
+        .playDice({
+          bet: betting,
+          token: member.token,
+        })
+        .then((data) => {
+          if (data.success) {
+            memberAPI
+              .getMember({
+                token: member.token,
+              })
+              .then((data) => {
+                if (data.success) {
+                  const token = member.token;
+                  const memberInfo = data.data;
+                  updateInfo({ token, memberInfo });
+                }
+              });
+          }
+        });
     }
 
     if (rollNum < 3 && scoreFlag === 1) {
@@ -169,40 +187,76 @@ const DiceGame = ({ gameInfo, member }) => {
 
       if (userScore > cValue) {
         new Audio(winA).play();
-        DiceAPI.setDiceResult({
-          bet: betting,
-          result: 1,
-          token: member.token,
-        }).then((data) => {
-          if (data.success) {
-            console.log('승리', data);
-          }
-        });
-        resultImg(1);
+        diceAPI
+          .setDiceResult({
+            bet: betting,
+            result: DICE_GAME_WIN,
+            token: member.token,
+          })
+          .then((data) => {
+            if (data.success) {
+              memberAPI
+                .getMember({
+                  token: member.token,
+                })
+                .then((data) => {
+                  if (data.success) {
+                    const token = member.token;
+                    const memberInfo = data.data;
+                    updateInfo({ token, memberInfo });
+                  }
+                });
+            }
+          });
+        resultImg(DICE_GAME_WIN);
       } else if (userScore === cValue) {
         new Audio(equalA).play();
-        DiceAPI.setDiceResult({
-          bet: betting,
-          result: 0,
-          token: member.token,
-        }).then((data) => {
-          if (data.success) {
-            console.log('무승부', data);
-          }
-        });
-        resultImg(0);
+        diceAPI
+          .setDiceResult({
+            bet: betting,
+            result: DICE_GAME_DRAW,
+            token: member.token,
+          })
+          .then((data) => {
+            if (data.success) {
+              memberAPI
+                .getMember({
+                  token: member.token,
+                })
+                .then((data) => {
+                  if (data.success) {
+                    const token = member.token;
+                    const memberInfo = data.data;
+                    updateInfo({ token, memberInfo });
+                  }
+                });
+            }
+          });
+        resultImg(DICE_GAME_DRAW);
       } else {
         new Audio(loseA).play();
-        DiceAPI.setDiceResult({
-          bet: betting,
-          result: -1,
-          token: member.token,
-        }).then((data) => {
-          if (data.success) {
-            console.log('패배', data);
-          }
-        });
-        resultImg(-1);
+        diceAPI
+          .setDiceResult({
+            bet: betting,
+            result: DICE_GAME_LOSE,
+            token: member.token,
+          })
+          .then((data) => {
+            if (data.success) {
+              memberAPI
+                .getMember({
+                  token: member.token,
+                })
+                .then((data) => {
+                  if (data.success) {
+                    const token = member.token;
+                    const memberInfo = data.data;
+                    updateInfo({ token, memberInfo });
+                  }
+                });
+            }
+          });
+        resultImg(DICE_GAME_LOSE);
       }
       setFixed(true);
     }
@@ -281,6 +335,14 @@ const DiceGame = ({ gameInfo, member }) => {
       if (a === b) return 0;
       if (a < b) return -1;
     });
+    var ui = items.filter((c, index) => {
+      return items.indexOf(c) === index;
+    });
+    if (ui.length == 4) {
+      if (ui[0] === ui[1] - 1 && ui[1] === ui[2] - 1 && ui[2] === ui[3] - 1)
+        return 20;
+      else return 0;
+    }
     if (
       items[0] === items[1] - 1 &&
       items[1] === items[2] - 1 &&
@@ -612,6 +674,9 @@ const DiceGame = ({ gameInfo, member }) => {
         <MessageModal ref={alertBettingPointModalRef}>
           배팅포인트를 1 ~ 1000 사이로 입력해주세요
         </MessageModal>
+        <MessageModal ref={alertLoginModalRef}>
+          로그인 후 이용해주세요!
+        </MessageModal>
         <div id="buttonDiv" className="flex justify-around sm:inline-block">
           <button
             id="rollDice"
@@ -646,11 +711,11 @@ const DiceGame = ({ gameInfo, member }) => {
             <div className="flex justify-between md:flex-wrap my-1">
               <strong className="big text-slate-200">보유 포인트 :</strong>
               <div className="text-right text-yellow-500 min-w-[64px] w-auto px-2 bg-white bg-opacity-20 rounded-md">
-                {point}
+                {member.memberInfo.point}
               </div>
             </div>
             <div className="flex justify-between md:flex-wrap my-1">
-              <strong className="big text-slate-200">배팅 포인트 :</strong>
+              <strong className="big text-slate-200">참가 포인트 :</strong>
               {confirm ? (
                 <input
                   id="point"
@@ -671,9 +736,9 @@ const DiceGame = ({ gameInfo, member }) => {
               </div>
             </div>
             <div className="flex justify-between md:flex-wrap my-1">
-              <strong className="big text-slate-200">잔여횟수 :</strong>
+              <strong className="big text-slate-200">잔여 횟수 :</strong>
               <div className="big text-yellow-500 min-w-[64px] w-auto px-2 bg-white bg-opacity-20 rounded-md text-right">
-                {count}
+                {MAX_PLAY_DICE - count}
               </div>
             </div>
           </div>
@@ -687,4 +752,12 @@ const mapStateToProps = (state, OwnProps) => {
   return { member: state.member };
 };
 
-export default connect(mapStateToProps)(DiceGame);
+const mapDispatchToProps = (dispatch, OwnProps) => {
+  return {
+    updateInfo: ({ token, memberInfo }) => {
+      dispatch(actionMember.updateInfo({ token, memberInfo }));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DiceGame);
