@@ -217,6 +217,18 @@ const SignUp = () => {
       });
   };
 
+  useEffect(() => {
+    //NOTE
+    //1. 맨처음, 최초렌더링때 자동완성 값 불러오기를 해결을 못해
+    // autoComplete="new-password" 로 최초렌더링때 자동 자동완성을 막음
+    //2.  크롬에서 자동완성 기능은 비밀번호를 입력할때, 아이디+비밀번호가 동시에 입력이됨
+    //다른 자동완성은, 어차피 onBlur처리때문에 신경 안써줘도 됨.
+    console.log(loginId);
+    if (loginId !== '') {
+      handleLoginId();
+    }
+  }, [loginId]);
+
   return (
     <div>
       <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 dark:text-mainWhite dark:bg-mainBlack">
@@ -277,6 +289,7 @@ const SignUp = () => {
                       value={password}
                       onChange={setPassword}
                       onBlur={handlePassword}
+                      autoComplete="new-password"
                       className=" rounded-md   
                         block w-full px-1 py-1 border border-divisionGray dark:border-transparent
                       focus:border-mainYellow focus:ring-mainYellow  dark:bg-darkPoint dark:outline-white"
