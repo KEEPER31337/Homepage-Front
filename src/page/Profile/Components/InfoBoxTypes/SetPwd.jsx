@@ -1,9 +1,12 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import memberAPI from 'API/v1/member';
 
-export default function SetPwd({ token }) {
+//local
+import memberAPI from 'API/v1/member';
+import { connect } from 'react-redux';
+
+function SetPwd({ member }) {
   const [msg, setMsg] = useState({
     text: '',
     color: 'mainBlack',
@@ -25,26 +28,32 @@ export default function SetPwd({ token }) {
 
   const changePwd = async () => {
     setIsChanging(true);
-    const data = {
-      password: password,
-    };
-    const changePwdResult = await memberAPI.changePassword(token, data);
-    if (!changePwdResult.success) {
-      setMsg({
-        text: `${changePwdResult.code}:${changePwdResult.msg}`,
-        color: 'red-500',
-        dark: 'red-500',
+
+    // const changePwdResult = await memberAPI.changePassword(token, password);
+    memberAPI
+      .changePassword({ password: password, token: member.token })
+      .then((data) => {
+        console.log(data);
+        if (!data.success) {
+          //실패했을 경우
+
+          setMsg({
+            text: `${data.code}:${data.msg}`,
+            color: 'red-500',
+            dark: 'red-500',
+          });
+        } else {
+          setMsg({
+            text: '비밀번호가 성공적으로 변경되었습니다',
+            color: 'mainBlack',
+            dark: 'mainWhite',
+          });
+
+          setPassword('');
+          setConfirm('');
+        }
+        setIsChanging(false);
       });
-    } else {
-      setMsg({
-        text: '비밀번호가 성공적으로 변경되었습니다',
-        color: 'mainBlack',
-        dark: 'mainWhite',
-      });
-      setPassword('');
-      setConfirm('');
-    }
-    setIsChanging(false);
   };
 
   useEffect(() => {
@@ -140,3 +149,9 @@ export default function SetPwd({ token }) {
     </div>
   );
 }
+
+const mapStateToProps = (state, OwnProps) => {
+  return { member: state.member };
+};
+
+export default connect(mapStateToProps)(SetPwd);

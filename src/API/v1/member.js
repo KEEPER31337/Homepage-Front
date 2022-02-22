@@ -34,32 +34,32 @@ async function getMembers({ token }) {
   }
 }
 
-async function updateEmail(token, data) {
+async function updateEmail({ emailAddress, authCode, token }) {
   const options = {
     method: 'PUT',
     url: API_URL + '/v1/member/update/email',
-    data: data,
     headers: {
       Authorization: token,
     },
+    data: { emailAddress, authCode },
   };
   try {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    console.log(error.response);
     return error.response.data;
   }
 }
+  
 
-async function updateProfile(token, data) {
+async function updateProfile({realName, nickName, studentId, token}) {
   const options = {
     method: 'PUT',
     url: API_URL + '/v1/member/update/profile',
-    data: data,
     headers: {
       Authorization: token,
     },
+    data: { realName, nickName, studentId },
   };
   try {
     const response = await axios(options);
@@ -70,15 +70,20 @@ async function updateProfile(token, data) {
   }
 }
 
-async function changePassword(token, data) {
+async function changePassword({password, token}) {
+  console.log({password, token})
   const options = {
     method: 'POST',
     url: API_URL + '/v1/signin/change-password',
-    data: data,
+ 
+    data: {
+      password,
+    },
     headers: {
       Authorization: token,
     },
   };
+  
   try {
     const response = await axios(options);
     return response.data;

@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
+
+//local
 import authAPI from 'API/v1/auth';
 import memberAPI from 'API/v1/member';
+import { connect } from 'react-redux';
 
-export default function SetEmail({ token }) {
+function SetEmail({ member }) {
   const [email, setEmail] = useState('');
   const [passEmail, setPassEmail] = useState(false);
   const [emailMsg, setEmailMsg] = useState({
@@ -43,6 +46,13 @@ export default function SetEmail({ token }) {
       });
     } else {
       const emailAuthResult = await authAPI.emailAuth({ emailAddress: email });
+      //NOTE 이게 api결과를 받는데까지 시간이 걸리기때문에, 일단 보냈음을 메시지로 출력해줘야한대요!
+      setEmailMsg({
+        text: '해당 메일로 인증코드를 보냈습니다.',
+        color: 'mainBlack',
+        dark: 'mainWhite',
+      });
+
       if (!emailAuthResult.success) {
         setEmailMsg({
           text: `${emailAuthResult.code}:알 수 없는 오류입니다`,
@@ -66,29 +76,35 @@ export default function SetEmail({ token }) {
   };
 
   const changeEmail = async () => {
-    console.log(token);
+    console.log(email, code);
     setIsChanging(true);
-    const data = {
-      emailAddress: email,
-      authCode: code,
-    };
-    const updateEmailResult = await memberAPI.updateEmail(token, data);
-    if (!updateEmailResult.success) {
-      setCodeMsg({
-        text: `${updateEmailResult.code}:${updateEmailResult.msg}`,
-        color: 'red-500',
-        darK: 'red-500',
+
+    memberAPI
+      .updateEmail({
+        emailAddress: email,
+        authCode: code,
+        token: member.token,
+      })
+      .then((data) => {
+        console.log(data);
+        if (!data.success) {
+          //실패했을 경우
+          setCodeMsg({
+            text: `${data.code}:${data.msg}`,
+            color: 'red-500',
+            darK: 'red-500',
+          });
+        } else {
+          setCodeMsg({
+            text: '이메일이 성공적으로 변경되었습니다',
+            color: 'mainBlack',
+            dark: 'mainWhite',
+          });
+          setEmail('');
+          setCode('');
+        }
+        setIsChanging(false);
       });
-    } else {
-      setCodeMsg({
-        text: '이메일이 성공적으로 변경되었습니다',
-        color: 'mainBlack',
-        dark: 'mainWhite',
-      });
-      setEmail('');
-      setCode('');
-    }
-    setIsChanging(false);
   };
 
   useEffect(() => {
@@ -185,3 +201,9 @@ export default function SetEmail({ token }) {
     </div>
   );
 }
+
+const mapStateToProps = (state, OwnProps) => {
+  return { member: state.member };
+};
+
+export default connect(mapStateToProps)(SetEmail);

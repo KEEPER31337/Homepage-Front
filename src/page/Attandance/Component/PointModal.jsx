@@ -2,14 +2,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState, forwardRef, useImperativeHandle } from 'react';
 import CoinIcon from 'assets/img/coin.png';
 
-const continuous = [
-  { name: '출석 포인트', point: 1000, icon: CoinIcon },
-  { name: '개근 포인트', point: 300, icon: CoinIcon },
-  { name: '순위 포인트', point: 500, icon: CoinIcon },
-  { name: '랜덤 포인트', point: 0, icon: CoinIcon },
-];
-
-const PointModal = forwardRef((props, ref) => {
+const PointModal = forwardRef(({ attendInfo }, ref) => {
   let [isOpen, setIsOpen] = useState(false);
 
   const closeModal = () => {
@@ -71,15 +64,34 @@ const PointModal = forwardRef((props, ref) => {
                 </Dialog.Title>
                 <table className="w-full font-bold">
                   <tbody>
-                    {continuous.map((item, index) => (
-                      <tr key={index} className="m-5">
-                        <td className="py-5 pr-5">
-                          <img className="w-6 h-6" src={CoinIcon} />
-                        </td>
-                        <td>{item.name}</td>
-                        <td>{`Point: ${item.point}`}</td>
-                      </tr>
-                    ))}
+                    <tr className="m-5">
+                      <td className="py-5 pr-5">
+                        <img className="w-6 h-6" src={CoinIcon} />
+                      </td>
+                      <td>출석 포인트</td>
+                      <td>{`Point: ${1000}`}</td>
+                    </tr>
+                    <tr className="m-5">
+                      <td className="py-5 pr-5">
+                        <img className="w-6 h-6" src={CoinIcon} />
+                      </td>
+                      <td>개근 포인트</td>
+                      <td>{`Point: ${attendInfo?.continuousPoint}`}</td>
+                    </tr>
+                    <tr className="m-5">
+                      <td className="py-5 pr-5">
+                        <img className="w-6 h-6" src={CoinIcon} />
+                      </td>
+                      <td>순위 포인트</td>
+                      <td>{`Point: ${attendInfo?.rankPoint}`}</td>
+                    </tr>
+                    <tr className="m-5">
+                      <td className="py-5 pr-5">
+                        <img className="w-6 h-6" src={CoinIcon} />
+                      </td>
+                      <td>랜덤 포인트</td>
+                      <td>{`Point: ${attendInfo?.randomPoint}`}</td>
+                    </tr>
                   </tbody>
                 </table>
 

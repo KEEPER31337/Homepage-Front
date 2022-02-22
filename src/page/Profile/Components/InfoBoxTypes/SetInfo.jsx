@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import memberAPI from 'API/v1/member';
 
-export default function SetInfo({ token, memberInfo }) {
+//local
+import memberAPI from 'API/v1/member';
+import { connect } from 'react-redux';
+
+function SetInfo({ member, memberInfo }) {
   const [msg, setMsg] = useState({
     text: '변경사항이 저장되지 않았습니다',
     color: 'mainBlack',
@@ -28,26 +31,32 @@ export default function SetInfo({ token, memberInfo }) {
 
   const changeInfo = async () => {
     setIsChanging(true);
-    const data = {
-      realName: name,
-      nickName: nickName,
-      studentId: studentId,
-    };
-    const updateProfileResult = await memberAPI.updateProfile(token, data);
-    if (!updateProfileResult.success) {
-      setMsg({
-        text: `${updateProfileResult.code}:${updateProfileResult.msg}`,
-        color: 'red-500',
-        dark: 'red-500',
+
+    memberAPI
+      .updateProfile({
+        realName: name,
+        nickName: nickName,
+        studentId: studentId,
+        token: member.token,
+      })
+      .then((data) => {
+        console.log(data);
+        if (!data.success) {
+          //실패했을 경우
+          setMsg({
+            text: `${data.code}:${data.msg}`,
+            color: 'red-500',
+            dark: 'red-500',
+          });
+        } else {
+          setMsg({
+            text: '변경사항이 성공적으로 저장되었습니다.',
+            color: 'mainBlack',
+            dark: 'mainWhite',
+          });
+        }
+        setIsChanging(false);
       });
-    } else {
-      setMsg({
-        text: '변경사항이 성공적으로 저장되었습니다.',
-        color: 'mainBlack',
-        dark: 'mainWhite',
-      });
-    }
-    setIsChanging(false);
   };
 
   useEffect(() => {
@@ -109,3 +118,9 @@ export default function SetInfo({ token, memberInfo }) {
     </div>
   );
 }
+
+const mapStateToProps = (state, OwnProps) => {
+  return { member: state.member };
+};
+
+export default connect(mapStateToProps)(SetInfo);

@@ -24,7 +24,6 @@ async function check({ token }) {
     url: API_URL + '/v1/attend',
     data: {
       ipAddress: ip,
-      greetings: '자동 출석입니다.',
     },
     headers: {
       Authorization: token,
@@ -41,7 +40,6 @@ async function check({ token }) {
 async function updateMessage({ greetings, token }) {
   const options = {
     method: 'PATCH',
-    // NOTE : uri에 마지막 /는 떼는걸로 통일 요청할 예정
     url: API_URL + '/v1/attend',
     data: {
       greetings,
@@ -92,9 +90,9 @@ async function getAttendInfo({ date, token }) {
   console.log('attendInfo', options);
   try {
     const response = await axios(options);
+    console.log('message', response.data);
     return response.data;
   } catch (error) {
-    console.log('attendInfoError', error.response.data);
     return error.response.data;
   }
 }
