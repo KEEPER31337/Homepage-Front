@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 
 const ProfileFrame = ({
   renderHeadLeft,
-  renderHeadRight,
   renderHead,
   renderBody,
   renderFooter,
@@ -16,23 +15,8 @@ const ProfileFrame = ({
   memberInfo,
 }) => {
   const defaultHeadLeft = () => (
-    <div className="pr-2 w-3/12 object-cover">
+    <div className="pr-2 w-4/12 object-contain">
       <img className="w-full h-full rounded-2xl" src={user.img} />
-    </div>
-  );
-
-  const defaultHeadRight = () => (
-    <div className="w-full h-3/4 pt-3">
-      <div className="w-full h-full bg-divisionGray dark:bg-darkComponent dark:text-mainWhite rounded-2xl overflow-y-scroll scrollbar-hide">
-        {/*profile type*/}
-        {memberInfo.rank ? <Group groupName={memberInfo.rank} /> : <></>}
-        {memberInfo.type ? <Group groupName={memberInfo.type} /> : <></>}
-        {memberInfo.jobs ? (
-          memberInfo.jobs.map((job) => <Group groupName={job} />)
-        ) : (
-          <></>
-        )}
-      </div>
     </div>
   );
 
@@ -41,23 +25,46 @@ const ProfileFrame = ({
       <div className="px-10 pt-10 pb-7 w-full h-full flex float-left">
         {renderHeadLeft != null ? renderHeadLeft() : defaultHeadLeft()}
         {/*profile head info*/}
-        <div className="pt-3 w-5/12 h-full">
-          <div className="text-left text-4xl h-1/5 dark:text-pointYellow">
-            {user.name}
+        <div className="pt-3 w-full h-full ">
+          <div className="pl-3 h-1/5 text-left text-4xl dark:text-pointYellow flex-row">
+            <div className="flex align-bottom justify-items-center">
+              <div className="mr-5">{memberInfo.nickName}</div>
+              {/*profile Btn type rank job*/}
+              {memberInfo.rank ? (
+                <div className="mr-2">
+                  <Group groupName={memberInfo.rank} />
+                </div>
+              ) : (
+                <></>
+              )}
+              {memberInfo.type ? (
+                <div className="mr-2">
+                  <Group groupName={memberInfo.type} />
+                </div>
+              ) : (
+                <></>
+              )}
+              {memberInfo.jobs ? (
+                memberInfo.jobs.map((job) => (
+                  <div className="mr-2">
+                    <Group groupName={job} />
+                  </div>
+                ))
+              ) : (
+                <></>
+              )}
+            </div>
           </div>
-          <div className="mt-3 text-left text-lg h-1/5 dark:text-mainYellow">
-            {memberInfo.nickName + ' ' + memberInfo.emailAddress}
+          <div className="pl-3 mt-3 text-left text-lg h-1/5 dark:text-mainYellow">
+            {memberInfo.emailAddress}
           </div>
-        </div>
-        {/*profile Btn type rank job*/}
-        <div className="w-4/12 pl-5">
+          <div className="h-[25%]" />
           {/*profile Btn*/}
-          <div className="w-full h-1/4 flex justify-end items-end">
+          <div className="w-2/4 h-[25%]">
             {profileBtns.map((btn) => (
               <InfoBtn btn={btn} />
             ))}
           </div>
-          {renderHeadRight != null ? renderHeadRight() : defaultHeadRight()}
         </div>
       </div>
     </div>
@@ -71,7 +78,7 @@ const ProfileFrame = ({
 
   return (
     <div className="bg-mainWhite dark:bg-mainBlack pt-20 overflow-auto min-h-screen">
-      <div className="mx-auto w-[900px] bg-backGray dark:bg-darkPoint rounded-3xl shadow-2xl overflow-auto">
+      <div className="mx-auto w-[900px] bg-mainWhite dark:bg-darkPoint rounded-3xl shadow-2xl overflow-auto">
         {renderHead != null ? renderHead() : defaultHead()}
         {renderBody != null ? renderBody() : defaultBody()}
       </div>

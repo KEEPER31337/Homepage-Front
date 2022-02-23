@@ -92,7 +92,7 @@ const EditProfile = ({ token, memberInfo, signOut }) => {
 
   const renderImgBtn = () => (
     <button
-      className="pr-2 w-3/12 object-cover hover:brightness-75"
+      className="pr-2 w-4/12 object-contain hover:brightness-75"
       onClick={setProfileImg}
     >
       <img className="w-full h-full rounded-2xl" src={user.img} />
