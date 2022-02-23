@@ -59,7 +59,7 @@ const SignUp = () => {
   const handlePassword = (e) => {
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$/;
 
-    if (!passwordRegex.test(e.target.value)) {
+    if (!passwordRegex.test(password)) {
       setPasswordMessage('8~20자 영문과 숫자를 사용하세요.');
       setIsPassword(false);
     } else {
@@ -70,7 +70,7 @@ const SignUp = () => {
 
   // 비밀번호 확인
   const handlePasswordConfirm = (e) => {
-    if (password === e.target.value) {
+    if (password === passwordConfirm) {
       setPasswordConfirmMessage('비밀번호가 일치합니다.');
       setIsPasswordConfirm(true);
     } else {
@@ -276,7 +276,16 @@ const SignUp = () => {
                       required
                       value={password}
                       onChange={setPassword}
-                      onBlur={handlePassword}
+                      //NOTE
+                      //1. 맨처음, 최초렌더링때 자동완성 값 불러오기를 해결을 못해
+                      // autoComplete="new-password" 로 최초렌더링때 자동 자동완성을 막음
+                      //2.  크롬에서 자동완성 기능은 비밀번호를 입력할때, 아이디+비밀번호가 동시에 입력이됨
+                      //다른 자동완성은, 어차피 onBlur처리때문에 신경 안써줘도 됨.
+                      onBlur={() => {
+                        handlePassword();
+                        handleLoginId();
+                      }}
+                      autoComplete="new-password"
                       className=" rounded-md   
                         block w-full px-1 py-1 border border-divisionGray dark:border-transparent
                       focus:border-mainYellow focus:ring-mainYellow  dark:bg-darkPoint dark:outline-white"
@@ -307,7 +316,10 @@ const SignUp = () => {
                       name="passwordConfirm"
                       value={passwordConfirm}
                       onChange={setPasswordConfirm}
-                      onBlur={handlePasswordConfirm}
+                      onBlur={() => {
+                        handlePasswordConfirm();
+                        handleLoginId();
+                      }}
                       className=" rounded-md   
                         block w-full px-1 py-1 border border-divisionGray dark:border-transparent
                       focus:border-mainYellow focus:ring-mainYellow  dark:bg-darkPoint dark:outline-white"
