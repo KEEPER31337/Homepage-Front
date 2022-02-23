@@ -5,8 +5,10 @@ import { connect } from 'react-redux';
 // component
 import DiceGame from './Components/Dice';
 import RuleOfDice from './Components/RuleOfDice';
-import { Roulette, RuleOfRoulette } from './Components/Roulette';
-import { Lotto, RuleOfLotto } from './Components/Lotto';
+import Roulette from './Components/Roulette';
+import RuleOfRoulette from './Components/RuleOfRoulette';
+import Lotto from './Components/Lotto';
+import RuleOfLotto from './Components/RuleOfLotto';
 
 // image
 import LeftNav from './img/dice/nav_left.png';
@@ -114,7 +116,7 @@ const Game = (props) => {
           </div>
           {game === DICE_GAME_ID ? <RuleOfDice /> : null}
           {game === ROULETTE_GAME_ID ? <RuleOfRoulette /> : null}
-          {game === LOTTO_GAME_ID ? <RuleOfLotto /> : null}
+          {game === LOTTO_GAME_ID ? <RuleOfLotto gameInfo={gameInfo} /> : null}
         </div>
       </div>
     </div>
