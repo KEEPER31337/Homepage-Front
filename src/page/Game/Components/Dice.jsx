@@ -719,7 +719,7 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
         <div className="lg:text-base md:text-xs h-fit bg-white/20 rounded-md border-2 border-white dark:bg-gray-900 ">
           <div className="p-2 flex flex-col justify-center ">
             <div className="flex justify-between md:flex-wrap my-1">
-              <strong className="big text-slate-200 md:w-20 lg:w-28">
+              <strong className="text-slate-200 md:w-20 lg:w-28">
                 보유 포인트 :
               </strong>
               <div className="text-right text-yellow-500 min-w-[64px] w-auto px-2 bg-white bg-opacity-20 rounded-md">
@@ -727,14 +727,14 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
               </div>
             </div>
             <div className="flex justify-between md:flex-wrap my-1">
-              <strong className="big text-slate-200 md:w-20 lg:w-28">
+              <strong className="text-slate-200 md:w-20 lg:w-28">
                 참가 포인트 :
               </strong>
               {confirm ? (
                 <input
                   id="point"
                   value={betting}
-                  className="w-16 px-2 bg-white text-right h-fit big rounded-md text-yellow-500"
+                  className="w-16 px-2 bg-white text-right h-fit rounded-md text-yellow-500"
                   onChange={onChange}
                 ></input>
               ) : (
@@ -744,18 +744,16 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
               )}
             </div>
             <div className="flex justify-between md:flex-wrap my-1">
-              <strong className="big text-slate-200 md:w-20 lg:w-28">
-                점수 :
-              </strong>
+              <strong className="text-slate-200 md:w-20 lg:w-28">점수 :</strong>
               <div className="text-yellow-500 min-w-[64px] w-auto px-2 bg-white bg-opacity-20 rounded-md text-right">
                 {score}
               </div>
             </div>
             <div className="flex justify-between md:flex-wrap my-1">
-              <strong className="big text-slate-200 md:w-20 lg:w-28">
+              <strong className="text-slate-200 md:w-20 lg:w-28">
                 잔여 횟수 :
               </strong>
-              <div className="big text-yellow-500 min-w-[64px] w-auto px-2 bg-white bg-opacity-20 rounded-md text-right">
+              <div className="text-yellow-500 min-w-[64px] w-auto px-2 bg-white bg-opacity-20 rounded-md text-right">
                 {MAX_PLAY_DICE - count}
               </div>
             </div>
