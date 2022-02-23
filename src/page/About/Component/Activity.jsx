@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 // asset
 import seminarImg from 'assets/img/aboutImg/seminar.png';
 import mentoringImg from 'assets/img/aboutImg/mentoring.png';
+import thesisImg from 'assets/img/aboutImg/thesis.jpg';
 
 // API
 import aboutAPI from 'API/v1/about';
@@ -48,8 +49,7 @@ const temp = [
         <li>제안서 발표, 중간 발표, 최종 발표를 거침?</li>
       </ul>
     ),
-    imageSrc:
-      'https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2850&q=80',
+    imageSrc: thesisImg,
     imageAlt: 'Technical document',
   },
 ];
@@ -156,8 +156,8 @@ export default function Activity() {
                 >
                   <div className="rounded-xl overflow-hidden">
                     <img
-                      src={temp[2].imageSrc}
-                      alt={temp[2].imageAlt}
+                      src={temp[articleIdx].imageSrc}
+                      alt={temp[articleIdx].imageAlt}
                       className="object-center object-cover"
                     />
                   </div>
