@@ -12,12 +12,6 @@ import homeAPI from 'API/v1/home';
 const Home = () => {
   const [visible, setVisible] = useState(true);
 
-  useEffect(() => {
-    homeAPI.getTrends().then((data) => {
-      console.log(data);
-    });
-  }, []);
-
   const goToFirst = () => {
     setVisible(true);
   };

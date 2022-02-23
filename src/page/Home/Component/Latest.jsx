@@ -29,8 +29,6 @@ const posts = [
 ];
 
 export default function Latest({ postList }) {
-  console.log('latest', postList);
-
   return (
     <div className="relative bg-gray-50 dark:bg-neutral-900 h-auto pt-16 pb-4 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8">
       <div className="absolute inset-0">

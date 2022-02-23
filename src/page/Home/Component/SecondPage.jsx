@@ -27,6 +27,7 @@ const SecondPage = ({ goToFirst, visibleArrow }) => {
       }
     });
   }, []);
+
   return (
     <div id="main-second-page" className="pt-16">
       {!visibleArrow && (
