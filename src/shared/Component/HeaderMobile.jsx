@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import { ViewGridIcon, XIcon } from '@heroicons/react/outline';
 import { Link } from 'react-router-dom';
@@ -6,12 +6,18 @@ import { connect } from 'react-redux';
 
 // local
 import Logo from 'assets/img/keeper_logo.png';
-import categories from '../category';
+import { categoriesAll, categoriesHidden } from '../category';
 import SignInBoxMobile from './SignInBoxMobile';
 import UserBoxMobile from './UserBoxMobile';
 
 const HeaderMobile = ({ member }) => {
   // TODO : 링크 클릭 후 탭 닫기
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    if (member.token) setCategories(categoriesAll);
+    else setCategories(categoriesHidden);
+  }, [member]);
+
   return (
     <Transition
       as={Fragment}

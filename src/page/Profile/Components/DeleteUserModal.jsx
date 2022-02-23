@@ -1,9 +1,17 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState, forwardRef, useImperativeHandle } from 'react';
-import CoinIcon from 'assets/img/coin.png';
+import { useNavigate } from 'react-router-dom';
 
-const PointModal = forwardRef(({ attendInfo }, ref) => {
-  let [isOpen, setIsOpen] = useState(false);
+// API
+import memberAPI from 'API/v1/member';
+
+const DeleteUserModal = forwardRef(({ token, signOut }, ref) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const [password, setPassword] = useState('');
+
+  // navigate
+  const navigate = useNavigate();
 
   const closeModal = () => {
     setIsOpen(false);
@@ -19,9 +27,20 @@ const PointModal = forwardRef(({ attendInfo }, ref) => {
     },
   }));
 
+  const submitDelete = () => {
+    setIsClosing(true);
+    memberAPI.deleteMember(token, password).then((data) => {
+      // NOTE : 삭제는 시켜버리고 error return 해주는 backend 업데이트 요청
+      if (data.success) {
+        closeModal();
+        signOut();
+      }
+      setIsClosing(false);
+    });
+  };
+
   return (
     <>
-      {/* TODO : dark mode에서 버튼 border 매치안됨 */}
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog
           as="div"
@@ -60,48 +79,31 @@ const PointModal = forwardRef(({ attendInfo }, ref) => {
                   as="h3"
                   className="m-2 mb-4 text-lg font-bold leading-6"
                 >
-                  포인트 합계
+                  계정 탈퇴하기
                 </Dialog.Title>
-                <table className="w-full font-bold">
-                  <tbody>
-                    <tr className="m-5">
-                      <td className="py-5 pr-5">
-                        <img className="w-6 h-6" src={CoinIcon} />
-                      </td>
-                      <td>출석 포인트</td>
-                      <td>{`Point: ${1000}`}</td>
-                    </tr>
-                    <tr className="m-5">
-                      <td className="py-5 pr-5">
-                        <img className="w-6 h-6" src={CoinIcon} />
-                      </td>
-                      <td>개근 포인트</td>
-                      <td>{`Point: ${attendInfo?.continuousPoint}`}</td>
-                    </tr>
-                    <tr className="m-5">
-                      <td className="py-5 pr-5">
-                        <img className="w-6 h-6" src={CoinIcon} />
-                      </td>
-                      <td>순위 포인트</td>
-                      <td>{`Point: ${attendInfo?.rankPoint}`}</td>
-                    </tr>
-                    <tr className="m-5">
-                      <td className="py-5 pr-5">
-                        <img className="w-6 h-6" src={CoinIcon} />
-                      </td>
-                      <td>랜덤 포인트</td>
-                      <td>{`Point: ${attendInfo?.randomPoint}`}</td>
-                    </tr>
-                  </tbody>
-                </table>
 
+                <div className="pb-2">
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    required
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    className="bg-backGray dark:bg-darkPoint 
+                        rounded-xl border-0 w-5/6 h-full 
+                        px-3 focus:ring-0
+                        text-mainBlack dark:text-mainWhite"
+                  />
+                </div>
                 <div className="m-auto mt-4 w-fit">
                   <button
+                    disabled={isClosing}
                     type="button"
                     className="inline-flex justify-center px-4 py-2 text-sm font-bold border-2 border-amber-400 rounded-md text-amber-900 bg-amber-100 hover:bg-amber-200"
-                    onClick={closeModal}
+                    onClick={submitDelete}
                   >
-                    Thanks!
+                    탈퇴하기
                   </button>
                 </div>
               </div>
@@ -113,4 +115,4 @@ const PointModal = forwardRef(({ attendInfo }, ref) => {
   );
 });
 
-export default PointModal;
+export default DeleteUserModal;

@@ -1,14 +1,20 @@
 import { Dialog, Transition } from '@headlessui/react';
+import { useEffect } from 'react';
 import { Fragment, useState, forwardRef, useImperativeHandle } from 'react';
 
 const MessageModal = forwardRef(({ handleUpdateMessage }, ref) => {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState('');
+  const [isError, setIsError] = useState(false);
 
   const handleSave = () => {
-    handleUpdateMessage(message);
-    setIsOpen(false);
-    setMessage('');
+    if (message.length > 0) {
+      handleUpdateMessage(message);
+      setIsOpen(false);
+      setMessage('');
+    } else {
+      setIsError(true);
+    }
   };
 
   const handleOpen = () => {
@@ -21,6 +27,10 @@ const MessageModal = forwardRef(({ handleUpdateMessage }, ref) => {
       handleOpen();
     },
   }));
+
+  useEffect(() => {
+    setIsError(false);
+  }, [isOpen]);
 
   return (
     <>
@@ -72,10 +82,16 @@ const MessageModal = forwardRef(({ handleUpdateMessage }, ref) => {
                     onChange={(e) => {
                       setMessage(e.target.value);
                     }}
-                    className=" rounded-md   
-                        block w-full px-1 py-1 border border-divisionGray dark:border-transparent
-                      focus:outline-mainYellow dark:bg-darkPoint dark:outline-white autofill:bg-yellow-200"
+                    className=" rounded-md block w-full px-1 py-1 border border-divisionGray 
+                    focus:border-mainYellow focus:ring-mainYellow autofill:bg-yellow-200"
                   />
+                </div>
+                <div
+                  className={`block mt-1 text-sm font-medium text-${
+                    isError ? 'red-500' : 'pointYellow'
+                  }`}
+                >
+                  {isError ? '1글자 이상 입력해주세요.' : ''}
                 </div>
                 <div className="m-auto mt-4 w-fit">
                   <button
