@@ -455,13 +455,13 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
     }
     var tmp = document.createElement('div');
     tmp.innerHTML = calculate(items);
-    tmp.className = 'text-orange-300 text-2xl';
+    tmp.className = 'text-orange-300 text-2xl dark:text-white';
     screen.appendChild(tmp);
     screenTotal.appendChild(screen);
   }
 
   return (
-    <div className="md:w-3/5 lg:w-3/5 w-full mb-10 flex flex-wrap items-end bg-gradient-radial from-red-600 to-red-900  rounded-md border-[16px] border-mainBlack">
+    <div className="md:w-3/5 lg:w-3/5 w-full mb-10 flex flex-wrap items-end bg-gradient-radial dark:from-pink-300 dark:via-purple-300 dark:to-indigo-400 from-red-600 to-red-900  rounded-md border-[16px] border-mainBlack">
       <div className="sm:w-2/3 w-full items-center flex-initial">
         <div className="dice">
           <ol
@@ -710,10 +710,12 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
           ) : null}
         </div>
       </div>
-      <div className="sm:w-1/3 w-full ">
-        <div id="result_img"></div>
-        <div id="com_result"></div>
-        <div className="lg:text-base md:text-xs h-fit bg-white/20 rounded-md border-2 border-white ">
+      <div className="sm:w-1/3 w-full">
+        <div className="justify-self-center flex flex-col">
+          <div id="result_img"></div>
+          <div id="com_result"></div>
+        </div>
+        <div className="lg:text-base md:text-xs h-fit bg-white/20 rounded-md border-2 border-white dark:bg-gray-900 ">
           <div className="p-2 flex flex-col justify-center ">
             <div className="flex justify-between md:flex-wrap my-1">
               <strong className="big text-slate-200">보유 포인트 :</strong>

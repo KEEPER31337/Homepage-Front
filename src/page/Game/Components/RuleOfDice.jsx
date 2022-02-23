@@ -3,7 +3,7 @@ import React from 'react';
 const RuleOfDice = () => {
   return (
     <div className="flex justify-center items-center ">
-      <div className="w-4/5 my-5 p-5 border-2 shadow-md dark:shadow-pointYellow border-divisionGray rounded-md dark:border-pointYellow">
+      <div className="w-4/5 my-5 p-5 border-2 shadow-md dark:shadow-indigo-400 dark:text-white border-divisionGray rounded-md dark:border-indigo-400">
         게임 규칙
         <br />
         총 3번 주사위를 굴릴 수 있습니다.
