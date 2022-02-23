@@ -121,10 +121,10 @@ export default function History() {
         data.list.map((title) => {
           // Subtitle display order 순서로 정렬
           title.subtitleImageResults.sort(function (a, b) {
-            if (a.displayOrder > b.displayOrder) {
+            if (a.displayOrder < b.displayOrder) {
               return 1;
             }
-            if (a.displayOrder < b.displayOrder) {
+            if (a.displayOrder > b.displayOrder) {
               return -1;
             }
             return 0;
@@ -155,43 +155,49 @@ export default function History() {
             {historyInfo[0].title}
           </h2>
           <div className="px-2 lg:px-4 overflow-hidden">
-            {historyInfo[0].subtitleImageResults.map((article, articleIdx) => (
-              <div
-                key={article.subtitle}
-                className={classNames(
-                  articleIdx !== historyInfo[0].length - 1 ? 'pb-10' : '',
-                  'relative'
-                )}
-              >
-                <>
-                  {articleIdx !== historyInfo[0].length - 1 ? ( // 원 사이 잇는 짝대기
-                    <div
-                      className="-ml-px absolute mt-0.5 top-4 left-3.5 w-1.5 h-full bg-mainYellow"
-                      aria-hidden="true"
-                    />
-                  ) : null}
-                  <div className="relative flex items-start group">
-                    <span className="h-9 flex items-center" aria-hidden="true">
-                      <span className="relative z-10 w-8 h-8 flex items-center justify-center bg-mainYellow rounded-full"></span>
-                    </span>
-                    <span className="ml-4 min-w-0 flex flex-col">
-                      <span className="text-sm font-bold tracking-wide text-gray-500 dark:text-pointYellow">
-                        {article.subtitle}
+            {historyInfo[0].subtitleImageResults.map((article, articleIdx) =>
+              article.staticWriteContentResults.length ? (
+                <div
+                  key={article.subtitle}
+                  className={classNames(
+                    articleIdx !== historyInfo[0].length - 1 ? 'pb-10' : '',
+                    'relative'
+                  )}
+                >
+                  {console.log(article.staticWriteContentResults)}
+                  <>
+                    {articleIdx !== historyInfo[0].length - 1 ? ( // 원 사이 잇는 짝대기
+                      <div
+                        className="-ml-px absolute mt-0.5 top-4 left-3.5 w-1.5 h-full bg-mainYellow"
+                        aria-hidden="true"
+                      />
+                    ) : null}
+                    <div className="relative flex items-start group">
+                      <span
+                        className="h-9 flex items-center"
+                        aria-hidden="true"
+                      >
+                        <span className="relative z-10 w-8 h-8 flex items-center justify-center bg-mainYellow rounded-full"></span>
                       </span>
-                      <span className="text-gray-500 dark:text-white">
-                        <ul>
-                          {article.staticWriteContentResults.map(
-                            (contentInfo, index) => (
-                              <li key={index}>{contentInfo.content}</li>
-                            )
-                          )}
-                        </ul>
+                      <span className="ml-4 min-w-0 flex flex-col">
+                        <span className="text-sm font-bold tracking-wide text-gray-500 dark:text-pointYellow">
+                          {article.subtitle}
+                        </span>
+                        <span className="text-gray-500 dark:text-white">
+                          <ul>
+                            {article.staticWriteContentResults.map(
+                              (contentInfo, index) => (
+                                <li key={index}>{contentInfo.content}</li>
+                              )
+                            )}
+                          </ul>
+                        </span>
                       </span>
-                    </span>
-                  </div>
-                </>
-              </div>
-            ))}
+                    </div>
+                  </>
+                </div>
+              ) : null
+            )}
           </div>
         </div>
       </div>
