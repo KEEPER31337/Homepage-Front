@@ -479,8 +479,6 @@ const Table = (props) => {
                   to
                   <span class="font-medium">
                     <strong name="현재 보여지는 게시글들 중 마지막 게시글 번호">
-                      {console.log(currentPage)}
-                      {console.log(pageN)}
                       {' ' +
                         (currentPage == pageN
                           ? boardContent?.length != 0

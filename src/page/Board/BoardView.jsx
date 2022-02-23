@@ -64,7 +64,7 @@ const BoardView = (props) => {
           )}
           <Table commentChangeFlag={commentChangeFlag} />
         </div>
-        <div name="left-sideBar" className="hidden m-5 w-1/6 md:inline-block">
+        <div name="left-sideBar" className="hidden m-5 w-1/6 sm:inline-block">
           <WriteButton />
         </div>
       </div>
