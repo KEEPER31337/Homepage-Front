@@ -38,6 +38,7 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
   //게임 후, 등수와 포인트 띄워줌
   const [rank, setRank] = useState(0);
   const [point, setPoint] = useState(0);
+  const [result, setResult] = useState(0);
 
   // 게임 상에서 띄워줄 정보
   const [memberPoint, setMemberPoint] = useState();
@@ -76,7 +77,7 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
       })
       .then((data) => {
         if (data.success) {
-          setRemainingCount(data.data);
+          setRemainingCount(gameInfo.LOTTO_MAX_PLAYTIME - data.data);
         }
       });
 
@@ -225,6 +226,7 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
       //setIsPop(false);
       // alert(rank + ' 등 축하합니다!');
       rankModalRef.current.open();
+      setResult(point);
       memberAPI
         .getMember({
           token: member.token,
@@ -254,11 +256,11 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
     },
     {
       subtitle: '오늘 결과',
-      content: point,
+      content: result,
     },
     {
       subtitle: '잔여 횟수',
-      content: 1 - remainingCount,
+      content: remainingCount,
     },
   ];
 
