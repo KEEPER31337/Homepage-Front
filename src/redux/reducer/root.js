@@ -11,7 +11,6 @@ const persistConfig = {
   key: 'root',
   storage,
   // TODO : whitelist
-  blacklist: ['category'],
 };
 
 const rootReducer = combineReducers({
