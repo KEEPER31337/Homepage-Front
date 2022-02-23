@@ -125,19 +125,21 @@ const Comments = ({
   };
   const deleteCommentHandler = (id) => {
     //댓글 및 대댓글 삭제
-    commentAPI
-      .remove({
-        commentId: id,
-        token: token,
-      })
-      .then((res) => {
-        if (res.success) {
-          //console.log('delete comment');
-          setCommentChangeFlag(!commentChangeFlag);
-        } else {
-          alert('댓글 삭제 실패!');
-        }
-      });
+    if (window.confirm('정말로 댓글을 삭제하시겠습니까?')) {
+      commentAPI
+        .remove({
+          commentId: id,
+          token: token,
+        })
+        .then((res) => {
+          if (res.success) {
+            //console.log('delete comment');
+            setCommentChangeFlag(!commentChangeFlag);
+          } else {
+            alert('댓글 삭제 실패!');
+          }
+        });
+    }
   };
 
   const displayInput = (id) => {

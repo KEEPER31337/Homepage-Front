@@ -72,13 +72,15 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
 
   const deletePostingHandler = () => {
     //게시글 삭제 버튼 눌렀을 시
-    postAPI.remove({ boardId: postingId, token: token }).then((res) => {
-      if (res.success) {
-        navigate('/board');
-      } else {
-        alert('게시물 삭제 실패! 전산관리자에게 문의하세요~');
-      }
-    });
+    if (window.confirm('정말로 해당 게시글을 삭제하시겠습니까?')) {
+      postAPI.remove({ boardId: postingId, token: token }).then((res) => {
+        if (res.success) {
+          navigate('/board');
+        } else {
+          alert('게시물 삭제 실패! 전산관리자에게 문의하세요~');
+        }
+      });
+    }
   };
   const toggleFiles = () => {
     setToggle(!toggle);
