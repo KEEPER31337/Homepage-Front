@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
 import './style/height.css';
+import './style/drag.css';
 import FirstPage from './Component/FirstPage';
 import SecondPage from './Component/SecondPage';
 import { useEffect } from 'react';
@@ -25,7 +26,7 @@ const Home = () => {
   };
 
   return (
-    <div className="bg-mainWhite dark:bg-mainBlack text-mainBlack dark:text-mainWhite overflow-x-hidden">
+    <div className="drag-false bg-mainWhite dark:bg-mainBlack text-mainBlack dark:text-mainWhite overflow-x-hidden">
       {visible && <FirstPage goToSecond={goToSecond} />}
       <SecondPage goToFirst={goToFirst} visibleArrow={visible} />
     </div>
