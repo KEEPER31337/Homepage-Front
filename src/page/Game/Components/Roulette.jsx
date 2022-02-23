@@ -126,7 +126,7 @@ const Roulette = ({ gameInfo, member }) => {
   ];
 
   return (
-    <div className="relative w-full md:w-3/5 pb-10 sm:p-10 mb-10 flex flex-wrap justify-center sm:justify-start bg-gradient-radial from-gray-700 to-gray-900 rounded-md border-[16px] border-mainBlack dark:border-divisionGray">
+    <div className="relative w-full md:w-3/5 pb-10 sm:p-10 mb-10 flex flex-wrap justify-center sm:justify-start bg-gradient-radial from-gray-700 to-gray-900 rounded-md border-[16px] border-mainBlack">
       <div className="relative">
         <div className="shadow-inner shadow-[#725d19] [clip-path:polygon(95%_0,_50%_100%,_5%_0)] rotate-[180deg] top-8 bg-gradient-radial from-amber-900 to-yellow-300 brightness-110 h-1/2 w-2/3 absolute left-1/2 -translate-x-1/2 origin-bottom rounded-3xl"></div>
         <div className="my-2 mx-2 sm:m-0 shadow-md shadow-[#725d19] rounded-full bg-gradient-to-tr from-amber-900 to-yellow-300 brightness-125">
