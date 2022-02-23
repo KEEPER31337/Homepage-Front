@@ -87,7 +87,7 @@ export default function Latest({ postList }) {
                         </a>
                       </p>
                       <div className="flex space-x-1 text-sm text-gray-500">
-                        <time dateTime={post.datetime}>{post.dateTime}</time>
+                        <time dateTime={post.updateTime}>{post.updateTime}</time>
                         <span aria-hidden="true">&middot;</span>
                         <span>{post.visitCount} watch</span>
                       </div>

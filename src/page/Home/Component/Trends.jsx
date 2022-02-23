@@ -64,7 +64,7 @@ export default function Trends({ postList }) {
                         </a>
                       </p>
                       <div className="flex space-x-1 text-sm text-gray-500">
-                        <time dateTime={post.dateTime}>{post.date}</time>
+                        <time dateTime={post.dateTime}>{post.dateTime}</time>
                         <span aria-hidden="true">&middot;</span>
                         <span>{post.watch} watch</span>
                       </div>
