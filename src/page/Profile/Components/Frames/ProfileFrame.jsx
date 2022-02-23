@@ -26,9 +26,11 @@ const ProfileFrame = ({
         {renderHeadLeft != null ? renderHeadLeft() : defaultHeadLeft()}
         {/*profile head info*/}
         <div className="pt-3 w-full h-full ">
-          <div className="pl-3 h-1/5 text-left text-4xl dark:text-pointYellow flex-row">
+          <div className="pl-3 h-1/5 text-left text-4xl flex-row">
             <div className="flex align-bottom justify-items-center">
-              <div className="mr-5">{memberInfo.nickName}</div>
+              <div className="mr-5 dark:text-pointYellow">
+                {memberInfo.nickName}
+              </div>
               {/*profile Btn type rank job*/}
               {memberInfo.rank ? (
                 <div className="mr-2">
