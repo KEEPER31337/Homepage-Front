@@ -263,7 +263,7 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
   ];
 
   return (
-    <div className="relative md:w-3/5 lg:w-3/5 w-full space-y-4 p-3 mb-10 flex flex-col text-center items-center justify-center bg-gradient-radial from-gray-700 to-gray-900 rounded-md border-[16px] border-mainBlack">
+    <div className="relative md:w-3/5 lg:w-3/5 w-full space-y-4 p-3 mb-10 flex flex-col text-center items-center justify-center bg-gradient-radial from-gray-700 to-gray-900 rounded-md border-[16px] border-mainBlack dark:from-pink-300 dark:via-purple-300 dark:to-indigo-400">
       <div className="grid grid-cols-2 gap-3 order-first sm:order-none sm:inset-y-5 sm:right-5 py-2 sm:py-3 pl-5 sm:px-5 lg:p-5 w-full h-fit bg-gray-900 rounded-md shadow-md text-amber-200 text-xs sm:text-base">
         {infos.map((info) => (
           <div
@@ -322,7 +322,7 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
          
           ${
             !isPop
-              ? 'bg-gradient-to-r from-amber-400 via-red-800 to-black hover:bg-pointYellow'
+              ? 'bg-gradient-to-r from-amber-400 via-red-800 to-black hover:bg-pointYellow dark:from-pink-300 dark:via-purple-400 dark:to-indigo-500 dark:border-4'
               : 'bg-divisionGray dark:bg-darkPoint'
           }`}
       >
