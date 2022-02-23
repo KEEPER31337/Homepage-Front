@@ -58,7 +58,7 @@ export default function Latest({ postList }) {
                   <div className="flex-1">
                     <p className="text-sm font-medium text-mainYellow">
                       <a href={'category link'} className="hover:underline">
-                        {'category name'}
+                        {post.category}
                       </a>
                     </p>
                     <Link to={`/board/${post.id}`} className="block mt-2">
@@ -83,7 +83,7 @@ export default function Latest({ postList }) {
                       <p className="text-sm font-medium">
                         {/* NOTE :: user link는 일단 안씀 (나중에 드롭다운으로 기능 제작) */}
                         <a href={'user link'} className="hover:underline">
-                          {'user name'}
+                          {post.writer}
                         </a>
                       </p>
                       <div className="flex space-x-1 text-sm text-gray-500">
