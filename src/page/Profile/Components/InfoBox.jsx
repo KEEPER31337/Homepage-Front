@@ -4,7 +4,7 @@ import PostList from './InfoBoxTypes/PostList';
 import Social from './InfoBoxTypes/Social';
 import SetPwd from './InfoBoxTypes/SetPwd';
 import SetInfo from './InfoBoxTypes/SetInfo';
-import SetSocial from './InfoBoxTypes/SetSocial';
+import SetEmail from './InfoBoxTypes/SetEmail';
 
 function getChildren(type, params) {
   switch (type) {
@@ -21,11 +21,11 @@ function getChildren(type, params) {
     case 'social':
       return <Social socialList={params.socialList} />;
     case 'setPwd':
-      return <SetPwd />;
+      return <SetPwd token={params.token} />;
     case 'setInfo':
-      return <SetInfo />;
-    case 'setSocial':
-      return <SetSocial />;
+      return <SetInfo token={params.token} memberInfo={params.memberInfo} />;
+    case 'setEmail':
+      return <SetEmail token={params.token} />;
     default:
       return (
         <div className="text-center w-full dark:text-mainWhite">infoBox</div>

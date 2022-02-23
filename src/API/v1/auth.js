@@ -19,12 +19,12 @@ async function signIn({ loginId, password }) {
   }
 }
 
-async function findId({ emailAddress}) {
+async function findId({ emailAddress }) {
   const options = {
     method: 'POST',
     url: API_URL + '/v1/signin/find-id',
     data: {
-      emailAddress
+      emailAddress,
     },
   };
   try {
@@ -35,12 +35,12 @@ async function findId({ emailAddress}) {
   }
 }
 
-async function findPassword({ emailAddress}) {
+async function findPassword({ emailAddress }) {
   const options = {
     method: 'POST',
     url: API_URL + '/v1/signin/find-password',
     data: {
-      emailAddress
+      emailAddress,
     },
   };
   try {
@@ -145,6 +145,22 @@ async function studentIdCheck({ studentId }) {
   }
 }
 
+async function getAuth({ token }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/auth',
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 export default {
   signIn,
   findId,
@@ -154,4 +170,5 @@ export default {
   emailCheck,
   loginIdCheck,
   studentIdCheck,
+  getAuth,
 };

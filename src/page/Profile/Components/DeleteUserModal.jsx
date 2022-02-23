@@ -1,36 +1,43 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { useEffect } from 'react';
 import { Fragment, useState, forwardRef, useImperativeHandle } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const MessageModal = forwardRef(({ handleUpdateMessage }, ref) => {
+// API
+import memberAPI from 'API/v1/member';
+
+const DeleteUserModal = forwardRef(({ token, signOut }, ref) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [message, setMessage] = useState('');
-  const [isError, setIsError] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const [password, setPassword] = useState('');
 
-  const handleSave = () => {
-    if (message.length > 0) {
-      handleUpdateMessage(message);
-      setIsOpen(false);
-      setMessage('');
-    } else {
-      setIsError(true);
-    }
+  // navigate
+  const navigate = useNavigate();
+
+  const closeModal = () => {
+    setIsOpen(false);
   };
 
-  const handleOpen = () => {
+  const openModal = () => {
     setIsOpen(true);
-    setMessage('');
   };
 
   useImperativeHandle(ref, () => ({
     open: () => {
-      handleOpen();
+      openModal();
     },
   }));
 
-  useEffect(() => {
-    setIsError(false);
-  }, [isOpen]);
+  const submitDelete = () => {
+    setIsClosing(true);
+    memberAPI.deleteMember(token, password).then((data) => {
+      // NOTE : 삭제는 시켜버리고 error return 해주는 backend 업데이트 요청
+      if (data.success) {
+        closeModal();
+        signOut();
+      }
+      setIsClosing(false);
+    });
+  };
 
   return (
     <>
@@ -38,7 +45,7 @@ const MessageModal = forwardRef(({ handleUpdateMessage }, ref) => {
         <Dialog
           as="div"
           className="fixed inset-0 z-10 overflow-y-auto bg-red"
-          onClose={handleSave}
+          onClose={closeModal}
         >
           <div className="min-h-screen px-4 text-center">
             <Transition.Child
@@ -53,6 +60,7 @@ const MessageModal = forwardRef(({ handleUpdateMessage }, ref) => {
               <Dialog.Overlay className="fixed inset-0" />
             </Transition.Child>
 
+            {/* This element is to trick the browser into centering the modal contents. */}
             <span
               className="inline-block h-screen align-middle"
               aria-hidden="true"
@@ -71,35 +79,31 @@ const MessageModal = forwardRef(({ handleUpdateMessage }, ref) => {
                   as="h3"
                   className="m-2 mb-4 text-lg font-bold leading-6"
                 >
-                  메세지 업데이트
+                  계정 탈퇴하기
                 </Dialog.Title>
-                <p className="pb-2"></p>
-                <div>
+
+                <div className="pb-2">
                   <input
-                    type="text"
+                    type="password"
+                    id="password"
+                    name="password"
                     required
-                    value={message}
-                    onChange={(e) => {
-                      setMessage(e.target.value);
-                    }}
-                    className=" rounded-md block w-full px-1 py-1 border border-divisionGray 
-                    focus:border-mainYellow focus:ring-mainYellow autofill:bg-yellow-200"
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    className="bg-backGray dark:bg-darkPoint 
+                        rounded-xl border-0 w-5/6 h-full 
+                        px-3 focus:ring-0
+                        text-mainBlack dark:text-mainWhite"
                   />
-                </div>
-                <div
-                  className={`block mt-1 text-sm font-medium text-${
-                    isError ? 'red-500' : 'pointYellow'
-                  }`}
-                >
-                  {isError ? '1글자 이상 입력해주세요.' : ''}
                 </div>
                 <div className="m-auto mt-4 w-fit">
                   <button
+                    disabled={isClosing}
                     type="button"
                     className="inline-flex justify-center px-4 py-2 text-sm font-bold border-2 border-amber-400 rounded-md text-amber-900 bg-amber-100 hover:bg-amber-200"
-                    onClick={handleSave}
+                    onClick={submitDelete}
                   >
-                    저장
+                    탈퇴하기
                   </button>
                 </div>
               </div>
@@ -111,4 +115,4 @@ const MessageModal = forwardRef(({ handleUpdateMessage }, ref) => {
   );
 });
 
-export default MessageModal;
+export default DeleteUserModal;
