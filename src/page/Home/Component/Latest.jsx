@@ -1,4 +1,5 @@
 import React from 'react';
+
 import ScrollContainer from 'react-indiana-drag-scroll';
 
 /* This example requires Tailwind CSS v2.0+ */
