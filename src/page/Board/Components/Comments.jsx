@@ -73,45 +73,55 @@ const Comments = ({
   const addCommentHandler = () => {
     //댓글 작성
     //console.log('addCommentHandler');
-    ipAPI.getIp().then((ipAddress) => {
-      commentAPI
-        .create({
-          boardId: boardId,
-          content: content,
-          ipAddress: ipAddress,
-          token: token,
-        })
-        .then((res) => {
-          if (res.success) {
-            setCommentChangeFlag(!commentChangeFlag);
-            setContent('');
-          } else {
-            alert('댓글 달기 실패! 전산관리자에게 문의하세요~');
-          }
-        });
-    });
+    if (content === '') {
+      //console.log('alert!');
+      alert('댓글에 내용을 입력해주세요.');
+    } else {
+      ipAPI.getIp().then((ipAddress) => {
+        commentAPI
+          .create({
+            boardId: boardId,
+            content: content,
+            ipAddress: ipAddress,
+            token: token,
+          })
+          .then((res) => {
+            if (res.success) {
+              setCommentChangeFlag(!commentChangeFlag);
+              setContent('');
+            } else {
+              alert('댓글 달기 실패! 전산관리자에게 문의하세요~');
+            }
+          });
+      });
+    }
   };
   const addSubCommentHandler = (parentId = 0) => {
     //대댓글 작성
     //console.log('addSubCommentHandler');
-    ipAPI.getIp().then((ipAddress) => {
-      commentAPI
-        .create({
-          boardId: boardId,
-          content: subContent,
-          ipAddress: ipAddress,
-          parentId: parentId,
-          token: token,
-        })
-        .then((res) => {
-          if (res.success) {
-            setCommentChangeFlag(!commentChangeFlag);
-            setSubContent('');
-          } else {
-            alert('댓글 달기 실패! 전산관리자에게 문의하세요~');
-          }
-        });
-    });
+    if (subContent === '') {
+      //console.log('alert!');
+      alert('대댓글에 내용을 입력해주세요.');
+    } else {
+      ipAPI.getIp().then((ipAddress) => {
+        commentAPI
+          .create({
+            boardId: boardId,
+            content: subContent,
+            ipAddress: ipAddress,
+            parentId: parentId,
+            token: token,
+          })
+          .then((res) => {
+            if (res.success) {
+              setCommentChangeFlag(!commentChangeFlag);
+              setSubContent('');
+            } else {
+              alert('댓글 달기 실패! 전산관리자에게 문의하세요~');
+            }
+          });
+      });
+    }
   };
   const deleteCommentHandler = (id) => {
     //댓글 및 대댓글 삭제
