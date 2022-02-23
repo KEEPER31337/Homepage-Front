@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
+// local
+import actionMember from 'redux/action/member';
+
 // API
 import rouletteAPI from 'API/v1/game';
 import memberAPI from 'API/v1/member';
 
-const Roulette = ({ gameInfo, member }) => {
+const MAX_PLAY_ROULETTE = 3;
+
+const Roulette = ({ gameInfo, member, updateInfo }) => {
   useEffect(() => {
-    memberAPI.getMember({ token: member.token }).then((data) => {
-      if (data.success) {
-        setMemberPoint(data.data.point);
-      }
-    });
     rouletteAPI
       .getRouletteInfo({
         token: member.token,
       })
       .then((data) => {
-        setRemainingCount(3 - data.data.roulettePerDay);
+        setRemainingCount(MAX_PLAY_ROULETTE - data.data.roulettePerDay);
         //TODO setTodayResult(data.data.todayResult);
       });
   }, [member]);
@@ -25,7 +25,7 @@ const Roulette = ({ gameInfo, member }) => {
   // 게임 상에서 띄워줄 정보
   const [memberPoint, setMemberPoint] = useState(member.memberInfo.point);
   const [todayResult, setTodayResult] = useState(0); // TODO api 업데이트 되면 받아오기
-  const [remainingCount, setRemainingCount] = useState(3);
+  const [remainingCount, setRemainingCount] = useState(MAX_PLAY_ROULETTE);
 
   // 게임 실행 후 띄워줄 정보
   const [points, setPoints] = useState([
@@ -52,7 +52,10 @@ const Roulette = ({ gameInfo, member }) => {
         memberAPI.getMember({ token: member.token }).then((data) => {
           // 포인트 정보 업데이트
           if (data.success) {
-            setMemberPoint(data.data.point);
+            const token = member.token;
+            const memberInfo = data.data;
+            updateInfo({ token, memberInfo });
+            setMemberPoint(memberInfo.point);
           }
         });
         rouletteAPI
@@ -79,14 +82,15 @@ const Roulette = ({ gameInfo, member }) => {
             // 3회 초과 안 했을 때
             console.log('실행');
             rouletteAPI
-              // ANCHOR API 지금 안 되는 상태
               .playRoulette({
                 token: member.token,
               })
               .then((data) => {
                 if (data.success) {
                   console.log('play', data);
-                  setRemainingCount(3 - data.data.roulettePerDay);
+                  setRemainingCount(
+                    MAX_PLAY_ROULETTE - data.data.roulettePerDay
+                  );
                   setPoints(data.data.roulettePoints);
                   setPointIdx(data.data.roulettePointIdx);
                   setMemberPoint((prev) => prev - gameInfo.ROULETTE_FEE); // 참가 포인트 차감되는 거 보여주기
@@ -207,4 +211,13 @@ const Roulette = ({ gameInfo, member }) => {
 const mapStateToProps = (state, OwnProps) => {
   return { member: state.member };
 };
-export default connect(mapStateToProps)(Roulette);
+
+const mapDispatchToProps = (dispatch, OwnProps) => {
+  return {
+    updateInfo: ({ token, memberInfo }) => {
+      dispatch(actionMember.updateInfo({ token, memberInfo }));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Roulette);
