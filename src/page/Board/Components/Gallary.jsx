@@ -78,30 +78,33 @@ const Gallary = (boards) => {
                   공지
                 </div>
                 <div className="relative mt-4">
-                  <h3 className="text-sm font-medium bold text-gray-900 dark:text-mainWhite">
-                    {board.title}
-                    {!board.isSecret && board.files.length != 0 ? (
-                      <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
-                    ) : (
-                      ''
-                    )}
+                  <div className="max-w-[75%] inline-block">
+                    <h3 className="text-sm font-medium truncate bold text-gray-900 dark:text-mainWhite">
+                      {board.title}
+                    </h3>
+                  </div>
+                  {!board.isSecret && board.files.length != 0 ? (
+                    <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
+                  ) : (
+                    ''
+                  )}
 
-                    {isNewPost(board.registerTime) ? (
-                      <strong className="inline-block rounded-full w-5 h-5 align-middle text-center text-xs m-1 bg-red-500 shadow-lg border-2 border-red-200 text-mainWhite dark:text-mainBlack">
-                        n
-                      </strong>
-                    ) : (
-                      ''
-                    )}
-                    {!board.isSecret ? (
-                      <strong className="text-mainYellow">
-                        <ChatAltIcon className="inline-block h-5 w-5" />
-                        {board.commentCount}
-                      </strong>
-                    ) : (
-                      ''
-                    )}
-                  </h3>
+                  {isNewPost(board.registerTime) ? (
+                    <strong className="inline-block rounded-full w-5 h-5 align-middle text-center text-xs m-1 bg-red-500 shadow-lg border-2 border-red-200 text-mainWhite dark:text-mainBlack">
+                      n
+                    </strong>
+                  ) : (
+                    ''
+                  )}
+                  {!board.isSecret ? (
+                    <strong className="text-mainYellow">
+                      <ChatAltIcon className="inline-block h-5 w-5" />
+                      {board.commentCount}
+                    </strong>
+                  ) : (
+                    ''
+                  )}
+
                   <p className=" flex justify-between">
                     <span className="mt-1 text-sm text-gray-500">
                       {board.writer}
