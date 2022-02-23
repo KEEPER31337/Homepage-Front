@@ -6,6 +6,7 @@ import {
   PencilIcon,
   TrashIcon,
   UserCircleIcon,
+  PlusIcon,
 } from '@heroicons/react/solid';
 
 //local
@@ -400,6 +401,7 @@ const Comments = ({
               className="px-3 bg-white text-lg font-medium text-gray-900 hover:text-slate-300 dark:bg-mainBlack dark:text-mainWhite dark:hover:text-gray-500"
               onClick={() => loadAdditionalComments()}
             >
+              <PlusIcon className="inline-block m-1 h-5 w-5 " />
               댓글 더보기
             </button>
           </div>
