@@ -34,6 +34,7 @@
     "redux-persist": "^6.0.0",
     "rehype-raw": "^6.1.1",
     "tailwind-scrollbar-hide": "^1.1.7",
+    "typed.js": "^2.0.12",
     "web-vitals": "^2.1.0"
   },
   "scripts": {

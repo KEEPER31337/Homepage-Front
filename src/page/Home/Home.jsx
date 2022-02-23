@@ -26,7 +26,7 @@ const Home = () => {
   };
 
   return (
-    <div className="drag-false bg-mainWhite dark:bg-mainBlack text-mainBlack dark:text-mainWhite overflow-x-hidden">
+    <div className="overflow-x-hidden drag-false bg-mainWhite dark:bg-mainBlack text-mainBlack dark:text-mainWhite">
       {visible && <FirstPage goToSecond={goToSecond} />}
       <SecondPage goToFirst={goToFirst} visibleArrow={visible} />
     </div>
