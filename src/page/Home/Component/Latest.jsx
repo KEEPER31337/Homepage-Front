@@ -29,8 +29,6 @@ const posts = [
 ];
 
 export default function Latest({ postList }) {
-  console.log('latest', postList);
-
   return (
     <div className="relative bg-gray-50 dark:bg-neutral-900 h-auto pt-16 pb-4 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8">
       <div className="absolute inset-0">
@@ -60,7 +58,7 @@ export default function Latest({ postList }) {
                   <div className="flex-1">
                     <p className="text-sm font-medium text-mainYellow">
                       <a href={'category link'} className="hover:underline">
-                        {'category name'}
+                        {post.category}
                       </a>
                     </p>
                     <Link to={`/board/${post.id}`} className="block mt-2">
@@ -85,11 +83,11 @@ export default function Latest({ postList }) {
                       <p className="text-sm font-medium">
                         {/* NOTE :: user link는 일단 안씀 (나중에 드롭다운으로 기능 제작) */}
                         <a href={'user link'} className="hover:underline">
-                          {'user name'}
+                          {post.writer}
                         </a>
                       </p>
                       <div className="flex space-x-1 text-sm text-gray-500">
-                        <time dateTime={post.datetime}>{post.dateTime}</time>
+                        <time dateTime={post.updateTime}>{post.updateTime}</time>
                         <span aria-hidden="true">&middot;</span>
                         <span>{post.visitCount} watch</span>
                       </div>
