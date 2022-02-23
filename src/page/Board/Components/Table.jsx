@@ -632,10 +632,10 @@ const Table = (props) => {
           </div>
         </div>
       </div>
-      <div name="bottom" className="">
-        <div name="search">
+      <div name="bottom" className="mb-10">
+        <div name="search" className="flex flex-col sm:block">
           <select
-            className="border text-xs focus:ring-mainYellow focus:border-mainYellow dark:border-darkPoint dark:bg-darkComponent dark:text-mainWhite"
+            className="border mx-1 mb-2 my-2 py-1 w-fit text-xs focus:ring-mainYellow focus:border-mainYellow dark:border-darkPoint dark:bg-darkComponent dark:text-mainWhite"
             name="search rule"
             onChange={(e) => SetSelectedSearchVal(e.target.value)}
           >
@@ -644,19 +644,21 @@ const Table = (props) => {
             <option value="C">내용</option>
             <option value="W">작성자</option>
           </select>
-          <input
-            ref={postingSearchRef}
-            type="text"
-            className="border-2 border-divisionGray m-2 p-1 rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:border-darkComponent dark:text-white"
-            placeholder="검색어"
-          ></input>
-          <button
-            className="border-2 border-mainYellow rounded-lg  m-2 px-2 shadow-lg text-mainYellow active:mr-1 active:ml-3 active:shadow-none"
-            onClick={searchHandler}
-          >
-            <SearchIcon className="inline-block h-5 w-5" />
-            검색
-          </button>
+          <div className="inline-block">
+            <input
+              ref={postingSearchRef}
+              type="text"
+              className="border-2 border-divisionGray mx-1 mb-2 p-1 w-fit rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:border-darkComponent dark:text-white"
+              placeholder="검색어"
+            ></input>
+            <button
+              className="border-[3px] border-mainYellow mx-1 mb-2 px-2 pb-1 w-fit rounded-lg shadow-lg text-mainYellow active:mr-1 active:ml-3 active:shadow-none"
+              onClick={searchHandler}
+            >
+              <SearchIcon className="inline-block h-5 w-5" />
+              검색
+            </button>
+          </div>
         </div>
       </div>
     </div>
