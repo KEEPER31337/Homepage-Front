@@ -52,19 +52,28 @@ const BoardView = (props) => {
           ) : (
             ''
           )}
-          {board?.id && prevBoard.id !== board.id ? (
-            <Comments
-              boardId={board.id}
-              commentCount={board.commentCount}
-              commentChangeFlag={commentChangeFlag}
-              setCommentChangeFlag={setCommentChangeFlag}
-            />
+          {board?.allowComment == 0 ? (
+            <div className="text-center text-slate-400 text-xl h-[200px] pt-[80px]">
+              작성자가 댓글 작성을 허용하지 않은 게시글입니다.
+            </div>
           ) : (
-            ''
+            <div>
+              {board?.id && prevBoard.id !== board.id ? (
+                <Comments
+                  boardId={board.id}
+                  commentCount={board.commentCount}
+                  commentChangeFlag={commentChangeFlag}
+                  setCommentChangeFlag={setCommentChangeFlag}
+                />
+              ) : (
+                ''
+              )}
+            </div>
           )}
+
           <Table commentChangeFlag={commentChangeFlag} />
         </div>
-        <div name="left-sideBar" className="hidden m-5 w-1/6 md:inline-block">
+        <div name="left-sideBar" className="hidden m-5 w-1/6 sm:inline-block">
           <WriteButton />
         </div>
       </div>

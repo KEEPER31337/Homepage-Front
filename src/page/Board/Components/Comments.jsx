@@ -6,6 +6,7 @@ import {
   PencilIcon,
   TrashIcon,
   UserCircleIcon,
+  PlusIcon,
 } from '@heroicons/react/solid';
 
 //local
@@ -72,61 +73,73 @@ const Comments = ({
   const addCommentHandler = () => {
     //댓글 작성
     //console.log('addCommentHandler');
-    ipAPI.getIp().then((ipAddress) => {
-      commentAPI
-        .create({
-          boardId: boardId,
-          content: content,
-          ipAddress: ipAddress,
-          token: token,
-        })
-        .then((res) => {
-          if (res.success) {
-            setCommentChangeFlag(!commentChangeFlag);
-            setContent('');
-          } else {
-            alert('댓글 달기 실패! 전산관리자에게 문의하세요~');
-          }
-        });
-    });
+    if (content === '') {
+      //console.log('alert!');
+      alert('댓글에 내용을 입력해주세요.');
+    } else {
+      ipAPI.getIp().then((ipAddress) => {
+        commentAPI
+          .create({
+            boardId: boardId,
+            content: content,
+            ipAddress: ipAddress,
+            token: token,
+          })
+          .then((res) => {
+            if (res.success) {
+              setCommentChangeFlag(!commentChangeFlag);
+              setContent('');
+            } else {
+              alert('댓글 달기 실패! 전산관리자에게 문의하세요~');
+            }
+          });
+      });
+    }
   };
   const addSubCommentHandler = (parentId = 0) => {
     //대댓글 작성
     //console.log('addSubCommentHandler');
-    ipAPI.getIp().then((ipAddress) => {
+    if (subContent === '') {
+      //console.log('alert!');
+      alert('대댓글에 내용을 입력해주세요.');
+    } else {
+      ipAPI.getIp().then((ipAddress) => {
+        commentAPI
+          .create({
+            boardId: boardId,
+            content: subContent,
+            ipAddress: ipAddress,
+            parentId: parentId,
+            token: token,
+          })
+          .then((res) => {
+            if (res.success) {
+              setCommentChangeFlag(!commentChangeFlag);
+              setSubContent('');
+            } else {
+              alert('댓글 달기 실패! 전산관리자에게 문의하세요~');
+            }
+          });
+      });
+    }
+  };
+  const deleteCommentHandler = (id) => {
+    //댓글 및 대댓글 삭제
+    if (window.confirm('정말로 댓글을 삭제하시겠습니까?')) {
       commentAPI
-        .create({
-          boardId: boardId,
-          content: subContent,
-          ipAddress: ipAddress,
-          parentId: parentId,
+        .remove({
+          commentId: id,
           token: token,
         })
         .then((res) => {
           if (res.success) {
+            //console.log('delete comment');
             setCommentChangeFlag(!commentChangeFlag);
-            setSubContent('');
           } else {
-            alert('댓글 달기 실패! 전산관리자에게 문의하세요~');
+            alert('댓글 삭제 실패!');
           }
         });
-    });
-  };
-  const deleteCommentHandler = (id) => {
-    //댓글 및 대댓글 삭제
-    commentAPI
-      .remove({
-        commentId: id,
-        token: token,
-      })
-      .then((res) => {
-        if (res.success) {
-          //console.log('delete comment');
-          setCommentChangeFlag(!commentChangeFlag);
-        } else {
-          alert('댓글 삭제 실패!');
-        }
-      });
+    }
   };
 
   const displayInput = (id) => {
@@ -400,6 +413,7 @@ const Comments = ({
               className="px-3 bg-white text-lg font-medium text-gray-900 hover:text-slate-300 dark:bg-mainBlack dark:text-mainWhite dark:hover:text-gray-500"
               onClick={() => loadAdditionalComments()}
             >
+              <PlusIcon className="inline-block m-1 h-5 w-5 " />
               댓글 더보기
             </button>
           </div>
