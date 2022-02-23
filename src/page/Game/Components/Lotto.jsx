@@ -2,9 +2,6 @@ import React from 'react';
 import { useState, useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 
-// style
-import '../lotto.css';
-
 // img
 import scratchCardImageSrc from '../img/Lotto/scratchCard.png';
 import win1 from '../img/Lotto/win1.png';
@@ -266,7 +263,7 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
   ];
 
   return (
-    <div className="relative md:w-3/5 lg:w-3/5 w-full space-y-4 p-3 mb-10 flex flex-col text-center items-center justify-center bg-gradient-radial from-gray-700 to-gray-900 rounded-md border-[16px] border-mainBlack dark:border-divisionGray">
+    <div className="relative md:w-3/5 lg:w-3/5 w-full space-y-4 p-3 mb-10 flex flex-col text-center items-center justify-center bg-gradient-radial from-gray-700 to-gray-900 rounded-md border-[16px] border-mainBlack">
       <div className="grid grid-cols-2 gap-3 order-first sm:order-none sm:inset-y-5 sm:right-5 py-2 sm:py-3 pl-5 sm:px-5 lg:p-5 w-full h-fit bg-gray-900 rounded-md shadow-md text-amber-200 text-xs sm:text-base">
         {infos.map((info) => (
           <div
