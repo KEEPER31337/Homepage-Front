@@ -43,8 +43,8 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
   const [betting, setBet] = useState(0); // 배팅 포인트 저장
   const [score, setScore] = useState(0); // user의 주사위 게임 점수 저장
   const [confirm, setConfirm] = useState(true); // 배팅 포인트 확정
-  const [count, setCount] = useState(); // 하루 주사위 한 횟수 저장
-  const [check, setCheck] = useState(); // 하루 제한된 횟수만큼 했는지 확인
+  const [count, setCount] = useState(0); // 하루 주사위 한 횟수 저장
+  const [check, setCheck] = useState(false); // 하루 제한된 횟수만큼 했는지 확인
   const onChange = (event) => setBet(event.target.value);
   const alertBettingPointModalRef = useRef({});
   const alertCountModalRef = useRef({});
