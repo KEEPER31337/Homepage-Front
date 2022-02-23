@@ -1,13 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
+// local
 import '../style/height.css';
 import Trends from './Trends';
 import Latest from './Latest';
-
 import GrayUpArrow from 'assets/img/gray-up-arrow.png';
 import GrayDownArrow from 'assets/img/gray-down-arrow.png';
 
+// API
+import homeAPI from 'API/v1/home';
+
 const SecondPage = ({ goToFirst, visibleArrow }) => {
+  const [trendPostList, setTrendPostList] = useState([]);
+  const [latestPostList, setLatestPostList] = useState([]);
+
+  useEffect(() => {
+    homeAPI.getTrends().then((data) => {
+      if (data.success) {
+        setTrendPostList(data.list);
+      }
+    });
+
+    homeAPI.getLatests().then((data) => {
+      if (data.success) {
+        setLatestPostList(data.list);
+      }
+    });
+  }, []);
   return (
     <div id="main-second-page" className="pt-16">
       {!visibleArrow && (
@@ -21,8 +40,8 @@ const SecondPage = ({ goToFirst, visibleArrow }) => {
           ></img>
         </a>
       )}
-      <Trends />
-      <Latest />
+      <Trends postList={trendPostList} />
+      <Latest postList={latestPostList} />
     </div>
   );
 };
