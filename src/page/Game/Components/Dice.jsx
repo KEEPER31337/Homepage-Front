@@ -107,6 +107,7 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
     }
     if (member.memberInfo.point < betting) {
       alertPointLackModalRef.current.open();
+      return;
     }
     if (check) {
       alertCountModalRef.current.open();
@@ -688,14 +689,14 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
           <button
             id="rollDice"
             onClick={rollDiceOnClick}
-            className="sm:ml-3 sm:mr-5 mt-10 mb-3 bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded dark:bg-divisionGray dark:text-mainBlack dark:hover:bg-slate-400"
+            className="sm:ml-3 sm:mr-5 mt-10 mb-3 shadow-2xl bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded dark:bg-divisionGray dark:text-mainBlack dark:hover:bg-slate-400"
           >
             start
           </button>
           <button
             id="chooseDice"
             onClick={result}
-            className="mt-10 mb-3 bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded dark:bg-divisionGray dark:text-mainBlack dark:hover:bg-slate-400"
+            className="mt-10 mb-3 bg-mainYellow shadow-2xl hover:bg-amber-500 text-white font-bold py-2 px-4 rounded dark:bg-divisionGray dark:text-mainBlack dark:hover:bg-slate-400"
           >
             확정
           </button>
@@ -703,7 +704,7 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
             <button
               id="chooseDice"
               onClick={refresh}
-              className="sm:mx-5 mt-10 mb-3 bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded dark:bg-divisionGray dark:text-mainBlack dark:hover:bg-slate-400"
+              className="sm:mx-5 mt-10 mb-3 shadow-2xl bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded dark:bg-divisionGray dark:text-mainBlack dark:hover:bg-slate-400"
             >
               reset
             </button>
@@ -718,13 +719,17 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
         <div className="lg:text-base md:text-xs h-fit bg-white/20 rounded-md border-2 border-white dark:bg-gray-900 ">
           <div className="p-2 flex flex-col justify-center ">
             <div className="flex justify-between md:flex-wrap my-1">
-              <strong className="big text-slate-200">보유 포인트 :</strong>
+              <strong className="big text-slate-200 md:w-20 lg:w-28">
+                보유 포인트 :
+              </strong>
               <div className="text-right text-yellow-500 min-w-[64px] w-auto px-2 bg-white bg-opacity-20 rounded-md">
                 {member.memberInfo.point}
               </div>
             </div>
             <div className="flex justify-between md:flex-wrap my-1">
-              <strong className="big text-slate-200">참가 포인트 :</strong>
+              <strong className="big text-slate-200 md:w-20 lg:w-28">
+                참가 포인트 :
+              </strong>
               {confirm ? (
                 <input
                   id="point"
@@ -739,13 +744,17 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
               )}
             </div>
             <div className="flex justify-between md:flex-wrap my-1">
-              <strong className="big text-slate-200">점수 :</strong>
+              <strong className="big text-slate-200 md:w-20 lg:w-28">
+                점수 :
+              </strong>
               <div className="text-yellow-500 min-w-[64px] w-auto px-2 bg-white bg-opacity-20 rounded-md text-right">
                 {score}
               </div>
             </div>
             <div className="flex justify-between md:flex-wrap my-1">
-              <strong className="big text-slate-200">잔여 횟수 :</strong>
+              <strong className="big text-slate-200 md:w-20 lg:w-28">
+                잔여 횟수 :
+              </strong>
               <div className="big text-yellow-500 min-w-[64px] w-auto px-2 bg-white bg-opacity-20 rounded-md text-right">
                 {MAX_PLAY_DICE - count}
               </div>
