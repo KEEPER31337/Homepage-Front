@@ -15,7 +15,7 @@ const MyPageFrame = ({ renderHead, items, itemHeads }) => {
 
   return (
     <div className="bg-mainWhite dark:bg-mainBlack pt-20 overflow-auto min-h-screen">
-      <div className="flex justify-start mx-auto w-[1200px] bg-backGray dark:bg-darkPoint dark:text-mainWhite rounded-3xl shadow-2xl overflow-auto p-5">
+      <div className="flex justify-start mx-auto w-[1200px] bg-mainWhite dark:bg-darkPoint dark:text-mainWhite rounded-3xl shadow-2xl overflow-auto p-5">
         <MyPageNav />
         <div className="w-full h-full mr-5">
           {renderHead != null ? renderHead() : defaultHead()}
@@ -24,14 +24,14 @@ const MyPageFrame = ({ renderHead, items, itemHeads }) => {
               <thead>
                 <tr className="h-10">
                   {itemHeads.map((thead) => (
-                    <th className="bg-[#c0c0c0] dark:bg-[#3f4957]">{thead}</th>
+                    <th className="bg-mainYellow">{thead}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {items.map((item) => (
                   <tr
-                    className="w-full h-10 bg-divisionGray dark:bg-darkComponent hover:bg-[#f4f4f4] dark:hover:bg-[#0b1523] select-none"
+                    className="w-full h-10 bg-backGray dark:bg-darkComponent hover:bg-[#f4f4f4] dark:hover:bg-[#0b1523] select-none"
                     onClick={() => {
                       console.log(item);
                     }}

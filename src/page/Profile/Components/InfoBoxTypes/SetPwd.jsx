@@ -119,7 +119,7 @@ function SetPwd({ member }) {
               required
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              className="bg-backGray dark:bg-darkPoint 
+              className="bg-mainWhite dark:bg-darkPoint 
                         rounded-xl border-0 w-5/6 h-full 
                         px-3 focus:ring-0
                         text-mainBlack dark:text-mainWhite"
@@ -138,7 +138,7 @@ function SetPwd({ member }) {
               required
               value={confirm}
               onChange={(event) => setConfirm(event.target.value)}
-              className="bg-backGray dark:bg-darkPoint 
+              className="bg-mainWhite dark:bg-darkPoint 
                         rounded-xl border-0 w-5/6 h-full 
                         px-3 focus:ring-0
                         text-mainBlack dark:text-mainWhite"

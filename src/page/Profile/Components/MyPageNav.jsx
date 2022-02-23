@@ -13,7 +13,7 @@ const navList = [
 const MyPageNav = () => {
   const navigate = useNavigate();
   return (
-    <div className="w-[300px]  bg-divisionGray dark:bg-darkComponent rounded-tr-3xl mr-10 p-5">
+    <div className="w-[300px]  bg-backGray dark:bg-darkComponent rounded-tr-3xl mr-10 p-5">
       <ul>
         {navList.map((nav) => (
           <li className="my-5 mx-2 text-base hover:text-lg">

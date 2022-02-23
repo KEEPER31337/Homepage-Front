@@ -148,7 +148,7 @@ function SetEmail({ member }) {
               required
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              className="bg-backGray dark:bg-darkPoint 
+              className="bg-mainWhite dark:bg-darkPoint 
                         rounded-xl rounded-r-none border-0 
                         w-5/6 h-full px-3 focus:ring-transparent
                         text-mainBlack dark:text-mainWhite"
@@ -178,7 +178,7 @@ function SetEmail({ member }) {
               required
               value={code}
               onChange={(event) => setCode(event.target.value)}
-              className="bg-backGray dark:bg-darkPoint 
+              className="bg-mainWhite dark:bg-darkPoint 
                         rounded-xl rounded-r-none border-0 
                         w-5/6 h-full px-3 focus:outline-none
                         text-mainBlack dark:text-mainWhite"

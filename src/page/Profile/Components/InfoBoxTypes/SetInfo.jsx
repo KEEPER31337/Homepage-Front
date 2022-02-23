@@ -80,7 +80,7 @@ function SetInfo({ member, memberInfo }) {
             required
             value={input.state}
             onChange={(event) => input.setState(event.target.value)}
-            className="bg-backGray dark:bg-darkPoint 
+            className="bg-mainWhite dark:bg-darkPoint 
                         rounded-xl border-0 w-5/6 h-full 
                         px-3 focus:outline-none
                         text-mainBlack dark:text-mainWhite"
