@@ -200,7 +200,7 @@ const Posts = () => {
   const postHeads = ['번호', '카테고리', '제목', '날짜', '조회수', '추천수'];
   const [posts, setPosts] = useState(new Array());
 
-  const getPosts = async () => {
+  const getPosts = () => {
     try {
       setPosts(
         dummyPosts.map((posts, index) => ({

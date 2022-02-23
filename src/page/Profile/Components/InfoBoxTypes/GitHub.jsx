@@ -7,9 +7,9 @@ export default function GitHub(props) {
   const gitId = props.gitId;
   const [gitMd, setGitMd] = useState(null);
 
-  useEffect(async () => {
+  useEffect(() => {
     try {
-      await axios
+      axios
         .get('https://api.github.com/repos/' + gitId + '/' + gitId + '/readme')
         .then((res) => {
           const base64 = res.data.content;

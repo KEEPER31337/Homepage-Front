@@ -95,13 +95,15 @@ const Profile = ({ token, memberInfo }) => {
       setUser(memberInfo);
     } else {
       setIsMe(false);
-      memberAPI.getOtherById(token, params.userId).then((getOtherResult) => {
-        if (getOtherResult.success) {
-          setUser(getOtherResult.data);
-        } else {
-          setError(`${getOtherResult.code}:${getOtherResult.msg}`);
-        }
-      });
+      memberAPI
+        .getOtherById({ token, userId: params.userId })
+        .then((getOtherResult) => {
+          if (getOtherResult.success) {
+            setUser(getOtherResult.data);
+          } else {
+            setError(`${getOtherResult.code}:${getOtherResult.msg}`);
+          }
+        });
     }
   }, [params.userId, memberInfo.id]);
 

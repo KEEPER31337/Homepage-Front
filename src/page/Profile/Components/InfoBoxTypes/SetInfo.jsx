@@ -29,7 +29,7 @@ function SetInfo({ member, memberInfo }) {
     },
   ];
 
-  const changeInfo = async () => {
+  const changeInfo = () => {
     setIsChanging(true);
 
     memberAPI

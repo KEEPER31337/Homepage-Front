@@ -29,7 +29,7 @@ const DeleteUserModal = forwardRef(({ token, signOut }, ref) => {
 
   const submitDelete = () => {
     setIsClosing(true);
-    memberAPI.deleteMember(token, password).then((data) => {
+    memberAPI.deleteMember({ token, password }).then((data) => {
       // NOTE : 삭제는 시켜버리고 error return 해주는 backend 업데이트 요청
       if (data.success) {
         closeModal();

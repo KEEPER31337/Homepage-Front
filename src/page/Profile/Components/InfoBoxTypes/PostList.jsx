@@ -105,7 +105,7 @@ function dateFormat(date) {
 export default function PostList(props) {
   const [postList, setPostList] = useState(new Array());
 
-  useEffect(async () => {
+  useEffect(() => {
     try {
       setPostList(dumyPostList);
       console.log(postList);
