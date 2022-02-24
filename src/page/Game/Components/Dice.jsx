@@ -443,7 +443,7 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
   }
 
   return (
-    <div className="md:w-3/5 lg:w-3/5 w-full mb-10 flex flex-wrap items-end bg-gradient-radial dark:from-pink-300 dark:via-purple-300 dark:to-indigo-400 from-red-600 to-red-900  rounded-md border-[16px] border-mainBlack">
+    <div className="md:w-3/5 lg:w-3/5 w-full md:mb-10 flex flex-wrap items-end bg-gradient-radial dark:from-pink-300 dark:via-purple-300 dark:to-indigo-400 from-red-600 to-red-900  rounded-md border-[16px] border-mainBlack">
       <div className="sm:w-2/3 w-full items-center flex-initial">
         <div className="dice">
           <ol
