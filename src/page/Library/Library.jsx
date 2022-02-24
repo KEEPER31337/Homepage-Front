@@ -4,36 +4,8 @@ import RecommendBook from './RecommendBook';
 import ScrollHorizontal from 'react-scroll-horizontal';
 import { connect } from 'react-redux';
 import axios from 'axios';
-const Library = ({ token, memberInfo }) => {
-  const [bookList, setBookList] = useState({
-    success: true,
-    code: 0,
-    msg: '성공하였습니다.',
-    list: [
-      {
-        id: 1332,
-        title: 'Do it! 점프 투 파이썬',
-        author: '박응용',
-        information: '파이썬의 기본이 잘 정리된 책이다.',
-        department: null,
-        total: 2,
-        borrow: 0,
-        enable: 2,
-        registerDate: '2022-01-16T00:01:00.000+00:00',
-      },
-      {
-        id: 1333,
-        title: '일반물리학',
-        author: '우웩',
-        information: '우웩우웩',
-        department: null,
-        total: 2,
-        borrow: 1,
-        enable: 1,
-        registerDate: '2022-01-16T00:01:00.000+00:00',
-      },
-    ],
-  });
+const Library = () => {
+  const [bookList, setBookList] = useState();
   const [mainBook, setMainBook] = useState({
     title: 'empty',
     author: 'empty',

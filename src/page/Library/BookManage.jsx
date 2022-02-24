@@ -40,7 +40,7 @@ const BookManage = ({ token }) => {
   const delBookAjax = async () => {
     try {
       await axios.post(
-        `${API_URL}/v1/admin/deletebook?title=${currentTitle}&author=${currentAuthor}&quantity=${delCount}`,
+        `${API_URL}/v1/admin/deletebook?title=${currentTitle}&author=${currentAuthor}&quantity=${delCount}`,{},
         { headers: headers }
       );
       setOpenDel(false);
@@ -52,7 +52,7 @@ const BookManage = ({ token }) => {
   const borrowBookAjax = async () => {
     try {
       await axios.post(
-        `${API_URL}/v1/admin/borrowbook?title=${currentTitle}&author=${currentAuthor}&quantity=${borrowCount}`,
+        `${API_URL}/v1/admin/borrowbook?title=${currentTitle}&author=${currentAuthor}&quantity=${borrowCount}`,{},
         { headers: headers }
       );
       setOpenBorrow(false);
@@ -64,7 +64,7 @@ const BookManage = ({ token }) => {
   const returnBookAjax = async () => {
     try {
       await axios.post(
-        `${API_URL}/v1/admin/returnbook?title=${currentTitle}&author=${currentAuthor}&quantity=${returnCount}`,
+        `${API_URL}/v1/admin/returnbook?title=${currentTitle}&author=${currentAuthor}&quantity=${returnCount}`,{},
         { headers: headers }
       );
       setOpenReturn(false);
