@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
-import testImg from '../../assets/img/libraryImg/example.png';
 import axios from 'axios';
+import testImg from '../../assets/img/libraryImg/book.png';
 import './font.css';
 const RecommendBook = ({ setBookList, mainBook }) => {
   const API_URL = process.env.REACT_APP_API_URL;
-  const [searchValue, setSearchValue] = useState();
+  const [searchValue, setSearchValue] = useState("");
   const onChange = (e) => {
     setSearchValue(e.target.value);
   };
   const bookSearch = async () => {
     try {
+      console.log(searchValue);
       const { data } = await axios.get(
-        `${API_URL}/v1/searchbooks?keyword='${searchValue}&page=0&size=5`
+        `${API_URL}/v1/searchbooks?keyword=${searchValue}`
       );
-      setBookList(data.list);
+      console.log(data);
+      setBookList(data);
     } catch (err) {
       console.log(err);
     }
@@ -79,15 +81,29 @@ const RecommendBook = ({ setBookList, mainBook }) => {
           justifyContent: 'center',
         }}
       >
-        <img
-          src={testImg}
-          // src={{uri:mainBook.thumbnail}}
-          style={{
-            boxShadow: '2px 2px 5px 2px #0000001A',
-            width: '240px',
-            height: '320px',
-          }}
-        />
+        {mainBook.thumbnailId === null ? (
+          <img
+            src={testImg}
+            style={{
+              boxShadow: '2px 2px 5px 2px #0000001A',
+              width: '200px',
+              height: '250px',
+              objectFit: 'contain',
+              background:"white"
+            }}
+          />
+        ) : (
+          <img
+            src={`${API_URL}/v1/util/thumbnail/${mainBook.thumbnailId}`}
+            style={{
+              boxShadow: '2px 2px 5px 2px #0000001A',
+              width: '200px',
+              height: '250px',
+              objectFit: 'contain',
+              background:"white"
+            }}
+          />
+        )}
         <div
           style={{
             display: 'flex',

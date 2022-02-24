@@ -7,18 +7,20 @@ import axios from 'axios';
 const Library = () => {
   const [bookList, setBookList] = useState();
   const [mainBook, setMainBook] = useState({
-    title: 'empty',
-    author: 'empty',
-    information: 'empty',
-    total: '0',
-    enable: '0',
-    registerDate: '2022-02-20',
+    title: '책을 골라주세요 !',
+    author: '키퍼',
+    information: '',
+    total: '',
+    enable: '',
+    registerDate: '',
+    thumbnailId:81,
   });
   const API_URL = process.env.REACT_APP_API_URL;
   const getRecentBookList = async () => {
     try {
       const { data } = await axios.get(`${API_URL}/v1/recentbooks`);
       setBookList(data);
+      console.log(data);
     } catch (err) {
       console.log(err);
     }
@@ -38,6 +40,7 @@ const Library = () => {
         total={x?.total}
         enable={x?.enable}
         registerDate={x?.registerDate}
+        thumbnailId={x?.thumbnailId}
         setMainBook={setMainBook}
       />
     );
@@ -51,7 +54,7 @@ const Library = () => {
         justifyContent: 'center',
         flexDirection: 'column',
         overflow: 'scroll',
-        background: 'linear-gradient(#A2D2FF 80%, #ffffff 20%)',
+        background: 'linear-gradient(#A2D2FF 60%, #ffffff 40%)',
       }}
     >
       <RecommendBook
