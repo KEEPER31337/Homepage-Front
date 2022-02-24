@@ -39,13 +39,13 @@ const BookAdd = ({ token, memberInfo }) => {
     formData.append('quantity',quantity);
     formData.append('thumbnail',thumbnail);
     try{
-      await axios.post(`${API_URL}/v1/admin/addbook`,formData,{headers:headers})
+      const {data}=await axios.post(`${API_URL}/v1/admin/addbook`,formData,{headers:headers})
+      alert(data);
+      console.log(data);
     }
     catch(err){
       console.log(err);
-    }
-    finally{
-      alert("책 추가가 성공적으로 진행됐습니다.")
+      alert(err);
     }
   }
   return (

@@ -15,16 +15,16 @@ const LibraryList = ({
 }) => {
   return (
     <button
-      onClick={setMainBook({
-        id: id,
-        title: title,
-        author: author,
-        information: information,
-        department: department,
-        totla:total,
-        enable:enable,
-        registerDate:registerDate,
-      })}
+      // onClick={setMainBook({
+      //   id: id,
+      //   title: title,
+      //   author: author,
+      //   information: information,
+      //   department: department,
+      //   totla:total,
+      //   enable:enable,
+      //   registerDate:registerDate,
+      // })}
     >
       <div
         style={{
@@ -40,7 +40,7 @@ const LibraryList = ({
           alignItems: 'center',
         }}
       >
-        <img
+        {/* <img
           src={testImg}
           style={{
             boxShadow: '2px 2px 5px 2px #0000001A',
@@ -48,7 +48,7 @@ const LibraryList = ({
             height: '250px',
             objectFit: 'contain',
           }}
-        />
+        /> */}
         <div
           className="font"
           style={{

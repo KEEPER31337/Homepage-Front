@@ -18,6 +18,7 @@ import Schedule from 'page/Schedule/Schedule';
 import SignIn from 'page/SignIn/SignIn';
 import SignUp from 'page/SignUp/SignUp';
 import BookAdd from './page/Library/BookAdd';
+import BookManage from './page/Library/BookManage';
 
 const App = (props) => {
   const darkMode = props.state.darkMode;
@@ -36,6 +37,7 @@ const App = (props) => {
           <Route path="/game" element={<Game />} />
           <Route path="/library" element={<Library />} />
           <Route path="/library/add" element={<BookAdd />} />
+          <Route path="/library/manage" element={<BookManage />} />
           <Route path="/profile/:userId/*" element={<ProfileRoute />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/signin" element={<SignIn />} />
