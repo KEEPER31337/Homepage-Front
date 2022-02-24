@@ -1,23 +1,35 @@
 import React from 'react';
-import Info from 'page/Board/Info';
-import Table from 'page/Board/Table';
-import { useLocation, useNavigate } from 'react-router-dom';
 
+//local
+import Info from 'page/Board/Components/Info';
+import Table from 'page/Board/Components/Table';
+import WriteButton from 'page/Board/Components/WriteButton';
+import WriteButtonMobile from 'page/Board/Components/MobileWriteButton';
+/*
+<img
+          src={require('assets/img/icons/b_gallary.png')}
+          className="h-5 w-5"
+        ></img>
+*/
 const Board = () => {
-  const navigate = useNavigate();
   return (
-    <div>
-      <div className="inline-block m-5 w-4/5">
-        <Info />
-        <Table />
+    <>
+      <div className="flex justify-center h-full dark:bg-mainBlack">
+        <div className="inline-block m-5 w-full">
+          <Info />
+          <Table />
+        </div>
+        <div name="left-sideBar" className="hidden m-5 w-1/6 sm:inline-block">
+          <WriteButton />
+        </div>
       </div>
-      <button
-        className="border-2 border-mainYellow rounded-lg shadow-lg"
-        onClick={() => navigate('/board/write')}
+      <div
+        name="mobile 글쓰기 버튼"
+        className="fixed right-0 bottom-10 m-5 inline-block sm:hidden"
       >
-        글 쓰기
-      </button>
-    </div>
+        <WriteButtonMobile />
+      </div>
+    </>
   );
 };
 
