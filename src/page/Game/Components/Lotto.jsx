@@ -27,8 +27,12 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
   const backgroundCanvasRef = useRef(null);
   const scratchCardCanvasRef = useRef(null);
   const rankModalRef = useRef({});
+
+  //modal
   const alertCountModalRef = useRef({});
   const alertBuyFirstModalRef = useRef({});
+  const alertLoginModalRef = useRef({});
+  const alertPointLackModalRef = useRef({});
 
   const [isDrawing, setIsDrawing] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -76,6 +80,7 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
         token: member.token,
       })
       .then((data) => {
+        console.log('info', data);
         if (data.success) {
           setRemainingCount(gameInfo.LOTTO_MAX_PLAYTIME - data.data);
         }
@@ -103,6 +108,15 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
       backgroundContext.drawImage(this, 0, 0);
     };
 
+    if (member.token === '') {
+      alertLoginModalRef.current.open();
+      return;
+    }
+    if (member.memberInfo.point < gameInfo.ROULETTE_FEE) {
+      alertPointLackModalRef.current.open();
+      return;
+    }
+
     //false일경우 == 횟수가 1번을 안넘어갔음,
     if (!overCountCheck) {
       // 횟수 제한
@@ -113,6 +127,7 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
       //
 
       lottoAPI.playLotto({ token: member.token }).then((data) => {
+        console.log('play', data);
         console.log('등수는 : ', data.data.lottoPointIdx);
 
         setRank(data.data.lottoPointIdx);
@@ -334,7 +349,13 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
         {rank}등 입니다! {point.toLocaleString('ko-KR')}point를 획득하셨습니다.
       </MessageModal>
       <MessageModal ref={alertCountModalRef}>
-        오늘은 마감이오! 이미 1회 다했디~
+        로또는 하루 1회만 참여 가능합니다.
+      </MessageModal>
+      <MessageModal ref={alertLoginModalRef}>
+        로그인 후 이용해주십시오.
+      </MessageModal>
+      <MessageModal ref={alertPointLackModalRef}>
+        포인트가 부족합니다.
       </MessageModal>
       <MessageModal ref={alertBuyFirstModalRef}>
         복권을 먼저 뽑으세요!
