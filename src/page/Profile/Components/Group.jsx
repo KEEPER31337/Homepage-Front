@@ -9,14 +9,8 @@ const groups = {
 export default function Group(props) {
   const group = groups[props.groupName];
   return (
-    <div className="w-full h-1/3">
-      <img
-        className="p-1 h-full object-cover float-left w-11"
-        src={group.img}
-      />
-      <div className="pl-5 pt-1 text-center float-left text-xl">
-        {group.name}
-      </div>
+    <div>
+      <img className="h-9 object-cover float-left w-9" src={group.img} />
     </div>
   );
 }

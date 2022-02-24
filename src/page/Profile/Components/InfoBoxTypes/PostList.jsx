@@ -120,14 +120,14 @@ export default function PostList(props) {
         <thead>
           <tr className="h-10">
             {theadList.map((thead) => (
-              <th className="bg-[#c0c0c0] dark:bg-[#3f4957]">{thead}</th>
+              <th className="bg-mainYellow">{thead}</th>
             ))}
           </tr>
         </thead>
         <tbody>
           {postList.map((post) => (
             <tr
-              className="w-full h-10 hover:bg-[#f4f4f4] dark:hover:bg-[#0b1523] select-none"
+              className="w-full h-10 hover:bg-divisionGray dark:hover:bg-[#0b1523] select-none"
               onClick={() => {
                 console.log(post.postId);
               }}

@@ -2,9 +2,6 @@ import React from 'react';
 import { useState, useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 
-// style
-import '../lotto.css';
-
 // img
 import scratchCardImageSrc from '../img/Lotto/scratchCard.png';
 import win1 from '../img/Lotto/win1.png';
@@ -30,8 +27,12 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
   const backgroundCanvasRef = useRef(null);
   const scratchCardCanvasRef = useRef(null);
   const rankModalRef = useRef({});
+
+  //modal
   const alertCountModalRef = useRef({});
   const alertBuyFirstModalRef = useRef({});
+  const alertLoginModalRef = useRef({});
+  const alertPointLackModalRef = useRef({});
 
   const [isDrawing, setIsDrawing] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -41,6 +42,7 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
   //게임 후, 등수와 포인트 띄워줌
   const [rank, setRank] = useState(0);
   const [point, setPoint] = useState(0);
+  const [result, setResult] = useState(0);
 
   // 게임 상에서 띄워줄 정보
   const [memberPoint, setMemberPoint] = useState();
@@ -78,8 +80,9 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
         token: member.token,
       })
       .then((data) => {
+        console.log('info', data);
         if (data.success) {
-          setRemainingCount(data.data);
+          setRemainingCount(gameInfo.LOTTO_MAX_PLAYTIME - data.data);
         }
       });
 
@@ -105,6 +108,15 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
       backgroundContext.drawImage(this, 0, 0);
     };
 
+    if (member.token === '') {
+      alertLoginModalRef.current.open();
+      return;
+    }
+    if (member.memberInfo.point < gameInfo.ROULETTE_FEE) {
+      alertPointLackModalRef.current.open();
+      return;
+    }
+
     //false일경우 == 횟수가 1번을 안넘어갔음,
     if (!overCountCheck) {
       // 횟수 제한
@@ -115,6 +127,7 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
       //
 
       lottoAPI.playLotto({ token: member.token }).then((data) => {
+        console.log('play', data);
         console.log('등수는 : ', data.data.lottoPointIdx);
 
         setRank(data.data.lottoPointIdx);
@@ -228,6 +241,7 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
       //setIsPop(false);
       // alert(rank + ' 등 축하합니다!');
       rankModalRef.current.open();
+      setResult(point);
       memberAPI
         .getMember({
           token: member.token,
@@ -257,16 +271,16 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
     },
     {
       subtitle: '오늘 결과',
-      content: point,
+      content: result,
     },
     {
       subtitle: '잔여 횟수',
-      content: 1 - remainingCount,
+      content: remainingCount,
     },
   ];
 
   return (
-    <div className="relative md:w-3/5 lg:w-3/5 w-full space-y-4 p-3 mb-10 flex flex-col text-center items-center justify-center bg-gradient-radial from-gray-700 to-gray-900 rounded-md border-[16px] border-mainBlack dark:border-divisionGray">
+    <div className="relative md:w-3/5 lg:w-3/5 w-full space-y-4 p-3 mb-10 flex flex-col text-center items-center justify-center bg-gradient-radial from-gray-700 to-gray-900 rounded-md border-[16px] border-mainBlack dark:from-pink-300 dark:via-purple-300 dark:to-indigo-400">
       <div className="grid grid-cols-2 gap-3 order-first sm:order-none sm:inset-y-5 sm:right-5 py-2 sm:py-3 pl-5 sm:px-5 lg:p-5 w-full h-fit bg-gray-900 rounded-md shadow-md text-amber-200 text-xs sm:text-base">
         {infos.map((info) => (
           <div
@@ -325,7 +339,7 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
          
           ${
             !isPop
-              ? 'bg-gradient-to-r from-amber-400 via-red-800 to-black hover:bg-pointYellow'
+              ? 'bg-gradient-to-r from-amber-400 via-red-800 to-black hover:bg-pointYellow dark:from-pink-300 dark:via-purple-400 dark:to-indigo-500 dark:border-4'
               : 'bg-divisionGray dark:bg-darkPoint'
           }`}
       >
@@ -335,7 +349,13 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
         {rank}등 입니다! {point.toLocaleString('ko-KR')}point를 획득하셨습니다.
       </MessageModal>
       <MessageModal ref={alertCountModalRef}>
-        오늘은 마감이오! 이미 1회 다했디~
+        로또는 하루 1회만 참여 가능합니다.
+      </MessageModal>
+      <MessageModal ref={alertLoginModalRef}>
+        로그인 후 이용해주십시오.
+      </MessageModal>
+      <MessageModal ref={alertPointLackModalRef}>
+        포인트가 부족합니다.
       </MessageModal>
       <MessageModal ref={alertBuyFirstModalRef}>
         복권을 먼저 뽑으세요!
