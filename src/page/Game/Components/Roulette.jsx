@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 // local
+import MessageModal from 'shared/MessageModal';
 import actionMember from 'redux/action/member';
 
 // API
@@ -21,6 +22,11 @@ const Roulette = ({ gameInfo, member, updateInfo }) => {
         setTodayResult(data.data.todayResult);
       });
   }, [member]);
+
+  // 알림
+  const alertCountModalRef = useRef({});
+  const alertLoginModalRef = useRef({});
+  const alertPointLackModalRef = useRef({});
 
   // 게임 상에서 띄워줄 정보
   const [memberPoint, setMemberPoint] = useState(member.memberInfo.point);
@@ -69,6 +75,14 @@ const Roulette = ({ gameInfo, member, updateInfo }) => {
   };
 
   const onClick = () => {
+    if (member.token === '') {
+      alertLoginModalRef.current.open();
+      return;
+    }
+    if (member.memberInfo.point < gameInfo.ROULETTE_FEE) {
+      alertPointLackModalRef.current.open();
+      return;
+    }
     rouletteAPI
       .checkRouletteCount({
         token: member.token,
@@ -106,10 +120,8 @@ const Roulette = ({ gameInfo, member, updateInfo }) => {
               });
           } else {
             //3회 초과했을 때
-            console.log('오늘 할당된 횟수를 다 하셨습니다.');
+            alertCountModalRef.current.open();
           }
-        } else {
-          alert('로그인 후 이용해주십시오.');
         }
       });
   };
@@ -208,6 +220,15 @@ const Roulette = ({ gameInfo, member, updateInfo }) => {
           </div>
         ))}
       </div>
+      <MessageModal ref={alertCountModalRef}>
+        룰렛은 하루 3회만 참여 가능합니다.
+      </MessageModal>
+      <MessageModal ref={alertLoginModalRef}>
+        로그인 후 이용해주십시오.
+      </MessageModal>
+      <MessageModal ref={alertPointLackModalRef}>
+        포인트가 부족합니다.
+      </MessageModal>
     </div>
   );
 };
