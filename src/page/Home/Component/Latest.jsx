@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import ScrollContainer from 'react-indiana-drag-scroll';
 
 const imageTemp =
@@ -29,6 +29,7 @@ const posts = [
 ];
 
 export default function Latest({ postList }) {
+  const categoryId = useParams();
   return (
     <div className="relative bg-gray-50 dark:bg-neutral-900 h-auto pt-16 pb-4 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8">
       <div className="absolute inset-0">
@@ -61,7 +62,10 @@ export default function Latest({ postList }) {
                         {post.category}
                       </a>
                     </p>
-                    <Link to={`/board/${post.id}`} className="block mt-2">
+                    <Link
+                      to={`/post/${categoryId}/${post.id}`}
+                      className="block mt-2"
+                    >
                       <p className="text-xl font-semibold dark:text-mainWhite">
                         {post.title}
                       </p>
@@ -87,7 +91,9 @@ export default function Latest({ postList }) {
                         </a>
                       </p>
                       <div className="flex space-x-1 text-sm text-gray-500">
-                        <time dateTime={post.updateTime}>{post.updateTime}</time>
+                        <time dateTime={post.updateTime}>
+                          {post.updateTime}
+                        </time>
                         <span aria-hidden="true">&middot;</span>
                         <span>{post.visitCount} watch</span>
                       </div>

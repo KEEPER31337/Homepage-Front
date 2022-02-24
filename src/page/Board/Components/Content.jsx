@@ -3,7 +3,7 @@ import { testText } from 'page/Board/testText';
 import '@toast-ui/editor/dist/toastui-editor.css'; //마크다운 편집기 뷰어 에디터
 import { Viewer } from '@toast-ui/react-editor';
 import { connect } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
   ThumbUpIcon,
   ThumbDownIcon,
@@ -22,6 +22,7 @@ import utilAPI from 'API/v1/util';
 const API_URL = process.env.REACT_APP_API_URL;
 
 const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
+  const { categoryId } = useParams();
   //board는 게시글 정보가 담긴 객체
   //console.log(state.member.memberId); //(내 아이디)나중에 업데이트 될거임
   const isDark = state.darkMode; //Dark모드 여부
@@ -75,7 +76,7 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
     if (window.confirm('정말로 해당 게시글을 삭제하시겠습니까?')) {
       postAPI.remove({ boardId: postingId, token: token }).then((res) => {
         if (res.success) {
-          navigate('/board');
+          navigate(`/board/${categoryId}`);
         } else {
           alert('게시물 삭제 실패! 전산관리자에게 문의하세요~');
         }
@@ -153,7 +154,7 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
           <div className="rounded-lg bg-slate-100 my-2 dark:bg-darkComponent">
             <UserCircleIcon className="inline-block h-5 w-5 m-1 text-divisionGray dark:text-slate-500 " />
             <Link
-              to="/board/write"
+              to={`/write/${categoryId}`}
               state={{
                 modifyFlag: true,
                 board,

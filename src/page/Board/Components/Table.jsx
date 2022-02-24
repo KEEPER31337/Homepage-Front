@@ -38,7 +38,7 @@ const getStyleIcon = (item) => {
   }
 };
 
-const Table = (props) => {
+const Table = ({ categoryId, commentChangeFlag }) => {
   const [boardContent, setBoardContent] = useState([]);
   const [noticeBoardContent, setNoticeBoardContent] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -82,7 +82,7 @@ const Table = (props) => {
     return { startPage, endPage };
   };
 
-  const currentCategoryId = props.state.category.current.id;
+  const currentCategoryId = categoryId;
   const { startPage, endPage } = getStartEndPage(currentPage);
   const postingSearchRef = useRef(null);
 
@@ -97,6 +97,7 @@ const Table = (props) => {
           size: MAX_POSTS,
         })
         .then((res) => {
+          console.log(res);
           setSearchFlag(true);
           if (res?.list?.length == 0) {
             setPageN(0);
@@ -122,7 +123,7 @@ const Table = (props) => {
           category: currentCategoryId,
         })
         .then((res) => {
-          setNoticeBoardContent(res?.list);
+          if (res.success) setNoticeBoardContent(res?.list);
         });
 
       postAPI
@@ -176,7 +177,7 @@ const Table = (props) => {
             category: currentCategoryId,
           })
           .then((res) => {
-            setNoticeBoardContent(res?.list);
+            if (res.success) setNoticeBoardContent(res?.list);
           });
 
         postAPI //일반 글 가져오기
@@ -195,7 +196,7 @@ const Table = (props) => {
           });
       }
     }
-  }, [currentPage, viewStyle, props.commentChangeFlag]); //currentPage 값이 변경될 때마다
+  }, [currentPage, viewStyle, commentChangeFlag]); //currentPage 값이 변경될 때마다
 
   return (
     <div className="dark:bg-mainBlack dark:text-mainWhite ">
@@ -279,7 +280,7 @@ const Table = (props) => {
                       공지
                     </td>
                     <td className="p-2 dark:border-darkComponent">
-                      <Link to={`/board/${board.id}`}>
+                      <Link to={`/post/${categoryId}/${board.id}`}>
                         <div className="max-w-[50vw] md:max-w-[40vw] sm:max-w-[20vw] inline-block">
                           <p className="truncate text-md ">
                             <strong
@@ -353,7 +354,7 @@ const Table = (props) => {
                       {MAX_POSTS * (currentPage - 1) + index + 1}
                     </td>
                     <td className="p-2 dark:border-darkComponent">
-                      <Link to={`/board/${board.id}`}>
+                      <Link to={`/post/${categoryId}/${board.id}`}>
                         <div className="max-w-[50vw] md:max-w-[40vw] sm:max-w-[20vw] inline-block">
                           <p className="truncate text-md ">
                             {board.isSecret ? (

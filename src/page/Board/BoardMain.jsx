@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 
 //local
 import Info from 'page/Board/Components/Info';
@@ -12,12 +13,14 @@ import WriteButtonMobile from 'page/Board/Components/MobileWriteButton';
         ></img>
 */
 const Board = () => {
+  const { categoryId } = useParams();
+  console.log('id', categoryId);
   return (
     <>
       <div className="flex justify-center h-full dark:bg-mainBlack">
         <div className="inline-block m-5 w-full">
           <Info />
-          <Table />
+          <Table categoryId={categoryId} />
         </div>
         <div name="left-sideBar" className="hidden m-5 w-1/6 sm:inline-block">
           <WriteButton />
