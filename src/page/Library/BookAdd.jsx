@@ -52,15 +52,15 @@ const BookAdd = ({ token, memberInfo }) => {
   return (
     <>
       <div>
-        <div className="md:grid md:grid-cols-3 md:gap-6 w-100 lg:w-full w-full">
+        <div className="dark:bg-mainBlack">
           <div className="mt-5 md:mt-0 md:col-span-2 ">
             <div className="shadow sm:rounded-md sm:overflow-hidden">
-              <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
+              <div className="dark:bg-mainBlack dark:px-4 py-5 bg-white space-y-6 sm:p-6 ">
                 <div className="grid grid-cols-3 gap-6">
                   <div className="col-span-3 sm:col-span-2">
                     <label
                       htmlFor="company-website"
-                      className="block text-sm font-medium text-gray-700"
+                      className="dark:text-white block text-sm font-medium text-gray-700"
                     >
                       책 제목
                     </label>
@@ -69,7 +69,7 @@ const BookAdd = ({ token, memberInfo }) => {
                         type="text"
                         name="company-website"
                         id="company-website"
-                        className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-l-md rounded-r-md sm:text-sm border-gray-300"
+                        className="dark:text-white dark:bg-slate-900 focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-l-md rounded-r-md sm:text-sm border-gray-300"
                         placeholder="모던 자바스크립트"
                         onChange={titleChange}
                         value={title}
@@ -91,7 +91,7 @@ const BookAdd = ({ token, memberInfo }) => {
                         type="text"
                         name="company-website"
                         id="company-website"
-                        className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-l-md rounded-r-md sm:text-sm border-gray-300"
+                        className="dark:text-white dark:bg-slate-900 focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-l-md rounded-r-md sm:text-sm border-gray-300"
                         placeholder="이응모"
                         onChange={authorChange}
                         value={author}
@@ -111,7 +111,7 @@ const BookAdd = ({ token, memberInfo }) => {
                       id="about"
                       name="about"
                       rows={3}
-                      className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
+                      className="dark:text-white dark:bg-slate-900 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
                       placeholder="자바스크립트의 끝"
                       defaultValue={''}
                       onChange={informationChnage}
@@ -132,7 +132,7 @@ const BookAdd = ({ token, memberInfo }) => {
                         type="text"
                         name="company-website"
                         id="company-website"
-                        className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-l-md rounded-r-md sm:text-sm border-gray-300"
+                        className="dark:text-white dark:bg-slate-900 focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-l-md rounded-r-md sm:text-sm border-gray-300"
                         placeholder=""
                         onChange={departmentChange}
                         value={department}
@@ -153,7 +153,7 @@ const BookAdd = ({ token, memberInfo }) => {
                         type="text"
                         name="company-website"
                         id="company-website"
-                        className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-l-md rounded-r-md sm:text-sm border-gray-300"
+                        className="dark:text-white dark:bg-slate-900 focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-l-md rounded-r-md sm:text-sm border-gray-300"
                         placeholder="이응모"
                         onChange={quantityChange}
                         value={quantity}
@@ -184,7 +184,7 @@ const BookAdd = ({ token, memberInfo }) => {
                       <div className="flex text-sm text-gray-600">
                         <label
                           htmlFor="file-upload"
-                          className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                          className="dark:text-white dark:bg-slate-900 relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
                         >
                           <span>Upload a file</span>
                           <input
@@ -204,7 +204,7 @@ const BookAdd = ({ token, memberInfo }) => {
                   </div>
                 </div>
               </div>
-              <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
+              <div className="dark:bg-mainBlack px-4 py-3 bg-gray-50 text-right sm:px-6">
                 <button
                   onClick={addBook}
                   className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"

@@ -1,6 +1,7 @@
 /* This example requires Tailwind CSS v2.0+ */
 import React, { useState, useEffect, Fragment, useRef } from 'react';
-
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid'
+import testImg from '../../assets/img/libraryImg/book.png';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationIcon } from '@heroicons/react/outline';
 import { connect } from 'react-redux';
@@ -13,12 +14,13 @@ const BookManage = ({ token }) => {
   const API_URL = process.env.REACT_APP_API_URL;
   const [bookList, setBookList] = useState();
   const [borrowCount, setBorrowCount] = useState(1);
-  const [returnCount, setReturnCount] = useState(1);
+  const [returnCount, setReturnCount] = useState(0);
   const [delCount, setDelCount] = useState(1);
   const [currentTitle, setCurrentTitle] = useState('');
   const [currentAuthor, setCurrentAuthor] = useState('');
+  let page=0;
   const headers = {
-    Authorization:token,
+    Authorization: token,
   };
   const borrowChagne = (e) => {
     setBorrowCount(e.target.value);
@@ -31,7 +33,7 @@ const BookManage = ({ token }) => {
   };
   const getRecentBookList = async () => {
     try {
-      const { data } = await axios.get(`${API_URL}/v1/recentbooks`);
+      const { data } = await axios.get(`${API_URL}/v1/recentbooks?page=${page}`);
       setBookList(data);
     } catch (err) {
       console.log(err);
@@ -40,37 +42,40 @@ const BookManage = ({ token }) => {
   const delBookAjax = async () => {
     try {
       await axios.post(
-        `${API_URL}/v1/admin/deletebook?title=${currentTitle}&author=${currentAuthor}&quantity=${delCount}`,{},
+        `${API_URL}/v1/admin/deletebook?title=${currentTitle}&author=${currentAuthor}&quantity=${delCount}`,
+        {},
         { headers: headers }
       );
       setOpenDel(false);
     } catch (err) {
       console.log(err);
-      alert("에러가 발생했습니다.");
+      alert('에러가 발생했습니다.');
     }
   };
   const borrowBookAjax = async () => {
     try {
       await axios.post(
-        `${API_URL}/v1/admin/borrowbook?title=${currentTitle}&author=${currentAuthor}&quantity=${borrowCount}`,{},
+        `${API_URL}/v1/admin/borrowbook?title=${currentTitle}&author=${currentAuthor}&quantity=${borrowCount}`,
+        {},
         { headers: headers }
       );
       setOpenBorrow(false);
     } catch (err) {
       console.log(err);
-      alert("에러가 발생했습니다.");
+      alert('에러가 발생했습니다.');
     }
   };
   const returnBookAjax = async () => {
     try {
       await axios.post(
-        `${API_URL}/v1/admin/returnbook?title=${currentTitle}&author=${currentAuthor}&quantity=${returnCount}`,{},
+        `${API_URL}/v1/admin/returnbook?title=${currentTitle}&author=${currentAuthor}&quantity=${returnCount}`,
+        {},
         { headers: headers }
       );
       setOpenReturn(false);
     } catch (err) {
       console.log(err);
-      alert("에러가 발생했습니다.");
+      alert('에러가 발생했습니다.');
     }
   };
   useEffect(() => {
@@ -78,12 +83,12 @@ const BookManage = ({ token }) => {
   }, []);
   return (
     <>
-      <div className="flex flex-col">
+      <div className="flex flex-col dark:bg-mainBlack ">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
             <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+              <table className="min-w-full divide-y divide-gray-200 dark:bg-mainBlack">
+                <thead className="bg-gray-50 dark:bg-mainBlack">
                   <tr>
                     <th
                       scope="col"
@@ -120,39 +125,45 @@ const BookManage = ({ token }) => {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-white divide-y divide-gray-200 dark:bg-mainBlack">
                   {bookList?.list?.map((info) => (
                     <tr key={info.id}>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="flex-shrink-0 h-10 w-10">
-                            <img
-                              className="h-10 w-10 rounded-full"
-                              src={info.thumbnail}
-                              alt=""
-                            />
+                            {info.thumbnailId === null ? (
+                              <img
+                                src={testImg}
+                                className="h-10 w-10 rounded-full"
+                              />
+                            ) : (
+                              <img
+                                src={`${API_URL}/v1/util/thumbnail/${info.thumbnailId}`}
+                                className="h-10 w-10 rounded-full"
+                              />
+                            )}
                           </div>
                           <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900">
+                            <div className="text-sm font-medium text-gray-900 dark:text-white">
                               {info.title}
                             </div>
-                            <div className="text-sm text-gray-500">
+                            <div className="text-sm text-gray-500 dark:text-white">
                               {info.author}
                             </div>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">
+                        <div className="text-sm text-gray-900 dark:text-white">
                           {info.total}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">
+                        <div className="text-sm text-gray-900 dark:text-white">
                           {info.enable}
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-white">
                         {info.borrow}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -169,11 +180,11 @@ const BookManage = ({ token }) => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <button
-                         onClick={() => {
-                          setOpenReturn(true);
-                          setCurrentTitle(info.title);
-                          setCurrentAuthor(info.author);
-                        }}
+                          onClick={() => {
+                            setOpenReturn(true);
+                            setCurrentTitle(info.title);
+                            setCurrentAuthor(info.author);
+                          }}
                           className="text-indigo-600 hover:text-indigo-900"
                         >
                           반납
@@ -199,6 +210,33 @@ const BookManage = ({ token }) => {
           </div>
         </div>
       </div>
+      <nav
+      className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6"
+      aria-label="Pagination"
+    >
+      <div className="hidden sm:block">
+      </div>
+      <div className="flex-1 flex justify-between sm:justify-end">
+        <button
+          onClick={()=>{
+            if(page>0) page-=1;
+            getRecentBookList();
+          }}
+          className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+        >
+          이전
+        </button>
+        <button
+          onClick={()=>{
+            page+=1;
+            getRecentBookList();
+          }}
+          className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+        >
+          다음
+        </button>
+      </div>
+    </nav>
       <Transition.Root show={openBorrow} as={Fragment}>
         <Dialog
           as="div"
@@ -269,7 +307,7 @@ const BookManage = ({ token }) => {
                   <button
                     type="button"
                     className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={() => borrowBookAjax(currentTitle,currentAuthor)}
+                    onClick={() => borrowBookAjax(currentTitle, currentAuthor)}
                   >
                     빌리기
                   </button>
@@ -357,7 +395,7 @@ const BookManage = ({ token }) => {
                   <button
                     type="button"
                     className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={() =>  delBookAjax(currentTitle,currentAuthor)}
+                    onClick={() => delBookAjax(currentTitle, currentAuthor)}
                   >
                     삭제하기
                   </button>
@@ -445,7 +483,7 @@ const BookManage = ({ token }) => {
                   <button
                     type="button"
                     className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={() => returnBookAjax(currentTitle,currentAuthor)}
+                    onClick={() => returnBookAjax(currentTitle, currentAuthor)}
                   >
                     반납하기
                   </button>

@@ -5,6 +5,7 @@ import ScrollHorizontal from 'react-scroll-horizontal';
 import { connect } from 'react-redux';
 import axios from 'axios';
 const Library = () => {
+  let page=0;
   const [bookList, setBookList] = useState();
   const [mainBook, setMainBook] = useState({
     title: '책을 골라주세요 !',
@@ -13,12 +14,12 @@ const Library = () => {
     total: '',
     enable: '',
     registerDate: '',
-    thumbnailId:81,
+    thumbnailId: 81,
   });
   const API_URL = process.env.REACT_APP_API_URL;
   const getRecentBookList = async () => {
     try {
-      const { data } = await axios.get(`${API_URL}/v1/recentbooks`);
+      const { data } = await axios.get(`${API_URL}/v1/recentbooks?page=${page}`);
       setBookList(data);
       console.log(data);
     } catch (err) {
@@ -71,6 +72,32 @@ const Library = () => {
       >
         {listData}
       </div>
+      <nav
+        className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6"
+        aria-label="Pagination"
+      >
+        <div className="hidden sm:block"></div>
+        <div className="flex-1 flex justify-between sm:justify-end">
+          <button
+            onClick={() => {
+              if (page > 0) page -= 1;
+              getRecentBookList();
+            }}
+            className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+          >
+            이전
+          </button>
+          <button
+            onClick={() => {
+              page += 1;
+              getRecentBookList();
+            }}
+            className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+          >
+            다음
+          </button>
+        </div>
+      </nav>
     </div>
   );
 };
