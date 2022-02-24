@@ -1,6 +1,6 @@
 /* This example requires Tailwind CSS v2.0+ */
 import React, { useState, useEffect, Fragment, useRef } from 'react';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid'
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import testImg from '../../assets/img/libraryImg/book.png';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationIcon } from '@heroicons/react/outline';
@@ -18,7 +18,7 @@ const BookManage = ({ token }) => {
   const [delCount, setDelCount] = useState(1);
   const [currentTitle, setCurrentTitle] = useState('');
   const [currentAuthor, setCurrentAuthor] = useState('');
-  let page=0;
+  let page = 0;
   const headers = {
     Authorization: token,
   };
@@ -33,7 +33,9 @@ const BookManage = ({ token }) => {
   };
   const getRecentBookList = async () => {
     try {
-      const { data } = await axios.get(`${API_URL}/v1/recentbooks?page=${page}`);
+      const { data } = await axios.get(
+        `${API_URL}/v1/recentbooks?page=${page}`
+      );
       setBookList(data);
     } catch (err) {
       console.log(err);
@@ -211,32 +213,31 @@ const BookManage = ({ token }) => {
         </div>
       </div>
       <nav
-      className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6"
-      aria-label="Pagination"
-    >
-      <div className="hidden sm:block">
-      </div>
-      <div className="flex-1 flex justify-between sm:justify-end">
-        <button
-          onClick={()=>{
-            if(page>0) page-=1;
-            getRecentBookList();
-          }}
-          className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-        >
-          이전
-        </button>
-        <button
-          onClick={()=>{
-            page+=1;
-            getRecentBookList();
-          }}
-          className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-        >
-          다음
-        </button>
-      </div>
-    </nav>
+        className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6"
+        aria-label="Pagination"
+      >
+        <div className="hidden sm:block"></div>
+        <div className="flex-1 flex justify-between sm:justify-end">
+          <button
+            onClick={() => {
+              if (page > 0) page -= 1;
+              getRecentBookList();
+            }}
+            className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+          >
+            이전
+          </button>
+          <button
+            onClick={() => {
+              page += 1;
+              getRecentBookList();
+            }}
+            className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+          >
+            다음
+          </button>
+        </div>
+      </nav>
       <Transition.Root show={openBorrow} as={Fragment}>
         <Dialog
           as="div"
