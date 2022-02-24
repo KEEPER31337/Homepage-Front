@@ -34,6 +34,7 @@ const DeleteUserModal = forwardRef(({ token, signOut }, ref) => {
       if (data.success) {
         closeModal();
         signOut();
+        navigate(-1);
       }
       setIsClosing(false);
     });

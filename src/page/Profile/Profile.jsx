@@ -36,13 +36,13 @@ const dummyUser = {
     },
   ],
 };
-const isFollower = false;
 
 const Profile = ({ token, memberInfo }) => {
   const params = useParams();
   const navigate = useNavigate();
   const [btns, setBtns] = useState(new Array());
   const [isMe, setIsMe] = useState(false);
+  const [isFollowee, setIsFollowee] = useState(false);
   const [user, setUser] = useState(null);
   const [error, setError] = useState('');
 
@@ -64,7 +64,12 @@ const Profile = ({ token, memberInfo }) => {
     {
       text: '팔로우하기',
       onClick: () => {
-        console.log('friend');
+        memberAPI.follow({ token, loginId: user.loginId }).then((result) => {
+          if (result.success) {
+            getUser();
+            console.log(result);
+          } else console.log(result);
+        });
       },
     },
     {
@@ -78,7 +83,12 @@ const Profile = ({ token, memberInfo }) => {
     {
       text: '팔로우취소',
       onClick: () => {
-        console.log('friend');
+        memberAPI.unfollow({ token, loginId: user.loginId }).then((result) => {
+          if (result.success) {
+            getUser();
+            console.log(result);
+          } else console.log(result);
+        });
       },
     },
     {
@@ -89,42 +99,49 @@ const Profile = ({ token, memberInfo }) => {
     },
   ];
 
+  const getUser = () => {
+    memberAPI
+      .getOtherById({ token, id: params.userId })
+      .then((getOtherResult) => {
+        if (getOtherResult.success) {
+          const other = getOtherResult.data;
+          console.log(other);
+          other.rank = other.memberRankEntity.name;
+          other.type = other.memberTypeEntity.name;
+          other.jobs = [];
+          setUser(other);
+          setIsFollowee(other.checkFollowee);
+        } else {
+          setUser(null);
+          setError(`${getOtherResult.code}:${getOtherResult.msg}`);
+        }
+      });
+  };
+
   useEffect(() => {
     if (params.userId == memberInfo.id) {
       setIsMe(true);
       setUser(memberInfo);
     } else {
       setIsMe(false);
-      memberAPI
-        .getOtherById({ token, userId: params.userId })
-        .then((getOtherResult) => {
-          if (getOtherResult.success) {
-            setUser(getOtherResult.data);
-          } else {
-            setError(`${getOtherResult.code}:${getOtherResult.msg}`);
-          }
-        });
+      getUser();
     }
   }, [params.userId, memberInfo.id]);
 
   useEffect(() => {
     if (isMe) setBtns(myBtns);
-    else if (isFollower) setBtns(followerBtns);
+    else if (isFollowee) setBtns(followerBtns);
     else setBtns(unFollowerBtns);
-  }, [isMe, isFollower]);
+  }, [isMe, isFollowee]);
 
   const renderBody = () => (
     <div className="w-full">
-      <InfoBox type="postlist" params={{ userId: user.userId }} />
+      <InfoBox type="postlist" params={{ token: token }} />
     </div>
   );
 
   if (user == null) {
-    return (
-      <AuthUser>
-        <div className="text-red-500">{error}</div>
-      </AuthUser>
-    );
+    return <div className="text-red-500">{error}</div>;
   } else {
     return (
       <ProfileFrame

@@ -1,5 +1,6 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import memberAPI from 'API/v1/member';
+
 const theadList = ['번호', '게시판', '제목', '날짜', '조회수', '추천수'];
 
 const dumyPostList = [
@@ -103,45 +104,68 @@ function dateFormat(date) {
 }
 
 export default function PostList(props) {
+  const token = props.token;
   const [postList, setPostList] = useState(new Array());
 
   useEffect(() => {
-    try {
-      setPostList(dumyPostList);
-      console.log(postList);
-    } catch (e) {
-      console.log(e);
-    }
+    const page = 0;
+    const size = 10;
+    memberAPI.getUsersPosts({ token, page, size }).then((result) => {
+      if (result.success) {
+        setPostList(
+          result.list.map((item, index) => ({
+            postId: index,
+            postBoard: item.category,
+            postTitle: item.title,
+            createdAt: item.registerTime,
+            showCnt: item.visitCount,
+            recoCnt: item.likeCount,
+          }))
+        );
+      }
+    });
   }, []);
 
-  return (
-    <div className="w-full h-full inline-block rounded-lg overflow-hidden dark:text-mainWhite">
-      <table className="w-full">
-        <thead>
-          <tr className="h-10">
-            {theadList.map((thead) => (
-              <th className="bg-mainYellow">{thead}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {postList.map((post) => (
-            <tr
-              className="w-full h-10 hover:bg-divisionGray dark:hover:bg-[#0b1523] select-none"
-              onClick={() => {
-                console.log(post.postId);
-              }}
-            >
-              <td className="text-center">{post.postId}</td>
-              <td className="text-center">{post.postBoard}</td>
-              <td className="text-center">{post.postTitle}</td>
-              <td className="text-center">{dateFormat(post.createdAt)}</td>
-              <td className="text-center">{post.showCnt}</td>
-              <td className="text-center">{post.recoCnt}</td>
+  if (postList.length == 0) {
+    return (
+      <div
+        className="w-full min-h-[20vh] rounded-lg 
+                      overflow-hidden text-pointYellow flex
+                      justify-center items-center"
+      >
+        <div className="h-10 text-xl">작성한 게시글이 없습니다</div>
+      </div>
+    );
+  } else {
+    return (
+      <div className="w-full h-full inline-block rounded-lg overflow-hidden dark:text-mainWhite">
+        <table className="w-full">
+          <thead>
+            <tr className="h-10">
+              {theadList.map((thead) => (
+                <th className="bg-mainYellow">{thead}</th>
+              ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
+          </thead>
+          <tbody>
+            {postList.map((post) => (
+              <tr
+                className="w-full h-10 hover:bg-divisionGray dark:hover:bg-[#0b1523] select-none"
+                onClick={() => {
+                  console.log(post.postId);
+                }}
+              >
+                <td className="text-center">{post.postId}</td>
+                <td className="text-center">{post.postBoard}</td>
+                <td className="text-center">{post.postTitle}</td>
+                <td className="text-center">{dateFormat(post.createdAt)}</td>
+                <td className="text-center">{post.showCnt}</td>
+                <td className="text-center">{post.recoCnt}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
 }

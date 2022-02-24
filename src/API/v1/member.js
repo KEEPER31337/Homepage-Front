@@ -162,6 +162,40 @@ async function getUsersTempPosts({ token, page, size }) {
   }
 }
 
+async function follow({ token, loginId }) {
+  const options = {
+    method: 'POST',
+    url: API_URL + '/v1/member/follow',
+    data: { followeeLoginId: loginId },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+async function unfollow({ token, loginId }) {
+  const options = {
+    method: 'POST',
+    url: API_URL + '/v1/member/unfollow',
+    data: { followeeLoginId: loginId },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 export default {
   getMember,
   getMembers,
@@ -172,4 +206,6 @@ export default {
   deleteMember,
   getUsersPosts,
   getUsersTempPosts,
+  follow,
+  unfollow,
 };

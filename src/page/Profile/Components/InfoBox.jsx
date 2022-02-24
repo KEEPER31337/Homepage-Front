@@ -17,7 +17,7 @@ function getChildren(type, params) {
         </div>
       );
     case 'postlist':
-      return <PostList userId={params.userId} />;
+      return <PostList token={params.token} />;
     case 'social':
       return <Social socialList={params.socialList} />;
     case 'setPwd':

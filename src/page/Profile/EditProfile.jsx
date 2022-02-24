@@ -7,6 +7,7 @@ import ProfileFrame from './Components/Frames/ProfileFrame';
 import InfoBox from './Components/InfoBox';
 import DeleteUserModal from './Components/DeleteUserModal';
 import actionMember from 'redux/action/member';
+import AuthUser from 'shared/AuthUser';
 
 const dummyUser = {
   userId: '1',

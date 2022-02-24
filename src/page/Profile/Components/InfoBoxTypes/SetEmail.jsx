@@ -45,34 +45,35 @@ function SetEmail({ member }) {
           dark: 'red-500',
         });
       } else {
-        const emailAuthResult = await authAPI.emailAuth({
-          emailAddress: email,
-        });
-        //NOTE 이게 api결과를 받는데까지 시간이 걸리기때문에, 일단 보냈음을 메시지로 출력해줘야한대요!
         setEmailMsg({
           text: '해당 메일로 인증코드를 보냈습니다.',
           color: 'mainBlack',
           dark: 'mainWhite',
         });
-
-        if (!emailAuthResult.success) {
-          setEmailMsg({
-            text: `${emailAuthResult.code}:알 수 없는 오류입니다`,
-            color: 'red-500',
-            darK: 'red-500',
+        authAPI
+          .emailAuth({
+            emailAddress: email,
+          })
+          .then((emailAuthResult) => {
+            if (!emailAuthResult.success) {
+              setEmailMsg({
+                text: `${emailAuthResult.code}:알 수 없는 오류입니다`,
+                color: 'red-500',
+                darK: 'red-500',
+              });
+            } else {
+              setEmailMsg({
+                text: '코드가 성공적으로 전송되었습니다',
+                color: 'mainBlack',
+                dark: 'mainWhite',
+              });
+              setCodeMsg({
+                text: '코드를 입력해주세요',
+                color: 'mainBlack',
+                dark: 'mainWhite',
+              });
+            }
           });
-        } else {
-          setEmailMsg({
-            text: '코드가 성공적으로 전송되었습니다',
-            color: 'mainBlack',
-            dark: 'mainWhite',
-          });
-          setCodeMsg({
-            text: '코드를 입력해주세요',
-            color: 'mainBlack',
-            dark: 'mainWhite',
-          });
-        }
       }
     });
     setIsSendingCode(false);
