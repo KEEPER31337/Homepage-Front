@@ -38,7 +38,7 @@ const getStyleIcon = (item) => {
   }
 };
 
-const Table = (props) => {
+const Table = ({ categoryId, commentChangeFlag }) => {
   const [boardContent, setBoardContent] = useState([]);
   const [noticeBoardContent, setNoticeBoardContent] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -82,7 +82,7 @@ const Table = (props) => {
     return { startPage, endPage };
   };
 
-  const currentCategoryId = props.state.category.current.id;
+  const currentCategoryId = categoryId;
   const { startPage, endPage } = getStartEndPage(currentPage);
   const postingSearchRef = useRef(null);
 
@@ -97,6 +97,7 @@ const Table = (props) => {
           size: MAX_POSTS,
         })
         .then((res) => {
+          console.log(res);
           setSearchFlag(true);
           if (res?.list?.length == 0) {
             setPageN(0);
@@ -122,7 +123,7 @@ const Table = (props) => {
           category: currentCategoryId,
         })
         .then((res) => {
-          setNoticeBoardContent(res?.list);
+          if (res.success) setNoticeBoardContent(res?.list);
         });
 
       postAPI
@@ -176,7 +177,7 @@ const Table = (props) => {
             category: currentCategoryId,
           })
           .then((res) => {
-            setNoticeBoardContent(res?.list);
+            if (res.success) setNoticeBoardContent(res?.list);
           });
 
         postAPI //일반 글 가져오기
@@ -195,7 +196,7 @@ const Table = (props) => {
           });
       }
     }
-  }, [currentPage, viewStyle, props.commentChangeFlag]); //currentPage 값이 변경될 때마다
+  }, [currentPage, viewStyle, commentChangeFlag]); //currentPage 값이 변경될 때마다
 
   return (
     <div className="dark:bg-mainBlack dark:text-mainWhite ">
@@ -279,7 +280,7 @@ const Table = (props) => {
                       공지
                     </td>
                     <td className="p-2 dark:border-darkComponent">
-                      <Link to={`/board/${board.id}`}>
+                      <Link to={`/post/${categoryId}/${board.id}`}>
                         <div className="max-w-[50vw] md:max-w-[40vw] sm:max-w-[20vw] inline-block">
                           <p className="truncate text-md ">
                             <strong
@@ -353,7 +354,7 @@ const Table = (props) => {
                       {MAX_POSTS * (currentPage - 1) + index + 1}
                     </td>
                     <td className="p-2 dark:border-darkComponent">
-                      <Link to={`/board/${board.id}`}>
+                      <Link to={`/post/${categoryId}/${board.id}`}>
                         <div className="max-w-[50vw] md:max-w-[40vw] sm:max-w-[20vw] inline-block">
                           <p className="truncate text-md ">
                             {board.isSecret ? (
@@ -426,11 +427,11 @@ const Table = (props) => {
 
           <div
             name="페이지네이션"
-            class=" px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 dark:border-darkComponent"
+            className=" px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 dark:border-darkComponent"
           >
             <div
               name="모바일 previous, next 버튼"
-              class={
+              className={
                 (currentPage == 1 ? 'justify-end' : 'justify-between') +
                 ' flex-1 flex  sm:hidden'
               }
@@ -440,7 +441,7 @@ const Table = (props) => {
                 onClick={() => {
                   setCurrentPage(currentPage - 1);
                 }}
-                class={
+                className={
                   hiddenPrevious(currentPage) +
                   ' relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700  hover:bg-gray-50'
                 }
@@ -453,7 +454,7 @@ const Table = (props) => {
                 onClick={() => {
                   setCurrentPage(currentPage + 1);
                 }}
-                class={
+                className={
                   hiddenNext(currentPage) +
                   ' ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-50'
                 }
@@ -467,9 +468,9 @@ const Table = (props) => {
               className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"
             >
               <div className="hidden md:block">
-                <p class="text-sm text-gray-700 dark:text-divisionGray">
+                <p className="text-sm text-gray-700 dark:text-divisionGray">
                   Showing
-                  <span class="font-medium">
+                  <span className="font-medium">
                     <strong name="현재 보여지는 게시글들 중 첫 게시글 번호">
                       {' ' +
                         Math.max(0, (currentPage - 1) * MAX_POSTS + 1) +
@@ -477,7 +478,7 @@ const Table = (props) => {
                     </strong>
                   </span>
                   to
-                  <span class="font-medium">
+                  <span className="font-medium">
                     <strong name="현재 보여지는 게시글들 중 마지막 게시글 번호">
                       {' ' +
                         (currentPage == pageN
@@ -489,7 +490,7 @@ const Table = (props) => {
                     </strong>
                   </span>
                   of
-                  <span class="font-medium">
+                  <span className="font-medium">
                     <strong name="전체 게시글 개수">
                       {' '}
                       {boardContent?.length != 0
@@ -502,7 +503,7 @@ const Table = (props) => {
               </div>
               <div>
                 <nav
-                  class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+                  className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
                   aria-label="Pagination"
                 >
                   <button
@@ -510,24 +511,24 @@ const Table = (props) => {
                     onClick={() => {
                       setCurrentPage(currentPage - 1);
                     }}
-                    class={
+                    className={
                       hiddenPrevious(currentPage) +
                       ' relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 text-sm font-medium text-gray-500 hover:bg-gray-50 dark:text-white dark:hover:bg-darkComponent'
                     }
                   >
-                    <span class="sr-only">Previous</span>
+                    <span className="sr-only">Previous</span>
 
                     <svg
-                      class="h-5 w-5"
+                      className="h-5 w-5"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                       aria-hidden="true"
                     >
                       <path
-                        fill-rule="evenodd"
+                        fillRule="evenodd"
                         d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                        clip-rule="evenodd"
+                        clipRule="evenodd"
                       />
                     </svg>
                   </button>
@@ -620,24 +621,24 @@ const Table = (props) => {
                     onClick={() => {
                       setCurrentPage(currentPage + 1);
                     }}
-                    class={
+                    className={
                       hiddenNext(currentPage) +
                       ' relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 text-sm font-medium text-gray-500 hover:bg-gray-50 dark:text-mainWhite dark:hover:bg-darkComponent'
                     }
                   >
-                    <span class="sr-only">Next</span>
+                    <span className="sr-only">Next</span>
 
                     <svg
-                      class="h-5 w-5"
+                      className="h-5 w-5"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                       aria-hidden="true"
                     >
                       <path
-                        fill-rule="evenodd"
+                        fillRule="evenodd"
                         d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                        clip-rule="evenodd"
+                        clipRule="evenodd"
                       />
                     </svg>
                   </button>

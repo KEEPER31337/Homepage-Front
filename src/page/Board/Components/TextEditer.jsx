@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import FileUploadForm from 'page/Board/Components/fileUploadForm';
@@ -18,10 +18,9 @@ const NO_TEMP = 0;
 const TEMP = 1;
 
 const TextEditer = (props) => {
+  const { categoryId } = useParams();
   const isDark = props.state.darkMode; //Dark모드 여부
-  const currentCategoryId = props.state.category.current.id; //리덕스에서 가져옴
   const token = props.state.member.token;
-  console.log(props);
   const modifyFlag = !!props.redirectData.state?.modifyFlag;
   const board = props.redirectData.state?.board;
   const navigate = useNavigate();
@@ -95,7 +94,7 @@ const TextEditer = (props) => {
         .create({
           title: text.title,
           content: text.content,
-          categoryId: currentCategoryId,
+          categoryId: categoryId,
           ipAddress: ipAddress,
           allowComment: +allowComment,
           isNotice: +isNotice,
@@ -109,7 +108,7 @@ const TextEditer = (props) => {
         .then((res) => {
           setUploadAble(true);
           if (res.success) {
-            navigate('/board');
+            navigate(`/board/${categoryId}`);
           } else {
             alert('게시물 생성 실패! 전산관리자에게 문의하세요~');
           }
@@ -124,7 +123,7 @@ const TextEditer = (props) => {
           boardId: board.id,
           title: text.title,
           content: text.content,
-          categoryId: currentCategoryId,
+          categoryId: categoryId,
           ipAddress: ipAddress,
           allowComment: +allowComment,
           isNotice: +isNotice,
@@ -138,7 +137,7 @@ const TextEditer = (props) => {
         .then((res) => {
           setUploadAble(true);
           if (res.success) {
-            navigate(`/board/${board.id}`);
+            navigate(`/post/${categoryId}/${board.id}`);
           } else {
             alert('게시물 수정 실패! 전산관리자에게 문의하세요~');
           }

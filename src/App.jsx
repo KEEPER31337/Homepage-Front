@@ -40,9 +40,9 @@ const App = (props) => {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/attandance" element={<Attandance />} />
-          <Route path="/board" element={<BoardMain />} />
-          <Route path="/board/:no" element={<BoardView />} />
-          <Route path="/board/write" element={<BoardWrite />} />
+          <Route path="/board/:categoryId" element={<BoardMain />} />
+          <Route path="/post/:categoryId/:postId" element={<BoardView />} />
+          <Route path="/write/:categoryId" element={<BoardWrite />} />
           <Route path="/event" element={<Event />} />
           <Route path="/game" element={<Game />} />
           <Route path="/library" element={<Library />} />
