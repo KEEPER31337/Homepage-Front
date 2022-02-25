@@ -19,9 +19,9 @@ import SignIn from 'page/SignIn/SignIn';
 import FindId from 'page/SignIn/Components/FindId';
 import FindPassword from 'page/SignIn/Components/FindPassword';
 import SignUp from 'page/SignUp/SignUp';
+import BookAdd from './page/Library/BookAdd';
+import BookManage from './page/Library/BookManage
 import Ranking from 'page/Ranking/Ranking';
-
-// API
 import attendanceAPI from 'API/v1/attendance';
 
 const App = (props) => {
@@ -46,6 +46,8 @@ const App = (props) => {
           <Route path="/event" element={<Event />} />
           <Route path="/game" element={<Game />} />
           <Route path="/library" element={<Library />} />
+          <Route path="/library/add" element={<BookAdd />} />
+          <Route path="/library/manage" element={<BookManage />} />
           <Route path="/profile/:userId/*" element={<ProfileRoute />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/signin" element={<SignIn />} />
