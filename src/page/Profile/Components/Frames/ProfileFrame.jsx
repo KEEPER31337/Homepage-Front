@@ -57,8 +57,8 @@ const ProfileFrame = ({
                 <></>
               )}
               {memberInfo.jobs ? (
-                memberInfo.jobs.map((job) => (
-                  <div className="mr-2">
+                memberInfo.jobs.map((job, index) => (
+                  <div key={index} className="mr-2">
                     <Group groupName={job} />
                   </div>
                 ))
@@ -73,8 +73,8 @@ const ProfileFrame = ({
           <div className="h-[25%]" />
           {/*profile Btn*/}
           <div className="w-2/4 h-[25%]">
-            {profileBtns.map((btn) => (
-              <InfoBtn btn={btn} />
+            {profileBtns.map((btn, index) => (
+              <InfoBtn btn={btn} key={index} />
             ))}
           </div>
         </div>
