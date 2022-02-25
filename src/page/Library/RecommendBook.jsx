@@ -4,7 +4,7 @@ import testImg from '../../assets/img/libraryImg/book.png';
 import './font.css';
 const RecommendBook = ({ setBookList, mainBook }) => {
   const API_URL = process.env.REACT_APP_API_URL;
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState('');
   const onChange = (e) => {
     setSearchValue(e.target.value);
   };
@@ -89,7 +89,7 @@ const RecommendBook = ({ setBookList, mainBook }) => {
               width: '200px',
               height: '250px',
               objectFit: 'contain',
-              background:"white"
+              background: 'white',
             }}
           />
         ) : (
@@ -100,7 +100,7 @@ const RecommendBook = ({ setBookList, mainBook }) => {
               width: '200px',
               height: '250px',
               objectFit: 'contain',
-              background:"white"
+              background: 'white',
             }}
           />
         )}
@@ -151,7 +151,7 @@ const RecommendBook = ({ setBookList, mainBook }) => {
           >
             {mainBook.information}
           </div>
-          <div style={{ display:"flex",flexDirection: 'row' }}>
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
             <div
               className="font"
               style={{
