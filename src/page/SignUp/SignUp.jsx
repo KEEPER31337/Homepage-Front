@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEffect, useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 
 // local
 import authAPI from 'API/v1/auth';
@@ -124,7 +124,6 @@ const SignUp = () => {
     } else {
       //유효성 검사 통과했을 경우에만, 중복 체크 api작동하게
       authAPI.loginIdCheck({ loginId: loginId }).then((data) => {
-        console.log(data);
         if (!data.data) {
           setLoginIdMessage('올바른 아이디 형식입니다.');
           setIsLoginId(true);
@@ -156,8 +155,6 @@ const SignUp = () => {
           setEmailAddressMessage('이미 존재하는 이메일입니다.');
           setIsEmailAddress(false);
         }
-
-        console.log(data);
       });
     }
   };
@@ -165,7 +162,6 @@ const SignUp = () => {
   //이메일 인증 보내기 (이메일 유효성검사 통과했을 경우만, 인증버튼 활성화 시킴)
   const handleSendMail = () => {
     authAPI.emailAuth({ emailAddress: emailAddress }).then((data) => {
-      console.log(data);
       if (data.success) sendSuccessModalRef.current.open();
       else sendFailModalRef.current.open();
     });
@@ -208,7 +204,6 @@ const SignUp = () => {
         studentId,
       })
       .then((data) => {
-        console.log(data);
         if (data.success) {
           signUpSuccessModalRef.current.open();
         } else {
@@ -220,7 +215,6 @@ const SignUp = () => {
   return (
     <div>
       <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 dark:text-mainWhite dark:bg-mainBlack">
-        {/* <form className="max-w-md w-screen " action="#" method="POST"> */}
         <div className="max-w-md w-screen">
           <div>
             <div className="mt-4 ">
@@ -246,9 +240,7 @@ const SignUp = () => {
                       value={loginId}
                       onChange={setLoginId}
                       onBlur={handleLoginId}
-                      className=" rounded-md   
-                        block w-full px-1 py-1 border border-divisionGray dark:border-transparent
-                      focus:border-mainYellow focus:ring-mainYellow  dark:bg-darkPoint dark:outline-white autofill:bg-yellow-200"
+                      className=" rounded-md block w-full px-1 py-1 border border-divisionGray dark:border-transparent focus:border-mainYellow focus:ring-mainYellow dark:focus:border-mainWhite dark:focus:ring-mainWhite dark:bg-darkPoint autofill:bg-yellow-200"
                     />
                   </div>
                   <div
@@ -286,9 +278,7 @@ const SignUp = () => {
                         handleLoginId();
                       }}
                       autoComplete="new-password"
-                      className=" rounded-md   
-                        block w-full px-1 py-1 border border-divisionGray dark:border-transparent
-                      focus:border-mainYellow focus:ring-mainYellow  dark:bg-darkPoint dark:outline-white"
+                      className=" rounded-md block w-full px-1 py-1 border border-divisionGray dark:border-transparent focus:border-mainYellow focus:ring-mainYellow dark:focus:border-mainWhite dark:focus:ring-mainWhite dark:bg-darkPoint autofill:bg-yellow-200"
                     />
                   </div>
 
@@ -320,9 +310,7 @@ const SignUp = () => {
                         handlePasswordConfirm();
                         handleLoginId();
                       }}
-                      className=" rounded-md   
-                        block w-full px-1 py-1 border border-divisionGray dark:border-transparent
-                      focus:border-mainYellow focus:ring-mainYellow  dark:bg-darkPoint dark:outline-white"
+                      className=" rounded-md block w-full px-1 py-1 border border-divisionGray dark:border-transparent focus:border-mainYellow focus:ring-mainYellow dark:focus:border-mainWhite dark:focus:ring-mainWhite dark:bg-darkPoint autofill:bg-yellow-200"
                     />
                   </div>
                   <div
@@ -351,9 +339,7 @@ const SignUp = () => {
                       value={emailAddress}
                       onChange={setEmailAddress}
                       onBlur={handleEmailAddress}
-                      className=" rounded-md w-full 
-                        px-1 py-1 border border-divisionGray dark:border-transparent
-                      focus:border-mainYellow focus:ring-mainYellow  dark:bg-darkPoint dark:outline-white"
+                      className=" rounded-md block w-full px-1 py-1 border border-divisionGray dark:border-transparent focus:border-mainYellow focus:ring-mainYellow dark:focus:border-mainWhite dark:focus:ring-mainWhite dark:bg-darkPoint autofill:bg-yellow-200"
                     />
 
                     <button
@@ -406,15 +392,14 @@ const SignUp = () => {
                   </div>
                   <div className="mt-2 flex">
                     <input
+                      type="text"
                       id="auth_code"
                       name="auth_code"
                       required
                       value={authCode}
                       onChange={setAuthCode}
                       onBlur={handleAuthCode}
-                      className=" rounded-md   
-                        block w-1/2 px-1 py-1 border border-divisionGray dark:border-transparent
-                      focus:outline-mainYellow  dark:bg-darkPoint dark:outline-white"
+                      className=" rounded-md block w-full px-1 py-1 border border-divisionGray dark:border-transparent focus:border-mainYellow focus:ring-mainYellow dark:focus:border-mainWhite dark:focus:ring-mainWhite dark:bg-darkPoint autofill:bg-yellow-200"
                     />
                   </div>
                   <div className="block mt-1 text-sm font-medium text-red-500">
@@ -438,9 +423,7 @@ const SignUp = () => {
                       value={realName}
                       onChange={setRealName}
                       onBlur={handleRealName}
-                      className=" rounded-md   
-                        block w-full px-1 py-1 border border-divisionGray dark:border-transparent
-                      focus:border-mainYellow focus:ring-mainYellow  dark:bg-darkPoint dark:outline-white"
+                      className=" rounded-md block w-full px-1 py-1 border border-divisionGray dark:border-transparent focus:border-mainYellow focus:ring-mainYellow dark:focus:border-mainWhite dark:focus:ring-mainWhite dark:bg-darkPoint autofill:bg-yellow-200"
                     />
                   </div>
                   <div
@@ -468,9 +451,7 @@ const SignUp = () => {
                       value={nickName}
                       onChange={setNickName}
                       onBlur={handleNickName}
-                      className=" rounded-md   
-                        block w-full px-1 py-1 border border-divisionGray dark:border-transparent
-                      focus:border-mainYellow focus:ring-mainYellow  dark:bg-darkPoint dark:outline-white"
+                      className=" rounded-md block w-full px-1 py-1 border border-divisionGray dark:border-transparent focus:border-mainYellow focus:ring-mainYellow dark:focus:border-mainWhite dark:focus:ring-mainWhite dark:bg-darkPoint autofill:bg-yellow-200"
                     />
                   </div>
                   <div
@@ -498,9 +479,7 @@ const SignUp = () => {
                       value={studentId}
                       onChange={setStudentId}
                       onBlur={handleStudentId}
-                      className=" rounded-md   
-                        block w-full px-1 py-1 border border-divisionGray dark:border-transparent
-                      focus:border-mainYellow focus:ring-mainYellow  dark:bg-darkPoint dark:outline-white"
+                      className=" rounded-md block w-full px-1 py-1 border border-divisionGray dark:border-transparent focus:border-mainYellow focus:ring-mainYellow dark:focus:border-mainWhite dark:focus:ring-mainWhite dark:bg-darkPoint autofill:bg-yellow-200"
                     />
                   </div>
                   <div
@@ -524,9 +503,7 @@ const SignUp = () => {
                       type="date"
                       id="date_birthday"
                       name="birthday"
-                      className=" rounded-md   
-                        block w-full px-1 py-1 border border-divisionGray text-black
-                      focus:border-mainYellow focus:ring-mainYellow "
+                      className=" rounded-md block w-full px-1 py-1 border border-divisionGray dark:border-transparent focus:border-mainYellow focus:ring-mainYellow dark:focus:border-mainWhite dark:focus:ring-mainWhite dark:bg-darkPoint autofill:bg-yellow-200"
                       onChange={setBirthday}
                     />
                   </div>
