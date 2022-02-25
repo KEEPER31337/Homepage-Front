@@ -20,7 +20,7 @@ import FindId from 'page/SignIn/Components/FindId';
 import FindPassword from 'page/SignIn/Components/FindPassword';
 import SignUp from 'page/SignUp/SignUp';
 import BookAdd from './page/Library/BookAdd';
-import BookManage from './page/Library/BookManage
+import BookManage from './page/Library/BookManage';
 import Ranking from 'page/Ranking/Ranking';
 import attendanceAPI from 'API/v1/attendance';
 
