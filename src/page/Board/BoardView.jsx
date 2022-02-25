@@ -11,6 +11,7 @@ import WriteButton from 'page/Board/Components/WriteButton';
 import WriteButtonMobile from 'page/Board/Components/MobileWriteButton';
 import testData from 'page/Board/testData';
 import postAPI from 'API/v1/post';
+import AuthUser from 'shared/AuthUser';
 
 const BoardView = (props) => {
   const { categoryId, postId } = useParams();
@@ -38,53 +39,55 @@ const BoardView = (props) => {
 
   return (
     <>
-      <div className="flex justify-center dark:bg-mainBlack">
-        <div className="inline-block m-5 w-full">
-          <Info />
-          {board?.id && prevBoard.id !== board.id ? (
-            <Content
-              board={board}
-              commentChangeFlag={commentChangeFlag}
-              likeChangeFlag={likeChangeFlag}
-              setLikeChangeFlag={setLikeChangeFlag}
-            />
-          ) : (
-            ''
-          )}
-          {board?.allowComment == 0 ? (
-            <div className="text-center text-slate-400 text-xl h-[200px] pt-[80px]">
-              작성자가 댓글 작성을 허용하지 않은 게시글입니다.
-            </div>
-          ) : (
-            <div>
-              {board?.id && prevBoard.id !== board.id ? (
-                <Comments
-                  boardId={board.id}
-                  commentCount={board.commentCount}
-                  commentChangeFlag={commentChangeFlag}
-                  setCommentChangeFlag={setCommentChangeFlag}
-                />
-              ) : (
-                ''
-              )}
-            </div>
-          )}
+      <AuthUser>
+        <div className="flex justify-center dark:bg-mainBlack">
+          <div className="inline-block m-5 w-full">
+            <Info />
+            {board?.id && prevBoard.id !== board.id ? (
+              <Content
+                board={board}
+                commentChangeFlag={commentChangeFlag}
+                likeChangeFlag={likeChangeFlag}
+                setLikeChangeFlag={setLikeChangeFlag}
+              />
+            ) : (
+              ''
+            )}
+            {board?.allowComment == 0 ? (
+              <div className="text-center text-slate-400 text-xl h-[200px] pt-[80px]">
+                작성자가 댓글 작성을 허용하지 않은 게시글입니다.
+              </div>
+            ) : (
+              <div>
+                {board?.id && prevBoard.id !== board.id ? (
+                  <Comments
+                    boardId={board.id}
+                    commentCount={board.commentCount}
+                    commentChangeFlag={commentChangeFlag}
+                    setCommentChangeFlag={setCommentChangeFlag}
+                  />
+                ) : (
+                  ''
+                )}
+              </div>
+            )}
 
-          <Table
-            commentChangeFlag={commentChangeFlag}
-            categoryId={categoryId}
-          />
+            <Table
+              commentChangeFlag={commentChangeFlag}
+              categoryId={categoryId}
+            />
+          </div>
+          <div name="left-sideBar" className="hidden m-5 w-1/6 sm:inline-block">
+            <WriteButton />
+          </div>
         </div>
-        <div name="left-sideBar" className="hidden m-5 w-1/6 sm:inline-block">
-          <WriteButton />
+        <div
+          name="mobile 글쓰기 버튼"
+          className="fixed right-0 bottom-10 m-5 inline-block sm:hidden"
+        >
+          <WriteButtonMobile />
         </div>
-      </div>
-      <div
-        name="mobile 글쓰기 버튼"
-        className="fixed right-0 bottom-10 m-5 inline-block sm:hidden"
-      >
-        <WriteButtonMobile />
-      </div>
+      </AuthUser>
     </>
   );
 };
