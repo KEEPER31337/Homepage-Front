@@ -5,38 +5,6 @@ import InfoBox from './Components/InfoBox';
 import { connect } from 'react-redux';
 import memberAPI from 'API/v1/member';
 
-import AuthUser from 'shared/AuthUser';
-
-const dummyUser = {
-  userId: '1',
-  img: 'https://cdn.akamai.steamstatic.com/steamcommunity/public/images/avatars/ad/ad3763fd50aff9d64b8f2a5619b2db9f43420ae2_full.jpg',
-  name: '이름',
-  nickName: '닉네임',
-  loginId: 'userLoginId',
-  level: 256,
-  point: 78,
-  github: 'jasper200207',
-  email: 'test@test.com',
-  groups: [
-    {
-      name: '정회원',
-      img: 'https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/753640/4018a8f2c5b6cb72162d157315f27fbdbb92050d.png',
-    },
-    {
-      name: '우수회원',
-      img: 'https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/400630/21e2819817725efff601afc2e52b44772d80fb0a.png',
-    },
-    {
-      name: '무직',
-      img: 'https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/400630/276a940028f208f167c3b8790eb11031d552f384.png',
-    },
-    {
-      name: '무직',
-      img: 'https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/400630/276a940028f208f167c3b8790eb11031d552f384.png',
-    },
-  ],
-};
-
 const Profile = ({ token, memberInfo }) => {
   const params = useParams();
   const navigate = useNavigate();
@@ -109,6 +77,7 @@ const Profile = ({ token, memberInfo }) => {
           other.rank = other.memberRankEntity.name;
           other.type = other.memberTypeEntity.name;
           other.jobs = [];
+          other.thumbnailId = other.thumbnailEntity;
           setUser(other);
           setIsFollowee(other.checkFollowee);
         } else {
@@ -145,7 +114,6 @@ const Profile = ({ token, memberInfo }) => {
   } else {
     return (
       <ProfileFrame
-        user={dummyUser}
         profileBtns={btns}
         renderBody={renderBody}
         memberInfo={user}

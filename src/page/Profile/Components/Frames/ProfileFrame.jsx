@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CircularGauge from '../CircularGauge';
 import Group from '../Group';
 import InfoBtn from '../InfoBtn';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import utilAPI from 'API/v1/util';
 
 const ProfileFrame = ({
   renderHeadLeft,
@@ -11,12 +12,21 @@ const ProfileFrame = ({
   renderBody,
   renderFooter,
   profileBtns,
-  user,
   memberInfo,
 }) => {
+  const [img, setImg] = useState(null);
+
+  useEffect(() => {
+    utilAPI
+      .getThumbnail({ thumbnailId: memberInfo.thumbnailId })
+      .then((result) => {
+        setImg(result);
+      });
+  }, [memberInfo]);
+
   const defaultHeadLeft = () => (
     <div className="pr-2 w-4/12 object-contain">
-      <img className="w-full h-full rounded-2xl" src={user.img} />
+      <img className="w-full h-full rounded-2xl" src={img} />
     </div>
   );
 

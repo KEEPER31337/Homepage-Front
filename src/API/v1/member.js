@@ -196,6 +196,41 @@ async function unfollow({ token, loginId }) {
   }
 }
 
+async function updateThumbnail({ token, ipAddress, formdata }) {
+  const options = {
+    method: 'PUT',
+    url: API_URL + '/v1/member/update/thumbnail',
+    params: { ipAddress },
+    data: formdata,
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+async function getPointList({ token, page, size }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/point/lists/log',
+    params: { page: page, size: size },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 export default {
   getMember,
   getMembers,
@@ -208,4 +243,6 @@ export default {
   getUsersTempPosts,
   follow,
   unfollow,
+  updateThumbnail,
+  getPointList,
 };

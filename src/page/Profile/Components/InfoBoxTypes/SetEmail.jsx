@@ -6,7 +6,7 @@ import authAPI from 'API/v1/auth';
 import memberAPI from 'API/v1/member';
 import { connect } from 'react-redux';
 
-function SetEmail({ member }) {
+function SetEmail({ member, infoState }) {
   const [email, setEmail] = useState('');
   const [passEmail, setPassEmail] = useState(false);
   const [emailMsg, setEmailMsg] = useState({
@@ -22,6 +22,7 @@ function SetEmail({ member }) {
     dark: 'mainWhite',
   });
   const [isChanging, setIsChanging] = useState(false);
+  const [info, setInfo] = infoState;
 
   const checkEmail = () => {
     const emailAddressRegex =
@@ -104,6 +105,8 @@ function SetEmail({ member }) {
             color: 'mainBlack',
             dark: 'mainWhite',
           });
+          info.email = email;
+          setInfo(info);
           setEmail('');
           setCode('');
         }
