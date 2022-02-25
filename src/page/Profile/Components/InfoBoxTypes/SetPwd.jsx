@@ -26,7 +26,7 @@ function SetPwd({ member }) {
 
   const checkConfirm = () => password == confirm;
 
-  const changePwd = async () => {
+  const changePwd = () => {
     setIsChanging(true);
 
     // const changePwdResult = await memberAPI.changePassword(token, password);

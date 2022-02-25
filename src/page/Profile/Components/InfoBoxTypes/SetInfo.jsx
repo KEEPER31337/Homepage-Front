@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import memberAPI from 'API/v1/member';
 import { connect } from 'react-redux';
 
-function SetInfo({ member, memberInfo }) {
+function SetInfo({ member, memberInfo, infoState }) {
   const [msg, setMsg] = useState({
     text: '변경사항이 저장되지 않았습니다',
     color: 'mainBlack',
@@ -18,8 +18,10 @@ function SetInfo({ member, memberInfo }) {
 
   const [isChanging, setIsChanging] = useState(false);
 
+  const [info, setInfo] = infoState;
+
   const editInputs = [
-    { title: '이름', state: name, setState: setName, id: 'name' },
+    //{ title: '이름', state: name, setState: setName, id: 'name' },
     { title: '닉네임', state: nickName, setState: setNickName, id: 'nickName' },
     {
       title: '학번',
@@ -29,7 +31,7 @@ function SetInfo({ member, memberInfo }) {
     },
   ];
 
-  const changeInfo = async () => {
+  const changeInfo = () => {
     setIsChanging(true);
 
     memberAPI
@@ -54,6 +56,8 @@ function SetInfo({ member, memberInfo }) {
             color: 'mainBlack',
             dark: 'mainWhite',
           });
+          info.nickName = nickName;
+          setInfo(info);
         }
         setIsChanging(false);
       });

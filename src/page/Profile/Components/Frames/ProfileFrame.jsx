@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CircularGauge from '../CircularGauge';
 import Group from '../Group';
 import InfoBtn from '../InfoBtn';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import utilAPI from 'API/v1/util';
 
 const ProfileFrame = ({
   renderHeadLeft,
@@ -11,12 +12,21 @@ const ProfileFrame = ({
   renderBody,
   renderFooter,
   profileBtns,
-  user,
   memberInfo,
 }) => {
+  const [img, setImg] = useState(null);
+
+  useEffect(() => {
+    utilAPI
+      .getThumbnail({ thumbnailId: memberInfo.thumbnailId })
+      .then((result) => {
+        setImg(result);
+      });
+  }, [memberInfo]);
+
   const defaultHeadLeft = () => (
     <div className="pr-2 w-4/12 object-contain">
-      <img className="w-full h-full rounded-2xl" src={user.img} />
+      <img className="w-full h-full rounded-2xl" src={img} />
     </div>
   );
 
@@ -26,9 +36,11 @@ const ProfileFrame = ({
         {renderHeadLeft != null ? renderHeadLeft() : defaultHeadLeft()}
         {/*profile head info*/}
         <div className="pt-3 w-full h-full ">
-          <div className="pl-3 h-1/5 text-left text-4xl dark:text-pointYellow flex-row">
+          <div className="pl-3 h-1/5 text-left text-4xl flex-row">
             <div className="flex align-bottom justify-items-center">
-              <div className="mr-5">{memberInfo.nickName}</div>
+              <div className="mr-5 dark:text-pointYellow">
+                {memberInfo.nickName}
+              </div>
               {/*profile Btn type rank job*/}
               {memberInfo.rank ? (
                 <div className="mr-2">
