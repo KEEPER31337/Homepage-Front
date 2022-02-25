@@ -22,6 +22,9 @@ import RouletteNav from './img/dice/img_roulette.png';
 // API
 import gameAPI from 'API/v1/game';
 
+// local
+import AuthUser from 'shared/AuthUser';
+
 const TOTAL_GAME = 2;
 const DICE_GAME_ID = 0;
 const ROULETTE_GAME_ID = 1;
@@ -101,25 +104,29 @@ const Game = (props) => {
   };
 
   return (
-    <div className="min-h-screen bg-backGray  dark:bg-darkPoint dark:text-mainYellow">
-      <div className="container mx-auto">
-        <div className="dark:bg-darkPoint">
-          <GameList />
-          <div className="flex justify-center items-center">
-            <GameLeftNav />
-            {game === DICE_GAME_ID ? <DiceGame gameInfo={gameInfo} /> : null}
-            {game === ROULETTE_GAME_ID ? (
-              <Roulette gameInfo={gameInfo} />
+    <AuthUser>
+      <div className="min-h-screen bg-backGray  dark:bg-darkPoint dark:text-mainYellow">
+        <div className="container mx-auto">
+          <div className="dark:bg-darkPoint">
+            <GameList />
+            <div className="flex justify-center items-center">
+              <GameLeftNav />
+              {game === DICE_GAME_ID ? <DiceGame gameInfo={gameInfo} /> : null}
+              {game === ROULETTE_GAME_ID ? (
+                <Roulette gameInfo={gameInfo} />
+              ) : null}
+              {game === LOTTO_GAME_ID ? <Lotto gameInfo={gameInfo} /> : null}
+              <GameRighttNav />
+            </div>
+            {game === DICE_GAME_ID ? <RuleOfDice /> : null}
+            {game === ROULETTE_GAME_ID ? <RuleOfRoulette /> : null}
+            {game === LOTTO_GAME_ID ? (
+              <RuleOfLotto gameInfo={gameInfo} />
             ) : null}
-            {game === LOTTO_GAME_ID ? <Lotto gameInfo={gameInfo} /> : null}
-            <GameRighttNav />
           </div>
-          {game === DICE_GAME_ID ? <RuleOfDice /> : null}
-          {game === ROULETTE_GAME_ID ? <RuleOfRoulette /> : null}
-          {game === LOTTO_GAME_ID ? <RuleOfLotto gameInfo={gameInfo} /> : null}
         </div>
       </div>
-    </div>
+    </AuthUser>
   );
 };
 
