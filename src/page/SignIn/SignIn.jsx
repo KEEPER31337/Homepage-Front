@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 // local
 import authAPI from 'API/v1/auth';
 import actionMember from 'redux/action/member';
@@ -16,20 +17,27 @@ const SignIn = (props) => {
   const loginFailModalRef = useRef({});
   const navigate = useNavigate();
 
-  const handleBlur = (e) => {
+  const handleChange = (e) => {
     setLoginInfo({ ...loginInfo, [e.target.name]: e.target.value });
   };
   const handleSignIn = () => {
     authAPI.signIn(loginInfo).then((data) => {
       if (data.success) {
         const token = data.data.token;
-        const userInfo = data.data.member;
-        props.memberSignIn({ token, userInfo });
+        const memberInfo = data.data.member;
+        props.memberSignIn({ token, memberInfo });
         navigate(BACK);
       } else {
         loginFailModalRef.current.open();
       }
     });
+  };
+
+  //enter키 눌러도 로그인 되도록
+  const onKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSignIn();
+    }
   };
 
   return (
@@ -49,15 +57,16 @@ const SignIn = (props) => {
                 name="loginId"
                 type="text"
                 autoComplete="off"
+                onKeyPress={onKeyPress}
                 required
                 className="appearance-none rounded-md  
               
               relative block w-full px-3 py-4 border border-gray-300 
               placeholder-gray-500  rounded-t-md focus:outline-none 
-              focus:bg-backGray focus:border-backGray  dark:bg-darkPoint dark:outline-white  dark:border-transparent
+              focus:bg-backGray focus:border-backGray  focus:ring-backGray dark:bg-darkPoint dark:outline-white  dark:border-transparent
               "
                 placeholder="아이디"
-                onBlur={handleBlur}
+                onChange={handleChange}
               />
             </div>
 
@@ -67,20 +76,20 @@ const SignIn = (props) => {
                 name="password"
                 type="password"
                 autoComplete="off"
+                onKeyPress={onKeyPress}
                 required
                 className="appearance-none rounded-lg 
               relative block w-full px-3 py-4 border 
               border-gray-300 placeholder-gray-500 
                rounded-b-md focus:outline-none 
-              focus:bg-backGray focus:border-backGray  dark:bg-darkPoint dark:outline-white  dark:border-transparent
-
+               
+              focus:bg-backGray focus:border-backGray  focus:ring-backGray dark:bg-darkPoint dark:outline-white  dark:border-transparent
               focus:z-10 sm:text-sm"
                 placeholder="비밀번호"
-                onBlur={handleBlur}
+                onChange={handleChange}
               />
             </div>
           </div>
-
           <div>
             <button
               type="submit"
@@ -94,7 +103,6 @@ const SignIn = (props) => {
               로그인
             </button>
           </div>
-
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <input
@@ -117,27 +125,28 @@ const SignIn = (props) => {
             </div>
 
             <div className="text-sm">
-              <a
-                href="#"
+              <Link
+                to="/signin/findid"
                 className="font-medium 
             text-gray hover:text-pointYellow"
               >
                 아이디 찾기
-              </a>{' '}
+              </Link>{' '}
               |{' '}
-              <a
-                href="#"
+              <Link
+                to="/signin/findpassword"
                 className="font-medium 
             text-gray hover:text-pointYellow"
               >
                 비밀번호 찾기
-              </a>
+              </Link>
             </div>
           </div>
-          아직 계정이 없으신가요? 
+          아직 계정이 없으신가요?
           <Link
             to="/signup"
-            className="ml-4 whitespace-nowrap inline-flex items-center justify-center   text-base font-bold  text-mainYellow hover:text-pointYellow">
+            className="ml-4 whitespace-nowrap inline-flex items-center justify-center   text-base font-bold  text-mainYellow hover:text-pointYellow"
+          >
             회원가입
           </Link>
           <div></div>
@@ -159,8 +168,8 @@ const mapDispatchToProps = (dispatch, OwnProps) => {
     updateToken: (token) => {
       dispatch(actionMember.updateToken(token));
     },
-    memberSignIn: ({ token, userInfo }) => {
-      dispatch(actionMember.signIn({ token, userInfo }));
+    memberSignIn: ({ token, memberInfo }) => {
+      dispatch(actionMember.signIn({ token, memberInfo }));
     },
   };
 };

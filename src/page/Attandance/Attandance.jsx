@@ -1,8 +1,10 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import dayjs from 'dayjs';
 
 // shared
 import PageContainer from 'shared/PageContainer';
 import LayoutContainer from 'shared/LayoutContainer';
+import AuthUser from 'shared/AuthUser';
 
 // local
 import Calendar from './Component/Calendar';
@@ -20,61 +22,78 @@ import CoinIcon from 'assets/img/coin.png';
 
 // API
 import attendanceAPI from 'API/v1/attendance';
+import { connect } from 'react-redux';
 
-const Attandance = () => {
+const dateFormat = 'YYYY-MM-DD';
+
+const Attandance = ({ member }) => {
+  const [attendInfo, setAttendInfo] = useState({});
+  const [attendLogList, setAttendLogList] = useState([]);
+
   const continuousModalRef = useRef({});
   const rankModalRef = useRef({});
   const pointModalRef = useRef({});
 
   useEffect(() => {
-    // attendanceAPI
-    //   .getAttendDate({
-    //     startDate: '2020-01-01',
-    //     endDate: '2020-01-31',
-    //     token: '',
-    //   })
-    //   .then((data) => console.log(data));
-  }, []);
+    const date = dayjs();
+    attendanceAPI
+      .getAttendInfo({
+        date: date.format(dateFormat),
+        token: member.token,
+      })
+      .then((data) => {
+        if (data.success) setAttendInfo(data.data);
+      });
+  }, [member]);
 
   return (
-    <div>
-      <NavigationLayout>
-        <div className="container">
-          <Calendar />
-        </div>
-        <div className="container grid grid-cols-2 m-auto lg:grid-cols-4 justify-center justify-items-center  gap-10 py-6">
-          <Box
-            icon={LeafIcon}
-            text="개근 5일차"
-            onClick={() => {
-              continuousModalRef.current.open();
-            }}
-          />
-          <Box
-            icon={PrizeIcon}
-            text="1등"
-            onClick={() => {
-              rankModalRef.current.open();
-            }}
-          />
-          <Box
-            icon={CoinIcon}
-            text="1800 pt"
-            onClick={() => {
-              pointModalRef.current.open();
-            }}
-          />
-          <Box />
-          <ContinuousModal ref={continuousModalRef} />
-          <RankModal ref={rankModalRef} />
-          <PointModal ref={pointModalRef} />
-        </div>
-        <div className="container py-6">
-          <AttandanceTable />
-        </div>
-      </NavigationLayout>
-    </div>
+    <AuthUser>
+      <div>
+        <NavigationLayout>
+          <div className="container">
+            <Calendar />
+          </div>
+          <div className="container grid grid-cols-2 m-auto lg:grid-cols-4 justify-center justify-items-center  gap-10 py-6">
+            <Box
+              icon={LeafIcon}
+              text={
+                attendInfo.continuousDay
+                  ? `개근 ${attendInfo.continuousDay}일차`
+                  : '-'
+              }
+              onClick={() => {
+                continuousModalRef.current.open();
+              }}
+            />
+            <Box
+              icon={PrizeIcon}
+              text={attendInfo.rank ? `${attendInfo.rank}등` : '-'}
+              onClick={() => {
+                rankModalRef.current.open();
+              }}
+            />
+            <Box
+              icon={CoinIcon}
+              text={attendInfo.point ? `${attendInfo.point} pt` : '-'}
+              onClick={() => {
+                pointModalRef.current.open();
+              }}
+            />
+            <Box />
+            <ContinuousModal ref={continuousModalRef} />
+            <RankModal ref={rankModalRef} />
+            <PointModal ref={pointModalRef} attendInfo={attendInfo} />
+          </div>
+          <div className="container py-6">
+            <AttandanceTable attendLogList={attendLogList} />
+          </div>
+        </NavigationLayout>
+      </div>
+    </AuthUser>
   );
 };
 
-export default Attandance;
+const mapStateToProps = (state, OwnProps) => {
+  return { member: state.member };
+};
+export default connect(mapStateToProps)(Attandance);

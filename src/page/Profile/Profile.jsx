@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ProfileFrame from './Components/Frames/ProfileFrame';
-import blogImg from '../../assets/img/profileImg/social/blog.png';
-import githubImg from '../../assets/img/profileImg/social/github.png';
-import homePageImg from '../../assets/img/profileImg/social/homepage.png';
-import instargramImg from '../../assets/img/profileImg/social/instargram.png';
+import InfoBox from './Components/InfoBox';
+import { connect } from 'react-redux';
+import memberAPI from 'API/v1/member';
+
+import AuthUser from 'shared/AuthUser';
 
 const dummyUser = {
   userId: '1',
@@ -15,6 +16,7 @@ const dummyUser = {
   level: 256,
   point: 78,
   github: 'jasper200207',
+  email: 'test@test.com',
   groups: [
     {
       name: '정회원',
@@ -33,46 +35,16 @@ const dummyUser = {
       img: 'https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/400630/276a940028f208f167c3b8790eb11031d552f384.png',
     },
   ],
-  levelUp: 100,
-  socialList: [
-    {
-      text: '블로그',
-      img: blogImg,
-      onClick: () => {
-        console.log('blog');
-      },
-    },
-    {
-      text: 'jasper200207',
-      img: githubImg,
-      onClick: () => {
-        console.log('github');
-      },
-    },
-    {
-      text: '홈페이지',
-      img: homePageImg,
-      onClick: () => {
-        console.log('homepage');
-      },
-    },
-    {
-      text: '@인스타그램',
-      img: instargramImg,
-      onClick: () => {
-        console.log('instargram');
-      },
-    },
-  ],
 };
-const isMe = true;
-const isFriend = false;
+const isFollower = false;
 
-const Profile = () => {
-  const user = dummyUser;
+const Profile = ({ token, memberInfo }) => {
   const params = useParams();
   const navigate = useNavigate();
   const [btns, setBtns] = useState(new Array());
+  const [isMe, setIsMe] = useState(false);
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState('');
 
   const myBtns = [
     {
@@ -84,13 +56,13 @@ const Profile = () => {
     {
       text: '마이페이지',
       onClick: () => {
-        navigate('mypage/clipping');
+        navigate('mypage/drafts');
       },
     },
   ];
-  const otherBtns = [
+  const unFollowerBtns = [
     {
-      text: '친구 등록',
+      text: '팔로우하기',
       onClick: () => {
         console.log('friend');
       },
@@ -102,9 +74,9 @@ const Profile = () => {
       },
     },
   ];
-  const friendBtns = [
+  const followerBtns = [
     {
-      text: '친구 삭제',
+      text: '팔로우취소',
       onClick: () => {
         console.log('friend');
       },
@@ -117,13 +89,57 @@ const Profile = () => {
     },
   ];
 
-  useEffect(async () => {
+  useEffect(() => {
+    if (params.userId == memberInfo.id) {
+      setIsMe(true);
+      setUser(memberInfo);
+    } else {
+      setIsMe(false);
+      memberAPI.getOtherById(token, params.userId).then((getOtherResult) => {
+        if (getOtherResult.success) {
+          setUser(getOtherResult.data);
+        } else {
+          setError(`${getOtherResult.code}:${getOtherResult.msg}`);
+        }
+      });
+    }
+  }, [params.userId, memberInfo.id]);
+
+  useEffect(() => {
     if (isMe) setBtns(myBtns);
-    else if (isFriend) setBtns(friendBtns);
-    else setBtns(otherBtns);
-  }, [isMe, isFriend]);
+    else if (isFollower) setBtns(followerBtns);
+    else setBtns(unFollowerBtns);
+  }, [isMe, isFollower]);
 
-  return <ProfileFrame user={user} profileBtns={btns} />;
+  const renderBody = () => (
+    <div className="w-full">
+      <InfoBox type="postlist" params={{ userId: user.userId }} />
+    </div>
+  );
+
+  if (user == null) {
+    return (
+      <AuthUser>
+        <div className="text-red-500">{error}</div>
+      </AuthUser>
+    );
+  } else {
+    return (
+      <ProfileFrame
+        user={dummyUser}
+        profileBtns={btns}
+        renderBody={renderBody}
+        memberInfo={user}
+      />
+    );
+  }
 };
 
-export default Profile;
+const mapStateToProps = (state) => {
+  return {
+    token: state.member.token,
+    memberInfo: state.member.memberInfo,
+  };
+};
+
+export default connect(mapStateToProps)(Profile);

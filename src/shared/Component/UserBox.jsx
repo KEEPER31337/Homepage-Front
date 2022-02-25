@@ -17,8 +17,8 @@ const UserBox = ({ member, signOut }) => {
         <div>
           <Menu.Button className="bg-gray-100 dark:bg-gray-800 flex text-sm rounded-full focus:outline-none ring-2 ring-divisionGray dark:ring-darkPoint">
             <span className="sr-only">Open user menu</span>
-            <div className="text-lg self-center mx-5 text-mainBlack dark:text-mainWhite w-10 break-words">
-              {member.userInfo.nickName}
+            <div className="text-lg max-w-[150px] self-center mx-5 text-mainBlack dark:text-mainWhite w-full break-words overflow-hidden whitespace-nowrap hidden xl:block">
+              {member?.memberInfo?.nickName}
             </div>
             <img
               className="h-8 w-8 rounded-full"
@@ -42,7 +42,7 @@ const UserBox = ({ member, signOut }) => {
               {({ active }) => (
                 <Link
                   // TODO : 링크 수정
-                  to="/profile/1"
+                  to={`/profile/${member.memberInfo.id}`}
                   className={classNames(
                     active ? 'bg-gray-100' : '',
                     'block px-4 py-2 text-sm text-gray-700'
@@ -56,7 +56,7 @@ const UserBox = ({ member, signOut }) => {
               {({ active }) => (
                 <Link
                   // TODO : 링크 수정
-                  to="/profile/1/edit"
+                  to={`/profile/${member.memberInfo.id}/edit`}
                   className={classNames(
                     active ? 'bg-gray-100' : '',
                     'block px-4 py-2 text-sm text-gray-700'

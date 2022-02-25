@@ -1,8 +1,12 @@
 import React from 'react';
+import { useRef } from 'react';
+import { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import ProfileFrame from './Components/Frames/ProfileFrame';
 import InfoBox from './Components/InfoBox';
-import InfoBtn from './Components/InfoBtn';
+import DeleteUserModal from './Components/DeleteUserModal';
+import actionMember from 'redux/action/member';
 
 const dummyUser = {
   userId: '1',
@@ -64,32 +68,31 @@ const dummyUser = {
   ],
 };
 
-const EditProfile = () => {
+const EditProfile = ({ token, memberInfo, signOut }) => {
+  console.log(memberInfo);
   const user = dummyUser;
   const params = useParams();
   const navigate = useNavigate();
 
-  const cancleBtn = { text: '취소', onClick: () => navigate(-1) };
-  const submitBtn = { text: '저장', onClick: () => navigate(-1) };
+  const deleteModalRef = useRef({});
 
   const setProfileImg = async () => {
     console.log('setProfileImg');
   };
 
   const headBtns = [
-    { text: '취소', onClick: () => navigate(-1) },
-    { text: '저장', onClick: () => navigate(-1) },
+    { text: '돌아가기', onClick: () => navigate(-1) },
     {
       text: '탈퇴',
       onClick: () => {
-        console.log('remove');
+        deleteModalRef.current.open();
       },
     },
   ];
 
   const renderImgBtn = () => (
     <button
-      className="pr-2 w-3/12 object-cover hover:brightness-75"
+      className="pr-2 w-4/12 object-contain hover:brightness-75"
       onClick={setProfileImg}
     >
       <img className="w-full h-full rounded-2xl" src={user.img} />
@@ -98,20 +101,51 @@ const EditProfile = () => {
 
   const renderBody = () => (
     <div className="w-full">
-      <InfoBox type="setPwd" params={{}} />
-      <InfoBox type="setInfo" params={{}} />
-      <InfoBox type="setSocial" params={{}} />
+      <InfoBox
+        type="setInfo"
+        params={{ token: token, memberInfo: memberInfo }}
+      />
+      <InfoBox type="setEmail" params={{ token: token }} />
+      <InfoBox type="setPwd" params={{ token: token }} />
     </div>
   );
 
-  return (
-    <ProfileFrame
-      user={user}
-      profileBtns={headBtns}
-      renderHeadLeft={renderImgBtn}
-      renderBody={renderBody}
-    />
-  );
+  const deleteUser = async () => {};
+
+  if (params.userId != memberInfo.id) {
+    return <div>접근할수 없습니다</div>;
+  } else {
+    return (
+      <div>
+        <ProfileFrame
+          user={user}
+          profileBtns={headBtns}
+          renderHeadLeft={renderImgBtn}
+          renderBody={renderBody}
+          memberInfo={memberInfo}
+        />
+        <DeleteUserModal
+          token={token}
+          signOut={signOut}
+          ref={deleteModalRef}
+        ></DeleteUserModal>
+      </div>
+    );
+  }
 };
 
-export default EditProfile;
+const mapStateToProps = (state) => {
+  return {
+    token: state.member.token,
+    memberInfo: state.member.memberInfo,
+  };
+};
+const mapDispatchToProps = (dispatch, OwnProps) => {
+  return {
+    signOut: () => {
+      dispatch(actionMember.signOut());
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditProfile);
