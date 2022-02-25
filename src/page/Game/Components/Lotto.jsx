@@ -43,11 +43,11 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
   //게임 후, 등수와 포인트 띄워줌
   const [rank, setRank] = useState(0);
   const [point, setPoint] = useState(0);
-  const [result, setResult] = useState(0);
 
   // 게임 상에서 띄워줄 정보
   const [memberPoint, setMemberPoint] = useState();
   const [remainingCount, setRemainingCount] = useState();
+  const [todayResult, setTodayResult] = useState(0);
   const [overCountCheck, setOverCountCheck] = useState(false);
 
   //진행 과정 몇 %인지
@@ -95,9 +95,11 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
         token: member.token,
       })
       .then((data) => {
-        console.log('info', data);
         if (data.success) {
-          setRemainingCount(gameInfo.LOTTO_MAX_PLAYTIME - data.data);
+          setRemainingCount(
+            gameInfo.LOTTO_MAX_PLAYTIME - data.data.lottoPerDay
+          );
+          setTodayResult(data.data.todayResult);
         }
       });
 
@@ -140,9 +142,6 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
       setIsPop(true);
 
       lottoAPI.playLotto({ token: member.token }).then((data) => {
-        console.log('play', data);
-        console.log('등수는 : ', data.data.lottoPointIdx);
-
         setRank(data.data.lottoPointIdx);
 
         switch (data.data.lottoPointIdx) {
@@ -229,7 +228,6 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
     // 스크래치 70%이상 긁었을때, 포인트 변동 + 오늘결과 보여주기
     if (percent >= completedAt && !isCompleted) {
       setIsCompleted(true);
-      setResult(point);
       alertShowResultModalRef.current.open();
 
       //보유포인트, 잔여횟수 업데이트 됨(useState)
@@ -266,7 +264,7 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
     },
     {
       subtitle: '오늘 결과',
-      content: result,
+      content: todayResult,
     },
     {
       subtitle: '잔여 횟수',
