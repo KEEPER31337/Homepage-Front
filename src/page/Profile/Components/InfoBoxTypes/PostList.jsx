@@ -22,7 +22,7 @@ function dateFormat(date) {
 
 export default function PostList(props) {
   const token = props.token;
-  const [postList, setPostList] = useState(new Array());
+  const [postList, setPostList] = useState([]);
 
   useEffect(() => {
     const page = 0;
@@ -75,7 +75,8 @@ export default function PostList(props) {
                 <td className="text-center">{post.postId}</td>
                 <td className="text-center">{post.postBoard}</td>
                 <td className="text-center">{post.postTitle}</td>
-                <td className="text-center">{dateFormat(post.createdAt)}</td>
+                {/* NOTE : 변환처리는 state에 set할 때 처리해서 넣어줍시다. */}
+                <td className="text-center">{post.createdAt}</td>
                 <td className="text-center">{post.showCnt}</td>
                 <td className="text-center">{post.recoCnt}</td>
               </tr>
