@@ -14,7 +14,6 @@ import WriteButtonMobile from 'page/Board/Components/MobileWriteButton';
 */
 const Board = () => {
   const { categoryId } = useParams();
-  console.log('id', categoryId);
   return (
     <>
       <div className="flex justify-center h-full dark:bg-mainBlack">

@@ -53,7 +53,7 @@ const Comments = ({
             setDislikedComments([...dislikedComments, comment.id]);
         });
       });
-  }, [isDark, commentChangeFlag, numComments]);
+  }, [isDark, commentChangeFlag, numComments, boardId]);
 
   const loadAdditionalComments = () => {
     //댓글 페이지네이션(더 불러오기)

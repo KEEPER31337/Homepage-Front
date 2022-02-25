@@ -22,7 +22,6 @@ const BoardView = (props) => {
   useEffect(() => {
     prevBoard ? setPrevBoard({ id: -1 }) : setPrevBoard(board);
     if (token) {
-      console.log('token : ' + token);
       postAPI
         .getOne({
           no: postId,

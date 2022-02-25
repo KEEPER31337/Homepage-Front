@@ -22,7 +22,7 @@ import utilAPI from 'API/v1/util';
 const API_URL = process.env.REACT_APP_API_URL;
 
 const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
-  const { categoryId } = useParams();
+  const { categoryId, postId } = useParams();
   //board는 게시글 정보가 담긴 객체
   //console.log(state.member.memberId); //(내 아이디)나중에 업데이트 될거임
   const isDark = state.darkMode; //Dark모드 여부
@@ -50,7 +50,6 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
         token: token,
       })
       .then((res) => {
-        console.log(res);
         setLikeChangeFlag(!likeChangeFlag);
       });
     setIsLiked(!isLiked);
@@ -86,12 +85,9 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
   const toggleFiles = () => {
     setToggle(!toggle);
   };
-
   useEffect(() => {
     console.log('Content:reload');
     utilAPI.getThumbnail({ thumbnailId: board.thumbnail.id }).then((data) => {
-      console.log(data);
-
       const reader = new FileReader();
       reader.onabort = () => console.log('file reading was aborted');
       reader.onerror = () => console.log('file reading has failed');
@@ -110,14 +106,13 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
         token: token,
       })
       .then((res) => {
-        //console.log(res);
         setIsLiked(res.data.liked);
         setIsDisliked(res.data.disliked);
       });
     const viwerInstance = viwerRef.current.getInstance();
     viwerInstance.setMarkdown(board.content);
     setFiles(board.files);
-  }, [state.member.token]);
+  }, [state.member.token, board]);
 
   return (
     <div className="my-5">
