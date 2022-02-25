@@ -43,13 +43,20 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
   const [betting, setBet] = useState(0); // 배팅 포인트 저장
   const [score, setScore] = useState(0); // user의 주사위 게임 점수 저장
   const [confirm, setConfirm] = useState(true); // 배팅 포인트 확정
-  const [count, setCount] = useState(); // 하루 주사위 한 횟수 저장
-  const [check, setCheck] = useState(); // 하루 제한된 횟수만큼 했는지 확인
-  const onChange = (event) => setBet(event.target.value);
+  const [count, setCount] = useState(0); // 하루 주사위 한 횟수 저장
+  const [check, setCheck] = useState(false); // 하루 제한된 횟수만큼 했는지 확인
+  const [firstCheck, setFirstCheck] = useState(true);
   const alertBettingPointModalRef = useRef({});
   const alertCountModalRef = useRef({});
   const alertLoginModalRef = useRef({});
   const alertPointLackModalRef = useRef({});
+
+  const onChange = (event) => {
+    const re = /^[0-9\b]+$/;
+    if (event.target.value === '' || re.test(event.target.value)) {
+      setBet(event.target.value);
+    }
+  };
 
   useEffect(() => {
     diceAPI
@@ -105,8 +112,9 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
       alertLoginModalRef.current.open();
       return;
     }
-    if (member.memberInfo.point < betting) {
+    if (firstCheck && member.memberInfo.point < betting) {
       alertPointLackModalRef.current.open();
+      return;
     }
     if (check) {
       alertCountModalRef.current.open();
@@ -116,7 +124,7 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
       alertBettingPointModalRef.current.open();
       return;
     }
-    if (rollNum === 0) {
+    if (firstCheck) {
       setConfirm((tmp) => !tmp);
       diceAPI
         .playDice({
@@ -164,6 +172,8 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
         'rgb(80,255,80)';
       document.getElementById('rollDice').style.color = 'rgb(255,255,255)';
     }
+
+    setFirstCheck(false);
   }
   function result() {
     if (scoreFlag === 1 && rollNum > 0 && !fixed) {
@@ -267,11 +277,7 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
   }
 
   function calculate(items) {
-    items.sort(function (a, b) {
-      if (a > b) return 1;
-      if (a === b) return 0;
-      if (a < b) return -1;
-    });
+    items.sort();
     var score = 0;
     items.forEach((item) => {
       score += item;
@@ -286,11 +292,7 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
 
   function poker(items) {
     // 4개의 주사위 눈이 같다면 10점 추가
-    items.sort(function (a, b) {
-      if (a > b) return 1;
-      if (a === b) return 0;
-      if (a < b) return -1;
-    });
+    items.sort();
     if (
       items[0] === items[1] &&
       items[1] === items[2] &&
@@ -310,11 +312,7 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
 
   function fullHouse(items) {
     // 3개의 주사위 눈과 2개의 주사위 눈 모두 같다면 15점 추가
-    items.sort(function (a, b) {
-      if (a > b) return 1;
-      if (a === b) return 0;
-      if (a < b) return -1;
-    });
+    items.sort();
     if (
       items[0] === items[1] &&
       items[1] !== items[2] &&
@@ -334,15 +332,11 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
 
   function small(items) {
     // 4개의 주사위가 순서대로 있는 경우 20점 추가
-    items.sort(function (a, b) {
-      if (a > b) return 1;
-      if (a === b) return 0;
-      if (a < b) return -1;
-    });
+    items.sort();
     var ui = items.filter((c, index) => {
       return items.indexOf(c) === index;
     });
-    if (ui.length == 4) {
+    if (ui.length === 4) {
       if (ui[0] === ui[1] - 1 && ui[1] === ui[2] - 1 && ui[2] === ui[3] - 1)
         return 20;
       else return 0;
@@ -366,11 +360,7 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
 
   function large(items) {
     // 5개의 주사위가 순서대로 있는 경우 25점 추가
-    items.sort(function (a, b) {
-      if (a > b) return 1;
-      if (a === b) return 0;
-      if (a < b) return -1;
-    });
+    items.sort();
     var ui = items.filter((c, index) => {
       return items.indexOf(c) === index;
     });
@@ -381,11 +371,7 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
 
   function yacht(items) {
     // 5개의 숫자가 모두 같은 경우 30점 추가
-    items.sort(function (a, b) {
-      if (a > b) return 1;
-      if (a === b) return 0;
-      if (a < b) return -1;
-    });
+    items.sort();
     var ui = items.filter((c, index) => {
       return items.indexOf(c) === index;
     });
@@ -411,11 +397,7 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
   }
 
   function Computer(items) {
-    items.sort(function (a, b) {
-      if (a > b) return 1;
-      if (a === b) return 0;
-      if (a < b) return -1;
-    });
+    items.sort();
     var screenTotal = document.getElementById('com_result');
     var screen = document.createElement('div');
     screen.className = 'h-10 mb-2 flex md:flex-wrap';
@@ -424,32 +406,32 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
       if (items[i] === 1) {
         var tmp1 = document.createElement('img');
         tmp1.src = one;
-        tmp1.className = 'w-[15%] h-fit max-w-[40px] mr-1';
+        tmp1.className = 'w-[15%] h-fit max-h-[40px] max-w-[40px] mr-1';
         screen.appendChild(tmp1);
       } else if (items[i] === 2) {
         var tmp2 = document.createElement('img');
         tmp2.src = two;
-        tmp2.className = 'w-[15%] h-fit max-w-[40px] mr-1';
+        tmp2.className = 'w-[15%] h-fit max-h-[40px] max-w-[40px] mr-1';
         screen.appendChild(tmp2);
       } else if (items[i] === 3) {
         var tmp3 = document.createElement('img');
         tmp3.src = three;
-        tmp3.className = 'w-[15%] h-fit max-w-[40px] mr-1';
+        tmp3.className = 'w-[15%] h-fit max-h-[40px] max-w-[40px] mr-1';
         screen.appendChild(tmp3);
       } else if (items[i] === 4) {
         var tmp4 = document.createElement('img');
         tmp4.src = four;
-        tmp4.className = 'w-[15%] h-fit max-w-[40px] mr-1';
+        tmp4.className = 'w-[15%] h-fit max-h-[40px] max-w-[40px] mr-1';
         screen.appendChild(tmp4);
       } else if (items[i] === 5) {
         var tmp5 = document.createElement('img');
         tmp5.src = five;
-        tmp5.className = 'w-[15%] h-fit max-w-[40px] mr-1';
+        tmp5.className = 'w-[15%] h-fit max-h-[40px] max-w-[40px] mr-1';
         screen.appendChild(tmp5);
       } else {
         var tmp6 = document.createElement('img');
         tmp6.src = six;
-        tmp6.className = 'w-[15%] h-fit max-w-[40px] mr-1';
+        tmp6.className = 'w-[15%] h-fit max-h-[40px] max-w-[40px] mr-1';
         screen.appendChild(tmp6);
       }
     }
@@ -461,7 +443,7 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
   }
 
   return (
-    <div className="md:w-3/5 lg:w-3/5 w-full mb-10 flex flex-wrap items-end bg-gradient-radial dark:from-pink-300 dark:via-purple-300 dark:to-indigo-400 from-red-600 to-red-900  rounded-md border-[16px] border-mainBlack">
+    <div className="md:w-3/5 lg:w-3/5 w-full md:mb-10 flex flex-wrap items-end bg-gradient-radial dark:from-pink-300 dark:via-purple-300 dark:to-indigo-400 from-red-600 to-red-900  rounded-md border-[16px] border-mainBlack">
       <div className="sm:w-2/3 w-full items-center flex-initial">
         <div className="dice">
           <ol
@@ -688,14 +670,14 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
           <button
             id="rollDice"
             onClick={rollDiceOnClick}
-            className="sm:ml-3 sm:mr-5 mt-10 mb-3 bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded dark:bg-divisionGray dark:text-mainBlack dark:hover:bg-slate-400"
+            className="sm:ml-3 sm:mr-5 mt-10 mb-3 shadow-2xl bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded dark:bg-divisionGray dark:text-mainBlack dark:hover:bg-slate-400"
           >
             start
           </button>
           <button
             id="chooseDice"
             onClick={result}
-            className="mt-10 mb-3 bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded dark:bg-divisionGray dark:text-mainBlack dark:hover:bg-slate-400"
+            className="mt-10 mb-3 bg-mainYellow shadow-2xl hover:bg-amber-500 text-white font-bold py-2 px-4 rounded dark:bg-divisionGray dark:text-mainBlack dark:hover:bg-slate-400"
           >
             확정
           </button>
@@ -703,7 +685,7 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
             <button
               id="chooseDice"
               onClick={refresh}
-              className="sm:mx-5 mt-10 mb-3 bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded dark:bg-divisionGray dark:text-mainBlack dark:hover:bg-slate-400"
+              className="sm:mx-5 mt-10 mb-3 shadow-2xl bg-mainYellow hover:bg-amber-500 text-white font-bold py-2 px-4 rounded dark:bg-divisionGray dark:text-mainBlack dark:hover:bg-slate-400"
             >
               reset
             </button>
@@ -718,35 +700,43 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
         <div className="lg:text-base md:text-xs h-fit bg-white/20 rounded-md border-2 border-white dark:bg-gray-900 ">
           <div className="p-2 flex flex-col justify-center ">
             <div className="flex justify-between md:flex-wrap my-1">
-              <strong className="big text-slate-200">보유 포인트 :</strong>
-              <div className="text-right text-yellow-500 min-w-[64px] w-auto px-2 bg-white bg-opacity-20 rounded-md">
+              <strong className="text-slate-200 md:w-20 lg:w-24">
+                보유 포인트
+              </strong>
+              <div className="text-right text-yellow-500 w-[70px] px-2 bg-white bg-opacity-20 rounded-md">
                 {member.memberInfo.point}
               </div>
             </div>
             <div className="flex justify-between md:flex-wrap my-1">
-              <strong className="big text-slate-200">참가 포인트 :</strong>
+              <strong className="text-slate-200 md:w-20 lg:w-24">
+                참가 포인트
+              </strong>
               {confirm ? (
                 <input
                   id="point"
                   value={betting}
-                  className="w-16 px-2 bg-white text-right h-fit big rounded-md text-yellow-500"
+                  className="w-[70px] px-2 bg-white text-right h-fit rounded-md text-yellow-500"
                   onChange={onChange}
                 ></input>
               ) : (
-                <div className="text-yellow-500 min-w-[64px] text-right w-auto px-2 bg-white bg-opacity-20 rounded-md">
+                <div className="text-yellow-500 w-[70px] text-right px-2 bg-white bg-opacity-20 rounded-md">
                   {betting}
                 </div>
               )}
             </div>
             <div className="flex justify-between md:flex-wrap my-1">
-              <strong className="big text-slate-200">점수 :</strong>
-              <div className="text-yellow-500 min-w-[64px] w-auto px-2 bg-white bg-opacity-20 rounded-md text-right">
+              <strong className="text-slate-200 md:w-20 lg:w-24">
+                주사위 점수
+              </strong>
+              <div className="text-yellow-500 w-[70px] px-2 bg-white bg-opacity-20 rounded-md text-right">
                 {score}
               </div>
             </div>
             <div className="flex justify-between md:flex-wrap my-1">
-              <strong className="big text-slate-200">잔여 횟수 :</strong>
-              <div className="big text-yellow-500 min-w-[64px] w-auto px-2 bg-white bg-opacity-20 rounded-md text-right">
+              <strong className="text-slate-200 md:w-20 lg:w-24">
+                잔여 횟수
+              </strong>
+              <div className="text-yellow-500 w-[70px] px-2 bg-white bg-opacity-20 rounded-md text-right">
                 {MAX_PLAY_DICE - count}
               </div>
             </div>
