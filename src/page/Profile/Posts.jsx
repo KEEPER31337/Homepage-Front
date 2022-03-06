@@ -1,229 +1,41 @@
-import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import MyPageFrame from './Components/Frames/MyPageFrame';
+import memberAPI from 'API/v1/member';
 
-const dummyPosts = [
-  {
-    memberId: 798,
-    categoryId: 243,
-    title: 'test 게시판 제목0',
-    content: 'test 게시판 제목 내용0',
-    visitCount: 0,
-    likeCount: 0,
-    dislikeCount: 1,
-    commentCount: 0,
-    registerTime: '2022-02-15T15:38:32.876+00:00',
-    updateTime: '2022-02-15T15:38:32.876+00:00',
-    ipAddress: '192.11.223',
-    allowComment: 0,
-    isNotice: 0,
-    isSecret: 0,
-    isTemp: 0,
-    password: null,
-    thumbnailId: null,
-  },
-  {
-    memberId: 798,
-    categoryId: 243,
-    title: 'test 게시판 제목1',
-    content: 'test 게시판 제목 내용1',
-    visitCount: 0,
-    likeCount: 0,
-    dislikeCount: 1,
-    commentCount: 0,
-    registerTime: '2022-02-15T15:38:32.880+00:00',
-    updateTime: '2022-02-15T15:38:32.880+00:00',
-    ipAddress: '192.11.223',
-    allowComment: 0,
-    isNotice: 0,
-    isSecret: 0,
-    isTemp: 0,
-    password: null,
-    thumbnailId: null,
-  },
-  {
-    memberId: 798,
-    categoryId: 243,
-    title: 'test 게시판 제목2',
-    content: 'test 게시판 제목 내용2',
-    visitCount: 0,
-    likeCount: 0,
-    dislikeCount: 1,
-    commentCount: 0,
-    registerTime: '2022-02-15T15:38:32.884+00:00',
-    updateTime: '2022-02-15T15:38:32.884+00:00',
-    ipAddress: '192.11.223',
-    allowComment: 0,
-    isNotice: 0,
-    isSecret: 0,
-    isTemp: 0,
-    password: null,
-    thumbnailId: null,
-  },
-  {
-    memberId: 798,
-    categoryId: 243,
-    title: 'test 게시판 제목3',
-    content: 'test 게시판 제목 내용3',
-    visitCount: 0,
-    likeCount: 0,
-    dislikeCount: 1,
-    commentCount: 0,
-    registerTime: '2022-02-15T15:38:32.890+00:00',
-    updateTime: '2022-02-15T15:38:32.890+00:00',
-    ipAddress: '192.11.223',
-    allowComment: 0,
-    isNotice: 0,
-    isSecret: 0,
-    isTemp: 0,
-    password: null,
-    thumbnailId: null,
-  },
-  {
-    memberId: 798,
-    categoryId: 243,
-    title: 'test 게시판 제목4',
-    content: 'test 게시판 제목 내용4',
-    visitCount: 0,
-    likeCount: 0,
-    dislikeCount: 1,
-    commentCount: 0,
-    registerTime: '2022-02-15T15:38:32.894+00:00',
-    updateTime: '2022-02-15T15:38:32.894+00:00',
-    ipAddress: '192.11.223',
-    allowComment: 0,
-    isNotice: 0,
-    isSecret: 0,
-    isTemp: 0,
-    password: null,
-    thumbnailId: null,
-  },
-  {
-    memberId: 798,
-    categoryId: 243,
-    title: 'test 게시판 제목5',
-    content: 'test 게시판 제목 내용5',
-    visitCount: 0,
-    likeCount: 0,
-    dislikeCount: 1,
-    commentCount: 0,
-    registerTime: '2022-02-15T15:38:32.898+00:00',
-    updateTime: '2022-02-15T15:38:32.898+00:00',
-    ipAddress: '192.11.223',
-    allowComment: 0,
-    isNotice: 0,
-    isSecret: 0,
-    isTemp: 0,
-    password: null,
-    thumbnailId: null,
-  },
-  {
-    memberId: 798,
-    categoryId: 243,
-    title: 'test 게시판 제목6',
-    content: 'test 게시판 제목 내용6',
-    visitCount: 0,
-    likeCount: 0,
-    dislikeCount: 1,
-    commentCount: 0,
-    registerTime: '2022-02-15T15:38:32.902+00:00',
-    updateTime: '2022-02-15T15:38:32.902+00:00',
-    ipAddress: '192.11.223',
-    allowComment: 0,
-    isNotice: 0,
-    isSecret: 0,
-    isTemp: 0,
-    password: null,
-    thumbnailId: null,
-  },
-  {
-    memberId: 798,
-    categoryId: 243,
-    title: 'test 게시판 제목7',
-    content: 'test 게시판 제목 내용7',
-    visitCount: 0,
-    likeCount: 0,
-    dislikeCount: 1,
-    commentCount: 0,
-    registerTime: '2022-02-15T15:38:32.906+00:00',
-    updateTime: '2022-02-15T15:38:32.906+00:00',
-    ipAddress: '192.11.223',
-    allowComment: 0,
-    isNotice: 0,
-    isSecret: 0,
-    isTemp: 0,
-    password: null,
-    thumbnailId: null,
-  },
-  {
-    memberId: 798,
-    categoryId: 243,
-    title: 'test 게시판 제목8',
-    content: 'test 게시판 제목 내용8',
-    visitCount: 0,
-    likeCount: 0,
-    dislikeCount: 1,
-    commentCount: 0,
-    registerTime: '2022-02-15T15:38:32.909+00:00',
-    updateTime: '2022-02-15T15:38:32.909+00:00',
-    ipAddress: '192.11.223',
-    allowComment: 0,
-    isNotice: 0,
-    isSecret: 0,
-    isTemp: 0,
-    password: null,
-    thumbnailId: null,
-  },
-  {
-    memberId: 798,
-    categoryId: 243,
-    title: 'test 게시판 제목9',
-    content: 'test 게시판 제목 내용9',
-    visitCount: 0,
-    likeCount: 0,
-    dislikeCount: 1,
-    commentCount: 0,
-    registerTime: '2022-02-15T15:38:32.913+00:00',
-    updateTime: '2022-02-15T15:38:32.913+00:00',
-    ipAddress: '192.11.223',
-    allowComment: 0,
-    isNotice: 0,
-    isSecret: 0,
-    isTemp: 0,
-    password: null,
-    thumbnailId: null,
-  },
-];
-const Posts = () => {
-  const API_URI = process.env.REACT_APP_API_URL;
-  const [isLoading, setIsLoading] = useState(true);
+const Posts = ({ token }) => {
   const postHeads = ['번호', '카테고리', '제목', '날짜', '조회수', '추천수'];
-  const [posts, setPosts] = useState(new Array());
-
-  const getPosts = async () => {
-    try {
-      setPosts(
-        dummyPosts.map((posts, index) => ({
-          index: index + 1,
-          category: posts.categoryId,
-          title: posts.title,
-          date: posts.registerTime,
-          visitCount: posts.visitCount,
-          likeCount: posts.likeCount,
-        }))
-      );
-      setIsLoading(false);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  const [items, setItems] = useState(new Array());
+  const pageState = useState(0);
+  const [page, setPage] = pageState;
 
   useEffect(() => {
-    getPosts();
-  }, []);
+    const size = 10;
+    memberAPI.getUsersPosts({ token, page, size }).then((result) => {
+      if (result.success) {
+        setItems(
+          result.list.map((item, index) => ({
+            postId: index,
+            category: item.category,
+            title: item.title,
+            createdAt: item.registerTime,
+            visitCount: item.visitCount,
+            likeCount: item.likeCount,
+          }))
+        );
+      }
+    });
+  }, [page]);
 
-  if (isLoading) return <></>;
-  else return <MyPageFrame items={posts} itemHeads={postHeads} />;
+  return (
+    <MyPageFrame items={items} itemHeads={postHeads} pageState={pageState} />
+  );
 };
 
-export default Posts;
+const mapStateToProps = (state) => {
+  return {
+    token: state.member.token,
+  };
+};
+
+export default connect(mapStateToProps)(Posts);

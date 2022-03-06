@@ -92,7 +92,7 @@ async function changePassword({ password, token }) {
   }
 }
 
-async function getOtherById(token, id) {
+async function getOtherById({ token, id }) {
   // TODO : API parameter object 형식으로 통일 부탁드립니당.
   const options = {
     method: 'GET',
@@ -110,7 +110,7 @@ async function getOtherById(token, id) {
   }
 }
 
-async function deleteMember(token, password) {
+async function deleteMember({ token, password }) {
   const options = {
     method: 'DELETE',
     url: API_URL + '/v1/member/delete',
@@ -128,6 +128,109 @@ async function deleteMember(token, password) {
   }
 }
 
+async function getUsersPosts({ token, page, size }) {
+  const options = {
+    method: 'Get',
+    url: API_URL + '/v1/member/post',
+    params: { page: page, size: size },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+async function getUsersTempPosts({ token, page, size }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/member/temp_post',
+    params: { page: page, size: size },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+async function follow({ token, loginId }) {
+  const options = {
+    method: 'POST',
+    url: API_URL + '/v1/member/follow',
+    data: { followeeLoginId: loginId },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+async function unfollow({ token, loginId }) {
+  const options = {
+    method: 'POST',
+    url: API_URL + '/v1/member/unfollow',
+    data: { followeeLoginId: loginId },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+async function updateThumbnail({ token, ipAddress, formdata }) {
+  const options = {
+    method: 'PUT',
+    url: API_URL + '/v1/member/update/thumbnail',
+    params: { ipAddress },
+    data: formdata,
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+async function getPointList({ token, page, size }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/point/lists/log',
+    params: { page: page, size: size },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 export default {
   getMember,
   getMembers,
@@ -136,4 +239,10 @@ export default {
   changePassword,
   getOtherById,
   deleteMember,
+  getUsersPosts,
+  getUsersTempPosts,
+  follow,
+  unfollow,
+  updateThumbnail,
+  getPointList,
 };

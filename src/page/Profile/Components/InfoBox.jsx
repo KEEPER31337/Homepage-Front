@@ -17,15 +17,21 @@ function getChildren(type, params) {
         </div>
       );
     case 'postlist':
-      return <PostList userId={params.userId} />;
+      return <PostList token={params.token} />;
     case 'social':
       return <Social socialList={params.socialList} />;
     case 'setPwd':
       return <SetPwd token={params.token} />;
     case 'setInfo':
-      return <SetInfo token={params.token} memberInfo={params.memberInfo} />;
+      return (
+        <SetInfo
+          token={params.token}
+          memberInfo={params.memberInfo}
+          infoState={params.infoState}
+        />
+      );
     case 'setEmail':
-      return <SetEmail token={params.token} />;
+      return <SetEmail token={params.token} infoState={params.infoState} />;
     default:
       return (
         <div className="text-center w-full dark:text-mainWhite">infoBox</div>
