@@ -28,19 +28,19 @@ const Table = ({ notices, boards, currentPage, MAX_POSTS }) => {
     <table className="w-full mb-5">
       <thead>
         <tr className="bg-mainYellow ">
-          <th className="border-x border-mainWhite p-1 rounded-tl-xl dark:border-mainBlack">
+          <th className="border-x border-mainWhite p-1 rounded-tl-xl md:w-[3em] dark:border-mainBlack">
             No.
           </th>
-          <th className="border-x border-mainWhite p-1 rounded-tr-xl sm:rounded-none dark:border-mainBlack ">
+          <th className="border-x border-mainWhite p-1 rounded-tr-xl md:rounded-none dark:border-mainBlack ">
             제목
           </th>
-          <th className="border-x border-mainWhite p-1 hidden sm:table-cell dark:border-mainBlack">
+          <th className="border-x border-mainWhite p-1 hidden md:table-cell md:w-[4em] md:min-w-[4em] dark:border-mainBlack">
             작성자
           </th>
-          <th className="border-x border-mainWhite p-1 hidden sm:table-cell dark:border-mainBlack ">
+          <th className="border-x border-mainWhite p-1 hidden md:table-cell md:w-[6em] md:min-w-[6em] dark:border-mainBlack ">
             작성 일시
           </th>
-          <th className="border-x border-mainWhite p-1 rounded-tr-xl hidden sm:table-cell dark:border-mainBlack">
+          <th className="border-x border-mainWhite p-1 rounded-tr-xl hidden md:table-cell md:w-[4em] md:min-w-[4em] dark:border-mainBlack">
             조회수
           </th>
         </tr>
@@ -55,7 +55,7 @@ const Table = ({ notices, boards, currentPage, MAX_POSTS }) => {
             }
           >
             {/*console.log(board)*/}
-            <td className="w-[3em] border-r border-divisionGray text-center dark:border-darkComponent">
+            <td className="border-r border-divisionGray text-center dark:border-darkComponent">
               공지
             </td>
             <td className="p-2 dark:border-darkComponent">
@@ -91,7 +91,7 @@ const Table = ({ notices, boards, currentPage, MAX_POSTS }) => {
                 ) : (
                   ''
                 )}
-                <p className="mt-2 text-xs sm:hidden">
+                <p className="mt-2 text-xs md:hidden">
                   글쓴이 : <strong>{board.writer} </strong>| 작성일시 :
                   <strong>{getDateWithFormat(board.registerTime)} </strong>|{' '}
                   <span className="inline-block">
@@ -101,15 +101,15 @@ const Table = ({ notices, boards, currentPage, MAX_POSTS }) => {
               </Link>
             </td>
 
-            <td className="min-w-[4em] text-center dark:border-darkComponent hidden sm:table-cell">
+            <td className="text-center dark:border-darkComponent hidden md:table-cell">
               {board.writer}
             </td>
-            <td className="min-w-[6em] text-center dark:border-darkComponent hidden sm:table-cell">
+            <td className="text-center dark:border-darkComponent hidden md:table-cell">
               {/*getDateWithFormat(board.registerTime)
                 <br />*/}
               {getDiffTimeWithFormat(board.registerTime)}
             </td>
-            <td className="min-w-[4em] text-center dark:border-darkComponent hidden sm:table-cell">
+            <td className="text-center dark:border-darkComponent hidden md:table-cell">
               {board.visitCount}
             </td>
           </tr>
@@ -129,7 +129,7 @@ const Table = ({ notices, boards, currentPage, MAX_POSTS }) => {
             </td>
             <td className="p-2 dark:border-darkComponent">
               <Link to={`/post/${categoryId}/${board.id}`}>
-                <div className="max-w-[50vw] md:max-w-[40vw] sm:max-w-[20vw] inline-block">
+                <div className="max-w-[50vw] md:max-w-[30vw] md:w-content inline-block">
                   <p className="truncate text-md ">
                     {board.isSecret ? (
                       <LockClosedIcon className="inline-block h-5 w-5 m-1 text-slate-400 " />
@@ -165,7 +165,7 @@ const Table = ({ notices, boards, currentPage, MAX_POSTS }) => {
                 ) : (
                   ''
                 )}
-                <p className="mt-2 text-xs sm:hidden">
+                <p className="mt-2 text-xs md:hidden">
                   글쓴이 : <strong>{board.writer} </strong>| 작성일시 :
                   <strong>{getDateWithFormat(board.registerTime)} </strong>|{' '}
                   <span className="inline-block">
@@ -175,15 +175,15 @@ const Table = ({ notices, boards, currentPage, MAX_POSTS }) => {
               </Link>
             </td>
 
-            <td className="min-w-[4em] text-center dark:border-darkComponent hidden sm:table-cell">
+            <td className="text-center dark:border-darkComponent hidden md:table-cell">
               {board.writer}
             </td>
-            <td className="min-w-[6em] text-center dark:border-darkComponent hidden sm:table-cell">
+            <td className="text-center dark:border-darkComponent hidden md:table-cell">
               {/*getDateWithFormat(board.registerTime)
                 <br />*/}
               {getDiffTimeWithFormat(board.registerTime)}
             </td>
-            <td className="min-w-[4em] text-center dark:border-darkComponent hidden sm:table-cell">
+            <td className="text-center dark:border-darkComponent hidden md:table-cell">
               {board.visitCount}
             </td>
           </tr>

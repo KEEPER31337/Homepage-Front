@@ -8,9 +8,7 @@ const fontList = ['돋움', '나눔 고딕', '바탕'];
 
 const Info = (props) => {
   const [font, setFont] = useState('돋움');
-
   const currentCategoryName = props.state.category.current.name;
-
   useEffect(() => {
     console.log(font);
   }, [font]);
@@ -26,25 +24,13 @@ const Info = (props) => {
             {currentCategoryName}입니다.
           </p>
           <div>
-            {/* 
-          <div className="mx-2 inline-block w-1/8">
-            <p className="text-center m-2 border-b-2 border-divisionGray dark:border-darkComponent">
-              Font
-            </p>
-            <select
-              name="font"
-              className="border text-xs focus:ring-mainYellow focus:border-mainYellow dark:border-darkPoint dark:bg-darkComponent dark:text-mainWhite"
-              onChange={(e) => {
-                setFont(e.target.value);
-              }}
-            >
-              {fontList.map((item) => (
-                <option key={item} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
-          </div>*/}
+            {props.isWrite ? (
+              ''
+            ) : (
+              <div name="right-sideBar" className="m-5 w-[20vw] inline-block">
+                <WriteButton />
+              </div>
+            )}
           </div>
         </div>
       </div>

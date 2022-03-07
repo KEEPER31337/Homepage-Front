@@ -41,7 +41,7 @@ const BoardView = (props) => {
     <>
       <AuthUser>
         <div className="flex justify-center dark:bg-mainBlack">
-          <div className="inline-block m-5 w-full">
+          <div className="inline-block m-5 w-[90vw]">
             <Info />
             {board?.id && prevBoard.id !== board.id ? (
               <Content
@@ -77,13 +77,10 @@ const BoardView = (props) => {
               categoryId={categoryId}
             />
           </div>
-          <div name="left-sideBar" className="hidden m-5 w-1/6 sm:inline-block">
-            <WriteButton />
-          </div>
         </div>
         <div
           name="mobile 글쓰기 버튼"
-          className="fixed right-0 bottom-10 m-5 inline-block sm:hidden"
+          className="fixed right-0 bottom-10 m-5 inline-block md:hidden"
         >
           <WriteButtonMobile />
         </div>
