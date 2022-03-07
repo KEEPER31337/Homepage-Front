@@ -49,10 +49,7 @@ const Gallary = ({ notices, boards }) => {
                   'bg-slate-100 dark:bg-slate-800 border-l border-b border-r rounded-lg p-2 group shadow-lg dark:border-gray-600'
                 }
               >
-                <Link
-                  to={`/post/${categoryId}/${board.id}`}
-                  state={{ test: 'test' }}
-                >
+                <Link to={`/post/${categoryId}/${board.id}`}>
                   <div className={' relative'}>
                     <div className="relative w-full h-72 rounded-lg overflow-hidden">
                       {console.log(board.thumbnail.id)}

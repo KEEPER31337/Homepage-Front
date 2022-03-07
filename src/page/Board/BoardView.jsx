@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 //local
 import Info from 'page/Board/Components/Info';
-import Table from 'page/Board/Components/Table';
+import Boards from 'page/Board/Components/Boards';
 import Content from 'page/Board/Components/Content';
 import Comments from 'page/Board/Components/Comments';
 import WriteButton from 'page/Board/Components/WriteButton';
@@ -72,7 +72,7 @@ const BoardView = (props) => {
               </div>
             )}
 
-            <Table
+            <Boards
               commentChangeFlag={commentChangeFlag}
               categoryId={categoryId}
             />

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 
 //local
 import Info from 'page/Board/Components/Info';
-import Table from 'page/Board/Components/Table';
+import Boards from 'page/Board/Components/Boards';
 import WriteButton from 'page/Board/Components/WriteButton';
 import WriteButtonMobile from 'page/Board/Components/MobileWriteButton';
 import AuthUser from 'shared/AuthUser';
@@ -21,7 +21,7 @@ const Board = () => {
         <div className="flex justify-center h-full dark:bg-mainBlack">
           <div className="inline-block m-5 w-full">
             <Info />
-            <Table categoryId={categoryId} />
+            <Boards categoryId={categoryId} />
           </div>
           <div name="left-sideBar" className="hidden m-5 w-1/6 sm:inline-block">
             <WriteButton />
