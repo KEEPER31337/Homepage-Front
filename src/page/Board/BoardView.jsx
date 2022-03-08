@@ -21,6 +21,7 @@ const BoardView = (props) => {
   const [commentChangeFlag, setCommentChangeFlag] = useState(false); //댓글이 추가/제거됐을 때 페이지를 재 렌더링하기 위함(굳이 필요한가?)
   const [likeChangeFlag, setLikeChangeFlag] = useState(false); //게시글의 추천/비추천 여부의 변경을 감지하기 위한 플래그
   const token = props.state.member.token;
+
   useEffect(() => {
     prevBoard ? setPrevBoard({ id: -1 }) : setPrevBoard(board);
     if (token) {

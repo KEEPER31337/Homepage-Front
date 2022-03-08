@@ -48,12 +48,15 @@ async function create({
   }
 }
 
-async function getOne({ no, token }) {
+async function getOne({ no, token, password }) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/post/' + no,
     headers: {
       Authorization: `${token}`,
+    },
+    params: {
+      password,
     },
   };
   try {

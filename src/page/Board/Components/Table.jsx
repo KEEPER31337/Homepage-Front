@@ -17,7 +17,7 @@ import SecretPwdInput from './Modals/SecretPwdInput';
 const API_URL = process.env.REACT_APP_API_URL;
 
 const Table = ({ notices, boards, currentPage, MAX_POSTS }) => {
-  const { categoryId, no } = useParams();
+  const { categoryId, postId } = useParams();
   const [modalOpen, setModalOpen] = useState(false);
 
   const openModal = () => {
@@ -60,10 +60,9 @@ const Table = ({ notices, boards, currentPage, MAX_POSTS }) => {
             key={board.id}
             className={
               'bg-slate-100 dark:bg-gray-900 border-b-2 hover:bg-slate-200 hover:shadow-lg dark:hover:bg-darkComponent dark:border-darkComponent ' +
-              getCurrentBoard(board.id, no)
+              getCurrentBoard(board.id, postId)
             }
           >
-            {/*console.log(board)*/}
             <td className="border-r border-divisionGray text-center dark:border-darkComponent">
               공지
             </td>
@@ -129,7 +128,7 @@ const Table = ({ notices, boards, currentPage, MAX_POSTS }) => {
             key={board.id}
             className={
               ' border-b-2 hover:bg-slate-200 hover:shadow-lg dark:hover:bg-darkComponent dark:border-darkComponent ' +
-              getCurrentBoard(board.id, no)
+              getCurrentBoard(board.id, postId)
             }
           >
             {/*console.log(board)*/}
