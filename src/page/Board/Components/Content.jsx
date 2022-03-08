@@ -145,7 +145,10 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
         </p>
       </div>
       {board.writerId == myId ? (
-        <div className="px-10 absolute w-full text-xs md:w-[75%] sm:text-base flex flex-row-reverse ">
+        <div
+          name="글 수정/삭제"
+          className="px-2 absolute w-[90vw] text-xs sm:text-base flex flex-row-reverse "
+        >
           <div className="rounded-lg bg-slate-100 my-2 dark:bg-darkComponent">
             <UserCircleIcon className="inline-block h-5 w-5 m-1 text-divisionGray dark:text-slate-500 " />
             <Link
