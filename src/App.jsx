@@ -23,6 +23,7 @@ import BookAdd from './page/Library/BookAdd';
 import BookManage from './page/Library/BookManage';
 import Ranking from 'page/Ranking/Ranking';
 import attendanceAPI from 'API/v1/attendance';
+import Chatting from 'shared/Chatting';
 
 const App = (props) => {
   useEffect(() => {
@@ -56,6 +57,7 @@ const App = (props) => {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/ranking" element={<Ranking />} />
         </Routes>
+        <Chatting />
       </>
     </div>
   );
