@@ -12,6 +12,7 @@ import WriteButtonMobile from 'page/Board/Components/MobileWriteButton';
 import testData from 'page/Board/testData';
 import postAPI from 'API/v1/post';
 import AuthUser from 'shared/AuthUser';
+import ScrollToTop from './Components/ScrollToTop';
 
 const BoardView = (props) => {
   const { categoryId, postId } = useParams();
@@ -40,6 +41,7 @@ const BoardView = (props) => {
   return (
     <>
       <AuthUser>
+        <ScrollToTop />
         <div className="flex justify-center dark:bg-mainBlack">
           <div className="inline-block m-5 w-[90vw]">
             <Info />
