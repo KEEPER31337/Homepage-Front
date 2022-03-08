@@ -29,6 +29,7 @@ const BoardView = (props) => {
         .getOne({
           no: postId,
           token: token,
+          password: 'aaaa',
         })
         .then((res) => {
           console.log(res);
