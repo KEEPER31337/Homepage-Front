@@ -12,11 +12,20 @@ import {
   getDiffTimeWithFormat,
   isNewPost,
 } from '../BoardUtil';
+import SecretPwdInput from './Modals/SecretPwdInput';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 const Table = ({ notices, boards, currentPage, MAX_POSTS }) => {
   const { categoryId, no } = useParams();
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   const getCurrentBoard = (id, currentId) => {
     //현재 게시글
@@ -165,6 +174,15 @@ const Table = ({ notices, boards, currentPage, MAX_POSTS }) => {
                 ) : (
                   ''
                 )}
+                {board.isSecret ? (
+                  <>
+                    <button onClick={openModal}>모달팝업</button>
+                    <SecretPwdInput open={modalOpen} close={closeModal} />
+                  </>
+                ) : (
+                  ''
+                )}
+
                 <p className="mt-2 text-xs md:hidden">
                   글쓴이 : <strong>{board.writer} </strong>| 작성일시 :
                   <strong>{getDateWithFormat(board.registerTime)} </strong>|{' '}
