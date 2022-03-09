@@ -2,10 +2,10 @@
 
 export default function ChatLog({ chatLogList }) {
   return (
-    <div>
+    <div className="h-96 overflow-y-scroll">
       <ul role="list" className="divide-y divide-gray-200">
         {chatLogList.map((chatLog, index) => (
-          <li key={index} className="py-4">
+          <li key={index} className="p-4">
             <div className="flex space-x-3">
               <img
                 className="h-6 w-6 rounded-full"
