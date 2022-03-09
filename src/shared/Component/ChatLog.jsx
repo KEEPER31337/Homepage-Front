@@ -1,5 +1,8 @@
 /* This example requires Tailwind CSS v2.0+ */
 
+import imgMember from 'assets/img/member.svg';
+import imgMemberCircle from 'assets/img/memberCircle.svg';
+
 export default function ChatLog({ chatLogList }) {
   return (
     <div className="h-96 overflow-y-scroll">
@@ -9,12 +12,14 @@ export default function ChatLog({ chatLogList }) {
             <div className="flex space-x-3">
               <img
                 className="h-6 w-6 rounded-full"
-                src={chatLog.imageUrl}
+                src={
+                  chatLog.profileImage ? chatLog.profileImage : imgMemberCircle
+                }
                 alt=""
               />
               <div className="flex-1 space-y-1">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-medium">{chatLog.name}</h3>
+                  <h3 className="text-sm font-medium">{chatLog.userName}</h3>
                   <p className="text-sm text-gray-500">{chatLog.time}</p>
                 </div>
                 <p className="text-sm text-gray-500">{chatLog.msg}</p>
