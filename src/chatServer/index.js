@@ -2,8 +2,12 @@ const express = require('express');
 const http = require('http');
 const SocketIO = require('socket.io');
 const cors = require('cors');
+const dayjs = require('dayjs');
+// local
+const authAPI = require('./authAPI');
 
 const PORT = 3002;
+const timeFormat = 'YYYY-MM-DD hh:mm:ss';
 
 const event = {
   connection: 'connection',
@@ -27,10 +31,20 @@ wsServer.on(event.connection, (socket) => {
     console.log(socket.rooms);
   });
 
-  socket.on(event.msg, ({ roomName, msg }, done) => {
-    console.log(roomName, msg, socket.rooms);
-    socket.to(roomName).emit(event.msg, { userName: 'anony', msg });
-    done();
+  socket.on(event.msg, ({ roomName, token, msg }, done) => {
+    const time = dayjs().format(timeFormat);
+    authAPI.getAuth({ token }).then((data) => {
+      if (data.success) {
+        console.log(data);
+        socket.to(roomName).emit(event.msg, {
+          userName: data.data.nickName,
+          profileImage: data.thumbnail,
+          msg,
+          time,
+        });
+      }
+      done(time);
+    });
   });
 });
 

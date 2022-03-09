@@ -20,15 +20,15 @@ const ChatModal = ({ member, visible, handleClose }) => {
   const [msg, setMsg] = useState('');
   const [chatLogList, setChatLogList] = useState([]);
 
-  const sendDone = () => {
+  const sendDone = (time) => {
     setChatLogList((prevChatLogList) => [
       ...prevChatLogList,
       {
-        name: 'Me',
-        imageUrl:
+        userName: 'You',
+        profileImage:
           'https://avatars.githubusercontent.com/u/23546441?s=400&u=db7abf2929e5518c12189034dc3fed9bda94f0a6&v=4',
         msg,
-        time: 'now',
+        time,
       },
     ]);
     setMsg('');
@@ -42,21 +42,13 @@ const ChatModal = ({ member, visible, handleClose }) => {
     );
   };
 
-  const handleReceive = ({ userName, msg }) => {
-    setChatLogList((prevChatLogList) => [
-      ...prevChatLogList,
-      {
-        name: userName,
-        imageUrl:
-          'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80',
-        msg: msg,
-        time: 'now',
-      },
-    ]);
+  const handleReceive = (chatLog) => {
+    setChatLogList((prevChatLogList) => [...prevChatLogList, chatLog]);
   };
   useEffect(() => {
     socket.emit(event.joinRoom, { roomName: 'global' });
     socket.on(event.msg, handleReceive);
+    return () => socket.off(event.msg, handleReceive);
   }, []);
 
   return (
