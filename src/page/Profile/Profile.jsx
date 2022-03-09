@@ -14,6 +14,39 @@ const Profile = ({ token, memberInfo }) => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState('');
 
+  const [followTrigger, setFollowTrigger] = useState(false);
+  const [unFollowTrigger, setUnFollowTrigger] = useState(false);
+
+  useEffect(() => {
+    if (followTrigger) {
+      memberAPI.follow({ token, loginId: user.loginId }).then((result) => {
+        if (result.success) {
+          getUser();
+          console.log('success', result);
+        } else console.log('fail', result);
+      });
+      setFollowTrigger(false);
+      getUser();
+    }
+  }, [followTrigger]);
+
+  useEffect(() => {
+    if (unFollowTrigger) {
+      memberAPI.unfollow({ token, loginId: user.loginId }).then((result) => {
+        if (result.success) {
+          getUser();
+          console.log(result);
+        } else console.log(result);
+      });
+      setUnFollowTrigger(false);
+      getUser();
+    }
+  }, [unFollowTrigger]);
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
   const myBtns = [
     {
       text: '수정',
@@ -32,12 +65,7 @@ const Profile = ({ token, memberInfo }) => {
     {
       text: '팔로우하기',
       onClick: () => {
-        memberAPI.follow({ token, loginId: user.loginId }).then((result) => {
-          if (result.success) {
-            getUser();
-            console.log(result);
-          } else console.log(result);
-        });
+        if (!followTrigger) setFollowTrigger(true);
       },
     },
     {
@@ -51,12 +79,7 @@ const Profile = ({ token, memberInfo }) => {
     {
       text: '팔로우취소',
       onClick: () => {
-        memberAPI.unfollow({ token, loginId: user.loginId }).then((result) => {
-          if (result.success) {
-            getUser();
-            console.log(result);
-          } else console.log(result);
-        });
+        if (!unFollowTrigger) setUnFollowTrigger(true);
       },
     },
     {
@@ -109,7 +132,7 @@ const Profile = ({ token, memberInfo }) => {
     </div>
   );
 
-  if (user == null) {
+  if (!user) {
     return <div className="text-red-500">{error}</div>;
   } else {
     return (
