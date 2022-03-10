@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import Draggable from 'react-draggable';
 import io from 'socket.io-client';
 import { connect } from 'react-redux';
-import { XCircleIcon } from '@heroicons/react/solid';
+import { XCircleIcon, PaperAirplaneIcon } from '@heroicons/react/solid';
+
 // local
 import ChatLog from './ChatLog';
 import actionMember from 'redux/action/member';
@@ -74,15 +75,15 @@ const ChatModal = ({ member, visible, handleClose }) => {
           </div>
           <div className="py-2 px-5">
             <input
-              className="w-4/5 p-2 text-black"
+              className="w-4/5 p-2 rounded-md text-black"
               value={msg}
               onChange={(e) => setMsg(e.target.value)}
             />
             <button
-              className="w-1/5 py-2 font-bold border-2 border-amber-400 rounded-md text-amber-900 bg-amber-100 hover:bg-amber-200"
+              className="mx-1 p-1 font-bold border-2 border-amber-400 rounded-md text-white bg-mainYellow hover:bg-pointYellow"
               onClick={handleSend}
             >
-              전송
+              <PaperAirplaneIcon className="inline-block h-8 w-8" />
             </button>
           </div>
         </div>

@@ -20,11 +20,11 @@ export default function ChatLog({ chatLogList }) {
               />
               <div>{chatLog.userName}</div>
             </div>
-            <div>
-              <div className="max-w-full rounded-md  py-1 px-2 break-all bg-blue-50 text-black">
+            <div className="w-full">
+              <div className="max-w-full w-fit rounded-md text-sm py-1 px-2 break-all bg-blue-50 text-black">
                 {chatLog.msg}
               </div>
-              <div className="text-right text-sm text-gray-400">
+              <div className="text-right text-xs text-gray-400">
                 {chatLog.time}
               </div>
             </div>
