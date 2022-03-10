@@ -6,6 +6,7 @@ import { XCircleIcon } from '@heroicons/react/solid';
 // local
 import ChatLog from './ChatLog';
 import actionMember from 'redux/action/member';
+import { isMobile } from 'react-device-detect';
 
 const url = process.env.REACT_APP_CHAT_URL;
 const socket = io.connect(url);
@@ -53,13 +54,13 @@ const ChatModal = ({ member, visible, handleClose }) => {
 
   return (
     <>
-      <Draggable>
+      <Draggable disabled={isMobile}>
         <div
           className={`${
             visible ? 'visible' : 'invisible'
-          } rounded-md cursor-grabbing text-center ring-amber-400 bg-amber-50 text-mainBlack dark:bg-darkComponent dark:text-mainWhite`}
+          } w-full sm:w-80 rounded-md cursor-grabbing text-center ring-amber-400 bg-amber-50 text-mainBlack dark:bg-darkComponent dark:text-mainWhite`}
         >
-          <div className="rounded-t-md h-10 pt-2 font-semibold bg-amber-400 w-full px-5">
+          <div className="rounded-t-md h-10 pt-2 font-semibold bg-amber-400 w-full">
             Keeper
             <button
               className="absolute right-1 top-1 bg-mainYellow text-white hover:text-pointYellow"

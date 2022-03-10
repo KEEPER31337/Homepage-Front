@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { ChatIcon } from '@heroicons/react/solid';
 import { connect } from 'react-redux';
+import { isMobile } from 'react-device-detect';
 
 //local
 import ChatModal from './Component/ChatModal';
@@ -34,7 +35,7 @@ const Chatting = ({ member }) => {
     <>
       {auth ? (
         <>
-          <div className="fixed bottom-5 right-5">
+          <div className="fixed bottom-5 right-5 z-50">
             <button
               className={`${
                 open ? 'invisible' : 'visible'
@@ -45,7 +46,11 @@ const Chatting = ({ member }) => {
               Chat
             </button>
           </div>
-          <div className="fixed bottom-20 right-5">
+          <div
+            className={`fixed ${
+              isMobile ? 'bottom-3 right-3' : 'bottom-20 right-5'
+            }`}
+          >
             <ChatModal visible={open} handleClose={handleClose} />
           </div>
         </>
