@@ -104,7 +104,7 @@ export default function Excellence() {
   return (
     <div className="bg-mainYellow my-5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="py-6 lg:py-10 px-12 lg:px-16">
+        <div className="py-6 lg:py-10  px-3 md:px-12 lg:px-16">
           <h2 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-white text-center drop-shadow">
             {excellenceInfo.title}
           </h2>

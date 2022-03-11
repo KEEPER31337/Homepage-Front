@@ -46,7 +46,7 @@ export default function Intro() {
   const content =
     introInfo[0].subtitleImageResults[0].staticWriteContentResults[0].content;
 
-  const boss = '이창율'; //TODO 회장 직위 가진 사람 받아오기
+  const boss = '정현모'; //TODO 회장 직위 가진 사람 받아오기 백엔드 기다리는중~~~~
   const supervisors = `
 동아리 회장 : ${boss}
 지도 교수님 : 김호원 교수님`;
@@ -59,14 +59,14 @@ export default function Intro() {
           <h1 className="py-6 lg:py-10 text-4xl lg:text-5xl leading-8 tracking-normal font-extrabold text-black dark:text-white text-center">
             {pageTitle}
           </h1>
-          <div className="py-6 lg:py-10 px-12 lg:px-16">
+          <div className="py-6 lg:py-10 px-3 md:px-12 lg:px-16">
             <h2 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow">
               {sectionTitle}
             </h2>
             <div className="md:whitespace-pre-wrap px-2 lg:px-4 text-base text-black dark:text-white">
               {content}
               <br />
-              {supervisors}
+              <div className="whitespace-pre-wrap">{supervisors}</div>
             </div>
           </div>
         </div>
