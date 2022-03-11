@@ -106,7 +106,7 @@ export default function Excellence() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-6 lg:py-10  px-3 md:px-12 lg:px-16">
           <h2 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-white text-center drop-shadow">
-            {excellenceInfo.title}
+            {excellenceInfo[0].title}
           </h2>
           <div className="px-2 lg:px-4 text-black">
             <div className="max-w-2xl mx-auto grid grid-cols-1 gap-8 lg:max-w-none lg:grid-cols-3">
