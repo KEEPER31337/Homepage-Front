@@ -27,7 +27,10 @@ const Info = (props) => {
             {props.isWrite ? (
               ''
             ) : (
-              <div name="right-sideBar" className="m-5 w-[20vw] inline-block">
+              <div
+                name="right-sideBar"
+                className="m-5 w-[20vw] hidden md:inline-block"
+              >
                 <WriteButton />
               </div>
             )}

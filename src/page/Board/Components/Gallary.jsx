@@ -19,7 +19,7 @@ import {
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-const Gallary = ({ notices, boards }) => {
+const Gallary = ({ notices, boards, linkHandler }) => {
   const { categoryId } = useParams();
   const [thumbnails, setThumbnails] = [];
   useEffect(() => {}, []);
@@ -49,7 +49,12 @@ const Gallary = ({ notices, boards }) => {
                   'bg-slate-100 dark:bg-slate-800 border-l border-b border-r rounded-lg p-2 group shadow-lg dark:border-gray-600'
                 }
               >
-                <Link to={`/post/${categoryId}/${board.id}`}>
+                <Link
+                  to={`/post/${categoryId}/${board.id}`}
+                  onClick={(e) => {
+                    if (board.isSecret) linkHandler(e, board);
+                  }}
+                >
                   <div className={' relative'}>
                     <div className="relative w-full h-72 rounded-lg overflow-hidden">
                       {console.log(board.thumbnail.id)}
@@ -154,7 +159,13 @@ const Gallary = ({ notices, boards }) => {
               ' border-l border-b border-r rounded-lg p-2 group shadow-lg dark:border-gray-600'
             }
           >
-            <Link to={`/board/${board.id}`} state={{ test: 'test' }}>
+            <Link
+              to={`/board/${board.id}`}
+              state={{ test: 'test' }}
+              onClick={(e) => {
+                if (board.isSecret) linkHandler(e, board);
+              }}
+            >
               <div className={' relative'}>
                 <div className="relative w-full h-72 rounded-lg overflow-hidden">
                   {console.log(board.thumbnail.id)}

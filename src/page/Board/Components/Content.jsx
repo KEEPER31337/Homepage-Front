@@ -86,7 +86,7 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
     setToggle(!toggle);
   };
   useEffect(() => {
-    console.log('Content:reload');
+    console.log(board.title + ' Content:reload');
     utilAPI.getThumbnail({ thumbnailId: board.thumbnail.id }).then((data) => {
       const reader = new FileReader();
       reader.onabort = () => console.log('file reading was aborted');

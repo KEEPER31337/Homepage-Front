@@ -12,20 +12,11 @@ import {
   getDiffTimeWithFormat,
   isNewPost,
 } from '../BoardUtil';
-import SecretPwdInput from './Modals/SecretPwdInput';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-const Table = ({ notices, boards, currentPage, MAX_POSTS }) => {
+const Table = ({ notices, boards, currentPage, MAX_POSTS, linkHandler }) => {
   const { categoryId, postId } = useParams();
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const openModal = () => {
-    setModalOpen(true);
-  };
-  const closeModal = () => {
-    setModalOpen(false);
-  };
 
   const getCurrentBoard = (id, currentId) => {
     //현재 게시글
@@ -67,7 +58,12 @@ const Table = ({ notices, boards, currentPage, MAX_POSTS }) => {
               공지
             </td>
             <td className="p-2 dark:border-darkComponent">
-              <Link to={`/post/${categoryId}/${board.id}`}>
+              <Link
+                to={`/post/${categoryId}/${board.id}`}
+                onClick={(e) => {
+                  if (board.isSecret) linkHandler(e, board);
+                }}
+              >
                 <div className="max-w-[50vw] md:max-w-[40vw] sm:max-w-[20vw] inline-block">
                   <p className="truncate text-md ">
                     <strong className={board.isSecret ? 'text-slate-400' : ''}>
@@ -136,7 +132,12 @@ const Table = ({ notices, boards, currentPage, MAX_POSTS }) => {
               {MAX_POSTS * (currentPage - 1) + index + 1}
             </td>
             <td className="p-2 dark:border-darkComponent">
-              <Link to={`/post/${categoryId}/${board.id}`}>
+              <Link
+                to={`/post/${categoryId}/${board.id}`}
+                onClick={(e) => {
+                  if (board.isSecret) linkHandler(e, board);
+                }}
+              >
                 <div className="max-w-[50vw] md:max-w-[30vw] md:w-content inline-block">
                   <p className="truncate text-md ">
                     {board.isSecret ? (
@@ -170,14 +171,6 @@ const Table = ({ notices, boards, currentPage, MAX_POSTS }) => {
                   <strong className="inline-block rounded-full w-5 h-5 align-middle text-center text-xs m-1 bg-red-500 shadow-lg border-2 border-red-200 text-mainWhite dark:text-mainBlack">
                     n
                   </strong>
-                ) : (
-                  ''
-                )}
-                {board.isSecret ? (
-                  <>
-                    <button onClick={openModal}>모달팝업</button>
-                    <SecretPwdInput open={modalOpen} close={closeModal} />
-                  </>
                 ) : (
                   ''
                 )}

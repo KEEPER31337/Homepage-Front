@@ -6,6 +6,7 @@ import { SearchIcon, ViewGridIcon, ViewListIcon } from '@heroicons/react/solid';
 import Table from './Table';
 import Gallary from './Gallary';
 import postAPI from 'API/v1/post';
+import SecretPwdInput from './Modals/SecretPwdInput';
 
 const MAX_POSTS = 4 * 2; //한 페이지당 노출시킬 최대 게시글 수(갤러리 style을 고려하여 2의 배수로 설정)
 const MAX_PAGES = 6; //한 번에 노출시킬 최대 페이지 버튼 개수
@@ -36,6 +37,25 @@ const Boards = ({ categoryId, commentChangeFlag }) => {
   const [pageN, setPageN] = useState(0); //전체 페이지 수
   const [searchFlag, setSearchFlag] = useState(false); //전체 페이지 수
   const [selectedSearchVal, SetSelectedSearchVal] = useState('TC');
+  const [secretBoardId, setSecretBoardId] = useState();
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    //비밀번호 입력창 열기
+    setModalOpen(true);
+  };
+  const closeModal = () => {
+    //비밀번호 입력창 닫기
+    setModalOpen(false);
+  };
+  const linkHandler = (e, board) => {
+    //비밀글 링크 클릭 시 발동
+    e.preventDefault(); //해당 게시글 링크로 이동하는 걸 막음
+    //console.log(e.target);
+    setSecretBoardId(board.id); //열람하려는 게시글의 id 저장(url로 쓸 수 있도록)
+    //console.log(boardId);
+    openModal(); //비밀번호 입력창 열기
+  };
 
   const hiddenPrevious = (currentPage) => {
     //현재 페이지가 맨 앞 페이지인지
@@ -142,6 +162,8 @@ const Boards = ({ categoryId, commentChangeFlag }) => {
   useEffect(() => {
     // 현재 페이지 변화에 따른 총 페이지 개수 갱신
     // 검색중이면 페이지네이션을 검색으로, 검색중이 아니면 기본으로 설정
+    closeModal();
+    console.log('close');
     if (searchFlag) {
       postAPI
         .search({
@@ -234,15 +256,26 @@ const Boards = ({ categoryId, commentChangeFlag }) => {
               </div>
             </div>
           </div>
+          <SecretPwdInput
+            open={modalOpen}
+            close={closeModal}
+            categoryId={categoryId}
+            id={secretBoardId}
+          />
           {viewStyle == 'text' ? (
             <Table
               notices={noticeBoardContent}
               boards={boardContent}
               currentPage={currentPage}
               MAX_POSTS={MAX_POSTS}
+              linkHandler={linkHandler}
             />
           ) : (
-            <Gallary notices={noticeBoardContent} boards={boardContent} />
+            <Gallary
+              notices={noticeBoardContent}
+              boards={boardContent}
+              linkHandler={linkHandler}
+            />
           )}
 
           <div
