@@ -4,11 +4,12 @@ import React, { useState, useEffect } from 'react';
 // asset
 import seminarImg from 'assets/img/aboutImg/seminar.png';
 import mentoringImg from 'assets/img/aboutImg/mentoring.png';
-import thesisImg from 'assets/img/aboutImg/thesis.jpg';
+import thesisImg from 'assets/img/aboutImg/thesis.png';
 
 // API
 import aboutAPI from 'API/v1/about';
 
+// 백엔드 썸내일 저장 가능할 때까지 임시로 넣어놓는 중임당
 const temp = [
   // TODO 이미지 넣기
   {
