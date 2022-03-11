@@ -29,6 +29,7 @@ export default function PostList(props) {
     const size = 10;
     memberAPI.getUsersPosts({ token, page, size }).then((result) => {
       if (result.success) {
+        console.log(result.list);
         setPostList(
           result.list.map((item, index) => ({
             postId: index,
@@ -69,13 +70,15 @@ export default function PostList(props) {
               <tr
                 className="w-full h-10 hover:bg-divisionGray dark:hover:bg-[#0b1523] select-none"
                 onClick={() => {
-                  console.log(post.postId);
+                  console.log(post);
                 }}
               >
                 <td className="text-center">{post.postId}</td>
                 <td className="text-center">{post.postBoard}</td>
                 <td className="text-center">{post.postTitle}</td>
-                <td className="text-center">{dateFormat(post.createdAt)}</td>
+                <td className="text-center">
+                  {dateFormat(new Date(post.createdAt))}
+                </td>
                 <td className="text-center">{post.showCnt}</td>
                 <td className="text-center">{post.recoCnt}</td>
               </tr>

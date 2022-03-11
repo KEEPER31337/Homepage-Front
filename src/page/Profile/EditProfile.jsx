@@ -36,11 +36,15 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
     const formData = new FormData();
     formData.append('thumbnail', event.target.files[0]);
     console.log(formData);
+    console.log(event.target.files[0]);
     memberAPI
-      .updateThumbnail({ token, ipAddress: '', formData })
+      .updateThumbnail({ token, ipAddress: '222.234.187.175', formData })
       .then((result) => {
         if (result.success) {
+          console.log(result.data);
           setInfo(result.data);
+        } else {
+          console.log(`${result.code}:${result.msg}`);
         }
       });
   };

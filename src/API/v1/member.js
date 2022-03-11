@@ -231,6 +231,24 @@ async function getPointList({ token, page, size }) {
   }
 }
 
+async function giftPoint({ token, time, point, detail, presentedId }) {
+  console.log({ time, point, detail, presentedId });
+  const options = {
+    method: 'POST',
+    url: API_URL + '/v1/point/transfer',
+    data: { time, point, detail, presentedId },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 export default {
   getMember,
   getMembers,
@@ -245,4 +263,5 @@ export default {
   unfollow,
   updateThumbnail,
   getPointList,
+  giftPoint,
 };

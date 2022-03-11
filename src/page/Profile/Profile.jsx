@@ -4,8 +4,9 @@ import ProfileFrame from './Components/Frames/ProfileFrame';
 import InfoBox from './Components/InfoBox';
 import { connect } from 'react-redux';
 import memberAPI from 'API/v1/member';
+import actionMember from 'redux/action/member';
 
-const Profile = ({ token, memberInfo }) => {
+const Profile = ({ token, memberInfo, updateInfo }) => {
   const params = useParams();
   const navigate = useNavigate();
   const [btns, setBtns] = useState(new Array());
@@ -16,6 +17,7 @@ const Profile = ({ token, memberInfo }) => {
 
   const [followTrigger, setFollowTrigger] = useState(false);
   const [unFollowTrigger, setUnFollowTrigger] = useState(false);
+  const [giftPointTrigger, setGiftTrigger] = useState(false);
 
   useEffect(() => {
     if (followTrigger) {
@@ -42,6 +44,28 @@ const Profile = ({ token, memberInfo }) => {
       getUser();
     }
   }, [unFollowTrigger]);
+
+  useEffect(() => {
+    if (giftPointTrigger) {
+      memberAPI
+        .giftPoint({
+          token,
+          time: new Date().toISOString(),
+          point: 10,
+          detail: '선물 보내기 테스트',
+          presentedId: params.userId,
+        })
+        .then((result) => {
+          if (result.success) {
+            console.log(result.data);
+            memberInfo.point = result.data.finalPointMember;
+          } else {
+            console.log(`${result.code}:${result.msg}`);
+          }
+        });
+      setGiftTrigger(false);
+    }
+  }, [giftPointTrigger]);
 
   useEffect(() => {
     console.log(user);
@@ -71,7 +95,7 @@ const Profile = ({ token, memberInfo }) => {
     {
       text: '포인트선물',
       onClick: () => {
-        console.log('points');
+        if (!giftPointTrigger) setGiftTrigger(true);
       },
     },
   ];
@@ -85,7 +109,7 @@ const Profile = ({ token, memberInfo }) => {
     {
       text: '포인트선물',
       onClick: () => {
-        console.log('points');
+        if (!giftPointTrigger) setGiftTrigger(true);
       },
     },
   ];
@@ -109,6 +133,10 @@ const Profile = ({ token, memberInfo }) => {
         }
       });
   };
+
+  useEffect(() => {
+    updateInfo({ memberInfo });
+  }, [memberInfo]);
 
   useEffect(() => {
     if (params.userId == memberInfo.id) {
@@ -151,5 +179,12 @@ const mapStateToProps = (state) => {
     memberInfo: state.member.memberInfo,
   };
 };
+const mapDispatchToProps = (dispatch, OwnProps) => {
+  return {
+    updateInfo: ({ memberInfo }) => {
+      dispatch(actionMember.updateInfo({ memberInfo }));
+    },
+  };
+};
 
-export default connect(mapStateToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
