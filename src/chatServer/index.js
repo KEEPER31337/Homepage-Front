@@ -26,16 +26,16 @@ const wsServer = SocketIO(httpServer, {
 
 wsServer.on(event.connection, (socket) => {
   console.log('socketID:', socket.id);
-  socket.on(event.joinRoom, ({ roomName }) => {
-    socket.join(roomName);
-    console.log(socket.rooms);
+  socket.on(event.joinRoom, ({ token, roomName }) => {
+    authAPI.getAuth({ token }).then((data) => {
+      if (data.success) socket.join(roomName);
+    });
   });
 
   socket.on(event.msg, ({ roomName, token, msg }, done) => {
     const time = dayjs().format(timeFormat);
     authAPI.getAuth({ token }).then((data) => {
       if (data.success) {
-        console.log(data);
         socket.to(roomName).emit(event.msg, {
           userName: data.data.nickName,
           profileImage: data.thumbnail,

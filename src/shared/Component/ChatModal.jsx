@@ -48,10 +48,12 @@ const ChatModal = ({ member, visible, handleClose }) => {
     setChatLogList((prevChatLogList) => [...prevChatLogList, chatLog]);
   };
   useEffect(() => {
-    socket.emit(event.joinRoom, { roomName: 'global' });
-    socket.on(event.msg, handleReceive);
-    return () => socket.off(event.msg, handleReceive);
-  }, []);
+    if (member.token) {
+      socket.emit(event.joinRoom, { token: member.token, roomName: 'global' });
+      socket.on(event.msg, handleReceive);
+      return () => socket.off(event.msg, handleReceive);
+    }
+  }, [member]);
 
   return (
     <>
