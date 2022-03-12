@@ -60,13 +60,6 @@ const categoriesAll = [
         description: '',
         icon: ViewGridIcon,
       },
-      {
-        id: 147718,
-        name: '연재글',
-        href: 'board/147718',
-        description: '',
-        icon: ViewGridIcon,
-      },
     ],
   },
   {
@@ -82,7 +75,7 @@ const categoriesAll = [
       },
       {
         id: 105900,
-        name: '스터디',
+        name: '스터디 발표자료',
         href: 'board/105900',
         description: '',
         icon: ViewGridIcon,
@@ -101,13 +94,6 @@ const categoriesAll = [
         description: '',
         icon: ViewGridIcon,
       },
-      {
-        id: 34608,
-        name: 'KUCIS',
-        href: 'board/34608',
-        description: '',
-        icon: ViewGridIcon,
-      },
     ],
   },
   {
@@ -116,36 +102,8 @@ const categoriesAll = [
     subs: [
       {
         id: 508,
-        name: '해킹대회정보',
+        name: '정보',
         href: 'board/508',
-        description: '',
-        icon: ViewGridIcon,
-      },
-      {
-        id: 648,
-        name: '유용한사이트',
-        href: 'board/648',
-        description: '',
-        icon: ViewGridIcon,
-      },
-      {
-        id: 647,
-        name: 'Tools',
-        href: 'board/647',
-        description: '',
-        icon: ViewGridIcon,
-      },
-      {
-        id: 662,
-        name: '외부문서&강의',
-        href: 'board/662',
-        description: '',
-        icon: ViewGridIcon,
-      },
-      {
-        id: 81570,
-        name: '취업&면접',
-        href: 'board/81570',
         description: '',
         icon: ViewGridIcon,
       },

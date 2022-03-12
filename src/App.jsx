@@ -23,15 +23,18 @@ import BookAdd from './page/Library/BookAdd';
 import BookManage from './page/Library/BookManage';
 import Ranking from 'page/Ranking/Ranking';
 import attendanceAPI from 'API/v1/attendance';
+import Chatting from 'shared/Chatting';
+import actionMember from 'redux/action/member';
 
-const App = (props) => {
+const App = ({ member, darkMode, signOut }) => {
   useEffect(() => {
-    attendanceAPI
-      .check({ token: props.state.member.token })
-      .then((data) => console.log(data));
-  }, [props.state.member]);
+    if (member.token) {
+      attendanceAPI.check({ token: member.token }).then((data) => {
+        if (data.code == -1003) signOut();
+      });
+    }
+  }, [member]);
 
-  const darkMode = props.state.darkMode;
   return (
     <div className={darkMode ? 'dark' : 'light'}>
       <>
@@ -56,13 +59,22 @@ const App = (props) => {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/ranking" element={<Ranking />} />
         </Routes>
+        <Chatting />
       </>
     </div>
   );
 };
 
 const mapStateToProps = (state, OwnProps) => {
-  return { state };
+  return { darkMode: state.darkMode, member: state.member };
 };
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = (dispatch, OwnProps) => {
+  return {
+    signOut: () => {
+      dispatch(actionMember.signOut());
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
