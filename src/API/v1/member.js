@@ -196,18 +196,27 @@ async function unfollow({ token, loginId }) {
   }
 }
 
-async function updateThumbnail({ token, ipAddress, formdata }) {
-  const options = {
-    method: 'PUT',
-    url: API_URL + '/v1/member/update/thumbnail',
-    params: { ipAddress },
-    data: formdata,
+async function updateThumbnail({ 
+  token,
+  ipAddress,
+  thumbnail,
+}) {
+  const formData = new FormData();
+  formData.append('ipAddress', ipAddress);
+  formData.append('thumbnail', thumbnail);
+
+  const config = {
     headers: {
-      Authorization: token,
+      'content-type': 'multipart/form-data',
+      Authorization: `${token}`,
     },
   };
   try {
-    const response = await axios(options);
+    const response = await axios.put(
+      API_URL + '/v1/member/update/thumbnail',
+      formData,
+      config
+    );
     return response.data;
   } catch (error) {
     return error.response.data;

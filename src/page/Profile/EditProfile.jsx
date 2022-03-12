@@ -9,6 +9,8 @@ import DeleteUserModal from './Components/DeleteUserModal';
 import actionMember from 'redux/action/member';
 import utilAPI from 'API/v1/util';
 import memberAPI from 'API/v1/member';
+//local
+import ipAPI from 'API/v1/ip';
 
 const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
   console.log(memberInfo);
@@ -33,20 +35,24 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
   };
 
   const updateImg = (event) => {
-    const formData = new FormData();
-    formData.append('thumbnail', event.target.files[0]);
-    console.log(formData);
-    console.log(event.target.files[0]);
-    memberAPI
-      .updateThumbnail({ token, ipAddress: '222.234.187.175', formData })
-      .then((result) => {
-        if (result.success) {
-          console.log(result.data);
-          setInfo(result.data);
-        } else {
-          console.log(`${result.code}:${result.msg}`);
-        }
-      });
+    ipAPI.getIp().then((ipAddress) => {
+      console.log(ipAddress, event.target.files[0]);
+
+      memberAPI
+        .updateThumbnail({
+          token,
+          ipAddress: ipAddress,
+          thumbnail: event.target.files[0],
+        })
+        .then((result) => {
+          if (result.success) {
+            console.log(result.data);
+            setInfo(result.data);
+          } else {
+            console.log(`${result.code}:${result.msg}`);
+          }
+        });
+    });
   };
 
   const headBtns = [
