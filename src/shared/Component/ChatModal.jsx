@@ -37,11 +37,13 @@ const ChatModal = ({ member, visible, handleClose }) => {
   };
 
   const handleSend = () => {
-    socket.emit(
-      event.msg,
-      { roomName: 'global', token: member.token, msg },
-      sendDone
-    );
+    if (msg) {
+      socket.emit(
+        event.msg,
+        { roomName: 'global', token: member.token, msg },
+        sendDone
+      );
+    }
   };
 
   const handleReceive = (chatLog) => {
@@ -76,17 +78,23 @@ const ChatModal = ({ member, visible, handleClose }) => {
             <ChatLog chatLogList={chatLogList} />
           </div>
           <div className="py-2 px-5">
-            <input
-              className="w-4/5 p-2 rounded-md text-black"
-              value={msg}
-              onChange={(e) => setMsg(e.target.value)}
-            />
-            <button
-              className="mx-1 p-1 font-bold border-2 border-amber-400 rounded-md text-white bg-mainYellow hover:bg-pointYellow"
-              onClick={handleSend}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+              }}
             >
-              <PaperAirplaneIcon className="inline-block h-8 w-8" />
-            </button>
+              <input
+                className="w-4/5 p-2 rounded-md text-black"
+                value={msg}
+                onChange={(e) => setMsg(e.target.value)}
+              />
+              <button
+                className="mx-1 p-1 font-bold border-2 border-amber-400 rounded-md text-white bg-mainYellow hover:bg-pointYellow"
+                onClick={handleSend}
+              >
+                <PaperAirplaneIcon className="inline-block h-8 w-8" />
+              </button>
+            </form>
           </div>
         </div>
       </Draggable>

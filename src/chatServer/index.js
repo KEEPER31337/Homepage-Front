@@ -35,15 +35,15 @@ wsServer.on(event.connection, (socket) => {
   socket.on(event.msg, ({ roomName, token, msg }, done) => {
     const time = dayjs().format(timeFormat);
     authAPI.getAuth({ token }).then((data) => {
-      if (data.success) {
+      if (data.success && msg) {
         socket.to(roomName).emit(event.msg, {
           userName: data.data.nickName,
           profileImage: data.thumbnail,
           msg,
           time,
         });
+        done(time);
       }
-      done(time);
     });
   });
 });
