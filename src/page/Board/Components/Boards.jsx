@@ -7,6 +7,7 @@ import Table from './Table';
 import Gallary from './Gallary';
 import postAPI from 'API/v1/post';
 import SecretPwdInput from './Modals/SecretPwdInput';
+import actionBoardStyle from '../../../redux/action/boardStyle';
 
 const MAX_POSTS = 4 * 2; //한 페이지당 노출시킬 최대 게시글 수(갤러리 style을 고려하여 2의 배수로 설정)
 const MAX_PAGES = 6; //한 번에 노출시킬 최대 페이지 버튼 개수
@@ -28,17 +29,18 @@ const getStyleIcon = (item) => {
   }
 };
 
-const Boards = ({ categoryId, commentChangeFlag }) => {
+const Boards = ({ categoryId, commentChangeFlag, state, changeMode }) => {
   const [boardContent, setBoardContent] = useState([]);
   const [noticeBoardContent, setNoticeBoardContent] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [viewStyle, setViewStyle] = useState('text');
-  const { no } = useParams();
   const [pageN, setPageN] = useState(0); //전체 페이지 수
   const [searchFlag, setSearchFlag] = useState(false); //전체 페이지 수
   const [selectedSearchVal, SetSelectedSearchVal] = useState('TC');
   const [secretBoardId, setSecretBoardId] = useState();
   const [modalOpen, setModalOpen] = useState(false);
+  const { no } = useParams();
+  const viewStyle = state.boardStyle.mode;
+  //console.log(viewStyle);
 
   const openModal = () => {
     //비밀번호 입력창 열기
@@ -245,7 +247,7 @@ const Boards = ({ categoryId, commentChangeFlag }) => {
                       name="viewStyle"
                       checked={viewStyle === item}
                       onChange={() => {
-                        setViewStyle(item);
+                        changeMode(item);
                       }}
                     ></input>
                     <label
@@ -543,4 +545,11 @@ const mapStateToProps = (state, OwnProps) => {
     state,
   };
 };
-export default connect(mapStateToProps)(Boards);
+const mapDispatchToProps = (dispatch, OwnProps) => {
+  return {
+    changeMode: (mode) => {
+      dispatch(actionBoardStyle.changeMode(mode));
+    },
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Boards);
