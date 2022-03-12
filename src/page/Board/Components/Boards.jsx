@@ -54,6 +54,7 @@ const Boards = ({ categoryId, commentChangeFlag }) => {
     //console.log(e.target);
     setSecretBoardId(board.id); //열람하려는 게시글의 id 저장(url로 쓸 수 있도록)
     //console.log(boardId);
+    console.log(board.writerId);
     openModal(); //비밀번호 입력창 열기
   };
 

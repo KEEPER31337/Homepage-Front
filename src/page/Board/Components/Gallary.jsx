@@ -19,7 +19,7 @@ import {
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-const Gallary = ({ notices, boards, linkHandler }) => {
+const Gallary = ({ notices, boards, linkHandler, state }) => {
   const { categoryId } = useParams();
   const [thumbnails, setThumbnails] = [];
   useEffect(() => {}, []);
@@ -52,7 +52,11 @@ const Gallary = ({ notices, boards, linkHandler }) => {
                 <Link
                   to={`/post/${categoryId}/${board.id}`}
                   onClick={(e) => {
-                    if (board.isSecret) linkHandler(e, board);
+                    if (
+                      board.isSecret &&
+                      board.writerId != state.member?.memberInfo?.id
+                    )
+                      linkHandler(e, board);
                   }}
                 >
                   <div className={' relative'}>
@@ -163,7 +167,11 @@ const Gallary = ({ notices, boards, linkHandler }) => {
               to={`/board/${board.id}`}
               state={{ test: 'test' }}
               onClick={(e) => {
-                if (board.isSecret) linkHandler(e, board);
+                if (
+                  board.isSecret &&
+                  board.writerId != state.member?.memberInfo?.id
+                )
+                  linkHandler(e, board);
               }}
             >
               <div className={' relative'}>

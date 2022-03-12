@@ -15,7 +15,14 @@ import {
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-const Table = ({ notices, boards, currentPage, MAX_POSTS, linkHandler }) => {
+const Table = ({
+  notices,
+  boards,
+  currentPage,
+  MAX_POSTS,
+  linkHandler,
+  state,
+}) => {
   const { categoryId, postId } = useParams();
 
   const getCurrentBoard = (id, currentId) => {
@@ -61,7 +68,11 @@ const Table = ({ notices, boards, currentPage, MAX_POSTS, linkHandler }) => {
               <Link
                 to={`/post/${categoryId}/${board.id}`}
                 onClick={(e) => {
-                  if (board.isSecret) linkHandler(e, board);
+                  if (
+                    board.isSecret &&
+                    board.writerId != state.member?.memberInfo?.id
+                  )
+                    linkHandler(e, board);
                 }}
               >
                 <div className="max-w-[50vw] md:max-w-[40vw] sm:max-w-[20vw] inline-block">
@@ -135,7 +146,11 @@ const Table = ({ notices, boards, currentPage, MAX_POSTS, linkHandler }) => {
               <Link
                 to={`/post/${categoryId}/${board.id}`}
                 onClick={(e) => {
-                  if (board.isSecret) linkHandler(e, board);
+                  if (
+                    board.isSecret &&
+                    board.writerId != state.member?.memberInfo?.id
+                  )
+                    linkHandler(e, board);
                 }}
               >
                 <div className="max-w-[50vw] md:max-w-[30vw] md:w-content inline-block">
