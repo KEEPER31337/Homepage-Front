@@ -28,9 +28,11 @@ import actionMember from 'redux/action/member';
 
 const App = ({ member, darkMode, signOut }) => {
   useEffect(() => {
-    attendanceAPI.check({ token: member.token }).then((data) => {
-      if (data.code == -1003) signOut();
-    });
+    if (member.token) {
+      attendanceAPI.check({ token: member.token }).then((data) => {
+        if (data.code == -1003) signOut();
+      });
+    }
   }, [member]);
 
   return (
