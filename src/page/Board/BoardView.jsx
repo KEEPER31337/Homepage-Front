@@ -39,7 +39,7 @@ const BoardView = (props) => {
         .then((res) => {
           setIsAuthority(res.success);
           console.log(res);
-          if (res.code == -1) {
+          if (res.code == -11000) {
             window.alert('비밀번호가 틀렸습니다. 게시글 목록으로 돌아갑니다.');
             navigate(`/board/${categoryId}`);
           } else {
@@ -54,9 +54,15 @@ const BoardView = (props) => {
   return (
     <>
       {!isAuthority ? (
-        <p className="text-center my-[100px] text-xl text-slate-400">
-          해당 게시글에 대한 권한이 없습니다.
-        </p>
+        <div className="flex h-[100vh] dark:bg-mainBlack justify-center">
+          <p className="text-center mt-[200px] text-md text-slate-400 ">
+            <strong className="text-xl">
+              해당 게시글에 대한 권한이 없습니다.
+            </strong>
+            <br />
+            You do not have permission for that post.
+          </p>
+        </div>
       ) : (
         <AuthUser>
           <ScrollToTop />

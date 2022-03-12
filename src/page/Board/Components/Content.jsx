@@ -87,7 +87,7 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
   };
   useEffect(() => {
     console.log(board.title + ' Content:reload');
-    utilAPI.getThumbnail({ thumbnailId: board.thumbnail.id }).then((data) => {
+    /*utilAPI.getThumbnail({ thumbnailId: board.thumbnail.id }).then((data) => {
       const reader = new FileReader();
       reader.onabort = () => console.log('file reading was aborted');
       reader.onerror = () => console.log('file reading has failed');
@@ -98,7 +98,7 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
         }
       };
       reader.readAsDataURL(data);
-    });
+    });*/
 
     postAPI
       .check({
@@ -175,13 +175,15 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
       )}
       <div
         name="썸네일"
-        className={(board.thumbnail ? '' : 'hidden') + ' flex justify-center'}
+        className={
+          (board.thumbnailPath ? '' : 'hidden') + ' flex justify-center'
+        }
       >
         <img
           className={
             'border-4 border-slate-500 m-3 p-1 max-h-[300px] max-w-[300px] rounded-xl'
           }
-          src={thumbnailBase64}
+          src={API_URL + board.thumbnailPath}
           alt="thumbnail"
         />
       </div>

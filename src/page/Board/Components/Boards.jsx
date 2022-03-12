@@ -213,8 +213,11 @@ const Boards = ({ categoryId, commentChangeFlag }) => {
   return (
     <div className="dark:bg-mainBlack dark:text-mainWhite ">
       {noticeBoardContent.length === 0 && boardContent.length === 0 ? (
-        <div className="text-center text-slate-400 text-3xl h-[400px] pt-[150px]">
-          - 게시글이 존재하지 않는 게시판입니다. -
+        <div className="text-center text-slate-400 text-xl h-[400px] pt-[150px]">
+          <strong className="text-3xl">
+            - 게시글이 존재하지 않는 게시판입니다. -
+          </strong>
+          <br />- It's an empty bulletin board. -
         </div>
       ) : (
         <div>
