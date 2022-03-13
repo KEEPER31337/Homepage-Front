@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -10,12 +10,17 @@ import MessageModal from 'shared/MessageModal';
 // asset
 import Logo from 'assets/img/keeper_logo.png';
 
-const BACK = -1;
-
-const SignIn = (props) => {
+const SignIn = ({ member, memberSignIn }) => {
   const [loginInfo, setLoginInfo] = useState({ loginId: '', password: '' });
   const loginFailModalRef = useRef({});
   const navigate = useNavigate();
+
+  useEffect(() => {
+    //로그인된 상태에서 signin페이지 접속할 경우
+    if (member.token) {
+      navigate('/');
+    }
+  }, [member]);
 
   const handleChange = (e) => {
     setLoginInfo({ ...loginInfo, [e.target.name]: e.target.value });
@@ -25,8 +30,8 @@ const SignIn = (props) => {
       if (data.success) {
         const token = data.data.token;
         const memberInfo = data.data.member;
-        props.memberSignIn({ token, memberInfo });
-        navigate(BACK);
+        memberSignIn({ token, memberInfo });
+        navigate('/');
       } else {
         loginFailModalRef.current.open();
       }
