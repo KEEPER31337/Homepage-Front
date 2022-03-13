@@ -24,7 +24,7 @@ const SecretPwdInput = (props) => {
           </header>
           <main className="p-5 border-y border-divisionGray dark:border-gray-600">
             <input
-              type="text"
+              type="password"
               className="text-xl text-mainBlack px-3 py-2 focus:border-mainYellow focus:ring-mainYellow"
               onBlur={(e) => setPwd(e.target.value)}
             />
