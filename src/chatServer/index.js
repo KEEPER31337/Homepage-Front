@@ -37,8 +37,7 @@ wsServer.on(event.connection, (socket) => {
     authAPI.getAuth({ token }).then((data) => {
       if (data.success && msg) {
         socket.to(roomName).emit(event.msg, {
-          userName: data.data.nickName,
-          profileImage: data.thumbnail,
+          member: data.data,
           msg,
           time,
         });

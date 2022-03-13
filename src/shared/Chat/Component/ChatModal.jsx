@@ -26,9 +26,7 @@ const ChatModal = ({ member, visible, handleClose }) => {
     setChatLogList((prevChatLogList) => [
       ...prevChatLogList,
       {
-        userName: 'You',
-        profileImage:
-          'https://avatars.githubusercontent.com/u/23546441?s=400&u=db7abf2929e5518c12189034dc3fed9bda94f0a6&v=4',
+        member: member.memberInfo,
         msg,
         time,
       },
@@ -47,6 +45,7 @@ const ChatModal = ({ member, visible, handleClose }) => {
   };
 
   const handleReceive = (chatLog) => {
+    console.log(chatLog);
     setChatLogList((prevChatLogList) => [...prevChatLogList, chatLog]);
   };
   useEffect(() => {
@@ -63,7 +62,7 @@ const ChatModal = ({ member, visible, handleClose }) => {
         <div
           className={`${
             visible ? 'visible' : 'invisible'
-          } w-full sm:w-80 rounded-md cursor-grabbing text-center ring-amber-400 bg-amber-50 text-mainBlack dark:bg-darkComponent dark:text-mainWhite`}
+          } w-full sm:w-80 rounded-md cursor-grabbing text-center ring-amber-400 bg-orange-50 text-mainBlack dark:bg-darkComponent dark:text-mainWhite`}
         >
           <div className="rounded-t-md h-10 pt-2 font-semibold bg-amber-400 w-full">
             Keeper

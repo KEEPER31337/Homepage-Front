@@ -23,7 +23,7 @@ import BookAdd from './page/Library/BookAdd';
 import BookManage from './page/Library/BookManage';
 import Ranking from 'page/Ranking/Ranking';
 import attendanceAPI from 'API/v1/attendance';
-import Chatting from 'shared/Chatting';
+import Chatting from 'shared/Chat/Chatting';
 import actionMember from 'redux/action/member';
 
 const App = ({ member, darkMode, signOut }) => {
