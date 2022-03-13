@@ -86,8 +86,8 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
     setToggle(!toggle);
   };
   useEffect(() => {
-    console.log('Content:reload');
-    utilAPI.getThumbnail({ thumbnailId: board.thumbnail.id }).then((data) => {
+    console.log(board.title + ' Content:reload');
+    /*utilAPI.getThumbnail({ thumbnailId: board.thumbnail.id }).then((data) => {
       const reader = new FileReader();
       reader.onabort = () => console.log('file reading was aborted');
       reader.onerror = () => console.log('file reading has failed');
@@ -98,7 +98,7 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
         }
       };
       reader.readAsDataURL(data);
-    });
+    });*/
 
     postAPI
       .check({
@@ -145,7 +145,10 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
         </p>
       </div>
       {board.writerId == myId ? (
-        <div className="px-10 absolute w-full text-xs md:w-[75%] sm:text-base flex flex-row-reverse ">
+        <div
+          name="글 수정/삭제"
+          className="px-2 absolute w-[90vw] text-xs sm:text-base flex flex-row-reverse "
+        >
           <div className="rounded-lg bg-slate-100 my-2 dark:bg-darkComponent">
             <UserCircleIcon className="inline-block h-5 w-5 m-1 text-divisionGray dark:text-slate-500 " />
             <Link
@@ -172,13 +175,15 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
       )}
       <div
         name="썸네일"
-        className={(board.thumbnail ? '' : 'hidden') + ' flex justify-center'}
+        className={
+          (board.thumbnailPath ? '' : 'hidden') + ' flex justify-center'
+        }
       >
         <img
           className={
             'border-4 border-slate-500 m-3 p-1 max-h-[300px] max-w-[300px] rounded-xl'
           }
-          src={thumbnailBase64}
+          src={API_URL + board.thumbnailPath}
           alt="thumbnail"
         />
       </div>
