@@ -19,6 +19,7 @@ import SignIn from 'page/SignIn/SignIn';
 import FindId from 'page/SignIn/Components/FindId';
 import FindPassword from 'page/SignIn/Components/FindPassword';
 import SignUp from 'page/SignUp/SignUp';
+import Study from 'page/Study/Study';
 import BookAdd from './page/Library/BookAdd';
 import BookManage from './page/Library/BookManage';
 import Ranking from 'page/Ranking/Ranking';
@@ -57,6 +58,7 @@ const App = ({ member, darkMode, signOut }) => {
           <Route path="/signin/findid" element={<FindId />} />
           <Route path="/signin/findpassword" element={<FindPassword />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/study" element={<Study />} />
           <Route path="/ranking" element={<Ranking />} />
         </Routes>
         <Chatting />

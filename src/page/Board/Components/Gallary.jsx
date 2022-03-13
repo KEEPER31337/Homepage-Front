@@ -62,7 +62,7 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
                   >
                     <div className={' relative'}>
                       <div className="relative w-full h-72 rounded-lg overflow-hidden">
-                        {/*console.log(board.thumbnail.id)*/}
+                        {/*console.log(board.thumbnailPath)*/}
                         {board.isSecret ? (
                           <div className="border bg-gray-300 bg-opacity-50 text-slate-500 flex items-center text-center w-full h-full object-center object-cover rounded-lg dark:border-gray-600">
                             <div className="w-full">
