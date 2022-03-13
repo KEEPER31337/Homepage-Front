@@ -28,7 +28,9 @@ const Profile = ({ token, memberInfo, updateInfo }) => {
 
   const [followTrigger, setFollowTrigger] = useState(false);
   const [unFollowTrigger, setUnFollowTrigger] = useState(false);
-  const [giftPointTrigger, setGiftTrigger] = useState(false);
+
+  const giftPointModalState = useState(false);
+  const [giftPointModal, setGiftPointModal] = giftPointModalState;
 
   useEffect(() => {
     if (followTrigger) {
@@ -55,28 +57,6 @@ const Profile = ({ token, memberInfo, updateInfo }) => {
       getUser();
     }
   }, [unFollowTrigger]);
-
-  useEffect(() => {
-    if (giftPointTrigger) {
-      memberAPI
-        .giftPoint({
-          token,
-          time: new Date().toISOString(),
-          point: 10,
-          detail: '선물 보내기 테스트',
-          presentedId: params.userId,
-        })
-        .then((result) => {
-          if (result.success) {
-            console.log(result.data);
-            memberInfo.point = result.data.finalPointMember;
-          } else {
-            console.log(`${result.code}:${result.msg}`);
-          }
-        });
-      setGiftTrigger(false);
-    }
-  }, [giftPointTrigger]);
 
   useEffect(() => {
     console.log(user);
@@ -106,7 +86,7 @@ const Profile = ({ token, memberInfo, updateInfo }) => {
     {
       text: '포인트선물',
       onClick: () => {
-        if (!giftPointTrigger) setGiftTrigger(true);
+        if (!giftPointModal) setGiftPointModal(true);
       },
     },
   ];
@@ -120,7 +100,7 @@ const Profile = ({ token, memberInfo, updateInfo }) => {
     {
       text: '포인트선물',
       onClick: () => {
-        if (!giftPointTrigger) setGiftTrigger(true);
+        if (!giftPointModal) setGiftPointModal(true);
       },
     },
   ];
@@ -496,7 +476,7 @@ const Profile = ({ token, memberInfo, updateInfo }) => {
                       </div>
 
                       <div className="py-1 text-right">
-                        <button className=" border border bg-backGray hover:bg-gray-200 p-2 rounded  text-md font-bold">
+                        <button className=" border bg-backGray hover:bg-gray-200 p-2 rounded  text-md font-bold">
                           저장
                         </button>
                       </div>
@@ -533,7 +513,7 @@ const Profile = ({ token, memberInfo, updateInfo }) => {
                       </div>
 
                       <div className="py-1 text-right">
-                        <button className=" border border bg-backGray hover:bg-gray-200 p-2 rounded  text-md font-bold">
+                        <button className=" border bg-backGray hover:bg-gray-200 p-2 rounded  text-md font-bold">
                           저장
                         </button>
                       </div>

@@ -5,29 +5,33 @@ import { connect } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import ProfileFrame from './Components/Frames/ProfileFrame';
 import InfoBox from './Components/InfoBox';
-import DeleteUserModal from './Components/DeleteUserModal';
+import DeleteUserModal from './Components/Modal/DeleteUserModal';
 import actionMember from 'redux/action/member';
 import utilAPI from 'API/v1/util';
 import memberAPI from 'API/v1/member';
 //local
 import ipAPI from 'API/v1/ip';
+import Modal from './Components/Modal/Modal';
 
 const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
   console.log(memberInfo);
   const params = useParams();
   const navigate = useNavigate();
 
-  const deleteModalRef = useRef({});
+  const deleteUserModalState = useState(false);
+  const [deleteUserModal, setDeleteUserModal] = deleteUserModalState;
 
   const [img, setImg] = useState(null);
-  const infoState = useState(memberInfo);
+  const infoState = useState(null);
   const [info, setInfo] = infoState;
 
   useEffect(() => {
-    utilAPI.getThumbnail({ thumbnailId: info.thumbnailId }).then((result) => {
-      setImg(result);
-    });
-  }, [info]);
+    utilAPI
+      .getThumbnail({ thumbnailId: memberInfo.thumbnailId })
+      .then((result) => {
+        setImg(result);
+      });
+  }, [memberInfo]);
 
   const onProfileImg = () => {
     const imgInput = document.getElementById('ImgUpload');
@@ -37,7 +41,6 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
   const updateImg = (event) => {
     ipAPI.getIp().then((ipAddress) => {
       console.log(ipAddress, event.target.files[0]);
-
       memberAPI
         .updateThumbnail({
           token,
@@ -60,7 +63,7 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
     {
       text: '탈퇴',
       onClick: () => {
-        deleteModalRef.current.open();
+        setDeleteUserModal(true);
       },
     },
   ];
@@ -85,7 +88,7 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
     <div className="w-full">
       <InfoBox
         type="setInfo"
-        params={{ token: token, memberInfo: info, infoState: infoState }}
+        params={{ token: token, memberInfo: memberInfo, infoState: infoState }}
       />
       <InfoBox
         type="setEmail"
@@ -96,10 +99,11 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
   );
 
   useEffect(() => {
-    updateInfo({ memberInfo: info });
+    console.log('info:', info);
+    if (info) updateInfo({ memberInfo: info });
   }, [info]);
 
-  if (params.userId != info.id) {
+  if (params.userId != memberInfo.id) {
     return <div>접근할수 없습니다</div>;
   } else {
     return (
@@ -108,13 +112,13 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
           profileBtns={headBtns}
           renderHeadLeft={renderImgBtn}
           renderBody={renderBody}
-          memberInfo={info}
+          memberInfo={memberInfo}
         />
         <DeleteUserModal
           token={token}
           signOut={signOut}
-          ref={deleteModalRef}
-        ></DeleteUserModal>
+          modalState={deleteUserModalState}
+        />
       </div>
     );
   }

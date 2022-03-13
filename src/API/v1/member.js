@@ -196,29 +196,24 @@ async function unfollow({ token, loginId }) {
   }
 }
 
-async function updateThumbnail({ 
-  token,
-  ipAddress,
-  thumbnail,
-}) {
+async function updateThumbnail({ token, ipAddress, thumbnail }) {
   const formData = new FormData();
   formData.append('ipAddress', ipAddress);
   formData.append('thumbnail', thumbnail);
 
-  const config = {
+  const options = {
+    method: 'PUT',
+    url: API_URL + '/v1/member/update/thumbnail',
+    data: formData,
     headers: {
-      'content-type': 'multipart/form-data',
       Authorization: `${token}`,
     },
   };
   try {
-    const response = await axios.put(
-      API_URL + '/v1/member/update/thumbnail',
-      formData,
-      config
-    );
+    const response = await axios(options);
     return response.data;
   } catch (error) {
+    console.log(error, error.response);
     return error.response.data;
   }
 }
@@ -226,7 +221,7 @@ async function updateThumbnail({
 async function getPointList({ token, page, size }) {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/point/lists/log',
+    url: API_URL + '/v1/points',
     params: { page: page, size: size },
     headers: {
       Authorization: token,
@@ -244,8 +239,56 @@ async function giftPoint({ token, time, point, detail, presentedId }) {
   console.log({ time, point, detail, presentedId });
   const options = {
     method: 'POST',
-    url: API_URL + '/v1/point/transfer',
+    url: API_URL + '/v1/points/present',
     data: { time, point, detail, presentedId },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+async function getUsersFollowee({ token }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/member/followee',
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+async function getUsersFollower({ token }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/member/follower',
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+async function getUsersFollowCnt({ token }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/member/follow-number',
     headers: {
       Authorization: token,
     },
@@ -273,4 +316,7 @@ export default {
   updateThumbnail,
   getPointList,
   giftPoint,
+  getUsersFollowee,
+  getUsersFollower,
+  getUsersFollowCnt,
 };
