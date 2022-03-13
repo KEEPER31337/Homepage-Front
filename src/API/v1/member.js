@@ -301,6 +301,22 @@ async function getUsersFollowCnt({ token }) {
   }
 }
 
+async function getOthersPosts({ token, memberId }) {
+  const options = {
+    method: 'GET',
+    url: `${API_URL}/v1/member/${memberId}/posts`,
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 export default {
   getMember,
   getMembers,
@@ -319,4 +335,5 @@ export default {
   getUsersFollowee,
   getUsersFollower,
   getUsersFollowCnt,
+  getOthersPosts,
 };

@@ -16,24 +16,47 @@ import {
   PencilAltIcon,
 } from '@heroicons/react/solid';
 import MessageModal from 'shared/MessageModal';
+import Group from './Components/Group';
 
-const EditProfile = () => {
-  const googy =
-    'https://avatars.githubusercontent.com/u/81643702?s=400&u=d3a721a495754454d238b4159bb7a2d150338424&v=4';
-  // 'https://avatars.githubusercontent.com/u/23546441?s=400&u=db7abf2929e5518c12189034dc3fed9bda94f0a6&v=4';
-  const color = 'blue';
-  const alertFollowerModalRef = useRef({});
-  const alertFollowingModalRef = useRef({});
-  //팔로워 불러오는 api
-  const showFollower = () => {
-    alertFollowerModalRef.current.open();
-  };
-  //팔로잉 불러오는 api
-  const showFollowing = () => {
-    alertFollowingModalRef.current.open();
-  };
+const googy =
+  'https://avatars.githubusercontent.com/u/81643702?s=400&u=d3a721a495754454d238b4159bb7a2d150338424&v=4';
 
+const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
   const navigate = useNavigate();
+
+  const [followCnt, setFollowCnt] = useState(null);
+
+  const add0 = (num, maxDigits) => {
+    let digits = 10;
+    let result = num.toString();
+    for (let i = 1; i < maxDigits; i++) {
+      if (parseInt(num / digits) == 0) result = '0' + result;
+      digits *= 10;
+    }
+    return result;
+  };
+
+  const stringfyDate = (dateClass) => {
+    return {
+      year: add0(dateClass.getFullYear(), 4),
+      month: add0(dateClass.getMonth() + 1, 2),
+      date: add0(dateClass.getDate(), 2),
+    };
+  };
+
+  const formatDate = ({ origin, separator }) => {
+    if (!origin) return;
+    const { year, month, date } = stringfyDate(new Date(origin));
+    return [year, month, date].join(separator);
+  };
+
+  useEffect(() => {
+    memberAPI.getUsersFollowCnt({ token }).then((res) => {
+      if (res.success) {
+        setFollowCnt(res.data);
+      }
+    });
+  }, []);
 
   return (
     <div className="">
@@ -58,11 +81,27 @@ const EditProfile = () => {
               {/* 1.  닉네임 + 회원 뱃지 */}
               <div className="flex justify-between m-1">
                 {/*닉네임*/}
-                <div className="css-font text-5xl m-1">GOOGY</div>
+                <div className="css-font text-5xl m-1">
+                  {memberInfo?.nickName}
+                </div>
                 {/*회원 뱃지*/}
                 <div className="flex">
-                  <AcademicCapIcon className=" m-1 bg-gray-100 h-10 w-10 rounded text-black " />
-                  <GiftIcon className="h-10 w-10 m-1 bg-gray-100 rounded text-blue-400" />
+                  {memberInfo.rank && (
+                    <div className="mr-2">
+                      <Group groupName={memberInfo.rank} />
+                    </div>
+                  )}
+                  {memberInfo.type && (
+                    <div className="mr-2">
+                      <Group groupName={memberInfo.type} />
+                    </div>
+                  )}
+                  {memberInfo.jobs &&
+                    memberInfo.jobs.map((job, index) => (
+                      <div key={index} className="mr-2">
+                        <Group groupName={job} />
+                      </div>
+                    ))}
                 </div>
               </div>
               {/*구분선*/}
@@ -84,21 +123,19 @@ const EditProfile = () => {
                 <div className="w-1/2 flex flex-col justify-between m-1">
                   {/* 2-2-1 팔로우, 팔로워 */}
                   <div className="flex w-full justify-end">
-                    <button
-                      onClick={showFollower}
-                      className="p-2 mr-2 flex flex-row hover:bg-backGray"
-                    >
+                    <div className="p-2 mr-2 flex flex-row">
                       <div className="text-gray-500 mr-1">팔로워</div>
-                      <div className="font-semibold">4</div>
-                    </button>
+                      <div className="font-semibold">
+                        {followCnt && followCnt.followerNumber}
+                      </div>
+                    </div>
 
-                    <button
-                      onClick={showFollowing}
-                      className="p-2 flex flex-row hover:bg-backGray"
-                    >
+                    <div className="p-2 flex flex-row">
                       <div className=" text-gray-500 mr-1">팔로우</div>
-                      <div className="font-semibold">6</div>
-                    </button>
+                      <div className="font-semibold">
+                        {followCnt && followCnt.followeeNumber}
+                      </div>
+                    </div>
                   </div>
                   {/* 2-2-2 포인트 */}
                   <div className="flex w-full justify-between border-3 border-blue-500 bg-blue-300 rounded-md p-1 ">
@@ -106,7 +143,7 @@ const EditProfile = () => {
                       Point
                     </div>
                     <div className="css-digit-font sm:text-4xl md:text-3xl lg:text-4xl text-3xl text-blue-900 pr-2 text-right">
-                      7,923,456
+                      {memberInfo?.point}
                     </div>
                   </div>
                 </div>
@@ -115,20 +152,32 @@ const EditProfile = () => {
               {/* 3.  프로필(이름, 아이디, 가입일, 생일) + 프로필 수정버튼 */}
               <div className="items-center text-left border-2 shadow p-3 m-1  rounded-md">
                 <div className="flex py-1 ">
-                  <div className="p-2  w-2/5 text-gray-500">이름</div>
-                  <div className="p-2 w-3/5 font-bold">장서윤</div>
+                  <div className="p-2  w-2/5 text-gray-500">기수</div>
+                  <div className="p-2 w-3/5 font-bold">{`Keeper ${memberInfo?.generation}기`}</div>
                 </div>
                 <div className="flex py-1 ">
-                  <div className="p-2  w-2/5  text-gray-500">아이디</div>
-                  <div className="p-2 w-3/5 font-bold">yrt7998</div>
+                  <div className="p-2  w-2/5  text-gray-500">이메일</div>
+                  <div className="p-2 w-3/5 font-bold">
+                    {memberInfo?.emailAddress}
+                  </div>
                 </div>
                 <div className="flex py-1 ">
                   <div className="p-2  w-2/5 text-gray-500">가입일</div>
-                  <div className="p-2 w-3/5 font-bold">2021.03.14</div>
+                  <div className="p-2 w-3/5 font-bold">
+                    {formatDate({
+                      origin: memberInfo?.registerDate,
+                      separator: '.',
+                    })}
+                  </div>
                 </div>
                 <div className="flex py-1 ">
                   <div className="p-2  w-2/5  text-gray-500">생일</div>
-                  <div className="p-2 w-3/5 font-bold">2002/02/07</div>
+                  <div className="p-2 w-3/5 font-bold">
+                    {formatDate({
+                      origin: memberInfo?.birthday,
+                      separator: '/',
+                    })}
+                  </div>
                 </div>
                 {/* 3-1 프로필 수정 + 탈퇴버튼 */}
                 <div className="py-1 text-right">
@@ -319,10 +368,25 @@ const EditProfile = () => {
       </div>
 
       {/* modal창 */}
-      <MessageModal ref={alertFollowerModalRef}>팔로워 목록창</MessageModal>
-      <MessageModal ref={alertFollowingModalRef}>팔로잉 목록창</MessageModal>
     </div>
   );
 };
 
-export default EditProfile;
+const mapStateToProps = (state) => {
+  return {
+    token: state.member.token,
+    memberInfo: state.member.memberInfo,
+  };
+};
+const mapDispatchToProps = (dispatch, OwnProps) => {
+  return {
+    updateInfo: ({ memberInfo }) => {
+      dispatch(actionMember.updateInfo({ memberInfo }));
+    },
+    signOut: () => {
+      dispatch(actionMember.signOut());
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditProfile);

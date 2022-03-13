@@ -35,32 +35,6 @@ const Profile = ({ token, memberInfo, updateInfo }) => {
   const [giftPointModal, setGiftPointModal] = giftPointModalState;
 
   useEffect(() => {
-    if (followTrigger) {
-      memberAPI.follow({ token, loginId: user.loginId }).then((result) => {
-        if (result.success) {
-          getUser();
-          console.log('success', result);
-        } else console.log('fail', result);
-      });
-      setFollowTrigger(false);
-      getUser();
-    }
-  }, [followTrigger]);
-
-  useEffect(() => {
-    if (unFollowTrigger) {
-      memberAPI.unfollow({ token, loginId: user.loginId }).then((result) => {
-        if (result.success) {
-          getUser();
-          console.log(result);
-        } else console.log(result);
-      });
-      setUnFollowTrigger(false);
-      getUser();
-    }
-  }, [unFollowTrigger]);
-
-  useEffect(() => {
     console.log(user);
   }, [user]);
 
@@ -107,26 +81,6 @@ const Profile = ({ token, memberInfo, updateInfo }) => {
     },
   ];
 
-  const getUser = () => {
-    memberAPI
-      .getOtherById({ token, id: params.userId })
-      .then((getOtherResult) => {
-        if (getOtherResult.success) {
-          const other = getOtherResult.data;
-          console.log(other);
-          other.rank = other.memberRankEntity.name;
-          other.type = other.memberTypeEntity.name;
-          other.jobs = [];
-          other.thumbnailId = other.thumbnailEntity;
-          setUser(other);
-          setIsFollowee(other.checkFollowee);
-        } else {
-          setUser(null);
-          setError(`${getOtherResult.code}:${getOtherResult.msg}`);
-        }
-      });
-  };
-
   useEffect(() => {
     updateInfo({ memberInfo });
   }, [memberInfo]);
@@ -134,18 +88,10 @@ const Profile = ({ token, memberInfo, updateInfo }) => {
   useEffect(() => {
     if (params.userId == memberInfo.id) {
       setIsMe(true);
-      setUser(memberInfo);
     } else {
       setIsMe(false);
-      getUser();
     }
   }, [params.userId, memberInfo.id]);
-
-  useEffect(() => {
-    if (isMe) setBtns(myBtns);
-    else if (isFollowee) setBtns(followerBtns);
-    else setBtns(unFollowerBtns);
-  }, [isMe, isFollowee]);
 
   if (isMe) {
     return (
@@ -156,7 +102,13 @@ const Profile = ({ token, memberInfo, updateInfo }) => {
       />
     );
   } else {
-    return <OtherProfile />;
+    return (
+      <OtherProfile
+        token={token}
+        memberInfo={memberInfo}
+        userId={params.userId}
+      />
+    );
   }
 };
 

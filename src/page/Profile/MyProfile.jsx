@@ -23,82 +23,6 @@ import Group from './Components/Group';
 const googy =
   'https://avatars.githubusercontent.com/u/81643702?s=400&u=d3a721a495754454d238b4159bb7a2d150338424&v=4';
 
-const add0 = (num, maxDigits) => {
-  let digits = 10;
-  let result = num.toString();
-  for (let i = 1; i < maxDigits; i++) {
-    if (parseInt(num / digits) == 0) result = '0' + result;
-    digits *= 10;
-  }
-  return result;
-};
-
-const stringfyDate = (dateClass) => {
-  return {
-    year: add0(dateClass.getFullYear(), 4),
-    month: add0(dateClass.getMonth() + 1, 2),
-    date: add0(dateClass.getDate(), 2),
-  };
-};
-
-const formatDate = ({ origin, separator }) => {
-  if (!origin) return;
-  const { year, month, date } = stringfyDate(new Date(origin));
-  return [year, month, date].join(separator);
-};
-
-const formatRegisterDate = (registerDate) => {
-  return formatDate({ origin: registerDate, separator: '.' });
-};
-
-const formatBirthDay = (birthday) => {
-  return formatDate({ origin: birthday, separator: '/' });
-};
-
-const myPages = [
-  {
-    title: '작성글',
-    heads: ['번호', '카테고리', '제목', '날짜', '조회수', '추천수'],
-    mapper: (list) => {
-      return list?.map((item, index) => ({
-        num: index + 1,
-        category: item.category,
-        title: item.title,
-        createdAt: formatDate({ origin: item.registerTime, separator: '.' }),
-        visitCount: item.visitCount,
-        likeCount: item.likeCount,
-      }));
-    },
-    api: memberAPI.getUsersPosts,
-  },
-  {
-    title: '임시저장글',
-    heads: ['번호', '카테고리', '제목', '날짜'],
-    mapper: (list) => {
-      return list?.map((item, index) => ({
-        num: index + 1,
-        category: item.category,
-        title: item.title,
-        createdAt: formatDate({ origin: item.registerTime, separator: '.' }),
-      }));
-    },
-    api: memberAPI.getUsersTempPosts,
-  },
-  {
-    title: '포인트내역',
-    heads: ['번호', '포인트', '정보', '시간'],
-    mapper: (list) => {
-      return list?.map((item, index) => ({
-        num: index + 1,
-        point: item.point,
-        detail: item.detail,
-        time: formatDate({ origin: item.time, separator: '.' }),
-      }));
-    },
-    api: memberAPI.getPointList,
-  },
-];
-
 const MyProfile = ({ token, memberInfo, updateInfo }) => {
   const params = useParams();
   const navigate = useNavigate();
@@ -109,26 +33,115 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
   const [followerModal, setFollowerModal] = followerModalState;
 
   const [followCnt, setFollowCnt] = useState(null);
-  const [myPage, setMyPage] = useState(myPages[0]);
+  const [myPages, setMyPages] = useState([]);
+  const [myPage, setMyPage] = useState(null);
   const [items, setItems] = useState(new Array());
   const [page, setPage] = useState(0);
   const size = 10;
 
+  const add0 = (num, maxDigits) => {
+    let digits = 10;
+    let result = num.toString();
+    for (let i = 1; i < maxDigits; i++) {
+      if (parseInt(num / digits) == 0) result = '0' + result;
+      digits *= 10;
+    }
+    return result;
+  };
+
+  const stringfyDate = (dateClass) => {
+    return {
+      year: add0(dateClass.getFullYear(), 4),
+      month: add0(dateClass.getMonth() + 1, 2),
+      date: add0(dateClass.getDate(), 2),
+    };
+  };
+
+  const formatDate = ({ origin, separator }) => {
+    if (!origin) return;
+    const { year, month, date } = stringfyDate(new Date(origin));
+    return [year, month, date].join(separator);
+  };
+
   const renderItemComponents = (item) => {
     const itemComponents = new Array();
     for (const key in item) {
-      itemComponents.push(<td className="text-center">{item[key]}</td>);
+      if (key == 'onClick') continue;
+      itemComponents.push(
+        <td key={key} className="text-center">
+          {item[key]}
+        </td>
+      );
     }
     return itemComponents.map((component) => component);
   };
 
   useEffect(() => {
+    setMyPages([
+      {
+        title: '작성글',
+        heads: ['번호', '카테고리', '제목', '날짜', '조회수', '추천수'],
+        mapper: (list) => {
+          return list?.map((item, index) => ({
+            num: index + 1,
+            onClick: () => {
+              navigate(`/board/${item.id}`);
+            },
+            category: item.category,
+            title: item.title,
+            createdAt: formatDate({
+              origin: item.registerTime,
+              separator: '.',
+            }),
+            visitCount: item.visitCount,
+            likeCount: item.likeCount,
+          }));
+        },
+        api: memberAPI.getUsersPosts,
+      },
+      {
+        title: '임시저장글',
+        heads: ['번호', '카테고리', '제목', '날짜'],
+        mapper: (list) => {
+          return list?.map((item, index) => ({
+            num: index + 1,
+            onClick: () => {
+              navigate(`/board/${item.id}`);
+            },
+            category: item.category,
+            title: item.title,
+            createdAt: formatDate({
+              origin: item.registerTime,
+              separator: '.',
+            }),
+          }));
+        },
+        api: memberAPI.getUsersTempPosts,
+      },
+      {
+        title: '포인트내역',
+        heads: ['번호', '포인트', '정보', '시간'],
+        mapper: (list) => {
+          return list?.map((item, index) => ({
+            num: index + 1,
+            point: item.point,
+            detail: item.detail,
+            time: formatDate({ origin: item.time, separator: '.' }),
+          }));
+        },
+        api: memberAPI.getPointList,
+      },
+    ]);
     memberAPI.getUsersFollowCnt({ token }).then((res) => {
       if (res.success) {
         setFollowCnt(res.data);
       }
     });
   }, []);
+
+  useEffect(() => {
+    if (myPages.length > 0) setMyPage(myPages[0]);
+  }, [myPages]);
 
   useEffect(() => {
     myPage?.api({ token, page, size }).then((res) => {
@@ -179,8 +192,8 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
                     </div>
                   )}
                   {memberInfo.jobs &&
-                    memberInfo.jobs.map((job) => (
-                      <div className="mr-2">
+                    memberInfo.jobs.map((job, index) => (
+                      <div key={index} className="mr-2">
                         <Group groupName={job} />
                       </div>
                     ))}
@@ -252,13 +265,19 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
                 <div className="flex py-1 ">
                   <div className="p-2  w-2/5 text-gray-500">가입일</div>
                   <div className="p-2 w-3/5 font-bold">
-                    {formatRegisterDate(memberInfo?.registerDate)}
+                    {formatDate({
+                      origin: memberInfo?.registerDate,
+                      separator: '.',
+                    })}
                   </div>
                 </div>
                 <div className="flex py-1 ">
                   <div className="p-2  w-2/5  text-gray-500">생일</div>
                   <div className="p-2 w-3/5 font-bold">
-                    {formatBirthDay(memberInfo?.birthday)}
+                    {formatDate({
+                      origin: memberInfo?.birthday,
+                      separator: '/',
+                    })}
                   </div>
                 </div>
                 {/* 3-1 프로필 수정 + 탈퇴버튼 */}
@@ -279,7 +298,7 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
             <div className=" flex rounded p-1 bg-blue-300 border-2 border-blue-400 shadow-[inset_0_2px_0_1px_#ffffff]">
               <div className=" text-md ">
                 {myPages?.map((item, index) => (
-                  <Fragment>
+                  <Fragment key={index}>
                     <button
                       className="hover:bg-blue-500  m-1 p-1 hover:text-mainWhite rounded font-bold"
                       onClick={() => setMyPage(item)}
@@ -296,14 +315,18 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
                 <table className="w-full border-2 shadow  rounded-md">
                   <thead>
                     <tr className="h-10 bg-gray-100  border-b-2">
-                      {myPage?.heads?.map((head) => (
-                        <th>{head}</th>
+                      {myPage?.heads?.map((head, index) => (
+                        <th key={index}>{head}</th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
-                    {items.map((item) => (
-                      <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
+                    {items.map((item, index) => (
+                      <tr
+                        key={index}
+                        onClick={item.onClick}
+                        className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]"
+                      >
                         {renderItemComponents(item)}
                       </tr>
                     ))}
