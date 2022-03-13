@@ -12,6 +12,8 @@ import {
   AcademicCapIcon,
   GiftIcon,
   SparklesIcon,
+  MailIcon,
+  PencilAltIcon,
 } from '@heroicons/react/solid';
 import MessageModal from 'shared/MessageModal';
 
@@ -302,10 +304,13 @@ const Profile = ({ token, memberInfo, updateInfo }) => {
                   <div className="p-2  w-2/5  text-gray-500">생일</div>
                   <div className="p-2 w-3/5 font-bold">2002/02/07</div>
                 </div>
-                {/* 3-1 프로필 수정버튼 */}
+                {/* 3-1 프로필 수정 + 탈퇴버튼 */}
                 <div className="py-1 text-right">
-                  <button className=" border hover:bg-backGray p-2 rounded  text-md font-bold">
+                  <button className="mr-2 border hover:bg-backGray p-2 rounded  text-md font-bold">
                     프로필 수정
+                  </button>
+                  <button className=" border hover:bg-backGray p-2 rounded  text-md font-bold">
+                    탈퇴
                   </button>
                 </div>
               </div>
@@ -313,7 +318,7 @@ const Profile = ({ token, memberInfo, updateInfo }) => {
           </div>
           {/* NOTE 마이페이지 */}
           {/* 1. 마이페이지(작성글) 컴포넌트*/}
-          <div className="sm:w-full md:w-1/2 lg:w-1/2 xl:w-7/12 m-2">
+          {/* <div className="sm:w-full md:w-1/2 lg:w-1/2 xl:w-7/12 m-2">
             <div className=" flex rounded p-1 bg-blue-300 border-2 border-blue-400 shadow-[inset_0_2px_0_1px_#ffffff]">
               <div className=" text-md ">
                 <button className="hover:bg-blue-500  m-1 p-1 hover:text-mainWhite rounded font-bold">
@@ -367,9 +372,9 @@ const Profile = ({ token, memberInfo, updateInfo }) => {
                 다음으로
               </button>
             </div>
-          </div>
+          </div> */}
           {/* 2. 프로필 수정 컴포넌트  */}
-          {/* <div className="sm:w-full md:w-1/2 lg:w-1/2 xl:w-7/12 m-2">
+          <div className="sm:w-full md:w-1/2 lg:w-1/2 xl:w-7/12 m-2">
             <div className=" flex rounded p-1 bg-blue-300 border-2 border-blue-400 shadow-[inset_0_2px_0_1px_#ffffff]">
               <div className=" text-md ">
                 <div className="m-1 p-1  rounded font-bold">
@@ -378,9 +383,166 @@ const Profile = ({ token, memberInfo, updateInfo }) => {
               </div>
             </div>
             <div className="mt-2 bg-white p-3 shadow-sm rounded-sm ">
-              <div>수정하기 페이지입니다~</div>
+              <div>
+                <div className="flex sm:flex-row md:flex-col lg:flex-row flex-col w-full m-1">
+                  {/* 1. [이름, 닉네임, 학번, 썸네일 수정] */}
+                  <div className="w-full items-center text-left border-2 shadow p-3 m-1  rounded-md">
+                    {/* 1-1. 썸네일 컴포넌트 */}
+                    <div className="pb-2">
+                      {/* 1-1-1 버튼 */}
+
+                      <div className="flex relative w-1/4">
+                        <button className="hover:shadow-md rounded">
+                          <img
+                            src={googy}
+                            alt="profile"
+                            className=" rounded object-center object-cover"
+                          />
+                          <div className="absolute bottom-0 right-0 bg-backGray rounded p-1">
+                            <PencilAltIcon className="h-7 w-7 rounded" />
+                          </div>
+                        </button>
+                      </div>
+                    </div>
+                    {/* 1-2. 이름, 닉네임 학번 컴포넌트 */}
+                    <div>
+                      {/* 1-1 이름 */}
+                      <div className="flex py-1 ">
+                        <label
+                          htmlFor="realName"
+                          className="p-2 w-4/12 text-gray-500"
+                        >
+                          이름
+                        </label>
+                        <input
+                          id="realName"
+                          type="text"
+                          className="w-8/12 p-2 border rounded-lg border-divisionGray focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
+                        />
+                      </div>
+                      {/* 1-2 닉네임 */}
+                      <div className="flex py-1 ">
+                        <label
+                          htmlFor="nickName"
+                          className="p-2 w-4/12 text-gray-500"
+                        >
+                          닉네임
+                        </label>
+                        <input
+                          id="nickName"
+                          type="text"
+                          className="w-8/12 p-2 border rounded-lg border-divisionGray focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
+                        />
+                      </div>
+                      {/* 1-3 학번 */}
+                      <div className="flex py-1 ">
+                        <label
+                          htmlFor="studentId"
+                          className="p-2  w-4/12  text-gray-500"
+                        >
+                          학번
+                        </label>
+                        <input
+                          id="studentId"
+                          type="text"
+                          className="w-8/12 p-2 border rounded-lg border-divisionGray
+                      focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
+                        />
+                      </div>
+
+                      <div className="py-1 text-right">
+                        <button className=" border bg-backGray hover:bg-gray-200 p-2 rounded  text-md font-bold">
+                          저장
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  {/* 2. [이메일, 비밀번호 수정] */}
+                  <div className="w-full items-center text-left border-2 shadow p-3 m-1  rounded-md">
+                    {/* 2-1. 이메일 컴포넌트 */}
+                    <div className="pb-6">
+                      {/* 2-1-1 이메일 입력*/}
+                      <div className="flex py-1 ">
+                        <label
+                          htmlFor="emailAddress"
+                          className="p-2 w-4/12 text-gray-500"
+                        >
+                          이메일
+                        </label>
+                        <div className="w-8/12 flex">
+                          <input
+                            id="emailAddress"
+                            type="email"
+                            className="w-full p-2 border rounded-l-lg border-divisionGray focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
+                          />
+                          <MailIcon className="bg-backGray hover:bg-gray-200 border border-divisionGray h-full w-10 rounded-r-lg text-blue-300 hover:text-blue-400" />
+                        </div>
+                      </div>
+                      {/* 2-1-2 인증 코드 */}
+                      <div className="flex py-1 ">
+                        <label
+                          htmlFor="authCode"
+                          className="p-2 w-6/12 text-gray-500"
+                        >
+                          인증코드
+                        </label>
+                        <div className="flex justify-end w-full">
+                          <input
+                            id="authCode"
+                            type="text"
+                            className="w-4/12 p-2 border rounded-lg border-divisionGray focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="py-1 text-right">
+                        <button className=" border border bg-backGray hover:bg-gray-200 p-2 rounded  text-md font-bold">
+                          저장
+                        </button>
+                      </div>
+                    </div>
+                    {/* 2-2. 비밀번호 컴포넌트 */}
+                    <div>
+                      {/* 2-2-1. 새로운 비밀번호*/}
+                      <div className="flex py-1 ">
+                        <label
+                          htmlFor="password"
+                          className="p-2 w-5/12 text-gray-500"
+                        >
+                          새로운 비밀번호
+                        </label>
+                        <input
+                          id="password"
+                          type="email"
+                          className="p-2 w-7/12  border rounded-lg border-divisionGray focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
+                        />
+                      </div>
+                      {/* 2-2-2 비밀번호 재입력 */}
+                      <div className="flex py-1 ">
+                        <label
+                          htmlFor="confirmPassword"
+                          className="p-2 w-5/12 text-gray-500"
+                        >
+                          비밀번호 재입력
+                        </label>
+                        <input
+                          id="confirmPassword"
+                          type="text"
+                          className="w-7/12 p-2 border rounded-lg border-divisionGray focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
+                        />
+                      </div>
+
+                      <div className="py-1 text-right">
+                        <button className=" border border bg-backGray hover:bg-gray-200 p-2 rounded  text-md font-bold">
+                          저장
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
 
