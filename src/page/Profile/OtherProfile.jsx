@@ -17,21 +17,58 @@ import {
 } from '@heroicons/react/solid';
 import MessageModal from 'shared/MessageModal';
 
-const OtherProfile = () => {
-  const googy =
-    'https://avatars.githubusercontent.com/u/81643702?s=400&u=d3a721a495754454d238b4159bb7a2d150338424&v=4';
-  // 'https://avatars.githubusercontent.com/u/23546441?s=400&u=db7abf2929e5518c12189034dc3fed9bda94f0a6&v=4';
-  const color = 'blue';
-  const alertFollowerModalRef = useRef({});
-  const alertFollowingModalRef = useRef({});
-  //팔로워 불러오는 api
-  const showFollower = () => {
-    alertFollowerModalRef.current.open();
+const googy =
+  'https://avatars.githubusercontent.com/u/81643702?s=400&u=d3a721a495754454d238b4159bb7a2d150338424&v=4';
+
+const add0 = (num, maxDigits) => {
+  let digits = 10;
+  let result = num.toString();
+  for (let i = 1; i < maxDigits; i++) {
+    if (parseInt(num / digits) == 0) result = '0' + result;
+    digits *= 10;
+  }
+  return result;
+};
+
+const stringfyDate = (dateClass) => {
+  return {
+    year: add0(dateClass.getFullYear(), 4),
+    month: add0(dateClass.getMonth() + 1, 2),
+    date: add0(dateClass.getDate(), 2),
   };
-  //팔로잉 불러오는 api
-  const showFollowing = () => {
-    alertFollowingModalRef.current.open();
+};
+
+const formatDate = ({ origin, separator }) => {
+  if (!origin) return;
+  const { year, month, date } = stringfyDate(new Date(origin));
+  return [year, month, date].join(separator);
+};
+
+const heads = ['번호', '카테고리', '제목', '날짜', '조회수', '추천수'];
+const mapper = (list) => {
+  return list?.map((item, index) => ({
+    num: index + 1,
+    category: item.category,
+    title: item.title,
+    createdAt: formatDate({ origin: item.registerTime, separator: '.' }),
+    visitCount: item.visitCount,
+    likeCount: item.likeCount,
+  }));
+};
+
+const OtherProfile = ({ token, memberInfo, userId }) => {
+  const [items, setItems] = useState(new Array());
+  const [page, setPage] = useState(0);
+  const size = 10;
+
+  const renderItemComponents = (item) => {
+    const itemComponents = new Array();
+    for (const key in item) {
+      itemComponents.push(<td className="text-center">{item[key]}</td>);
+    }
+    return itemComponents.map((component) => component);
   };
+
   return (
     <div className="">
       <div className="sm:w-full md:w-full lg:w-10/12 xl:w-8/12 container mx-auto m-4 p-5 justify-center items-center">
@@ -77,36 +114,6 @@ const OtherProfile = () => {
                   </div>
                 </div>
 
-                {/* 2-2(내 프로필). 팔로우 + 포인트 (== 썸네일 옆 프로필 정보) */}
-                <div className="w-1/2 flex flex-col justify-between m-1">
-                  {/* 2-2-1 팔로우, 팔로워 */}
-                  <div className="flex w-full justify-end">
-                    <button
-                      onClick={showFollower}
-                      className="p-2 mr-2 flex flex-row hover:bg-backGray"
-                    >
-                      <div className="text-gray-500 mr-1">팔로워</div>
-                      <div className="font-semibold">4</div>
-                    </button>
-
-                    <button
-                      onClick={showFollowing}
-                      className="p-2 flex flex-row hover:bg-backGray"
-                    >
-                      <div className=" text-gray-500 mr-1">팔로우</div>
-                      <div className="font-semibold">6</div>
-                    </button>
-                  </div>
-                  {/* 2-2-2 포인트 */}
-                  <div className="flex w-full justify-between border-3 border-blue-500 bg-blue-300 rounded-md p-1 ">
-                    <div className="css-font text-shadow  text-white sm:text-2xl md:text-xl lg:text-2xl text-xl  m-1 ">
-                      Point
-                    </div>
-                    <div className="css-digit-font sm:text-4xl md:text-3xl lg:text-4xl text-3xl text-blue-900 pr-2 text-right">
-                      7,923,456
-                    </div>
-                  </div>
-                </div>
                 {/* 2-3(다른 회원 프로필). 팔로우 + 포인트선물 (== 썸네일 옆 프로필 정보) */}
                 <div className="w-1/2 flex flex-col justify-between m-1">
                   <div className="w-full flex flex-col text-center ">
@@ -146,17 +153,7 @@ const OtherProfile = () => {
           <div className="sm:w-full md:w-1/2 lg:w-1/2 xl:w-7/12 m-2">
             <div className=" flex rounded p-1 bg-blue-300 border-2 border-blue-400 shadow-[inset_0_2px_0_1px_#ffffff]">
               <div className=" text-md ">
-                <button className="hover:bg-blue-500  m-1 p-1 hover:text-mainWhite rounded font-bold">
-                  작성글
-                </button>
-                |
-                <button className="hover:bg-blue-500  m-1 p-1 hover:text-mainWhite rounded font-bold">
-                  임시저장글
-                </button>
-                |
-                <button className="hover:bg-blue-500  m-1 p-1 hover:text-mainWhite rounded font-bold">
-                  포인트내역
-                </button>
+                <div className="m-1 p-1 rounded font-bold">작성글</div>
               </div>
             </div>
             <div className="mt-2 bg-white p-3 shadow-sm rounded-sm ">
@@ -173,22 +170,11 @@ const OtherProfile = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
-                      <td>0</td>
-                      <td>공지사항</td>
-                      <td>안냐새요</td>
-                      <td>2022-03-08T14:22:46</td>
-                      <td>4</td>
-                      <td>0</td>
-                    </tr>
-                    <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
-                      <td>1</td>
-                      <td>공지사항</td>
-                      <td>안녕하세요2</td>
-                      <td>2022-03-08T14:23:22</td>
-                      <td>29</td>
-                      <td>0</td>
-                    </tr>
+                    {items.map((item) => (
+                      <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
+                        {renderItemComponents(item)}
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -200,10 +186,6 @@ const OtherProfile = () => {
           </div>
         </div>
       </div>
-
-      {/* modal창 */}
-      <MessageModal ref={alertFollowerModalRef}>팔로워 목록창</MessageModal>
-      <MessageModal ref={alertFollowingModalRef}>팔로잉 목록창</MessageModal>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, Fragment } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ProfileFrame from './Components/Frames/ProfileFrame';
 import InfoBox from './Components/InfoBox';
@@ -16,22 +16,130 @@ import {
   PencilAltIcon,
 } from '@heroicons/react/solid';
 import MessageModal from 'shared/MessageModal';
+import FolloweeModal from './Components/Modal/FolloweeModal';
+import FollowerModal from './Components/Modal/FollowerModal';
+import Group from './Components/Group';
 
-const MyProfile = () => {
-  const googy =
-    'https://avatars.githubusercontent.com/u/81643702?s=400&u=d3a721a495754454d238b4159bb7a2d150338424&v=4';
-  // 'https://avatars.githubusercontent.com/u/23546441?s=400&u=db7abf2929e5518c12189034dc3fed9bda94f0a6&v=4';
-  const color = 'blue';
-  const alertFollowerModalRef = useRef({});
-  const alertFollowingModalRef = useRef({});
-  //팔로워 불러오는 api
-  const showFollower = () => {
-    alertFollowerModalRef.current.open();
+const googy =
+  'https://avatars.githubusercontent.com/u/81643702?s=400&u=d3a721a495754454d238b4159bb7a2d150338424&v=4';
+
+const add0 = (num, maxDigits) => {
+  let digits = 10;
+  let result = num.toString();
+  for (let i = 1; i < maxDigits; i++) {
+    if (parseInt(num / digits) == 0) result = '0' + result;
+    digits *= 10;
+  }
+  return result;
+};
+
+const stringfyDate = (dateClass) => {
+  return {
+    year: add0(dateClass.getFullYear(), 4),
+    month: add0(dateClass.getMonth() + 1, 2),
+    date: add0(dateClass.getDate(), 2),
   };
-  //팔로잉 불러오는 api
-  const showFollowing = () => {
-    alertFollowingModalRef.current.open();
+};
+
+const formatDate = ({ origin, separator }) => {
+  if (!origin) return;
+  const { year, month, date } = stringfyDate(new Date(origin));
+  return [year, month, date].join(separator);
+};
+
+const formatRegisterDate = (registerDate) => {
+  return formatDate({ origin: registerDate, separator: '.' });
+};
+
+const formatBirthDay = (birthday) => {
+  return formatDate({ origin: birthday, separator: '/' });
+};
+
+const myPages = [
+  {
+    title: '작성글',
+    heads: ['번호', '카테고리', '제목', '날짜', '조회수', '추천수'],
+    mapper: (list) => {
+      return list?.map((item, index) => ({
+        num: index + 1,
+        category: item.category,
+        title: item.title,
+        createdAt: formatDate({ origin: item.registerTime, separator: '.' }),
+        visitCount: item.visitCount,
+        likeCount: item.likeCount,
+      }));
+    },
+    api: memberAPI.getUsersPosts,
+  },
+  {
+    title: '임시저장글',
+    heads: ['번호', '카테고리', '제목', '날짜'],
+    mapper: (list) => {
+      return list?.map((item, index) => ({
+        num: index + 1,
+        category: item.category,
+        title: item.title,
+        createdAt: formatDate({ origin: item.registerTime, separator: '.' }),
+      }));
+    },
+    api: memberAPI.getUsersTempPosts,
+  },
+  {
+    title: '포인트내역',
+    heads: ['번호', '포인트', '정보', '시간'],
+    mapper: (list) => {
+      return list?.map((item, index) => ({
+        num: index + 1,
+        point: item.point,
+        detail: item.detail,
+        time: formatDate({ origin: item.time, separator: '.' }),
+      }));
+    },
+    api: memberAPI.getPointList,
+  },
+];
+
+const MyProfile = ({ token, memberInfo, updateInfo }) => {
+  const params = useParams();
+  const navigate = useNavigate();
+
+  const followeeModalState = useState(false);
+  const [followeeModal, setFolloweeModal] = followeeModalState;
+  const followerModalState = useState(false);
+  const [followerModal, setFollowerModal] = followerModalState;
+
+  const [followCnt, setFollowCnt] = useState(null);
+  const [myPage, setMyPage] = useState(myPages[0]);
+  const [items, setItems] = useState(new Array());
+  const [page, setPage] = useState(0);
+  const size = 10;
+
+  const renderItemComponents = (item) => {
+    const itemComponents = new Array();
+    for (const key in item) {
+      itemComponents.push(<td className="text-center">{item[key]}</td>);
+    }
+    return itemComponents.map((component) => component);
   };
+
+  useEffect(() => {
+    memberAPI.getUsersFollowCnt({ token }).then((res) => {
+      if (res.success) {
+        setFollowCnt(res.data);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    myPage?.api({ token, page, size }).then((res) => {
+      if (res.success) {
+        setItems(myPage.mapper(res.list));
+      }
+    });
+  }, [myPage]);
+
+  console.log(memberInfo);
+
   return (
     <div className="">
       <div className="sm:w-full md:w-full lg:w-10/12 xl:w-8/12 container mx-auto m-4 p-5 justify-center items-center">
@@ -55,11 +163,27 @@ const MyProfile = () => {
               {/* 1.  닉네임 + 회원 뱃지 */}
               <div className="flex justify-between m-1">
                 {/*닉네임*/}
-                <div className="css-font text-5xl m-1">GOOGY</div>
+                <div className="css-font text-5xl m-1">
+                  {memberInfo?.nickName}
+                </div>
                 {/*회원 뱃지*/}
                 <div className="flex">
-                  <AcademicCapIcon className=" m-1 bg-gray-100 h-10 w-10 rounded text-black " />
-                  <GiftIcon className="h-10 w-10 m-1 bg-gray-100 rounded text-blue-400" />
+                  {memberInfo.rank && (
+                    <div className="mr-2">
+                      <Group groupName={memberInfo.rank} />
+                    </div>
+                  )}
+                  {memberInfo.type && (
+                    <div className="mr-2">
+                      <Group groupName={memberInfo.type} />
+                    </div>
+                  )}
+                  {memberInfo.jobs &&
+                    memberInfo.jobs.map((job) => (
+                      <div className="mr-2">
+                        <Group groupName={job} />
+                      </div>
+                    ))}
                 </div>
               </div>
               {/*구분선*/}
@@ -82,19 +206,23 @@ const MyProfile = () => {
                   {/* 2-2-1 팔로우, 팔로워 */}
                   <div className="flex w-full justify-end">
                     <button
-                      onClick={showFollower}
+                      onClick={() => setFollowerModal(true)}
                       className="p-2 mr-2 flex flex-row hover:bg-backGray"
                     >
                       <div className="text-gray-500 mr-1">팔로워</div>
-                      <div className="font-semibold">4</div>
+                      <div className="font-semibold">
+                        {followCnt && followCnt.followerNumber}
+                      </div>
                     </button>
 
                     <button
-                      onClick={showFollowing}
+                      onClick={() => setFolloweeModal(true)}
                       className="p-2 flex flex-row hover:bg-backGray"
                     >
                       <div className=" text-gray-500 mr-1">팔로우</div>
-                      <div className="font-semibold">6</div>
+                      <div className="font-semibold">
+                        {followCnt && followCnt.followeeNumber}
+                      </div>
                     </button>
                   </div>
                   {/* 2-2-2 포인트 */}
@@ -103,7 +231,7 @@ const MyProfile = () => {
                       Point
                     </div>
                     <div className="css-digit-font sm:text-4xl md:text-3xl lg:text-4xl text-3xl text-blue-900 pr-2 text-right">
-                      7,923,456
+                      {memberInfo?.point}
                     </div>
                   </div>
                 </div>
@@ -112,24 +240,33 @@ const MyProfile = () => {
               {/* 3.  프로필(이름, 아이디, 가입일, 생일) + 프로필 수정버튼 */}
               <div className="items-center text-left border-2 shadow p-3 m-1  rounded-md">
                 <div className="flex py-1 ">
-                  <div className="p-2  w-2/5 text-gray-500">이름</div>
-                  <div className="p-2 w-3/5 font-bold">장서윤</div>
+                  <div className="p-2  w-2/5 text-gray-500">기수</div>
+                  <div className="p-2 w-3/5 font-bold">{`Keeper ${memberInfo?.generation}기`}</div>
                 </div>
                 <div className="flex py-1 ">
-                  <div className="p-2  w-2/5  text-gray-500">아이디</div>
-                  <div className="p-2 w-3/5 font-bold">yrt7998</div>
+                  <div className="p-2  w-2/5  text-gray-500">이메일</div>
+                  <div className="p-2 w-3/5 font-bold">
+                    {memberInfo?.emailAddress}
+                  </div>
                 </div>
                 <div className="flex py-1 ">
                   <div className="p-2  w-2/5 text-gray-500">가입일</div>
-                  <div className="p-2 w-3/5 font-bold">2021.03.14</div>
+                  <div className="p-2 w-3/5 font-bold">
+                    {formatRegisterDate(memberInfo?.registerDate)}
+                  </div>
                 </div>
                 <div className="flex py-1 ">
                   <div className="p-2  w-2/5  text-gray-500">생일</div>
-                  <div className="p-2 w-3/5 font-bold">2002/02/07</div>
+                  <div className="p-2 w-3/5 font-bold">
+                    {formatBirthDay(memberInfo?.birthday)}
+                  </div>
                 </div>
                 {/* 3-1 프로필 수정 + 탈퇴버튼 */}
                 <div className="py-1 text-right">
-                  <button className="mr-2 border hover:bg-backGray p-2 rounded  text-md font-bold">
+                  <button
+                    className="mr-2 border hover:bg-backGray p-2 rounded  text-md font-bold"
+                    onClick={() => navigate('edit')}
+                  >
                     프로필 수정
                   </button>
                 </div>
@@ -141,17 +278,17 @@ const MyProfile = () => {
           <div className="sm:w-full md:w-1/2 lg:w-1/2 xl:w-7/12 m-2">
             <div className=" flex rounded p-1 bg-blue-300 border-2 border-blue-400 shadow-[inset_0_2px_0_1px_#ffffff]">
               <div className=" text-md ">
-                <button className="hover:bg-blue-500  m-1 p-1 hover:text-mainWhite rounded font-bold">
-                  작성글
-                </button>
-                |
-                <button className="hover:bg-blue-500  m-1 p-1 hover:text-mainWhite rounded font-bold">
-                  임시저장글
-                </button>
-                |
-                <button className="hover:bg-blue-500  m-1 p-1 hover:text-mainWhite rounded font-bold">
-                  포인트내역
-                </button>
+                {myPages?.map((item, index) => (
+                  <Fragment>
+                    <button
+                      className="hover:bg-blue-500  m-1 p-1 hover:text-mainWhite rounded font-bold"
+                      onClick={() => setMyPage(item)}
+                    >
+                      {item.title}
+                    </button>
+                    {index != myPages.length - 1 && '|'}
+                  </Fragment>
+                ))}
               </div>
             </div>
             <div className="mt-2 bg-white p-3 shadow-sm rounded-sm ">
@@ -159,31 +296,17 @@ const MyProfile = () => {
                 <table className="w-full border-2 shadow  rounded-md">
                   <thead>
                     <tr className="h-10 bg-gray-100  border-b-2">
-                      <th>번호</th>
-                      <th>게시판</th>
-                      <th>제목</th>
-                      <th>날짜</th>
-                      <th>조회수</th>
-                      <th>추천수</th>
+                      {myPage?.heads?.map((head) => (
+                        <th>{head}</th>
+                      ))}
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
-                      <td>0</td>
-                      <td>공지사항</td>
-                      <td>안냐새요</td>
-                      <td>2022-03-08T14:22:46</td>
-                      <td>4</td>
-                      <td>0</td>
-                    </tr>
-                    <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
-                      <td>1</td>
-                      <td>공지사항</td>
-                      <td>안녕하세요2</td>
-                      <td>2022-03-08T14:23:22</td>
-                      <td>29</td>
-                      <td>0</td>
-                    </tr>
+                    {items.map((item) => (
+                      <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
+                        {renderItemComponents(item)}
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -197,8 +320,8 @@ const MyProfile = () => {
       </div>
 
       {/* modal창 */}
-      <MessageModal ref={alertFollowerModalRef}>팔로워 목록창</MessageModal>
-      <MessageModal ref={alertFollowingModalRef}>팔로잉 목록창</MessageModal>
+      <FollowerModal modalState={followerModalState} />
+      <FolloweeModal modalState={followeeModalState} />
     </div>
   );
 };

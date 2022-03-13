@@ -32,6 +32,9 @@ const EditProfile = () => {
   const showFollowing = () => {
     alertFollowingModalRef.current.open();
   };
+
+  const navigate = useNavigate();
+
   return (
     <div className="">
       <div className="sm:w-full md:w-full lg:w-10/12 xl:w-8/12 container mx-auto m-4 p-5 justify-center items-center">
@@ -129,7 +132,13 @@ const EditProfile = () => {
                 </div>
                 {/* 3-1 프로필 수정 + 탈퇴버튼 */}
                 <div className="py-1 text-right">
-                  <button className=" border hover:bg-backGray p-2 rounded  text-md font-bold">
+                  <button
+                    className=" border hover:bg-backGray p-2 rounded  text-md font-bold"
+                    onClick={() => navigate(-1)}
+                  >
+                    돌아가기
+                  </button>
+                  <button className="m-2 border hover:bg-backGray p-2 rounded  text-md font-bold">
                     탈퇴
                   </button>
                 </div>

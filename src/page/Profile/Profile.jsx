@@ -148,7 +148,13 @@ const Profile = ({ token, memberInfo, updateInfo }) => {
   }, [isMe, isFollowee]);
 
   if (isMe) {
-    return <MyProfile />;
+    return (
+      <MyProfile
+        token={token}
+        memberInfo={memberInfo}
+        updateInfo={updateInfo}
+      />
+    );
   } else {
     return <OtherProfile />;
   }
