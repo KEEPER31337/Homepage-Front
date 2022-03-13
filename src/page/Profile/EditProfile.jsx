@@ -1,144 +1,319 @@
-import React from 'react';
-import { useRef } from 'react';
-import { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ProfileFrame from './Components/Frames/ProfileFrame';
 import InfoBox from './Components/InfoBox';
-import DeleteUserModal from './Components/Modal/DeleteUserModal';
-import actionMember from 'redux/action/member';
-import utilAPI from 'API/v1/util';
+import { connect } from 'react-redux';
 import memberAPI from 'API/v1/member';
-//local
-import ipAPI from 'API/v1/ip';
-import Modal from './Components/Modal/Modal';
+import actionMember from 'redux/action/member';
 
-const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
-  console.log(memberInfo);
-  const params = useParams();
-  const navigate = useNavigate();
+//NOTE 프로필 UI
+import './fonts.css';
+import {
+  AcademicCapIcon,
+  GiftIcon,
+  SparklesIcon,
+  MailIcon,
+  PencilAltIcon,
+} from '@heroicons/react/solid';
+import MessageModal from 'shared/MessageModal';
 
-  const deleteUserModalState = useState(false);
-  const [deleteUserModal, setDeleteUserModal] = deleteUserModalState;
-
-  const [img, setImg] = useState(null);
-  const infoState = useState(null);
-  const [info, setInfo] = infoState;
-
-  useEffect(() => {
-    utilAPI
-      .getThumbnail({ thumbnailId: memberInfo.thumbnailId })
-      .then((result) => {
-        setImg(result);
-      });
-  }, [memberInfo]);
-
-  const onProfileImg = () => {
-    const imgInput = document.getElementById('ImgUpload');
-    imgInput.click();
+const EditProfile = () => {
+  const googy =
+    'https://avatars.githubusercontent.com/u/81643702?s=400&u=d3a721a495754454d238b4159bb7a2d150338424&v=4';
+  // 'https://avatars.githubusercontent.com/u/23546441?s=400&u=db7abf2929e5518c12189034dc3fed9bda94f0a6&v=4';
+  const color = 'blue';
+  const alertFollowerModalRef = useRef({});
+  const alertFollowingModalRef = useRef({});
+  //팔로워 불러오는 api
+  const showFollower = () => {
+    alertFollowerModalRef.current.open();
   };
-
-  const updateImg = (event) => {
-    ipAPI.getIp().then((ipAddress) => {
-      console.log(ipAddress, event.target.files[0]);
-      memberAPI
-        .updateThumbnail({
-          token,
-          ipAddress: ipAddress,
-          thumbnail: event.target.files[0],
-        })
-        .then((result) => {
-          if (result.success) {
-            console.log(result.data);
-            setInfo(result.data);
-          } else {
-            console.log(`${result.code}:${result.msg}`);
-          }
-        });
-    });
+  //팔로잉 불러오는 api
+  const showFollowing = () => {
+    alertFollowingModalRef.current.open();
   };
+  return (
+    <div className="">
+      <div className="sm:w-full md:w-full lg:w-10/12 xl:w-8/12 container mx-auto m-4 p-5 justify-center items-center">
+        {/* 1. 커스텀 색상 팔레트 */}
+        <div className="grid w-auto  place-items-end ">
+          <div className="flex">
+            <SparklesIcon className=" m-1 bg-gray-100 h-9 w-9 rounded text-red-400 " />
+            <SparklesIcon className=" m-1 bg-gray-100 h-9 w-9 rounded text-orange-400 " />
+            <SparklesIcon className=" m-1 bg-gray-100 h-9 w-9 rounded text-amber-400 " />
+            <SparklesIcon className=" m-1 bg-gray-100 h-9 w-9 rounded text-blue-400 " />
+            <SparklesIcon className=" m-1 bg-gray-100 h-9 w-9 rounded text-green-400 " />
+            <SparklesIcon className=" m-1 bg-gray-100 h-9 w-9 rounded text-violet-400 " />
+            <SparklesIcon className=" m-1 bg-gray-100 h-9 w-9 rounded text-zinc-400 " />
+          </div>
+        </div>
 
-  const headBtns = [
-    { text: '돌아가기', onClick: () => navigate(-1) },
-    {
-      text: '탈퇴',
-      onClick: () => {
-        setDeleteUserModal(true);
-      },
-    },
-  ];
+        <div className="md:flex p-1 bg-backGray border-2 shadow-sm">
+          {/* NOTE 프로필 */}
+          <div className="sm:w-full md:w-1/2 lg:w-1/2 xl:w-5/12 m-2 ">
+            <div className="p-1 bg-white">
+              {/* 1.  닉네임 + 회원 뱃지 */}
+              <div className="flex justify-between m-1">
+                {/*닉네임*/}
+                <div className="css-font text-5xl m-1">GOOGY</div>
+                {/*회원 뱃지*/}
+                <div className="flex">
+                  <AcademicCapIcon className=" m-1 bg-gray-100 h-10 w-10 rounded text-black " />
+                  <GiftIcon className="h-10 w-10 m-1 bg-gray-100 rounded text-blue-400" />
+                </div>
+              </div>
+              {/*구분선*/}
+              <div className="p-[2px] mb-2 bg-gradient-to-r from-blue-300 via-blue-200 to-yellow-300  "></div>
+              {/* 2.  프로필 이미지 + 팔로우 + 포인트 */}
+              <div className="flex ">
+                {/* 2-1. 프로필 이미지 */}
+                <div className="w-1/2 m-1">
+                  <div className="p-1 bg-gradient-to-r from-blue-300 via-blue-200 to-yellow-300 rounded">
+                    <img
+                      src={googy}
+                      alt="profile"
+                      className="w-full h-full rounded object-center object-cover"
+                    />
+                  </div>
+                </div>
 
-  const renderImgBtn = () => (
-    <button
-      className="pr-2 w-4/12 object-contain hover:brightness-75"
-      onClick={onProfileImg}
-    >
-      <img className="w-full h-full rounded-2xl" src={img} />
-      <input
-        id="ImgUpload"
-        type="file"
-        accept="image/*"
-        onChange={updateImg}
-        className="hidden focus:outline-none"
-      />
-    </button>
-  );
+                {/* 2-2(내 프로필). 팔로우 + 포인트 (== 썸네일 옆 프로필 정보) */}
+                <div className="w-1/2 flex flex-col justify-between m-1">
+                  {/* 2-2-1 팔로우, 팔로워 */}
+                  <div className="flex w-full justify-end">
+                    <button
+                      onClick={showFollower}
+                      className="p-2 mr-2 flex flex-row hover:bg-backGray"
+                    >
+                      <div className="text-gray-500 mr-1">팔로워</div>
+                      <div className="font-semibold">4</div>
+                    </button>
 
-  const renderBody = () => (
-    <div className="w-full">
-      <InfoBox
-        type="setInfo"
-        params={{ token: token, memberInfo: memberInfo, infoState: infoState }}
-      />
-      <InfoBox
-        type="setEmail"
-        params={{ token: token, infoState: infoState }}
-      />
-      <InfoBox type="setPwd" params={{ token: token }} />
+                    <button
+                      onClick={showFollowing}
+                      className="p-2 flex flex-row hover:bg-backGray"
+                    >
+                      <div className=" text-gray-500 mr-1">팔로우</div>
+                      <div className="font-semibold">6</div>
+                    </button>
+                  </div>
+                  {/* 2-2-2 포인트 */}
+                  <div className="flex w-full justify-between border-3 border-blue-500 bg-blue-300 rounded-md p-1 ">
+                    <div className="css-font text-shadow  text-white sm:text-2xl md:text-xl lg:text-2xl text-xl  m-1 ">
+                      Point
+                    </div>
+                    <div className="css-digit-font sm:text-4xl md:text-3xl lg:text-4xl text-3xl text-blue-900 pr-2 text-right">
+                      7,923,456
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 3.  프로필(이름, 아이디, 가입일, 생일) + 프로필 수정버튼 */}
+              <div className="items-center text-left border-2 shadow p-3 m-1  rounded-md">
+                <div className="flex py-1 ">
+                  <div className="p-2  w-2/5 text-gray-500">이름</div>
+                  <div className="p-2 w-3/5 font-bold">장서윤</div>
+                </div>
+                <div className="flex py-1 ">
+                  <div className="p-2  w-2/5  text-gray-500">아이디</div>
+                  <div className="p-2 w-3/5 font-bold">yrt7998</div>
+                </div>
+                <div className="flex py-1 ">
+                  <div className="p-2  w-2/5 text-gray-500">가입일</div>
+                  <div className="p-2 w-3/5 font-bold">2021.03.14</div>
+                </div>
+                <div className="flex py-1 ">
+                  <div className="p-2  w-2/5  text-gray-500">생일</div>
+                  <div className="p-2 w-3/5 font-bold">2002/02/07</div>
+                </div>
+                {/* 3-1 프로필 수정 + 탈퇴버튼 */}
+                <div className="py-1 text-right">
+                  <button className=" border hover:bg-backGray p-2 rounded  text-md font-bold">
+                    탈퇴
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* 2. 프로필 수정 컴포넌트  */}
+          <div className="sm:w-full md:w-1/2 lg:w-1/2 xl:w-7/12 m-2">
+            <div className=" flex rounded p-1 bg-blue-300 border-2 border-blue-400 shadow-[inset_0_2px_0_1px_#ffffff]">
+              <div className=" text-md ">
+                <div className="m-1 p-1  rounded font-bold">
+                  프로필 수정하기
+                </div>
+              </div>
+            </div>
+            <div className="mt-2 bg-white p-3 shadow-sm rounded-sm ">
+              <div>
+                <div className="flex sm:flex-row md:flex-col lg:flex-row flex-col w-full m-1">
+                  {/* 1. [이름, 닉네임, 학번, 썸네일 수정] */}
+                  <div className="w-full items-center text-left border-2 shadow p-3 m-1  rounded-md">
+                    {/* 1-1. 썸네일 컴포넌트 */}
+                    <div className="pb-2">
+                      {/* 1-1-1 버튼 */}
+
+                      <div className="flex relative w-1/4">
+                        <button className="hover:shadow-md rounded">
+                          <img
+                            src={googy}
+                            alt="profile"
+                            className=" rounded object-center object-cover"
+                          />
+                          <div className="absolute bottom-0 right-0 bg-backGray rounded p-1">
+                            <PencilAltIcon className="h-7 w-7 rounded" />
+                          </div>
+                        </button>
+                      </div>
+                    </div>
+                    {/* 1-2. 이름, 닉네임 학번 컴포넌트 */}
+                    <div>
+                      {/* 1-1 이름 */}
+                      <div className="flex py-1 ">
+                        <label
+                          htmlFor="realName"
+                          className="p-2 w-4/12 text-gray-500"
+                        >
+                          이름
+                        </label>
+                        <input
+                          id="realName"
+                          type="text"
+                          className="w-8/12 p-2 border rounded-lg border-divisionGray focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
+                        />
+                      </div>
+                      {/* 1-2 닉네임 */}
+                      <div className="flex py-1 ">
+                        <label
+                          htmlFor="nickName"
+                          className="p-2 w-4/12 text-gray-500"
+                        >
+                          닉네임
+                        </label>
+                        <input
+                          id="nickName"
+                          type="text"
+                          className="w-8/12 p-2 border rounded-lg border-divisionGray focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
+                        />
+                      </div>
+                      {/* 1-3 학번 */}
+                      <div className="flex py-1 ">
+                        <label
+                          htmlFor="studentId"
+                          className="p-2  w-4/12  text-gray-500"
+                        >
+                          학번
+                        </label>
+                        <input
+                          id="studentId"
+                          type="text"
+                          className="w-8/12 p-2 border rounded-lg border-divisionGray
+                      focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
+                        />
+                      </div>
+
+                      <div className="py-1 text-right">
+                        <button className=" border bg-backGray hover:bg-gray-200 p-2 rounded  text-md font-bold">
+                          저장
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  {/* 2. [이메일, 비밀번호 수정] */}
+                  <div className="w-full items-center text-left border-2 shadow p-3 m-1  rounded-md">
+                    {/* 2-1. 이메일 컴포넌트 */}
+                    <div className="pb-6">
+                      {/* 2-1-1 이메일 입력*/}
+                      <div className="flex py-1 ">
+                        <label
+                          htmlFor="emailAddress"
+                          className="p-2 w-4/12 text-gray-500"
+                        >
+                          이메일
+                        </label>
+                        <div className="w-8/12 flex">
+                          <input
+                            id="emailAddress"
+                            type="email"
+                            className="w-full p-2 border rounded-l-lg border-divisionGray focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
+                          />
+                          <MailIcon className="bg-backGray hover:bg-gray-200 border border-divisionGray h-full w-10 rounded-r-lg text-blue-300 hover:text-blue-400" />
+                        </div>
+                      </div>
+                      {/* 2-1-2 인증 코드 */}
+                      <div className="flex py-1 ">
+                        <label
+                          htmlFor="authCode"
+                          className="p-2 w-6/12 text-gray-500"
+                        >
+                          인증코드
+                        </label>
+                        <div className="flex justify-end w-full">
+                          <input
+                            id="authCode"
+                            type="text"
+                            className="w-4/12 p-2 border rounded-lg border-divisionGray focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="py-1 text-right">
+                        <button className=" border bg-backGray hover:bg-gray-200 p-2 rounded  text-md font-bold">
+                          저장
+                        </button>
+                      </div>
+                    </div>
+                    {/* 2-2. 비밀번호 컴포넌트 */}
+                    <div>
+                      {/* 2-2-1. 새로운 비밀번호*/}
+                      <div className="flex py-1 ">
+                        <label
+                          htmlFor="password"
+                          className="p-2 w-5/12 text-gray-500"
+                        >
+                          새로운 비밀번호
+                        </label>
+                        <input
+                          id="password"
+                          type="email"
+                          className="p-2 w-7/12  border rounded-lg border-divisionGray focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
+                        />
+                      </div>
+                      {/* 2-2-2 비밀번호 재입력 */}
+                      <div className="flex py-1 ">
+                        <label
+                          htmlFor="confirmPassword"
+                          className="p-2 w-5/12 text-gray-500"
+                        >
+                          비밀번호 재입력
+                        </label>
+                        <input
+                          id="confirmPassword"
+                          type="text"
+                          className="w-7/12 p-2 border rounded-lg border-divisionGray focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
+                        />
+                      </div>
+
+                      <div className="py-1 text-right">
+                        <button className=" border bg-backGray hover:bg-gray-200 p-2 rounded  text-md font-bold">
+                          저장
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* modal창 */}
+      <MessageModal ref={alertFollowerModalRef}>팔로워 목록창</MessageModal>
+      <MessageModal ref={alertFollowingModalRef}>팔로잉 목록창</MessageModal>
     </div>
   );
-
-  useEffect(() => {
-    console.log('info:', info);
-    if (info) updateInfo({ memberInfo: info });
-  }, [info]);
-
-  if (params.userId != memberInfo.id) {
-    return <div>접근할수 없습니다</div>;
-  } else {
-    return (
-      <div>
-        <ProfileFrame
-          profileBtns={headBtns}
-          renderHeadLeft={renderImgBtn}
-          renderBody={renderBody}
-          memberInfo={memberInfo}
-        />
-        <DeleteUserModal
-          token={token}
-          signOut={signOut}
-          modalState={deleteUserModalState}
-        />
-      </div>
-    );
-  }
 };
 
-const mapStateToProps = (state) => {
-  return {
-    token: state.member.token,
-    memberInfo: state.member.memberInfo,
-  };
-};
-const mapDispatchToProps = (dispatch, OwnProps) => {
-  return {
-    updateInfo: ({ memberInfo }) => {
-      dispatch(actionMember.updateInfo({ memberInfo }));
-    },
-    signOut: () => {
-      dispatch(actionMember.signOut());
-    },
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditProfile);
+export default EditProfile;
