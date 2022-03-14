@@ -20,8 +20,7 @@ import {
 import MessageModal from 'shared/MessageModal';
 import Group from './Components/Group';
 
-const googy =
-  'https://avatars.githubusercontent.com/u/81643702?s=400&u=d3a721a495754454d238b4159bb7a2d150338424&v=4';
+const googy = 'https://avatars.githubusercontent.com/u/81643702?v=4';
 
 const msgTextColor = {
   default: { nonDark: 'mainBlack', dark: 'mainWhite' },
@@ -345,10 +344,10 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
   }, []);
 
   return (
-    <div className="">
-      <div className="sm:w-full md:w-full lg:w-10/12 xl:w-8/12 container mx-auto m-4 p-5 justify-center items-center">
+    <div className="min-h-screen  dark:bg-mainBlack dark:text-mainWhite ">
+      <div className="h-full sm:w-full md:w-full lg:w-10/12 xl:w-8/12 container mx-auto pt-10 p-5 justify-center items-center">
         {/* 1. 커스텀 색상 팔레트 */}
-        <div className="grid w-auto  place-items-end ">
+        {/* <div className="grid w-auto  place-items-end ">
           <div className="flex">
             <SparklesIcon className=" m-1 bg-gray-100 h-9 w-9 rounded text-red-400 " />
             <SparklesIcon className=" m-1 bg-gray-100 h-9 w-9 rounded text-orange-400 " />
@@ -358,12 +357,12 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
             <SparklesIcon className=" m-1 bg-gray-100 h-9 w-9 rounded text-violet-400 " />
             <SparklesIcon className=" m-1 bg-gray-100 h-9 w-9 rounded text-zinc-400 " />
           </div>
-        </div>
+        </div> */}
 
-        <div className="md:flex p-1 bg-backGray border-2 shadow-sm">
+        <div className="md:flex p-1 bg-backGray dark:bg-darkPoint  border-2 dark:border-transparent shadow-sm">
           {/* NOTE 프로필 */}
           <div className="sm:w-full md:w-1/2 lg:w-1/2 xl:w-5/12 m-2 ">
-            <div className="p-1 bg-white">
+            <div className="p-1 bg-white dark:bg-darkPoint">
               {/* 1.  닉네임 + 회원 뱃지 */}
               <div className="flex justify-between m-1">
                 {/*닉네임*/}
@@ -391,12 +390,12 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                 </div>
               </div>
               {/*구분선*/}
-              <div className="p-[2px] mb-2 bg-gradient-to-r from-blue-300 via-blue-200 to-yellow-300  "></div>
+              <div className="p-[2px] mb-2 bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-300  "></div>
               {/* 2.  프로필 이미지 + 팔로우 + 포인트 */}
               <div className="flex ">
                 {/* 2-1. 프로필 이미지 */}
                 <div className="w-1/2 m-1">
-                  <div className="p-1 bg-gradient-to-r from-blue-300 via-blue-200 to-yellow-300 rounded">
+                  <div className="p-1 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 rounded">
                     <img
                       src={googy}
                       alt="profile"
@@ -409,14 +408,14 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                 <div className="w-1/2 flex flex-col justify-between m-1">
                   {/* 2-2-1 팔로우, 팔로워 */}
                   <div className="flex w-full justify-end">
-                    <div className="p-2 mr-2 flex flex-row">
+                    <div className="p-2 mr-2 flex flex-row hover:bg-backGray dark:hover:bg-mainBlack dark:hover:bg-opacity-50">
                       <div className="text-gray-500 mr-1">팔로워</div>
                       <div className="font-semibold">
                         {followCnt && followCnt.followerNumber}
                       </div>
                     </div>
 
-                    <div className="p-2 flex flex-row">
+                    <div className="p-2 flex flex-row hover:bg-backGray dark:hover:bg-mainBlack dark:hover:bg-opacity-50">
                       <div className=" text-gray-500 mr-1">팔로우</div>
                       <div className="font-semibold">
                         {followCnt && followCnt.followeeNumber}
@@ -424,11 +423,11 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                     </div>
                   </div>
                   {/* 2-2-2 포인트 */}
-                  <div className="flex w-full justify-between border-3 border-blue-500 bg-blue-300 rounded-md p-1 ">
+                  <div className="flex w-full justify-between border-3 border-amber-500 bg-amber-300 rounded-md p-1 ">
                     <div className="css-font text-shadow  text-white sm:text-2xl md:text-xl lg:text-2xl text-xl  m-1 ">
                       Point
                     </div>
-                    <div className="css-digit-font sm:text-4xl md:text-3xl lg:text-4xl text-3xl text-blue-900 pr-2 text-right">
+                    <div className="css-digit-font sm:text-4xl md:text-3xl lg:text-4xl text-3xl text-teal-900 pr-2 text-right">
                       {memberInfo?.point}
                     </div>
                   </div>
@@ -468,12 +467,12 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                 {/* 3-1 프로필 수정 + 탈퇴버튼 */}
                 <div className="py-1 text-right">
                   <button
-                    className=" border hover:bg-backGray p-2 rounded  text-md font-bold"
+                    className="mr-2 border hover:bg-backGray p-2 rounded  text-md font-bold dark:border-mainBlack dark:shadow dark:bg-[#090e1a] dark:hover:bg-mainBlack"
                     onClick={() => navigate(-1)}
                   >
                     돌아가기
                   </button>
-                  <button className="m-2 border hover:bg-backGray p-2 rounded  text-md font-bold">
+                  <button className=" border hover:bg-backGray p-2 rounded  text-md font-bold dark:border-mainBlack dark:shadow dark:bg-[#090e1a] dark:hover:bg-mainBlack">
                     탈퇴
                   </button>
                 </div>
@@ -482,18 +481,18 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
           </div>
           {/* 2. 프로필 수정 컴포넌트  */}
           <div className="sm:w-full md:w-1/2 lg:w-1/2 xl:w-7/12 m-2">
-            <div className=" flex rounded p-1 bg-blue-300 border-2 border-blue-400 shadow-[inset_0_2px_0_1px_#ffffff]">
-              <div className=" text-md ">
-                <div className="m-1 p-1  rounded font-bold">
+            <div className=" flex rounded p-1 bg-amber-300 border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
+              <div className=" text-lg ">
+                <div className="m-1 p-1  rounded font-bold dark:text-mainBlack">
                   프로필 수정하기
                 </div>
               </div>
             </div>
-            <div className="mt-2 bg-white p-3 shadow-sm rounded-sm ">
+            <div className="mt-2 bg-white dark:bg-darkComponent p-3 shadow-sm rounded-sm ">
               <div>
                 <div className="flex sm:flex-row md:flex-col lg:flex-row flex-col w-full m-1">
                   {/* 1. [이름, 닉네임, 학번, 썸네일 수정] */}
-                  <div className="w-full items-center text-left border-2 shadow p-3 m-1  rounded-md">
+                  <div className="w-full items-center text-left border-2 dark:border-2 dark:bg-darkPoint dark:border-darkPoint shadow p-3 m-1  rounded-md">
                     {/* 1-1. 썸네일 컴포넌트 */}
                     <div className="pb-2">
                       {/* 1-1-1 버튼 */}
@@ -501,15 +500,15 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                       <div className="flex relative w-1/4">
                         <button
                           onClick={onProfileImg}
-                          className="hover:shadow-md rounded"
+                          className="shadow-md hover:shadow-lg rounded"
                         >
                           <img
                             src={googy}
                             alt="profile"
                             className=" rounded object-center object-cover"
                           />
-                          <div className="absolute bottom-0 right-0 bg-backGray rounded p-1">
-                            <PencilAltIcon className="h-7 w-7 rounded" />
+                          <div className="absolute bottom-0 right-0 bg-backGray  rounded p-1">
+                            <PencilAltIcon className="h-7 w-7 rounded dark:text-amber-500 " />
                           </div>
                           <input
                             id="ImgUpload"
@@ -537,7 +536,7 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                           required
                           value={name}
                           onChange={(event) => setName(event.target.value)}
-                          className="w-8/12 p-2 border rounded-lg border-divisionGray focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
+                          className="w-8/12 p-2 dark:bg-[#080b14] dark:border-opacity-0 border rounded-lg border-divisionGray focus:border-amber-400 focus:ring-amber-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9] dark:shadow-[inset_0_2px_0_1px_#000000]"
                         />
                       </div>
                       {/* 1-2 닉네임 */}
@@ -554,7 +553,7 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                           required
                           value={nickName}
                           onChange={(event) => setNickName(event.target.value)}
-                          className="w-8/12 p-2 border rounded-lg border-divisionGray focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
+                          className="w-8/12 p-2 dark:bg-[#080b14] dark:border-opacity-0 border rounded-lg border-divisionGray focus:border-amber-400 focus:ring-amber-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9] dark:shadow-[inset_0_2px_0_1px_#000000]"
                         />
                       </div>
                       {/* 1-3 학번 */}
@@ -571,8 +570,7 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                           required
                           value={studentId}
                           onChange={(event) => setStudentId(event.target.value)}
-                          className="w-8/12 p-2 border rounded-lg border-divisionGray
-                      focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
+                          className="w-8/12 p-2 dark:bg-[#080b14] dark:border-opacity-0 border rounded-lg border-divisionGray focus:border-amber-400 focus:ring-amber-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9] dark:shadow-[inset_0_2px_0_1px_#000000]"
                         />
                       </div>
                       <div className="py-1 text-right flex items-center">
@@ -583,7 +581,7 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                         </label>
                         <button
                           onClick={saveInfo}
-                          className="w-1/6 border bg-backGray hover:bg-gray-200 p-2 rounded text-md font-bold"
+                          className="w-1/6 border bg-backGray hover:bg-gray-200 p-2 rounded text-md font-bold dark:bg-darkPoint dark:hover:bg-mainBlack"
                         >
                           저장
                         </button>
@@ -591,7 +589,7 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                     </div>
                   </div>
                   {/* 2. [이메일, 비밀번호 수정] */}
-                  <div className="w-full items-center text-left border-2 shadow p-3 m-1  rounded-md">
+                  <div className="w-full items-center text-left border-2 dark:border-2 dark:bg-darkPoint dark:border-darkPoint shadow p-3 m-1  rounded-md">
                     {/* 2-1. 이메일 컴포넌트 */}
                     <div className="pb-6">
                       {/* 2-1-1 이메일 입력*/}
@@ -610,11 +608,11 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                             required
                             value={email}
                             onChange={(event) => setEmail(event.target.value)}
-                            className="w-full p-2 border rounded-l-lg border-divisionGray focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
+                            className="w-full p-2 dark:bg-[#080b14] dark:border-opacity-0 border rounded-l-lg border-divisionGray focus:border-amber-400 focus:ring-amber-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9] dark:shadow-[inset_0_2px_0_1px_#000000]"
                           />
                           <MailIcon
                             onClick={submitEmail}
-                            className="bg-backGray hover:bg-gray-200 border border-divisionGray h-full w-10 rounded-r-lg text-blue-300 hover:text-blue-400"
+                            className="bg-backGray dark:bg-mainBlack dark:border-mainBlack hover:bg-gray-200 border border-divisionGray h-full w-10 rounded-r-lg text-amber-300 hover:text-amber-400"
                           />
                         </div>
                       </div>
@@ -639,7 +637,7 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                             required
                             value={code}
                             onChange={(event) => setCode(event.target.value)}
-                            className="w-full p-2 border rounded-lg border-divisionGray focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
+                            className="w-full p-2 dark:bg-[#080b14] dark:border-opacity-0 border rounded-lg border-divisionGray focus:border-amber-400 focus:ring-amber-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9] dark:shadow-[inset_0_2px_0_1px_#000000]"
                           />
                         </div>
                       </div>
@@ -651,7 +649,7 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                         </label>
                         <button
                           onClick={changeEmail}
-                          className="w-1/6 border bg-backGray hover:bg-gray-200 p-2 rounded  text-md font-bold"
+                          className="w-1/6 border bg-backGray hover:bg-gray-200 p-2 rounded  text-md font-bold dark:bg-darkPoint dark:hover:bg-mainBlack"
                         >
                           저장
                         </button>
@@ -674,7 +672,7 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                           required
                           value={password}
                           onChange={(event) => setPassword(event.target.value)}
-                          className="p-2 w-7/12  border rounded-lg border-divisionGray focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
+                          className="w-7/12 p-2 dark:bg-[#080b14] dark:border-opacity-0 border rounded-lg border-divisionGray focus:border-amber-400 focus:ring-amber-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9] dark:shadow-[inset_0_2px_0_1px_#000000]"
                         />
                       </div>
                       {/* 2-2-2 비밀번호 재입력 */}
@@ -692,7 +690,7 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                           required
                           value={confirm}
                           onChange={(event) => setConfirm(event.target.value)}
-                          className="w-7/12 p-2 border rounded-lg border-divisionGray focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
+                          className="w-7/12 p-2 dark:bg-[#080b14] dark:border-opacity-0 border rounded-lg border-divisionGray focus:border-amber-400 focus:ring-amber-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9] dark:shadow-[inset_0_2px_0_1px_#000000]"
                         />
                       </div>
 
@@ -704,7 +702,7 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                         </label>
                         <button
                           onClick={changePwd}
-                          className=" border bg-backGray hover:bg-gray-200 p-2 rounded  text-md font-bold"
+                          className="w-1/6 border bg-backGray hover:bg-gray-200 p-2 rounded  text-md font-bold dark:bg-darkPoint dark:hover:bg-mainBlack"
                         >
                           저장
                         </button>
