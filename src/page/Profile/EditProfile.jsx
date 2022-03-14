@@ -4,6 +4,8 @@ import ProfileFrame from './Components/Frames/ProfileFrame';
 import InfoBox from './Components/InfoBox';
 import { connect } from 'react-redux';
 import memberAPI from 'API/v1/member';
+import authAPI from 'API/v1/auth';
+import ipAPI from 'API/v1/ip';
 import actionMember from 'redux/action/member';
 
 //NOTE 프로필 UI
@@ -21,54 +23,17 @@ import Group from './Components/Group';
 const googy =
   'https://avatars.githubusercontent.com/u/81643702?s=400&u=d3a721a495754454d238b4159bb7a2d150338424&v=4';
 
+const msgTextColor = {
+  default: { nonDark: 'mainBlack', dark: 'mainWhite' },
+  error: { nonDark: 'red-500', dark: 'red-500' },
+};
+
 const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
   const navigate = useNavigate();
 
   const [followCnt, setFollowCnt] = useState(null);
 
-  const [name, setName] = useState(memberInfo.name || '');
-  const [nickName, setNickName] = useState(memberInfo.nickName || '');
-  const [studentId, setStudentId] = useState(memberInfo.studentId || '');
-  const [isInfoChanging, setIsInfoChanging] = useState(false);
-  const [infoMsg, setInfoMsg] = useState({
-    text: '변경사항이 저장되지 않았습니다',
-    color: 'mainBlack',
-    dark: 'mainWhite',
-  });
-  const saveInfo = () => {
-    if (isInfoChanging) return;
-    else {
-      setIsInfoChanging(true);
-      memberAPI
-        .updateProfile({
-          realName: name,
-          nickName: nickName,
-          studentId: studentId,
-          token: token,
-        })
-        .then((data) => {
-          console.log(data);
-          if (!data.success) {
-            //실패했을 경우
-            setInfoMsg({
-              text: `${data.code}:${data.msg}`,
-              color: 'red-500',
-              dark: 'red-500',
-            });
-          } else {
-            setInfoMsg({
-              text: '변경사항이 성공적으로 저장되었습니다.',
-              color: 'mainBlack',
-              dark: 'mainWhite',
-            });
-            memberInfo.nickName = nickName;
-            updateInfo({ memberInfo });
-          }
-          setIsInfoChanging(false);
-        });
-    }
-  };
-
+  //날짜 포멧
   const add0 = (num, maxDigits) => {
     let digits = 10;
     let result = num.toString();
@@ -90,6 +55,286 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
     const { year, month, date } = stringfyDate(new Date(origin));
     return [year, month, date].join(separator);
   };
+
+  //프로필 이미지 변경
+  const [img, setImg] = useState(null);
+  const onProfileImg = () => {
+    const imgInput = document.getElementById('ImgUpload');
+    imgInput.click();
+  };
+  const updateImg = (event) => {
+    ipAPI.getIp().then((ipAddress) => {
+      console.log(ipAddress, event.target.files[0]);
+      memberAPI
+        .updateThumbnail({
+          token,
+          ipAddress: ipAddress,
+          thumbnail: event.target.files[0],
+        })
+        .then((result) => {
+          if (result.success) {
+            console.log(result.data);
+            updateInfo({ memberInfo: result.data });
+          } else {
+            console.log(`${result.code}:${result.msg}`);
+          }
+        });
+    });
+  };
+
+  //프로필 정보 변경
+  const [name, setName] = useState(memberInfo.name || '');
+  const [nickName, setNickName] = useState(memberInfo.nickName || '');
+  const [studentId, setStudentId] = useState(memberInfo.studentId || '');
+  const [isInfoChanging, setIsInfoChanging] = useState(false);
+  const [infoMsg, setInfoMsg] = useState({
+    text: '변경사항이 저장되지 않았습니다',
+    color: msgTextColor.default.nonDark,
+    dark: msgTextColor.default.dark,
+  });
+  const saveInfo = () => {
+    if (isInfoChanging) return;
+    else {
+      setIsInfoChanging(true);
+      memberAPI
+        .updateProfile({
+          realName: name,
+          nickName: nickName,
+          studentId: studentId,
+          token: token,
+        })
+        .then((data) => {
+          console.log(data);
+          if (!data.success) {
+            //실패했을 경우
+            setInfoMsg({
+              text: `${data.code}:${data.msg}`,
+              color: msgTextColor.error.nonDark,
+              dark: msgTextColor.error.dark,
+            });
+          } else {
+            setInfoMsg({
+              text: '변경사항이 성공적으로 저장되었습니다.',
+              color: msgTextColor.default.nonDark,
+              dark: msgTextColor.default.dark,
+            });
+            memberInfo.nickName = nickName;
+            updateInfo({ memberInfo });
+          }
+          setIsInfoChanging(false);
+        });
+    }
+  };
+
+  //이메일 변경
+  const [email, setEmail] = useState('');
+  const [passEmail, setPassEmail] = useState(false);
+  const [emailMsg, setEmailMsg] = useState({
+    text: '이메일을 입력해주세요',
+    color: msgTextColor.default.nonDark,
+    dark: msgTextColor.default.dark,
+  });
+  const [isSendingCode, setIsSendingCode] = useState(false);
+  const [code, setCode] = useState('');
+  const [codeMsg, setCodeMsg] = useState({
+    text: '',
+    color: msgTextColor.default.nonDark,
+    dark: msgTextColor.default.dark,
+  });
+  const [isEmailChanging, setIsEmailChanging] = useState(false);
+  const checkEmail = () => {
+    const emailAddressRegex =
+      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    return emailAddressRegex.test(email);
+  };
+  const submitEmail = () => {
+    if (isSendingCode) return;
+    else {
+      setIsSendingCode(true);
+      authAPI.emailCheck({ emailAddress: email }).then((emailCheckResult) => {
+        if (!emailCheckResult.success) {
+          setEmailMsg({
+            text: `${emailCheckResult.code}:${emailCheckResult.msg}`,
+            color: msgTextColor.error.nonDark,
+            dark: msgTextColor.error.dark,
+          });
+        } else if (emailCheckResult.data) {
+          setEmailMsg({
+            text: '이미 존재하는 이메일입니다.',
+            color: msgTextColor.error.nonDark,
+            dark: msgTextColor.error.dark,
+          });
+        } else {
+          setEmailMsg({
+            text: '해당 메일로 인증코드를 보냈습니다.',
+            color: msgTextColor.default.nonDark,
+            dark: msgTextColor.default.dark,
+          });
+          authAPI
+            .emailAuth({
+              emailAddress: email,
+            })
+            .then((emailAuthResult) => {
+              if (!emailAuthResult.success) {
+                setEmailMsg({
+                  text: `${emailAuthResult.code}:알 수 없는 오류입니다`,
+                  color: msgTextColor.error.nonDark,
+                  dark: msgTextColor.error.dark,
+                });
+              } else {
+                setEmailMsg({
+                  text: '코드가 성공적으로 전송되었습니다',
+                  color: msgTextColor.default.nonDark,
+                  dark: msgTextColor.default.dark,
+                });
+                setCodeMsg({
+                  text: '코드를 입력해주세요',
+                  color: msgTextColor.default.nonDark,
+                  dark: msgTextColor.default.dark,
+                });
+              }
+            });
+        }
+      });
+      setIsSendingCode(false);
+    }
+  };
+  const changeEmail = () => {
+    if (isEmailChanging) return;
+    else {
+      console.log(email, code);
+      setIsEmailChanging(true);
+
+      memberAPI
+        .updateEmail({
+          emailAddress: email,
+          authCode: code,
+          token: token,
+        })
+        .then((data) => {
+          console.log(data);
+          if (!data.success) {
+            //실패했을 경우
+            setCodeMsg({
+              text: `${data.code}:${data.msg}`,
+              color: msgTextColor.error.nonDark,
+              dark: msgTextColor.error.dark,
+            });
+          } else {
+            setCodeMsg({
+              text: '이메일이 성공적으로 변경되었습니다',
+              color: msgTextColor.default.nonDark,
+              dark: msgTextColor.default.dark,
+            });
+            memberInfo.email = email;
+            updateInfo({ memberInfo });
+            setEmail('');
+            setCode('');
+          }
+          setIsEmailChanging(false);
+        });
+    }
+  };
+  useEffect(() => {
+    if (checkEmail()) {
+      setPassEmail(true);
+      setEmailMsg({
+        text: '올바른 이메일 입니다',
+        color: msgTextColor.default.nonDark,
+        dark: msgTextColor.default.dark,
+      });
+    } else if (email == '') {
+      setPassEmail(false);
+      setEmailMsg({
+        text: '이메일을 입력해주세요',
+        color: msgTextColor.default.nonDark,
+        dark: msgTextColor.default.dark,
+      });
+    } else {
+      setPassEmail(false);
+      setEmailMsg({
+        text: '이메일 형식이 아닙니다',
+        color: msgTextColor.error.nonDark,
+        dark: msgTextColor.error.dark,
+      });
+    }
+  }, [email]);
+
+  //비밀번호 변경
+  const [pwdMsg, setPwdMsg] = useState({
+    text: '',
+    color: msgTextColor.default.nonDark,
+    dark: msgTextColor.default.dark,
+  });
+  const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
+  const [passPwd, setPassPwd] = useState(false);
+  const [isPwdChanging, setIsPwdChanging] = useState(false);
+  const [isPwdSuccess, setIsPwdSuccess] = useState(0);
+  const checkPwd = () => {
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$/;
+    return passwordRegex.test(password);
+  };
+  const checkConfirm = () => password == confirm;
+  const changePwd = () => {
+    if (isPwdChanging || !passPwd) return;
+    else {
+      setIsPwdChanging(true);
+      memberAPI
+        .changePassword({ password: password, token: token })
+        .then((data) => {
+          console.log(data);
+          if (!data.success) {
+            setPwdMsg({
+              text: `${data.code}:${data.msg}`,
+              color: msgTextColor.error.nonDark,
+              dark: msgTextColor.error.dark,
+            });
+          } else {
+            setPwdMsg({
+              text: '비밀번호가 성공적으로 변경되었습니다',
+              color: msgTextColor.default.nonDark,
+              dark: msgTextColor.default.dark,
+            });
+            setIsPwdSuccess(1);
+            setPassword('');
+            setConfirm('');
+          }
+          setIsPwdChanging(false);
+        });
+    }
+  };
+  useEffect(() => {
+    setPassPwd(false);
+    if (isPwdSuccess != 0) {
+      setIsPwdSuccess((prev) => (prev + 1) % 3);
+    } else if (password == '') {
+      setPwdMsg({
+        text: '',
+        color: msgTextColor.default.nonDark,
+        dark: msgTextColor.default.dark,
+      });
+    } else if (!checkPwd()) {
+      setPwdMsg({
+        text: '8~20자 영문과 숫자를 사용하세요',
+        color: msgTextColor.error.nonDark,
+        dark: msgTextColor.error.dark,
+      });
+    } else if (!checkConfirm()) {
+      setPwdMsg({
+        text: '비밀번호가 일치하지 않습니다',
+        color: msgTextColor.error.nonDark,
+        dark: msgTextColor.error.dark,
+      });
+    } else {
+      setPwdMsg({
+        text: '올바른 비밀번호 입니다 변경버튼을 눌러주세요',
+        color: msgTextColor.default.nonDark,
+        dark: msgTextColor.default.dark,
+      });
+      setPassPwd(true);
+    }
+  }, [password, confirm]);
 
   useEffect(() => {
     memberAPI.getUsersFollowCnt({ token }).then((res) => {
@@ -254,7 +499,10 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                       {/* 1-1-1 버튼 */}
 
                       <div className="flex relative w-1/4">
-                        <button className="hover:shadow-md rounded">
+                        <button
+                          onClick={onProfileImg}
+                          className="hover:shadow-md rounded"
+                        >
                           <img
                             src={googy}
                             alt="profile"
@@ -263,6 +511,13 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                           <div className="absolute bottom-0 right-0 bg-backGray rounded p-1">
                             <PencilAltIcon className="h-7 w-7 rounded" />
                           </div>
+                          <input
+                            id="ImgUpload"
+                            type="file"
+                            accept="image/*"
+                            onChange={updateImg}
+                            className="hidden focus:outline-none"
+                          />
                         </button>
                       </div>
                     </div>
@@ -322,7 +577,7 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                       </div>
                       <div className="py-1 text-right flex items-center">
                         <label
-                          className={`w-5/6 text-left text-${infoMsg.color} dark:text-${infoMsg.dark} text-sm`}
+                          className={`p-2 w-5/6 text-left text-${infoMsg.color} dark:text-${infoMsg.dark} text-sm`}
                         >
                           {infoMsg.text}
                         </label>
@@ -351,10 +606,22 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                           <input
                             id="emailAddress"
                             type="email"
+                            name="email"
+                            required
+                            value={email}
+                            onChange={(event) => setEmail(event.target.value)}
                             className="w-full p-2 border rounded-l-lg border-divisionGray focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
                           />
-                          <MailIcon className="bg-backGray hover:bg-gray-200 border border-divisionGray h-full w-10 rounded-r-lg text-blue-300 hover:text-blue-400" />
+                          <MailIcon
+                            onClick={submitEmail}
+                            className="bg-backGray hover:bg-gray-200 border border-divisionGray h-full w-10 rounded-r-lg text-blue-300 hover:text-blue-400"
+                          />
                         </div>
+                      </div>
+                      <div
+                        className={`p-2 text-left text-${emailMsg.color} dark:text-${emailMsg.dark} text-sm`}
+                      >
+                        {emailMsg.text}
                       </div>
                       {/* 2-1-2 인증 코드 */}
                       <div className="flex py-1 ">
@@ -368,13 +635,24 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                           <input
                             id="authCode"
                             type="text"
-                            className="w-4/12 p-2 border rounded-lg border-divisionGray focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
+                            name="authCode"
+                            required
+                            value={code}
+                            onChange={(event) => setCode(event.target.value)}
+                            className="w-full p-2 border rounded-lg border-divisionGray focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
                           />
                         </div>
                       </div>
-
-                      <div className="py-1 text-right">
-                        <button className=" border bg-backGray hover:bg-gray-200 p-2 rounded  text-md font-bold">
+                      <div className="py-1 text-right flex items-center">
+                        <label
+                          className={`w-5/6 p-2 text-left text-${codeMsg.color} dark:text-${codeMsg.dark} text-sm`}
+                        >
+                          {codeMsg.text}
+                        </label>
+                        <button
+                          onClick={changeEmail}
+                          className="w-1/6 border bg-backGray hover:bg-gray-200 p-2 rounded  text-md font-bold"
+                        >
                           저장
                         </button>
                       </div>
@@ -390,8 +668,12 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                           새로운 비밀번호
                         </label>
                         <input
+                          type="password"
                           id="password"
-                          type="email"
+                          name="password"
+                          required
+                          value={password}
+                          onChange={(event) => setPassword(event.target.value)}
                           className="p-2 w-7/12  border rounded-lg border-divisionGray focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
                         />
                       </div>
@@ -404,14 +686,26 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                           비밀번호 재입력
                         </label>
                         <input
-                          id="confirmPassword"
-                          type="text"
+                          type="password"
+                          id="confirm"
+                          name="confirm"
+                          required
+                          value={confirm}
+                          onChange={(event) => setConfirm(event.target.value)}
                           className="w-7/12 p-2 border rounded-lg border-divisionGray focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
                         />
                       </div>
 
-                      <div className="py-1 text-right">
-                        <button className=" border bg-backGray hover:bg-gray-200 p-2 rounded  text-md font-bold">
+                      <div className="py-1 text-right flex items-center">
+                        <label
+                          className={`p-2 w-5/6 text-left text-${pwdMsg.color} dark:text-${pwdMsg.dark} text-sm`}
+                        >
+                          {pwdMsg.text}
+                        </label>
+                        <button
+                          onClick={changePwd}
+                          className=" border bg-backGray hover:bg-gray-200 p-2 rounded  text-md font-bold"
+                        >
                           저장
                         </button>
                       </div>
