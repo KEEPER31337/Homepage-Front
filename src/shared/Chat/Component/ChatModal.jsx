@@ -61,7 +61,7 @@ const ChatModal = ({ member, visible, handleClose }) => {
       <Draggable disabled={isMobile}>
         <div
           className={`${
-            visible ? 'visible' : 'invisible'
+            visible ? 'visible' : 'hidden'
           } w-full sm:w-80 rounded-md cursor-grabbing text-center ring-amber-400 bg-orange-50 text-mainBlack dark:bg-darkComponent dark:text-mainWhite`}
         >
           <div className="rounded-t-md h-10 pt-2 font-semibold bg-amber-400 w-full">

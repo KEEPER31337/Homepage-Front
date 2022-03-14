@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
+import { connect } from 'react-redux';
 // local
 import authAPI from 'API/v1/auth';
+import actionMember from 'redux/action/member';
 // asset
 import Logo from 'assets/img/keeper_logo.png';
 
@@ -17,7 +19,7 @@ const useInput = (initialValue = null) => {
   return [value, onChange];
 };
 
-const FindId = () => {
+const FindId = ({ member }) => {
   //
   const [emailAddress, setEmailAddress] = useInput('');
 
@@ -27,6 +29,13 @@ const FindId = () => {
 
   //유효성 검사
   const [isFindId, setIsFindId] = useState(false);
+  const navigate = useNavigate();
+  useEffect(() => {
+    //로그인된 상태에서 signin페이지 접속할 경우
+    if (member.token) {
+      navigate('/');
+    }
+  }, [member]);
 
   const handleFindId = () => {
     setEmailAddressMessage('이메일을 보내고 있습니다...');
@@ -113,4 +122,15 @@ const FindId = () => {
   );
 };
 
-export default FindId;
+const mapStateToProps = (state, OwnProps) => {
+  return { member: state.member };
+};
+const mapDispatchToProps = (dispatch, OwnProps) => {
+  return {
+    updateToken: (token) => {
+      dispatch(actionMember.updateToken(token));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FindId);
