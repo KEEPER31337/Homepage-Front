@@ -1,6 +1,6 @@
 const years = [2022, 2021, 2020, 2019, 2018];
 
-const studies = [
+const studylist = [
   {
     thumbnail: '/v1/util/thumbnail/135',
     title: 'ctf스터디',
@@ -27,4 +27,4 @@ const studies = [
   },
 ];
 
-export { studies, years };
+export { studylist, years };
