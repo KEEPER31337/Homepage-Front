@@ -18,6 +18,9 @@ import DarkRightNav from './img/dice/nav_dark_right.png';
 import DiceNav from './img/dice/img_dice.png';
 import LottoNav from './img/dice/img_lotto.png';
 import RouletteNav from './img/dice/img_roulette.png';
+import DarkDiceNav from './img/dice/img_dark_dice.png';
+import DarkLottoNav from './img/dice/img_dark_lotto.png';
+import DarkRouletteNav from './img/dice/img_dark_roulette.png';
 
 // API
 import gameAPI from 'API/v1/game';
@@ -84,19 +87,19 @@ const Game = (props) => {
         <img
           alt="주사위 게임"
           className="m-4 sm:ml-32 w-1/4 sm:w-1/12 max-h-[60px] rounded-md border-5 border-mainBlack  hover:border-mainYellow"
-          src={DiceNav}
+          src={isDark ? DarkDiceNav : DiceNav}
           onClick={onClickDice}
         ></img>
         <img
           alt="룰렛"
           className="m-4 w-1/4 sm:w-1/12 max-h-[60px] rounded-md border-5 border-mainBlack hover:border-mainYellow"
-          src={RouletteNav}
+          src={isDark ? DarkRouletteNav : RouletteNav}
           onClick={onClickRoul}
         ></img>
         <img
           alt="복권"
           className="border-solid border-mainBlack border-5  m-4 w-1/4 sm:w-1/12 max-h-[60px] rounded-md "
-          src={LottoNav}
+          src={isDark ? DarkLottoNav : LottoNav}
           onClick={onClickLott}
         ></img>
       </div>
