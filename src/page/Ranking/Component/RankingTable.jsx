@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import rankAPI from 'API/v1/rank';
 import SimpleNotification from 'shared/SimpleNotification';
 import iconPencilAlt from 'assets/img/icons/pecil-alt.svg';
+import imgMemberCircle from 'assets/img/memberCircle.svg';
 
 const headers = ['랭킹', '이름', '포인트', '직책'];
 
@@ -65,7 +66,7 @@ const AttandanceTable = ({ member }) => {
                             src={
                               member.thumbnail
                                 ? member.thumbnail
-                                : 'https://avatars.githubusercontent.com/u/23546441?s=400&u=db7abf2929e5518c12189034dc3fed9bda94f0a6&v=4'
+                                : imgMemberCircle
                             }
                           />
                         </div>
