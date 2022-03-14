@@ -26,6 +26,49 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
 
   const [followCnt, setFollowCnt] = useState(null);
 
+  const [name, setName] = useState(memberInfo.name || '');
+  const [nickName, setNickName] = useState(memberInfo.nickName || '');
+  const [studentId, setStudentId] = useState(memberInfo.studentId || '');
+  const [isInfoChanging, setIsInfoChanging] = useState(false);
+  const [infoMsg, setInfoMsg] = useState({
+    text: '변경사항이 저장되지 않았습니다',
+    color: 'mainBlack',
+    dark: 'mainWhite',
+  });
+  const saveInfo = () => {
+    if (isInfoChanging) return;
+    else {
+      setIsInfoChanging(true);
+      memberAPI
+        .updateProfile({
+          realName: name,
+          nickName: nickName,
+          studentId: studentId,
+          token: token,
+        })
+        .then((data) => {
+          console.log(data);
+          if (!data.success) {
+            //실패했을 경우
+            setInfoMsg({
+              text: `${data.code}:${data.msg}`,
+              color: 'red-500',
+              dark: 'red-500',
+            });
+          } else {
+            setInfoMsg({
+              text: '변경사항이 성공적으로 저장되었습니다.',
+              color: 'mainBlack',
+              dark: 'mainWhite',
+            });
+            memberInfo.nickName = nickName;
+            updateInfo({ memberInfo });
+          }
+          setIsInfoChanging(false);
+        });
+    }
+  };
+
   const add0 = (num, maxDigits) => {
     let digits = 10;
     let result = num.toString();
@@ -35,7 +78,6 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
     }
     return result;
   };
-
   const stringfyDate = (dateClass) => {
     return {
       year: add0(dateClass.getFullYear(), 4),
@@ -43,7 +85,6 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
       date: add0(dateClass.getDate(), 2),
     };
   };
-
   const formatDate = ({ origin, separator }) => {
     if (!origin) return;
     const { year, month, date } = stringfyDate(new Date(origin));
@@ -238,6 +279,9 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                         <input
                           id="realName"
                           type="text"
+                          required
+                          value={name}
+                          onChange={(event) => setName(event.target.value)}
                           className="w-8/12 p-2 border rounded-lg border-divisionGray focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
                         />
                       </div>
@@ -252,6 +296,9 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                         <input
                           id="nickName"
                           type="text"
+                          required
+                          value={nickName}
+                          onChange={(event) => setNickName(event.target.value)}
                           className="w-8/12 p-2 border rounded-lg border-divisionGray focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
                         />
                       </div>
@@ -266,13 +313,23 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                         <input
                           id="studentId"
                           type="text"
+                          required
+                          value={studentId}
+                          onChange={(event) => setStudentId(event.target.value)}
                           className="w-8/12 p-2 border rounded-lg border-divisionGray
                       focus:border-blue-400 focus:ring-blue-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9]"
                         />
                       </div>
-
-                      <div className="py-1 text-right">
-                        <button className=" border bg-backGray hover:bg-gray-200 p-2 rounded  text-md font-bold">
+                      <div className="py-1 text-right flex items-center">
+                        <label
+                          className={`w-5/6 text-left text-${infoMsg.color} dark:text-${infoMsg.dark} text-sm`}
+                        >
+                          {infoMsg.text}
+                        </label>
+                        <button
+                          onClick={saveInfo}
+                          className="w-1/6 border bg-backGray hover:bg-gray-200 p-2 rounded text-md font-bold"
+                        >
                           저장
                         </button>
                       </div>
