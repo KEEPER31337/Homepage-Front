@@ -1,7 +1,7 @@
 import React from 'react';
 import FadeIn from 'react-fade-in';
 
-import '../style/height.css';
+import '../style/scale.css';
 import Notice from './Notice';
 import TypedSlogan from './TypedSlogan';
 
@@ -11,10 +11,10 @@ import GrayDownArrow from 'assets/img/gray-down-arrow.png';
 
 const FirstPage = ({ setIsDownArrow, isDownArrow }) => {
   return (
-    <div id="main-first-page" className="grid content-around overflow-x-hidden">
-      <FadeIn><Notice/></FadeIn> 
-      <img
-          className="m-auto w-3/4 lg:w-fit "
+    <div id="main-first-page" className="grid overflow-x-hidden">
+      <FadeIn><div id="main-notice"><Notice id="main-notice"/></div></FadeIn> 
+      <img id="main-keeper-logo"
+          className="m-auto h-auto w-auto"
           alt="keeper_logo"
           src={Logo}
       ></img>
@@ -23,7 +23,7 @@ const FirstPage = ({ setIsDownArrow, isDownArrow }) => {
       </div>
       <a href = {isDownArrow ? "#" : "#main-second-page"}>
         <img
-            className="m-auto w-16 h-16"
+            className="m-auto w-16 h-16 mt-4 mb-4"
             src={isDownArrow ? GrayDownArrow: GrayUpArrow}
             onClick={() => {
               setIsDownArrow(!isDownArrow)
