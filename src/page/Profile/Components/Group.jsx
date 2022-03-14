@@ -19,20 +19,21 @@ export default function Group(props) {
       />
       {tooltip && (
         <div role="tooltip" className="relative text-sm">
-          <div className="absolute top-12">
+          <div className="absolute bottom-2 ">
             <div
-              className="bg-mainYellow w-[100px] h-[50px] 
-                              rounded-2xl flex justify-center items-center 
-                              shadow-xl dark:text-mainWhite"
+              className="bg-amber-400 w-[80px] h-[40px] bg-opacity-75 
+                              rounded-md flex justify-center items-center 
+                              shadow shadow-zinc-400/40 "
             >
               {group.name}
             </div>
             <div
-              className="absolute w-0 h-0 
-                            border-r-[8px] border-r-transparent 
-                            border-l-[8px] border-l-transparent
-                            border-b-[16px] border-b-mainYellow 
-                            bottom-[90%] right-[70%]"
+              className="absolute w-0 h-0 border-opacity-75
+               
+                            border-r-[6px] border-r-transparent 
+                            border-l-[6px] border-l-transparent
+                            border-t-[7px] border-t-amber-400 
+                            top-[100%] right-[70%]"
             />
           </div>
         </div>
