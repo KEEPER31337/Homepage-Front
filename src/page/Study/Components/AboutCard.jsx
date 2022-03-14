@@ -32,7 +32,7 @@ const AboutCard = ({ study }) => {
         </div>
       </div>
       <div className="bg-mainWhite px-4 py-5 sm:px-6 dark:bg-darkComponent">
-        <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+        <dl className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
           <div className="sm:col-span-2">
             <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
               스터디 소개
@@ -41,82 +41,101 @@ const AboutCard = ({ study }) => {
               {study.information}
             </dd>
           </div>
-          <div className="sm:col-span-1">
+          <div className=" sm:col-span-1">
             <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
               스터디장
             </dt>
             <dd className="mt-1 text-sm text-gray-900 dark:text-mainWhite">
-              Margot Foster
+              <span className="inline-block border border-gray-300 min-w-[4em] py-1 pl-2 pr-5 m-[1px] text-sm rounded-full">
+                {study.headMember?.nickName}
+              </span>
             </dd>
-          </div>
-          <div className="hidden sm:block sm:row-span-2">
-            <img
-              src={API_URL + study.thumbnail}
-              alt="썸네일 이미지"
-              className="w-full h-full object-center object-cover rounded-lg"
-            />
-          </div>
-          <div className="sm:col-span-1">
-            <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
-              스터디원
+            <dt className="text-sm mt-3 font-medium text-gray-500 dark:text-gray-400">
+              스터디원 ({study.memberNumber}명)
             </dt>
             <dd className="mt-1 text-sm text-gray-900 dark:text-mainWhite">
-              {study.memberIdList?.join(', ')}
+              {study.memberList?.map((member) => (
+                <span className="inline-block border border-gray-300 min-w-[4em] py-1 pl-2 pr-5 m-[1px] text-sm rounded-full">
+                  {member.nickName}
+                </span>
+              ))}
             </dd>
-          </div>
-          <div className="sm:hidden sm:row-span-2">
-            <img
-              src={API_URL + study.thumbnail}
-              alt="썸네일 이미지"
-              className="w-full h-full object-center object-cover rounded-lg"
-            />
           </div>
 
-          <div className="sm:col-span-2">
-            <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
-              외부 링크
-            </dt>
-            <dd className="mt-1 text-sm text-gray-900 dark:text-mainWhite">
-              <ul
-                role="list"
-                className="border border-gray-200 rounded-md divide-y divide-gray-200 dark:border-gray-600 dark:divide-gray-600"
-              >
-                <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
-                  <div className="w-0 flex-1 flex items-center">
-                    <img
-                      src={require('assets/img/icons/github.png')}
-                      className="flex-shrink-0 h-5 w-5"
-                    />
-                    <span className="ml-2 flex-1 w-0 truncate">
-                      resume_back_end_developer.pdf
-                    </span>
-                  </div>
-                </li>
-                <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
-                  <div className="w-0 flex-1 flex items-center">
-                    <img
-                      src={require('assets/img/icons/notion.png')}
-                      className="flex-shrink-0 h-5 w-5"
-                    />
-                    <span className="ml-2 flex-1 w-0 truncate">
-                      coverletter_back_end_developer.pdf
-                    </span>
-                  </div>
-                </li>
-                <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
-                  <div className="w-0 flex-1 flex items-center">
-                    <PaperClipIcon
-                      className="flex-shrink-0 h-5 w-5 text-gray-400 dark:text-gray-400"
-                      aria-hidden="true"
-                    />
-                    <span className="ml-2 flex-1 w-0 truncate">
-                      coverletter_back_end_developer.pdf
-                    </span>
-                  </div>
-                </li>
-              </ul>
-            </dd>
+          <div className=" sm:row-span-2">
+            <img
+              src={API_URL + study.thumbnailPath}
+              alt="썸네일 이미지"
+              className="w-full h-full object-center object-cover rounded-lg"
+            />
           </div>
+          {study.gitLink || study.noteLink || study.etcLink ? (
+            <div className="sm:col-span-2">
+              <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                외부 링크
+              </dt>
+              <dd className="mt-1 text-sm text-gray-900 dark:text-mainWhite">
+                <ul
+                  role="list"
+                  className="border border-gray-200 rounded-md divide-y divide-gray-200 dark:border-gray-600 dark:divide-gray-600"
+                >
+                  {study.gitLink ? (
+                    <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
+                      <div className="w-0 flex-1 flex items-center">
+                        <img
+                          src={require('assets/img/icons/github.png')}
+                          className="flex-shrink-0 h-5 w-5"
+                        />
+                        <span className="ml-2 flex-1 w-0 truncate">
+                          <a href={study.gitLink} target="_blank">
+                            {study.gitLink}
+                          </a>
+                        </span>
+                      </div>
+                    </li>
+                  ) : (
+                    ''
+                  )}
+                  {study.noteLink ? (
+                    <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
+                      <div className="w-0 flex-1 flex items-center">
+                        <img
+                          src={require('assets/img/icons/notion.png')}
+                          className="flex-shrink-0 h-5 w-5"
+                        />
+                        <span className="ml-2 flex-1 w-0 truncate">
+                          <a href={study.noteLink} target="_blank">
+                            {study.noteLink}
+                          </a>
+                        </span>
+                      </div>
+                    </li>
+                  ) : (
+                    ''
+                  )}
+                  {study.etcLink ? (
+                    <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
+                      <div className="w-0 flex-1 flex items-center">
+                        <PaperClipIcon
+                          className="flex-shrink-0 h-5 w-5 text-gray-400 dark:text-gray-400"
+                          aria-hidden="true"
+                        />
+                        <span className="ml-2 flex-1 w-0 truncate">
+                          <a href={study.etcLink} target="_blank">
+                            {study.etcLink}
+                          </a>
+                        </span>
+                      </div>
+                    </li>
+                  ) : (
+                    ''
+                  )}
+                </ul>
+              </dd>
+            </div>
+          ) : (
+            ''
+          )}
         </dl>
       </div>
     </div>

@@ -4,6 +4,7 @@ import { PlusSmIcon, PaperClipIcon, CogIcon } from '@heroicons/react/solid';
 //local
 import AuthUser from 'shared/AuthUser';
 import YearList from 'page/Study/Components/YearList';
+import MobileYearList from 'page/Study/Components/MobileYearList';
 import StudyList from 'page/Study/Components/StudyList';
 import AddStudy from 'page/Study/Components/AddStudy';
 
@@ -13,18 +14,25 @@ const Study = () => {
   return (
     <>
       <AuthUser>
-        <div className="flex gap-x-6 h-fit p-5 dark:bg-mainBlack dark:text-mainWhite">
-          <YearList
+        <div className="h-fit p-5 flex-col justify-end dark:bg-mainBlack dark:text-mainWhite">
+          <MobileYearList
             currentYear={currentYear}
             setCurrentYear={setCurrentYear}
             setCurrentSeason={setCurrentSeason}
           />
-          <div className="">
-            <StudyList
+          <div className="md:flex sm:gap-x-6 ">
+            <YearList
               currentYear={currentYear}
-              currentSeason={currentSeason}
+              setCurrentYear={setCurrentYear}
               setCurrentSeason={setCurrentSeason}
             />
+            <div className="">
+              <StudyList
+                currentYear={currentYear}
+                currentSeason={currentSeason}
+                setCurrentSeason={setCurrentSeason}
+              />
+            </div>
           </div>
         </div>
       </AuthUser>

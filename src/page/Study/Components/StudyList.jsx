@@ -14,6 +14,7 @@ const StudyList = ({ currentYear, currentSeason, setCurrentSeason }) => {
   useEffect(() => {
     console.log('reload studyList');
     setStudies(studylist);
+    setOpen(false);
   }, [currentYear, currentSeason]);
 
   var flag = true;
@@ -21,13 +22,13 @@ const StudyList = ({ currentYear, currentSeason, setCurrentSeason }) => {
     'https://enormous-button-c5d.notion.site/2021-7a9e28c746934f22863f7077fec061da';
   return (
     <>
-      <div name="시즌 태그들" className=" mt-5">
+      <div name="시즌 태그들" className="text-sm mt-5 md:text-xl">
         <button
           className={
             (currentSeason == 1
               ? 'border-mainYellow bg-mainYellow'
               : 'hover:bg-slate-100') +
-            ' border-x-2 border-t-2  inline-block w-[5em] p-1 px-2 text-xl rounded-t-2xl '
+            ' border-x-2 border-t-2  inline-block w-[5.5em] p-1 px-2 rounded-t-2xl '
           }
           onClick={() => setCurrentSeason(1)}
         >
@@ -38,22 +39,21 @@ const StudyList = ({ currentYear, currentSeason, setCurrentSeason }) => {
             (currentSeason == 2
               ? 'border-mainYellow bg-mainYellow'
               : 'hover:bg-slate-100') +
-            ' border-x-2 border-t-2  inline-block w-[5em] p-1 px-2 text-xl rounded-t-2xl '
+            ' border-x-2 border-t-2  inline-block w-[5.5em] p-1 px-2 rounded-t-2xl '
           }
           onClick={() => setCurrentSeason(2)}
         >
-          하계방학
+          여름방학
         </button>
         <button
           className={
             (currentSeason == 3
               ? 'border-mainYellow bg-mainYellow'
               : 'hover:bg-slate-100') +
-            ' border-x-2 border-t-2  inline-block w-[5em] p-1 px-2 text-xl rounded-t-2xl '
+            ' border-x-2 border-t-2  inline-block w-[5.5em] p-1 px-2 rounded-t-2xl '
           }
           onClick={() => setCurrentSeason(3)}
         >
-          {' '}
           2학기
         </button>
         <button
@@ -61,15 +61,14 @@ const StudyList = ({ currentYear, currentSeason, setCurrentSeason }) => {
             (currentSeason == 4
               ? 'border-mainYellow bg-mainYellow'
               : 'hover:bg-slate-100') +
-            ' border-x-2 border-t-2  inline-block w-[5em] p-1 px-2 text-xl rounded-t-2xl '
+            ' border-x-2 border-t-2  inline-block w-[5.5em] p-1 px-2 rounded-t-2xl '
           }
           onClick={() => setCurrentSeason(4)}
         >
-          {' '}
-          동계방학
+          겨울방학
         </button>
       </div>
-      <div className="border-2 border-mainYellow rounded-b-lg rounded-tr-lg bg-gray-50 w-[80vw] px-5 dark:bg-darkPoint">
+      <div className="border-2 border-mainYellow rounded-b-lg rounded-tr-lg bg-gray-50 w-full px-5 md:w-[80vw] dark:bg-darkPoint">
         {/*link ? (
             <p className="border-b border-x bg-mainWhite my-3 p-3 rounded-lg dark:border-gray-700 dark:bg-mainBlack">
               노션 링크 :
@@ -81,7 +80,6 @@ const StudyList = ({ currentYear, currentSeason, setCurrentSeason }) => {
           ) : (
             ''
           )*/}
-        {currentYear}:{currentSeason}
         <div name="스터디 추가버튼" className="flex justify-end m-3">
           <button
             type="button"

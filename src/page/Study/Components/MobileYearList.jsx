@@ -4,13 +4,9 @@ import { PlusSmIcon, PaperClipIcon, CogIcon } from '@heroicons/react/solid';
 //local
 import { years } from 'page/Study/testData';
 
-const YearList = ({ currentYear, setCurrentYear, setCurrentSeason }) => {
-  console.log(years);
+const MobileYearList = ({ currentYear, setCurrentYear, setCurrentSeason }) => {
   return (
-    <div
-      name="좌측 사이드바"
-      className="border w-[20vw] rounded-lg p-3 py-5 bg-gray-50 hidden md:block"
-    >
+    <div className="border w-full rounded-lg p-3 py-5 bg-gray-50 md:hidden">
       <button
         type="button"
         className="inline-flex items-center text-mainYellow shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 focus:outline-none"
@@ -34,11 +30,11 @@ const YearList = ({ currentYear, setCurrentYear, setCurrentSeason }) => {
             setCurrentSeason(1);
           }}
         >
-          {object.year}년
+          {object.year}년도
         </button>
       ))}
     </div>
   );
 };
 
-export default YearList;
+export default MobileYearList;

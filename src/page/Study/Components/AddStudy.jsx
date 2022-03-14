@@ -2,12 +2,32 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { PlusSmIcon, PaperClipIcon } from '@heroicons/react/solid';
 //local
+import ThumbnailZone from 'page/Study/Components/ThumbnailZone';
 
 const AddStudy = ({ setOpen, currentYear, currentSeason }) => {
+  const [thumbnail, setThumbnail] = useState(null);
+  const [title, setTitle] = useState('');
+  const [information, setInformation] = useState('');
+  const [headMember, setHeadMember] = useState();
+  const [memberList, setMemberList] = useState([]);
+  const [gitLink, setGitLink] = useState('');
+  const [noteLink, setNoteLink] = useState('');
+  const [etcLink, setEtcLink] = useState('');
+
+  const createHandler = () => {
+    console.log(title);
+    console.log(information);
+    console.log(headMember);
+    console.log(memberList);
+    console.log(gitLink);
+    console.log(noteLink);
+    console.log(etcLink);
+    console.log(thumbnail);
+  };
   console.log('load AddStudy');
   return (
     <>
-      <div name="스터디 추가 폼" className={'my-5 p-5 bg-slate-200 rounded-lg'}>
+      <div name="스터디 추가 폼" className="p-5 bg-slate-200 rounded-lg">
         <div className="bg-[rgb(255,209,90)] shadow overflow-hidden border-2 border-mainYellow sm:rounded-lg dark:text-mainWhite">
           <div className="bg-transparent px-4 pb-3 sm:rounded-t-lg sm:px-6">
             <div className="-ml-4 -mt-2 flex items-center justify-between flex-wrap sm:flex-nowrap">
@@ -21,8 +41,9 @@ const AddStudy = ({ setOpen, currentYear, currentSeason }) => {
                     name="스터디명"
                     id="study-name"
                     type="text"
-                    className="block h-full w-full border-transparent bg-transparent pb-1 pr-3 text-gray-900 font-bold placeholder-gray-500 focus:outline-none focus:placeholder-yellow-200 focus:ring-0 focus:border-transparent sm:text-2xl"
+                    className="block h-full w-full border-transparent bg-transparent pb-1 pr-3 text-gray-900 font-bold placeholder-[rgb(218,154,70)] focus:outline-none focus:placeholder-[rgb(255,235,110)] focus:ring-0 focus:border-transparent sm:text-2xl"
                     placeholder="스터디명"
+                    onBlur={(e) => setTitle(e.target.value)}
                   />
                 </div>
               </div>
@@ -35,7 +56,6 @@ const AddStudy = ({ setOpen, currentYear, currentSeason }) => {
                   htmlFor="about"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-400"
                 >
-                  {currentSeason}:{currentYear}
                   스터디 소개
                 </label>
                 <div className="mt-1">
@@ -45,41 +65,29 @@ const AddStudy = ({ setOpen, currentYear, currentSeason }) => {
                     rows={3}
                     className="shadow-sm focus:ring-mainYellow focus:border-mainYellow block w-full sm:text-sm border border-gray-300 rounded-md dark:bg-mainBlack dark:border-gray-600"
                     defaultValue={''}
+                    onBlur={(e) => setInformation(e.target.value)}
                   />
                 </div>
                 <p className="mt-2 text-sm text-gray-500">
-                  Write a few sentences about yourself.
+                  스터디에 대해 소개해주세요.
                 </p>
               </div>
-              <div className="sm:col-span-1">
+              <div className=" sm:col-span-1">
                 <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
                   스터디장
                 </dt>
                 <dd className="mt-1 text-sm text-gray-900 dark:text-mainWhite">
-                  <input type="text" />
+                  <span className="inline-block border border-gray-300 min-w-[4em] py-1 pl-2 pr-5 m-[1px] text-sm rounded-full"></span>
                 </dd>
-              </div>
-              <div className="hidden sm:block sm:row-span-2">
-                {/*<img
-                  src={API_URL + study.thumbnail}
-                  alt="썸네일 이미지"
-                  className="w-full h-full object-center object-cover rounded-lg"
-  />*/}
-              </div>
-              <div className="sm:col-span-1">
-                <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                <dt className="text-sm mt-3 font-medium text-gray-500 dark:text-gray-400">
                   스터디원
                 </dt>
                 <dd className="mt-1 text-sm text-gray-900 dark:text-mainWhite">
-                  <input type="text" />
+                  dd
                 </dd>
               </div>
-              <div className="sm:hidden sm:row-span-2">
-                {/*<img
-                  src={API_URL + study.thumbnail}
-                  alt="썸네일 이미지"
-                  className="w-full h-full object-center object-cover rounded-lg"
-/>*/}
+              <div className="border sm:row-span-2">
+                <ThumbnailZone setThumbnail={setThumbnail} />
               </div>
 
               <div className="sm:col-span-2">
@@ -112,6 +120,7 @@ const AddStudy = ({ setOpen, currentYear, currentSeason }) => {
                               autoComplete="Github"
                               placeholder="http://"
                               className="py-1 shadow-sm focus:ring-mainYellow focus:border-mainYellow block w-full sm:text-sm border-gray-300 rounded-md  dark:bg-mainBlack dark:border-gray-600"
+                              onBlur={(e) => setGitLink(e.target.value)}
                             />
                           </div>
                         </span>
@@ -138,6 +147,7 @@ const AddStudy = ({ setOpen, currentYear, currentSeason }) => {
                               autoComplete="Notion"
                               placeholder="http://"
                               className="py-1 shadow-sm focus:ring-mainYellow focus:border-mainYellow block w-full sm:text-sm border-gray-300 rounded-md  dark:bg-mainBlack dark:border-gray-600"
+                              onBlur={(e) => setNoteLink(e.target.value)}
                             />
                           </div>
                         </span>
@@ -164,6 +174,7 @@ const AddStudy = ({ setOpen, currentYear, currentSeason }) => {
                               autoComplete="etc"
                               placeholder="http://"
                               className="py-1 shadow-sm focus:ring-mainYellow focus:border-mainYellow block w-full sm:text-sm border-gray-300 rounded-md  dark:bg-mainBlack dark:border-gray-600"
+                              onBlur={(e) => setEtcLink(e.target.value)}
                             />
                           </div>
                         </span>
@@ -185,8 +196,9 @@ const AddStudy = ({ setOpen, currentYear, currentSeason }) => {
               닫기
             </button>
             <button
-              type="submit"
+              type="button"
               className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-mainYellow hover:bg-pointYellow focus:outline-none"
+              onClick={() => createHandler()}
             >
               추가하기
             </button>
