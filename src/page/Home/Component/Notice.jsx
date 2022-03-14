@@ -32,8 +32,7 @@ const NoticeContent = () => {
     return (
         <div className="w-0 flex-1 flex items-center">
             <p className="ml-3 font-semibold truncate text-lg">
-                <span className="md:hidden"> We announced a new product! </span>
-                <span className="hidden md:inline"> 곧 (2/25) 기술 문서 최종 발표 날입니다! </span>
+                <span className="inline"> 곧 (2/25) 기술 문서 최종 발표 날입니다! </span>
             </p>
         </div>
     )

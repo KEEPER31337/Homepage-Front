@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import ScrollContainer from 'react-indiana-drag-scroll';
 
+import '../style/scale.css';
+
 const imageTemp =
   'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80';
 const imageMember =
@@ -20,11 +22,11 @@ export default function Trends({ postList }) {
           </h2>
         </div>
         <ScrollContainer vertical={false} className="overflow-hidden">
-          <div className="flex flex-nowrap mt-12 m-3 max-w-lg mx-auto gap-3 lg:max-w-none">
+          <div className="flex flex-nowrap mt-12 m-3 mx-auto gap-3">
             {postList.map((post) => (
               <div
                 key={post.title}
-                className="grow-0 shrink-0 basis-1/2 lg:basis-1/4 flex flex-col rounded-lg shadow-lg overflow-hidden"
+                className="main-post grow-0 shrink-0 flex flex-col rounded-lg shadow-lg overflow-hidden"
               >
                 <div className="flex-shrink-0">
                   <img
@@ -41,7 +43,7 @@ export default function Trends({ postList }) {
                       </a>
                     </p>
                     <Link to={`/board/${post.id}`} className="block mt-2">
-                      <p className="text-xl font-semibold dark:text-mainWhite">
+                      <p className="truncate text-xl font-semibold dark:text-mainWhite">
                         {post.title}
                       </p>
                     </Link>
