@@ -20,8 +20,7 @@ import FolloweeModal from './Components/Modal/FolloweeModal';
 import FollowerModal from './Components/Modal/FollowerModal';
 import Group from './Components/Group';
 
-const googy =
-  'https://avatars.githubusercontent.com/u/81643702?s=400&u=d3a721a495754454d238b4159bb7a2d150338424&v=4';
+const googy = 'https://avatars.githubusercontent.com/u/81643702?v=4';
 
 const MyProfile = ({ token, memberInfo, updateInfo }) => {
   const params = useParams();
@@ -154,10 +153,10 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
   console.log(memberInfo);
 
   return (
-    <div className="">
-      <div className="sm:w-full md:w-full lg:w-10/12 xl:w-8/12 container mx-auto m-4 p-5 justify-center items-center">
+    <div className="min-h-screen  dark:bg-mainBlack dark:text-mainWhite ">
+      <div className="h-full sm:w-full md:w-full lg:w-10/12 xl:w-8/12 container mx-auto pt-10 p-5 justify-center items-center">
         {/* 1. 커스텀 색상 팔레트 */}
-        <div className="grid w-auto  place-items-end ">
+        {/* <div className="grid w-auto  place-items-end ">
           <div className="flex">
             <SparklesIcon className=" m-1 bg-gray-100 h-9 w-9 rounded text-red-400 " />
             <SparklesIcon className=" m-1 bg-gray-100 h-9 w-9 rounded text-orange-400 " />
@@ -167,12 +166,12 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
             <SparklesIcon className=" m-1 bg-gray-100 h-9 w-9 rounded text-violet-400 " />
             <SparklesIcon className=" m-1 bg-gray-100 h-9 w-9 rounded text-zinc-400 " />
           </div>
-        </div>
+        </div> */}
 
-        <div className="md:flex p-1 bg-backGray border-2 shadow-sm">
+        <div className="md:flex p-1 bg-backGray dark:bg-darkPoint  border-2 dark:border-transparent shadow-sm">
           {/* NOTE 프로필 */}
           <div className="sm:w-full md:w-1/2 lg:w-1/2 xl:w-5/12 m-2 ">
-            <div className="p-1 bg-white">
+            <div className="p-1 bg-white dark:bg-darkPoint">
               {/* 1.  닉네임 + 회원 뱃지 */}
               <div className="flex justify-between m-1">
                 {/*닉네임*/}
@@ -200,12 +199,12 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
                 </div>
               </div>
               {/*구분선*/}
-              <div className="p-[2px] mb-2 bg-gradient-to-r from-blue-300 via-blue-200 to-yellow-300  "></div>
+              <div className="p-[2px] mb-2 bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-300  "></div>
               {/* 2.  프로필 이미지 + 팔로우 + 포인트 */}
               <div className="flex ">
                 {/* 2-1. 프로필 이미지 */}
                 <div className="w-1/2 m-1">
-                  <div className="p-1 bg-gradient-to-r from-blue-300 via-blue-200 to-yellow-300 rounded">
+                  <div className="p-1 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 rounded">
                     <img
                       src={googy}
                       alt="profile"
@@ -220,7 +219,7 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
                   <div className="flex w-full justify-end">
                     <button
                       onClick={() => setFollowerModal(true)}
-                      className="p-2 mr-2 flex flex-row hover:bg-backGray"
+                      className="p-2 mr-2 flex flex-row hover:bg-backGray dark:hover:bg-mainBlack dark:hover:bg-opacity-50"
                     >
                       <div className="text-gray-500 mr-1">팔로워</div>
                       <div className="font-semibold">
@@ -230,7 +229,7 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
 
                     <button
                       onClick={() => setFolloweeModal(true)}
-                      className="p-2 flex flex-row hover:bg-backGray"
+                      className="p-2 flex flex-row hover:bg-backGray dark:hover:bg-mainBlack dark:hover:bg-opacity-50"
                     >
                       <div className=" text-gray-500 mr-1">팔로우</div>
                       <div className="font-semibold">
@@ -239,11 +238,11 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
                     </button>
                   </div>
                   {/* 2-2-2 포인트 */}
-                  <div className="flex w-full justify-between border-3 border-blue-500 bg-blue-300 rounded-md p-1 ">
+                  <div className="flex w-full justify-between border-3 border-amber-500 bg-amber-300 rounded-md p-1 ">
                     <div className="css-font text-shadow  text-white sm:text-2xl md:text-xl lg:text-2xl text-xl  m-1 ">
                       Point
                     </div>
-                    <div className="css-digit-font sm:text-4xl md:text-3xl lg:text-4xl text-3xl text-blue-900 pr-2 text-right">
+                    <div className="css-digit-font sm:text-4xl md:text-3xl lg:text-4xl text-3xl text-teal-900 pr-2 text-right">
                       {memberInfo?.point}
                     </div>
                   </div>
@@ -283,7 +282,7 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
                 {/* 3-1 프로필 수정 + 탈퇴버튼 */}
                 <div className="py-1 text-right">
                   <button
-                    className="mr-2 border hover:bg-backGray p-2 rounded  text-md font-bold"
+                    className="mr-2 border hover:bg-backGray p-2 rounded  text-md font-bold dark:border-mainBlack dark:shadow dark:bg-[#090e1a] dark:hover:bg-mainBlack"
                     onClick={() => navigate('edit')}
                   >
                     프로필 수정
@@ -295,12 +294,13 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
           {/* NOTE 마이페이지 */}
           {/* 1. 마이페이지(작성글) 컴포넌트*/}
           <div className="sm:w-full md:w-1/2 lg:w-1/2 xl:w-7/12 m-2">
-            <div className=" flex rounded p-1 bg-blue-300 border-2 border-blue-400 shadow-[inset_0_2px_0_1px_#ffffff]">
-              <div className=" text-md ">
+            <div className=" flex rounded p-1 bg-amber-300 border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
+              <div className=" text-md text-mainBlack">
+                {' '}
                 {myPages?.map((item, index) => (
                   <Fragment key={index}>
                     <button
-                      className="hover:bg-blue-500  m-1 p-1 hover:text-mainWhite rounded font-bold"
+                      className="hover:bg-amber-500  m-1 p-1 hover:text-mainWhite rounded font-bold"
                       onClick={() => setMyPage(item)}
                     >
                       {item.title}
@@ -310,11 +310,11 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
                 ))}
               </div>
             </div>
-            <div className="mt-2 bg-white p-3 shadow-sm rounded-sm ">
-              <div className="w-full h-full inline-block rounded overflow-hidden text-center border">
-                <table className="w-full border-2 shadow  rounded-md">
+            <div className="mt-2 bg-white dark:bg-darkComponent p-3 shadow-sm rounded-sm ">
+              <div className="w-full h-full inline-block rounded overflow-hidden text-center ">
+                <table className="w-full border-4 dark:border-[#0c111f] shadow  rounded-md">
                   <thead>
-                    <tr className="h-10 bg-gray-100  border-b-2">
+                    <tr className="h-10 bg-gray-100 dark:bg-[#0c111f] dark:border-[#0c111f]  border-b-2">
                       {myPage?.heads?.map((head, index) => (
                         <th key={index}>{head}</th>
                       ))}
@@ -334,7 +334,7 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
                 </table>
               </div>
 
-              <button className="w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 hover:shadow-xs p-3 my-1">
+              <button className="w-full text-sm font-semibold rounded-lg hover:bg-gray-100 hover:shadow-xs p-3 my-1 dark:bg-[#0c111f] dark:hover:bg-mainBlack">
                 다음으로
               </button>
             </div>

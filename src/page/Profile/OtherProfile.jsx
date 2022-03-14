@@ -7,8 +7,7 @@ import './fonts.css';
 import Group from './Components/Group';
 import { useNavigate } from 'react-router-dom';
 
-const googy =
-  'https://avatars.githubusercontent.com/u/81643702?s=400&u=d3a721a495754454d238b4159bb7a2d150338424&v=4';
+const googy = 'https://avatars.githubusercontent.com/u/81643702?v=4';
 
 const add0 = (num, maxDigits) => {
   let digits = 10;
