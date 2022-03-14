@@ -336,12 +336,15 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
   }, [password, confirm]);
 
   useEffect(() => {
-    memberAPI.getUsersFollowCnt({ token }).then((res) => {
-      if (res.success) {
-        setFollowCnt(res.data);
-      }
-    });
-  }, []);
+    if (!token) return;
+    else {
+      memberAPI.getUsersFollowCnt({ token }).then((res) => {
+        if (res.success) {
+          setFollowCnt(res.data);
+        }
+      });
+    }
+  }, [token]);
 
   return (
     <div className="min-h-screen  dark:bg-mainBlack dark:text-mainWhite ">

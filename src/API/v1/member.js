@@ -37,7 +37,7 @@ async function getMembers({ token }) {
 async function updateEmail({ emailAddress, authCode, token }) {
   const options = {
     method: 'PUT',
-    url: API_URL + '/v1/member/update/email',
+    url: API_URL + '/v1/members/update/email',
     headers: {
       Authorization: token,
     },
@@ -54,7 +54,7 @@ async function updateEmail({ emailAddress, authCode, token }) {
 async function updateProfile({ realName, nickName, studentId, token }) {
   const options = {
     method: 'PUT',
-    url: API_URL + '/v1/member/update/profile',
+    url: API_URL + '/v1/members/update/profile',
     headers: {
       Authorization: token,
     },
@@ -113,7 +113,7 @@ async function getOtherById({ token, id }) {
 async function deleteMember({ token, password }) {
   const options = {
     method: 'DELETE',
-    url: API_URL + '/v1/member/delete',
+    url: API_URL + '/v1/members/delete',
     params: { password: password },
     headers: {
       Authorization: token,
@@ -131,7 +131,7 @@ async function deleteMember({ token, password }) {
 async function getUsersPosts({ token, page, size }) {
   const options = {
     method: 'Get',
-    url: API_URL + '/v1/member/post',
+    url: API_URL + '/v1/members/posts',
     params: { page: page, size: size },
     headers: {
       Authorization: token,
@@ -148,7 +148,7 @@ async function getUsersPosts({ token, page, size }) {
 async function getUsersTempPosts({ token, page, size }) {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/member/temp_post',
+    url: API_URL + '/v1/members/temp_posts',
     params: { page: page, size: size },
     headers: {
       Authorization: token,
@@ -203,7 +203,7 @@ async function updateThumbnail({ token, ipAddress, thumbnail }) {
 
   const options = {
     method: 'PUT',
-    url: API_URL + '/v1/member/update/thumbnail',
+    url: API_URL + '/v1/members/update/thumbnail',
     data: formData,
     headers: {
       Authorization: `${token}`,
@@ -256,7 +256,7 @@ async function giftPoint({ token, time, point, detail, presentedId }) {
 async function getUsersFollowee({ token }) {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/member/followee',
+    url: API_URL + '/v1/members/followee',
     headers: {
       Authorization: token,
     },
@@ -272,7 +272,7 @@ async function getUsersFollowee({ token }) {
 async function getUsersFollower({ token }) {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/member/follower',
+    url: API_URL + '/v1/members/follower',
     headers: {
       Authorization: token,
     },
@@ -288,7 +288,7 @@ async function getUsersFollower({ token }) {
 async function getUsersFollowCnt({ token }) {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/member/follow-number',
+    url: API_URL + '/v1/members/follow-number',
     headers: {
       Authorization: token,
     },
