@@ -96,7 +96,7 @@ async function getOtherById({ token, id }) {
   // TODO : API parameter object 형식으로 통일 부탁드립니당.
   const options = {
     method: 'GET',
-    url: API_URL + `/v1/member/other-id/${id}`,
+    url: API_URL + `/v1/members/others/${id}`,
     headers: {
       Authorization: token,
     },
@@ -165,7 +165,7 @@ async function getUsersTempPosts({ token, page, size }) {
 async function follow({ token, loginId }) {
   const options = {
     method: 'POST',
-    url: API_URL + '/v1/member/follow',
+    url: API_URL + '/v1/members/follow',
     data: { followeeLoginId: loginId },
     headers: {
       Authorization: token,
@@ -182,7 +182,7 @@ async function follow({ token, loginId }) {
 async function unfollow({ token, loginId }) {
   const options = {
     method: 'POST',
-    url: API_URL + '/v1/member/unfollow',
+    url: API_URL + '/v1/members/unfollow',
     data: { followeeLoginId: loginId },
     headers: {
       Authorization: token,
@@ -304,7 +304,7 @@ async function getUsersFollowCnt({ token }) {
 async function getOthersPosts({ token, memberId }) {
   const options = {
     method: 'GET',
-    url: `${API_URL}/v1/member/${memberId}/posts`,
+    url: `${API_URL}/v1/members/${memberId}/posts`,
     headers: {
       Authorization: token,
     },

@@ -80,7 +80,8 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
     if (isUnFollowing) return;
     else {
       setIsUnFollowing(true);
-      memberAPI.unFollow({ token, loginId: user.loginId }).then((result) => {
+      console.log(token, user.loginId);
+      memberAPI.unfollow({ token, loginId: user.loginId }).then((result) => {
         if (result.success) {
           getUser();
           console.log('success', result);
@@ -94,8 +95,9 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
     memberAPI.getOtherById({ token, id: userId }).then((getOtherResult) => {
       if (getOtherResult.success) {
         const other = getOtherResult.data;
-        other.rank = other.memberRankEntity.name;
-        other.type = other.memberTypeEntity.name;
+        console.log(other);
+        other.rank = other.memberRank;
+        other.type = other.memberType;
         other.jobs = [];
         other.thumbnailId = other.thumbnailEntity;
         setUser(other);
