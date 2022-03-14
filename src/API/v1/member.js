@@ -113,7 +113,7 @@ async function getOtherById({ token, id }) {
 async function deleteMember({ token, password }) {
   const options = {
     method: 'DELETE',
-    url: API_URL + '/v1/members/delete',
+    url: API_URL + '/v1/members',
     params: { password: password },
     headers: {
       Authorization: token,

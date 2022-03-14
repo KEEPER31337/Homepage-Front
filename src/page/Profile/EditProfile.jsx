@@ -19,6 +19,7 @@ import {
 } from '@heroicons/react/solid';
 import MessageModal from 'shared/MessageModal';
 import Group from './Components/Group';
+import DeleteUserModal from './Components/Modal/DeleteUserModal';
 
 const googy = 'https://avatars.githubusercontent.com/u/81643702?v=4';
 
@@ -54,6 +55,10 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
     const { year, month, date } = stringfyDate(new Date(origin));
     return [year, month, date].join(separator);
   };
+
+  //탈퇴 모달
+  const deleteUserModalState = useState(false);
+  const [deleteUserModal, setDeleteUserModal] = deleteUserModalState;
 
   //프로필 이미지 변경
   const [img, setImg] = useState(null);
@@ -475,7 +480,12 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                   >
                     돌아가기
                   </button>
-                  <button className=" border hover:bg-backGray p-2 rounded  text-md font-bold dark:border-mainBlack dark:shadow dark:bg-[#090e1a] dark:hover:bg-mainBlack">
+                  <button
+                    onClick={() => {
+                      setDeleteUserModal(true);
+                    }}
+                    className=" border hover:bg-backGray p-2 rounded  text-md font-bold dark:border-mainBlack dark:shadow dark:bg-[#090e1a] dark:hover:bg-mainBlack"
+                  >
                     탈퇴
                   </button>
                 </div>
@@ -720,6 +730,11 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
       </div>
 
       {/* modal창 */}
+      <DeleteUserModal
+        token={token}
+        signOut={signOut}
+        modalState={deleteUserModalState}
+      />
     </div>
   );
 };
