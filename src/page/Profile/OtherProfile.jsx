@@ -155,12 +155,12 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
     return <Fragment />;
   } else {
     return (
-      <div className="">
-        <div className="sm:w-full md:w-full lg:w-10/12 xl:w-8/12 container mx-auto m-4 p-5 justify-center items-center">
-          <div className="md:flex p-1 bg-backGray border-2 shadow-sm">
+      <div className="min-h-screen  dark:bg-mainBlack dark:text-mainWhite ">
+        <div className="h-full sm:w-full md:w-full lg:w-10/12 xl:w-8/12 container mx-auto pt-10 p-5 justify-center items-center">
+          <div className="md:flex p-1 bg-backGray dark:bg-darkPoint  border-2 dark:border-transparent shadow-sm">
             {/* NOTE 프로필 */}
             <div className="sm:w-full md:w-1/2 lg:w-1/2 xl:w-5/12 m-2 ">
-              <div className="p-1 bg-white">
+              <div className="p-1 bg-white dark:bg-darkPoint">
                 {/* 1.  닉네임 + 회원 뱃지 */}
                 <div className="flex justify-between m-1">
                   {/*닉네임*/}
@@ -186,12 +186,12 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
                   </div>
                 </div>
                 {/*구분선*/}
-                <div className="p-[2px] mb-2 bg-gradient-to-r from-blue-300 via-blue-200 to-yellow-300  "></div>
+                <div className="p-[2px] mb-2 bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-300  "></div>
                 {/* 2.  프로필 이미지 + 팔로우 + 포인트 */}
                 <div className="flex ">
                   {/* 2-1. 프로필 이미지 */}
                   <div className="w-1/2 m-1">
-                    <div className="p-1 bg-gradient-to-r from-blue-300 via-blue-200 to-yellow-300 rounded">
+                    <div className="p-1 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 rounded">
                       <img
                         src={googy}
                         alt="profile"
@@ -204,13 +204,13 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
                   <div className="w-1/2 flex flex-col justify-between m-1">
                     <div className="w-full flex flex-col text-center ">
                       <span
-                        className="p-2 mb-2 bg-blue-300 hover:bg-blue-500 border-2 border-blue-300 rounded text-white font-bold"
+                        className="p-2 mb-2 bg-amber-300 dark:bg-amber-400 dark:hover:bg-amber-500 hover:bg-amber-500 border-2 border-amber-300 rounded text-white font-bold dark:text-mainBlack"
                         onClick={isFollowee ? unFollow : follow}
                       >
                         {isFollowee ? '언팔로우' : '팔로우'}
                       </span>
                       <span
-                        className="p-2 hover:bg-gray-100 border-2 rounded font-bold"
+                        className="p-2 hover:bg-gray-100 border-2 rounded font-bold dark:bg-[#0c111f] dark:hover:bg-mainBlack"
                         onClick={() => {
                           if (!giftPointModal) setGiftPointModal(true);
                         }}
@@ -254,16 +254,18 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
             {/* NOTE 마이페이지 */}
             {/* 1. 마이페이지(작성글) 컴포넌트*/}
             <div className="sm:w-full md:w-1/2 lg:w-1/2 xl:w-7/12 m-2">
-              <div className=" flex rounded p-1 bg-blue-300 border-2 border-blue-400 shadow-[inset_0_2px_0_1px_#ffffff]">
-                <div className=" text-md ">
-                  <div className="m-1 p-1 rounded font-bold">작성글</div>
+              <div className=" flex rounded p-1 bg-amber-300 border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
+                <div className=" text-md text-mainBlack">
+                  <div className="hover:bg-amber-500  m-1 p-1 hover:text-mainWhite rounded font-bold">
+                    작성글
+                  </div>
                 </div>
               </div>
-              <div className="mt-2 bg-white p-3 shadow-sm rounded-sm ">
-                <div className="w-full h-full inline-block rounded overflow-hidden text-center border">
-                  <table className="w-full border-2 shadow  rounded-md">
+              <div className="mt-2 bg-white dark:bg-darkComponent p-3 shadow-sm rounded-sm ">
+                <div className="w-full h-full inline-block rounded overflow-hidden text-center ">
+                  <table className="w-full border-4 dark:border-[#0c111f] shadow  rounded-md">
                     <thead>
-                      <tr className="h-10 bg-gray-100  border-b-2">
+                      <tr className="h-10 bg-gray-100 dark:bg-[#0c111f] dark:border-[#0c111f]  border-b-2">
                         {heads?.map((head, index) => (
                           <th key={index}>{head}</th>
                         ))}
@@ -282,8 +284,7 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
                     </tbody>
                   </table>
                 </div>
-
-                <button className="w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 hover:shadow-xs p-3 my-1">
+                <button className="w-full text-sm font-semibold rounded-lg hover:bg-gray-100 hover:shadow-xs p-3 my-1 dark:bg-[#0c111f] dark:hover:bg-mainBlack">
                   다음으로
                 </button>
               </div>
