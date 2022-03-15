@@ -30,7 +30,7 @@ export default function Latest({ postList }) {
             {postList.map((post, index) => (
               <div
                 key={index}
-                className="main-post grow-0 shrink-0 flex flex-col rounded-lg shadow-lg overflow-hidden"
+                className="w-[300px] grow-0 shrink-0 flex flex-col rounded-lg shadow-lg overflow-hidden"
               >
                 <div className="flex-shrink-0">
                   <img
