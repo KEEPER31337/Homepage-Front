@@ -16,9 +16,7 @@ export default function Intro() {
           id: null,
           subtitle: null,
           staticWriteTitleId: null,
-          thumbnail: {
-            id: null,
-          },
+          thumbnailPath: null,
           displayOrder: null,
           staticWriteContentResults: [
             {

@@ -1,5 +1,5 @@
 // TODO 화면 크기 조정 시 단어 단위로 줄바꿈 되도록 하기
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 // asset
 import seminarImg from 'assets/img/aboutImg/seminar.png';
@@ -7,7 +7,10 @@ import mentoringImg from 'assets/img/aboutImg/mentoring.png';
 import thesisImg from 'assets/img/aboutImg/thesis.png';
 
 // API
+import utilAPI from 'API/v1/util';
 import aboutAPI from 'API/v1/about';
+import ipAPI from 'API/v1/ip';
+import { connect } from 'react-redux';
 
 // 백엔드 썸내일 저장 가능할 때까지 임시로 넣어놓는 중임당
 const temp = [
@@ -59,7 +62,10 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function Activity() {
+const Activity = ({ member }) => {
+  /* TODO 여기부터 지울 거 */
+  const [adminFlag, setAdminFlag] = useState(false);
+  /* TODO 여기까지 지울 거 */
   const [activityInfo, setActivityInfo] = useState([
     {
       id: null,
@@ -70,9 +76,7 @@ export default function Activity() {
           id: null,
           subtitle: null,
           staticWriteTitleId: null,
-          thumbnail: {
-            id: null,
-          },
+          thumbnailPath: null,
           displayOrder: null,
           staticWriteContentResults: [
             {
@@ -86,6 +90,36 @@ export default function Activity() {
       ],
     },
   ]);
+
+  /* TODO 여기부터 지울 거 */
+
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (member.token) {
+      utilAPI.getAuthorization({ token: member.token }).then((response) => {
+        if (response.list.includes('ROLE_회장')) setAdminFlag(true);
+      });
+    }
+  }, [member]);
+
+  const handleChangeFile = (event) => {
+    ipAPI.getIp().then((ipAddress) => {
+      const i = Number(inputRef.current.value);
+      aboutAPI.tmp({
+        id: activityInfo[0].subtitleImageResults[i].id,
+        subtitle: activityInfo[0].subtitleImageResults[i].subtitle,
+        staticWriteTitleId:
+          activityInfo[0].subtitleImageResults[i].staticWriteTitleId,
+        displayOrder: activityInfo[0].subtitleImageResults[i].displayOrder,
+        ipAddress: ipAddress,
+        token: member.token,
+        thumbnail: event.target.files[0],
+      });
+    });
+  };
+  /* TODO 여기까지 지울 거 */
+
   useEffect(() => {
     aboutAPI.getActivityInfo().then((data) => {
       if (data.success) {
@@ -119,6 +153,19 @@ export default function Activity() {
   }, []);
   return (
     <div className="">
+      {/* TODO 여기부터 지울 거 */}
+      {adminFlag && (
+        <>
+          <input
+            type="file"
+            id="file"
+            onChange={handleChangeFile}
+            multiple="multiple"
+          />
+          <input ref={inputRef} />
+        </>
+      )}
+      {/* TODO 여기까지 지울 거 */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-6 lg:py-10 px-3 md:px-12 lg:px-16">
           <h2 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow">
@@ -157,8 +204,8 @@ export default function Activity() {
                 >
                   <div className="rounded-xl overflow-hidden">
                     <img
-                      src={temp[articleIdx].imageSrc}
-                      alt={temp[articleIdx].imageAlt}
+                      src={article.thumbnailPath}
+                      alt=""
                       className="object-center object-cover"
                     />
                   </div>
@@ -170,4 +217,9 @@ export default function Activity() {
       </div>
     </div>
   );
-}
+};
+
+const mapStateToProps = (state, OwnProps) => {
+  return { member: state.member };
+};
+export default connect(mapStateToProps)(Activity);

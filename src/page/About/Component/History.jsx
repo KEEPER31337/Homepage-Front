@@ -98,9 +98,7 @@ export default function History() {
           id: null,
           subtitle: null,
           staticWriteTitleId: null,
-          thumbnail: {
-            id: null,
-          },
+          thumbnailPath: null,
           displayOrder: null,
           staticWriteContentResults: [
             {
