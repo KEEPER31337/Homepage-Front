@@ -76,7 +76,7 @@ export default function Latest({ postList }) {
                       </p>
                       <div className="flex space-x-1 text-sm text-gray-500">
                         <time dateTime={post.updateTime}>
-                          {post.updateTime}
+                          {dateAndTime(post)}
                         </time>
                         <span aria-hidden="true">&middot;</span>
                         <span>{post.visitCount} watch</span>
@@ -91,4 +91,10 @@ export default function Latest({ postList }) {
       </div>
     </div>
   );
+}
+
+function dateAndTime(post) {
+  const dateTimeString = post.updateTime;
+  const dateTimeArray = dateTimeString.split("T");
+  return <div> {dateTimeArray[0]} {dateTimeArray[1]} </div>;
 }

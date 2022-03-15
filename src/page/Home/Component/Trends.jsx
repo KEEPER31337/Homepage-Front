@@ -10,7 +10,6 @@ const imageMember =
   'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80';
 
 export default function Trends({ postList }) {
-  console.log(postList);
   return (
     <div
       className="relative bg-gray-50 dark:bg-neutral-900 h-auto pt-16 pb-4 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8"
@@ -73,7 +72,7 @@ export default function Trends({ postList }) {
                         </a>
                       </p>
                       <div className="flex space-x-1 text-sm text-gray-500">
-                        <time dateTime={post.dateTime}>{post.dateTime}</time>
+                        <time dateTime={post.dateTime}>{dateAndTime(post)}</time>
                         <span aria-hidden="true">&middot;</span>
                         <span>{post.watch} watch</span>
                       </div>
@@ -87,4 +86,10 @@ export default function Trends({ postList }) {
       </div>
     </div>
   );
+}
+
+function dateAndTime(post) {
+  const dateTimeString = post.dateTime;
+  const dateTimeArray = dateTimeString.split("T");
+  return <div> {dateTimeArray[0]} {dateTimeArray[1]} </div>;
 }
