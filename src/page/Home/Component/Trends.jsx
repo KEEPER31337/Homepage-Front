@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import ScrollContainer from 'react-indiana-drag-scroll';
 
 import '../style/scale.css';
+import changeTimeFormat from './TimeFormat.jsx';
 
 const imageTemp =
   'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80';
@@ -72,7 +73,7 @@ export default function Trends({ postList }) {
                         </a>
                       </p>
                       <div className="flex space-x-1 text-sm text-gray-500">
-                        <time dateTime={post.dateTime}>{dateAndTime(post)}</time>
+                        <time dateTime={post.dateTime}> {showDateAndTime(post)} </time>
                         <span aria-hidden="true">&middot;</span>
                         <span>{post.watch} watch</span>
                       </div>
@@ -88,8 +89,8 @@ export default function Trends({ postList }) {
   );
 }
 
-function dateAndTime(post) {
+function showDateAndTime(post) {
+  const now = new Date();
   const dateTimeString = post.dateTime;
-  const dateTimeArray = dateTimeString.split("T");
-  return <div> {dateTimeArray[0]} {dateTimeArray[1]} </div>;
+  return changeTimeFormat(now, dateTimeString);
 }
