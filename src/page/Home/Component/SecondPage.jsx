@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 // local
-import '../style/height.css';
 import Trends from './Trends';
 import Latest from './Latest';
 

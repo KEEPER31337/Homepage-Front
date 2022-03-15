@@ -1,8 +1,10 @@
 import React from 'react';
-import { useState, useRef } from 'react';
-
+import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { connect } from 'react-redux';
 // local
 import authAPI from 'API/v1/auth';
+import actionMember from 'redux/action/member';
 import MessageModal from 'shared/MessageModal';
 
 //custom hook
@@ -16,7 +18,7 @@ const useInput = (initialValue = null) => {
   return [value, onChange];
 };
 
-const SignUp = () => {
+const SignUp = ({ member }) => {
   //아이디, 비밀번호, 비밀번호 확인, 이메일, 이름, 닉네임, 학번
   const [loginId, setLoginId] = useInput('');
   const [password, setPassword] = useInput('');
@@ -52,6 +54,12 @@ const SignUp = () => {
   const sendFailModalRef = useRef({});
   const signUpSuccessModalRef = useRef({});
   const signUpFailModalRef = useRef({});
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    //로그인된 상태에서 signup페이지 접속할 경우
+    if (member.token) navigate('/');
+  }, [member]);
 
   //NOTE 유효성 검사
 
@@ -567,4 +575,15 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+const mapStateToProps = (state, OwnProps) => {
+  return { member: state.member };
+};
+const mapDispatchToProps = (dispatch, OwnProps) => {
+  return {
+    updateToken: (token) => {
+      dispatch(actionMember.updateToken(token));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import AOS from 'aos';
 import 'aos/dist/aos.css'; 
-import './style/height.css';
+import './style/scale.css';
 import './style/drag.css';
 
 import FirstPage from './Component/FirstPage';
