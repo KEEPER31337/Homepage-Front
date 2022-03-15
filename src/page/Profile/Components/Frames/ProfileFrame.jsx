@@ -1,33 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CircularGauge from '../CircularGauge';
 import Group from '../Group';
-import InfoBox from '../InfoBox';
 import InfoBtn from '../InfoBtn';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import utilAPI from 'API/v1/util';
 
 const ProfileFrame = ({
   renderHeadLeft,
-  renderHeadRight,
   renderHead,
   renderBody,
   renderFooter,
   profileBtns,
-  user,
+  memberInfo,
 }) => {
-  const defaultHeadLeft = () => (
-    <div className="pr-2 w-3/12 object-cover">
-      <img className="w-full h-full rounded-2xl" src={user.img} />
-    </div>
-  );
+  const [img, setImg] = useState(null);
 
-  const defaultHeadRight = () => (
-    <div className="w-full h-3/4 pt-3">
-      <div className="w-full h-full bg-divisionGray dark:bg-darkComponent dark:text-mainWhite rounded-2xl overflow-y-scroll scrollbar-hide">
-        {/*profile type*/}
-        {user.groups.map((group) => (
-          <Group group={group} />
-        ))}
-      </div>
+  useEffect(() => {
+    utilAPI
+      .getThumbnail({ thumbnailId: memberInfo.thumbnailId })
+      .then((result) => {
+        setImg(result);
+      });
+  }, [memberInfo]);
+
+  const defaultHeadLeft = () => (
+    <div className="pr-2 w-4/12 object-contain">
+      <img className="w-full h-full rounded-2xl" src={img} />
     </div>
   );
 
@@ -36,48 +35,53 @@ const ProfileFrame = ({
       <div className="px-10 pt-10 pb-7 w-full h-full flex float-left">
         {renderHeadLeft != null ? renderHeadLeft() : defaultHeadLeft()}
         {/*profile head info*/}
-        <div className="pt-3 w-5/12 h-full">
-          <div className="text-left text-4xl h-1/5 dark:text-pointYellow">
-            {user.name}
-          </div>
-          <div className="mt-3 text-left text-lg h-1/5 dark:text-mainYellow">
-            {user.nickName + ' ' + user.loginId}
-          </div>
-          {/*profile Level*/}
-          <div className="mt-10 pr-2 w-full h-2/6">
-            <div className="pt-2 text-center float-left text-3xl dark:text-pointYellow">
-              Level
+        <div className="pt-3 w-full h-full ">
+          <div className="pl-3 h-1/5 text-left text-4xl flex-row">
+            <div className="flex align-bottom justify-items-center">
+              <div className="mr-5 dark:text-pointYellow">
+                {memberInfo.nickName}
+              </div>
+              {/*profile Btn type rank job*/}
+              {memberInfo.rank ? (
+                <div className="mr-2">
+                  <Group groupName={memberInfo.rank} />
+                </div>
+              ) : (
+                <></>
+              )}
+              {memberInfo.type ? (
+                <div className="mr-2">
+                  <Group groupName={memberInfo.type} />
+                </div>
+              ) : (
+                <></>
+              )}
+              {memberInfo.jobs ? (
+                memberInfo.jobs.map((job, index) => (
+                  <div key={index} className="mr-2">
+                    <Group groupName={job} />
+                  </div>
+                ))
+              ) : (
+                <></>
+              )}
             </div>
-            <div className="pl-5 h-full float-left flex">
-              <CircularGauge
-                inRad={20}
-                outRad={24}
-                parcent={user.point / user.levelUp}
-                text={user.level}
-              />
-            </div>
           </div>
-        </div>
-        {/*profile Btn type rank job*/}
-        <div className="w-4/12 pl-5">
+          <div className="pl-3 mt-3 text-left text-lg h-1/5 dark:text-mainYellow">
+            {memberInfo.emailAddress}
+          </div>
+          <div className="h-[25%]" />
           {/*profile Btn*/}
-          <div className="w-full h-1/4 flex justify-end items-end">
-            {profileBtns.map((btn) => (
-              <InfoBtn btn={btn} />
+          <div className="w-2/4 h-[25%]">
+            {profileBtns.map((btn, index) => (
+              <InfoBtn btn={btn} key={index} />
             ))}
           </div>
-          {renderHeadRight != null ? renderHeadRight() : defaultHeadRight()}
         </div>
       </div>
     </div>
   );
-  const defaultBody = () => (
-    <div className="w-full">
-      <InfoBox type="github" params={{ gitId: user.github }} />
-      <InfoBox type="postlist" params={{ userId: user.userId }} />
-      <InfoBox type="social" params={{ socialList: user.socialList }} />
-    </div>
-  );
+  const defaultBody = () => <></>;
   const defaultFooter = () => (
     <footer className="w-full h-[50px]">
       <div className="text-center dark:text-mainWhite"></div>
@@ -85,8 +89,8 @@ const ProfileFrame = ({
   );
 
   return (
-    <div className="bg-mainWhite dark:bg-mainBlack pt-20 overflow-auto">
-      <div className="mx-auto w-[900px] bg-backGray dark:bg-darkPoint rounded-3xl shadow-2xl overflow-auto">
+    <div className="bg-mainWhite dark:bg-mainBlack pt-20 overflow-auto min-h-screen">
+      <div className="mx-auto w-[900px] bg-mainWhite dark:bg-darkPoint rounded-3xl shadow-2xl overflow-auto">
         {renderHead != null ? renderHead() : defaultHead()}
         {renderBody != null ? renderBody() : defaultBody()}
       </div>

@@ -27,12 +27,12 @@ async function create({
   formData.append('isTemp', isTemp);
   formData.append('password', password);
   formData.append('file', files);
-  formData.append('thumbnailFile', thumbnailFile);
+  formData.append('thumbnail', thumbnailFile);
 
   const config = {
-    header: {
+    headers: {
       'content-type': 'multipart/form-data',
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     },
   };
 
@@ -48,12 +48,15 @@ async function create({
   }
 }
 
-async function getOne({ no, token }) {
+async function getOne({ no, token, password }) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/post/' + no,
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
+    },
+    params: {
+      password,
     },
   };
   try {
@@ -81,11 +84,37 @@ async function getList({ category, page, size }) {
     return error.response.data;
   }
 }
+async function getNoticeList({ category }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/post/notice',
+    params: {
+      category,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
 
 async function downloadFile({ fileId }) {
+  // const url = API_URL + '/v1/util/thumbnail/' + thumbnailId;
+  // const options = {
+  //   responseType: 'blob',
+  // };
+  // try {
+  //   const response = await axios.get(url, options);
+  //   return response.data;
+  // } catch (error) {
+  //   return error.response.data;
+  // }
   const options = {
     method: 'GET',
     url: API_URL + '/v1/post/download/' + fileId,
+    responseType: 'blob',
   };
   try {
     const response = await axios(options);
@@ -124,9 +153,9 @@ async function modify({
   formData.append('thumbnailFile', thumbnailFile);
 
   const config = {
-    header: {
+    headers: {
       'content-type': 'multipart/form-data',
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     },
   };
 
@@ -147,7 +176,7 @@ async function remove({ boardId, token }) {
     method: 'DELETE',
     url: API_URL + '/v1/post/' + boardId,
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     },
   };
   try {
@@ -158,11 +187,12 @@ async function remove({ boardId, token }) {
   }
 }
 
-async function searchByTitle({ keyword, category, page, size }) {
+async function search({ type, keyword, category, page, size }) {
+  // type: T, C, TC ,W
   const options = {
     method: 'GET',
     url: API_URL + '/v1/post/search',
-    params: { type: 'T', keyword, category, page, size },
+    params: { type, keyword, category, page, size },
   };
   try {
     const response = await axios(options);
@@ -172,56 +202,14 @@ async function searchByTitle({ keyword, category, page, size }) {
   }
 }
 
-async function searchByContent({ keyword, category, page, size }) {
+async function like({ type, postingId, token }) {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/post/search',
-    params: { type: 'C', keyword, category, page, size },
-  };
-  try {
-    const response = await axios(options);
-    return response.data;
-  } catch (error) {
-    return error.response.data;
-  }
-}
-
-async function searchByTitleOrContent({ keyword, category, page, size }) {
-  const options = {
-    method: 'GET',
-    url: API_URL + '/v1/post/search',
-    params: { type: 'TC', keyword, category, page, size },
-  };
-  try {
-    const response = await axios(options);
-    return response.data;
-  } catch (error) {
-    return error.response.data;
-  }
-}
-
-async function searchByWriter({ keyword, category, page, size }) {
-  const options = {
-    method: 'GET',
-    url: API_URL + '/v1/post/search',
-    params: { type: 'W', keyword, category, page, size },
-  };
-  try {
-    const response = await axios(options);
-    return response.data;
-  } catch (error) {
-    return error.response.data;
-  }
-}
-
-async function like({ boardId, token }) {
-  const options = {
-    method: 'GET ',
     url: API_URL + '/v1/post/like',
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: token,
     },
-    params: { type: 'INC', boardId },
+    params: { type: type, postingId: postingId },
   };
   try {
     const response = await axios(options);
@@ -231,14 +219,30 @@ async function like({ boardId, token }) {
   }
 }
 
-async function dislike({ boardId, token }) {
+async function dislike({ type, postingId, token }) {
   const options = {
-    method: 'GET ',
+    method: 'GET',
     url: API_URL + '/v1/post/dislike',
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: token,
     },
-    params: { type: 'DEC', boardId },
+    params: { type: type, postingId: postingId },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+async function check({ postingId, token }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/post/check',
+    headers: {
+      Authorization: token,
+    },
+    params: { postingId: postingId },
   };
   try {
     const response = await axios(options);
@@ -252,13 +256,12 @@ export default {
   create,
   getOne,
   getList,
+  getNoticeList,
   downloadFile,
   modify,
   remove,
-  searchByTitle,
-  searchByContent,
-  searchByTitleOrContent,
-  searchByWriter,
+  search,
   like,
   dislike,
+  check,
 };

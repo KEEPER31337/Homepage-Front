@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import ScrollContainer from 'react-indiana-drag-scroll';
 
 import '../style/scale.css';
@@ -10,8 +10,12 @@ const imageMember =
   'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80';
 
 export default function Latest({ postList }) {
+  const categoryId = useParams();
   return (
-    <div className="relative bg-gray-50 dark:bg-neutral-900 h-auto pt-16 pb-4 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8" data-aos="fade-in">
+    <div
+      className="relative bg-gray-50 dark:bg-neutral-900 h-auto pt-16 pb-4 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8"
+      data-aos="fade-in"
+    >
       <div className="absolute inset-0">
         <div className="bg-mainWhite dark:bg-mainBlack h-2/3" />
       </div>
@@ -23,9 +27,9 @@ export default function Latest({ postList }) {
         </div>
         <ScrollContainer vertical={false} className="overflow-hidden">
           <div className="flex flex-nowrap mt-12 m-3 mx-auto gap-3">
-            {postList.map((post) => (
+            {postList.map((post, index) => (
               <div
-                key={post.title}
+                key={index}
                 className="main-post grow-0 shrink-0 flex flex-col rounded-lg shadow-lg overflow-hidden"
               >
                 <div className="flex-shrink-0">
@@ -42,7 +46,10 @@ export default function Latest({ postList }) {
                         {post.category}
                       </a>
                     </p>
-                    <Link to={`/board/${post.id}`} className="block mt-2">
+                    <Link
+                      to={`/post/${categoryId}/${post.id}`}
+                      className="block mt-2"
+                    >
                       <p className="truncate text-xl font-semibold dark:text-mainWhite">
                         {post.title}
                       </p>
@@ -68,7 +75,9 @@ export default function Latest({ postList }) {
                         </a>
                       </p>
                       <div className="flex space-x-1 text-sm text-gray-500">
-                        <time dateTime={post.updateTime}>{post.updateTime}</time>
+                        <time dateTime={post.updateTime}>
+                          {post.updateTime}
+                        </time>
                         <span aria-hidden="true">&middot;</span>
                         <span>{post.visitCount} watch</span>
                       </div>
@@ -79,7 +88,7 @@ export default function Latest({ postList }) {
             ))}
           </div>
         </ScrollContainer>
-      </div>  
+      </div>
     </div>
   );
 }

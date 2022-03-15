@@ -1,6 +1,6 @@
 import { ViewGridIcon } from '@heroicons/react/outline';
 
-const categories = [
+const categoriesAll = [
   {
     id: 1,
     name: 'KEEPER',
@@ -9,21 +9,24 @@ const categories = [
         id: 7,
         name: '동아리 소개',
         href: 'about',
-        description: '',
         icon: ViewGridIcon,
       },
       {
         id: 8,
         name: '이벤트',
         href: 'event',
-        description: '',
         icon: ViewGridIcon,
       },
       {
         id: 9,
         name: '동아리 일정',
         href: 'schedule',
-        description: '',
+        icon: ViewGridIcon,
+      },
+      {
+        id: null,
+        name: '스터디',
+        href: 'study',
         icon: ViewGridIcon,
       },
     ],
@@ -33,38 +36,27 @@ const categories = [
     name: '게시판',
     subs: [
       {
-        id: 10,
+        id: 105,
         name: '공지사항',
-        href: 'board',
-        description: '',
+        href: 'board/105',
         icon: ViewGridIcon,
       },
       {
-        id: 11,
+        id: 6105,
         name: '건의사항',
-        href: 'board',
-        description: '',
+        href: 'board/6105',
         icon: ViewGridIcon,
       },
       {
-        id: 12,
+        id: 116,
         name: '자유게시판',
-        href: 'board',
-        description: '',
+        href: 'board/116',
         icon: ViewGridIcon,
       },
       {
-        id: 13,
+        id: 63908,
         name: '익명게시판',
-        href: 'board',
-        description: '',
-        icon: ViewGridIcon,
-      },
-      {
-        id: 14,
-        name: '연재글',
-        href: 'board',
-        description: '',
+        href: 'board/63908',
         icon: ViewGridIcon,
       },
     ],
@@ -74,38 +66,27 @@ const categories = [
     name: '동아리활동',
     subs: [
       {
-        id: 15,
+        id: 117,
         name: '발표자료',
-        href: 'board',
-        description: '',
+        href: 'board/117',
         icon: ViewGridIcon,
       },
       {
-        id: 16,
-        name: '스터디',
-        href: 'board',
-        description: '',
+        id: 5424,
+        name: '스터디 발표자료',
+        href: 'board/5424',
         icon: ViewGridIcon,
       },
       {
-        id: 17,
+        id: 2996,
         name: '기술문서',
-        href: 'board',
-        description: '',
+        href: 'board/2996',
         icon: ViewGridIcon,
       },
       {
-        id: 18,
+        id: 23400,
         name: '회계부',
-        href: 'board',
-        description: '',
-        icon: ViewGridIcon,
-      },
-      {
-        id: 19,
-        name: 'KUCIS',
-        href: 'board',
-        description: '',
+        href: 'board/23400',
         icon: ViewGridIcon,
       },
     ],
@@ -115,45 +96,15 @@ const categories = [
     name: '정보',
     subs: [
       {
-        id: 20,
-        name: '해킹대회정보',
-        href: 'board',
-        description: '',
+        id: 5125,
+        name: '정보',
+        href: 'board/5125',
         icon: ViewGridIcon,
       },
       {
-        id: 21,
-        name: '유용한사이트',
-        href: 'board',
-        description: '',
-        icon: ViewGridIcon,
-      },
-      {
-        id: 22,
-        name: 'Tools',
-        href: 'board',
-        description: '',
-        icon: ViewGridIcon,
-      },
-      {
-        id: 23,
-        name: '외부문서&강의',
-        href: 'board',
-        description: '',
-        icon: ViewGridIcon,
-      },
-      {
-        id: 24,
-        name: '취업&면접',
-        href: 'board',
-        description: '',
-        icon: ViewGridIcon,
-      },
-      {
-        id: 25,
+        id: 1377,
         name: '시험',
-        href: 'board',
-        description: '',
+        href: 'board/1377',
         icon: ViewGridIcon,
       },
     ],
@@ -164,30 +115,20 @@ const categories = [
     subs: [
       {
         id: 26,
-        name: '도서 신청',
+        name: '도서 검색',
         href: 'library',
-        description: '',
         icon: ViewGridIcon,
       },
       {
         id: 27,
-        name: '기자재 신청',
-        href: 'library',
-        description: '',
+        name: '도서 추가',
+        href: 'library/add',
         icon: ViewGridIcon,
       },
       {
         id: 28,
-        name: '도서 대여',
-        href: 'library',
-        description: '',
-        icon: ViewGridIcon,
-      },
-      {
-        id: 29,
-        name: '기자재 대여',
-        href: 'library',
-        description: '',
+        name: '도서 관리',
+        href: 'library/manage',
         icon: ViewGridIcon,
       },
     ],
@@ -200,25 +141,38 @@ const categories = [
         id: 30,
         name: '랭킹',
         href: 'ranking',
-        description: '',
         icon: ViewGridIcon,
       },
       {
         id: 31,
         name: '출석부',
         href: 'attandance',
-        description: '',
         icon: ViewGridIcon,
       },
       {
         id: 32,
         name: '게임',
         href: 'game',
-        description: '',
         icon: ViewGridIcon,
       },
     ],
   },
 ];
 
-export default categories;
+const categoriesHidden = [
+  {
+    id: 1,
+    name: 'KEEPER',
+    subs: [
+      {
+        id: 7,
+        name: '동아리 소개',
+        href: 'about',
+
+        icon: ViewGridIcon,
+      },
+    ],
+  },
+];
+
+export { categoriesAll, categoriesHidden };

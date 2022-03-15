@@ -1,78 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ProfileFrame from './Components/Frames/ProfileFrame';
-import blogImg from '../../assets/img/profileImg/social/blog.png';
-import githubImg from '../../assets/img/profileImg/social/github.png';
-import homePageImg from '../../assets/img/profileImg/social/homepage.png';
-import instargramImg from '../../assets/img/profileImg/social/instargram.png';
+import InfoBox from './Components/InfoBox';
+import { connect } from 'react-redux';
+import memberAPI from 'API/v1/member';
 
-const dummyUser = {
-  userId: '1',
-  img: 'https://cdn.akamai.steamstatic.com/steamcommunity/public/images/avatars/ad/ad3763fd50aff9d64b8f2a5619b2db9f43420ae2_full.jpg',
-  name: '이름',
-  nickName: '닉네임',
-  loginId: 'userLoginId',
-  level: 256,
-  point: 78,
-  github: 'jasper200207',
-  groups: [
-    {
-      name: '정회원',
-      img: 'https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/753640/4018a8f2c5b6cb72162d157315f27fbdbb92050d.png',
-    },
-    {
-      name: '우수회원',
-      img: 'https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/400630/21e2819817725efff601afc2e52b44772d80fb0a.png',
-    },
-    {
-      name: '무직',
-      img: 'https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/400630/276a940028f208f167c3b8790eb11031d552f384.png',
-    },
-    {
-      name: '무직',
-      img: 'https://cdn.akamai.steamstatic.com/steamcommunity/public/images/items/400630/276a940028f208f167c3b8790eb11031d552f384.png',
-    },
-  ],
-  levelUp: 100,
-  socialList: [
-    {
-      text: '블로그',
-      img: blogImg,
-      onClick: () => {
-        console.log('blog');
-      },
-    },
-    {
-      text: 'jasper200207',
-      img: githubImg,
-      onClick: () => {
-        console.log('github');
-      },
-    },
-    {
-      text: '홈페이지',
-      img: homePageImg,
-      onClick: () => {
-        console.log('homepage');
-      },
-    },
-    {
-      text: '@인스타그램',
-      img: instargramImg,
-      onClick: () => {
-        console.log('instargram');
-      },
-    },
-  ],
-};
-const isMe = true;
-const isFriend = false;
-
-const Profile = () => {
-  const user = dummyUser;
+const Profile = ({ token, memberInfo }) => {
   const params = useParams();
   const navigate = useNavigate();
   const [btns, setBtns] = useState(new Array());
+  const [isMe, setIsMe] = useState(false);
+  const [isFollowee, setIsFollowee] = useState(false);
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState('');
 
   const myBtns = [
     {
@@ -84,15 +24,20 @@ const Profile = () => {
     {
       text: '마이페이지',
       onClick: () => {
-        navigate('mypage/clipping');
+        navigate('mypage/drafts');
       },
     },
   ];
-  const otherBtns = [
+  const unFollowerBtns = [
     {
-      text: '친구 등록',
+      text: '팔로우하기',
       onClick: () => {
-        console.log('friend');
+        memberAPI.follow({ token, loginId: user.loginId }).then((result) => {
+          if (result.success) {
+            getUser();
+            console.log(result);
+          } else console.log(result);
+        });
       },
     },
     {
@@ -102,11 +47,16 @@ const Profile = () => {
       },
     },
   ];
-  const friendBtns = [
+  const followerBtns = [
     {
-      text: '친구 삭제',
+      text: '팔로우취소',
       onClick: () => {
-        console.log('friend');
+        memberAPI.unfollow({ token, loginId: user.loginId }).then((result) => {
+          if (result.success) {
+            getUser();
+            console.log(result);
+          } else console.log(result);
+        });
       },
     },
     {
@@ -117,13 +67,66 @@ const Profile = () => {
     },
   ];
 
-  useEffect(async () => {
+  const getUser = () => {
+    memberAPI
+      .getOtherById({ token, id: params.userId })
+      .then((getOtherResult) => {
+        if (getOtherResult.success) {
+          const other = getOtherResult.data;
+          console.log(other);
+          other.rank = other.memberRankEntity.name;
+          other.type = other.memberTypeEntity.name;
+          other.jobs = [];
+          other.thumbnailId = other.thumbnailEntity;
+          setUser(other);
+          setIsFollowee(other.checkFollowee);
+        } else {
+          setUser(null);
+          setError(`${getOtherResult.code}:${getOtherResult.msg}`);
+        }
+      });
+  };
+
+  useEffect(() => {
+    if (params.userId == memberInfo.id) {
+      setIsMe(true);
+      setUser(memberInfo);
+    } else {
+      setIsMe(false);
+      getUser();
+    }
+  }, [params.userId, memberInfo.id]);
+
+  useEffect(() => {
     if (isMe) setBtns(myBtns);
-    else if (isFriend) setBtns(friendBtns);
-    else setBtns(otherBtns);
-  }, [isMe, isFriend]);
+    else if (isFollowee) setBtns(followerBtns);
+    else setBtns(unFollowerBtns);
+  }, [isMe, isFollowee]);
 
-  return <ProfileFrame user={user} profileBtns={btns} />;
+  const renderBody = () => (
+    <div className="w-full">
+      <InfoBox type="postlist" params={{ token: token }} />
+    </div>
+  );
+
+  if (user == null) {
+    return <div className="text-red-500">{error}</div>;
+  } else {
+    return (
+      <ProfileFrame
+        profileBtns={btns}
+        renderBody={renderBody}
+        memberInfo={user}
+      />
+    );
+  }
 };
 
-export default Profile;
+const mapStateToProps = (state) => {
+  return {
+    token: state.member.token,
+    memberInfo: state.member.memberInfo,
+  };
+};
+
+export default connect(mapStateToProps)(Profile);

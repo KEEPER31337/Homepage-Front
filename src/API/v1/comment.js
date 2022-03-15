@@ -3,30 +3,35 @@ import axios from 'axios';
 const API_URL = process.env.REACT_APP_API_URL;
 
 async function create({ boardId, content, ipAddress, parentId, token }) {
+  console.log(boardId, content, ipAddress, parentId, token);
+  const url = API_URL + '/v1/comment/' + boardId;
+  const data = {
+    content,
+    ipAddress,
+    parentId,
+  };
   const options = {
-    method: 'POST',
-    url: API_URL + '/v1/comment/' + boardId,
     headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: {
-      content,
-      ipAddress,
-      parentId,
+      'Content-Type': 'application/json',
+      Authorization: `${token}`,
+      // 'content-type': 'multipart/form-data',
     },
   };
   try {
-    const response = await axios(options);
+    const response = await axios.post(url, data, options);
     return response.data;
   } catch (error) {
     return error.response.data;
   }
 }
 
-async function get({ boardId, page, size }) {
+async function get({ boardId, page, size, token }) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/comment/' + boardId,
+    headers: {
+      Authorization: `${token}`,
+    },
     params: {
       page,
       size,
@@ -42,16 +47,17 @@ async function get({ boardId, page, size }) {
 
 async function remove({ commentId, token }) {
   const options = {
-    method: 'GET',
+    method: 'DELETE',
     url: API_URL + '/v1/comment/' + commentId,
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: token,
     },
   };
   try {
     const response = await axios(options);
     return response.data;
   } catch (error) {
+    console.log(error.response.data);
     return error.response.data;
   }
 }
@@ -61,7 +67,7 @@ async function modify({ commentId, content, token }) {
     method: 'PUT',
     url: API_URL + '/v1/comment/' + commentId,
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     },
     body: { content },
   };
@@ -78,7 +84,7 @@ async function like({ commentId, token }) {
     method: 'GET',
     url: API_URL + '/v1/comment/like',
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     },
     params: { commentId },
   };
@@ -90,14 +96,14 @@ async function like({ commentId, token }) {
   }
 }
 
-async function dislike({ commentId, token }) {
+async function dislike({ commentId, memberId, token }) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/comment/dislike',
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     },
-    params: { commentId },
+    params: { commentId, memberId },
   };
   try {
     const response = await axios(options);

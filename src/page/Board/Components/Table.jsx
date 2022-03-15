@@ -1,290 +1,225 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { connect } from 'react-redux';
 import {
-  SearchIcon,
-  PhotographIcon,
   DocumentTextIcon,
+  PhotographIcon,
+  LockClosedIcon,
 } from '@heroicons/react/solid';
 //local
-import testData from 'page/Board/testData';
+import {
+  getDateWithFormat,
+  getDiffTimeWithFormat,
+  isNewPost,
+} from '../BoardUtil';
 
-const MAX_POSTS = 3; //한 페이지당 노출시킬 최대 게시글 수
-const pageN = Math.ceil(testData.maxNo / MAX_POSTS); //페이지 수
+const API_URL = process.env.REACT_APP_API_URL;
 
-const setPageButton = (currentPage, page) => {
-  //현재 페이지
-  if (currentPage == page)
-    return 'z-10 bg-mainWhite border-mainYellow text-mainYellow dark:bg-mainBlack';
-  else
-    return 'bg-mainWhite border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-mainBlack dark:text-mainWhite';
-};
-const hiddenPrevious = (currentPage) => {
-  //맨 앞 페이지인지
-  if (currentPage == 1) return 'hidden';
-  return '';
-};
-const hiddenNext = (currentPage) => {
-  //맨 뒤 페이지인지
-  if (currentPage == pageN) return 'hidden';
-  return '';
-};
+const Table = ({
+  notices,
+  boards,
+  currentPage,
+  MAX_POSTS,
+  linkHandler,
+  state,
+}) => {
+  const { categoryId, postId } = useParams();
 
-const Table = (selected = null) => {
-  const [boardContent, setBoardContent] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  //console.log(currentPage); //현재 페이지
-  const { no } = useParams();
-
-  const getCurrentBoard = (no, currentNo) => {
+  const getCurrentBoard = (id, currentId) => {
     //현재 게시글
-    if (no == currentNo) return 'text-mainYellow  rounded-lg';
+    if (id == currentId) return 'text-mainYellow  rounded-lg';
     return;
   };
 
-  useEffect(() => {
-    var end = 0;
-    if (currentPage * MAX_POSTS > testData.maxNo) end = testData.maxNo;
-    else end = currentPage * MAX_POSTS;
-    const boards = testData.boards.slice((currentPage - 1) * MAX_POSTS, end); //나중에 이 부분을 특정 개수의 게시글 데이터를 DB에서 직접 불러오는 것으로 수정
-    setBoardContent(boards);
-  }, [currentPage]); //currentPage 값이 변경될 때마다
-
   return (
-    <div className="dark:bg-mainBlack dark:text-mainWhite ">
-      <p>
-        Total <span className="text-mainYellow">{testData.maxNo}</span>
-      </p>
-
-      <table className="w-full mb-5">
-        <thead>
-          <tr className="bg-mainYellow ">
-            <th className="border-x border-mainWhite p-1 rounded-tl-xl dark:border-mainBlack">
-              No.
-            </th>
-            <th className="border-x border-mainWhite p-1 rounded-tr-xl sm:rounded-none dark:border-mainBlack ">
-              제목
-            </th>
-            <th className="border-x border-mainWhite p-1 hidden sm:table-cell dark:border-mainBlack">
-              글쓴이
-            </th>
-            <th className="border-x border-mainWhite p-1 hidden sm:table-cell dark:border-mainBlack ">
-              작성 일시
-            </th>
-            <th className="border-x border-mainWhite p-1 rounded-tr-xl hidden sm:table-cell dark:border-mainBlack">
-              조회수
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {boardContent.map((board) => (
-            <tr
-              key={board.no}
-              className={
-                'border-b-2 hover:bg-slate-100 hover:shadow-lg dark:hover:bg-darkComponent dark:border-darkComponent ' +
-                getCurrentBoard(board.no, no)
-              }
-            >
-              <td className="border-r border-divisionGray text-center dark:border-darkComponent">
-                {board.no}
-              </td>
-
-              <td className="p-2 dark:border-darkComponent">
-                <Link
-                  to={{
-                    pathname: `/board/${board.no}`,
-                    state: { test: 'test' },
-                  }}
-                >
-                  <div className=" w-60 ">
-                    <p className="truncate w-4/5 text-md ">
-                      <strong>{board.title}</strong>
-                      {board.image ? (
-                        <PhotographIcon className="inline-block h-5 w-5 " />
-                      ) : (
-                        ''
-                      )}
-                      {board.file ? (
-                        <DocumentTextIcon className="inline-block h-5 w-5" />
-                      ) : (
-                        ''
-                      )}
-                      {board.commentN != 0 ? (
-                        <strong className="text-mainYellow">
-                          {'(' + board.commentN + ')'}
-                        </strong>
-                      ) : (
-                        ''
-                      )}
-                    </p>
-                  </div>
-
-                  <p className="text-xs sm:hidden">
-                    글쓴이 : <strong>{board.user}</strong> 작성일시 :{' '}
-                    <strong>{board.date}</strong> 조회수 :{' '}
-                    <strong>{board.watch}</strong>
+    <table className="w-full mb-5">
+      <thead>
+        <tr className="bg-mainYellow ">
+          <th className="border-x border-mainWhite p-1 rounded-tl-xl md:w-[3em] dark:border-mainBlack">
+            No.
+          </th>
+          <th className="border-x border-mainWhite p-1 rounded-tr-xl md:rounded-none dark:border-mainBlack ">
+            제목
+          </th>
+          <th className="border-x border-mainWhite p-1 hidden md:table-cell md:w-[4em] md:min-w-[4em] dark:border-mainBlack">
+            작성자
+          </th>
+          <th className="border-x border-mainWhite p-1 hidden md:table-cell md:w-[6em] md:min-w-[6em] dark:border-mainBlack ">
+            작성 일시
+          </th>
+          <th className="border-x border-mainWhite p-1 rounded-tr-xl hidden md:table-cell md:w-[4em] md:min-w-[4em] dark:border-mainBlack">
+            조회수
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {notices?.map((board, index) => (
+          <tr
+            key={board.id}
+            className={
+              'bg-slate-100 dark:bg-gray-900 border-b-2 hover:bg-slate-200 hover:shadow-lg dark:hover:bg-darkComponent dark:border-darkComponent ' +
+              getCurrentBoard(board.id, postId)
+            }
+          >
+            <td className="border-r border-divisionGray text-center dark:border-darkComponent">
+              공지
+            </td>
+            <td className="p-2 dark:border-darkComponent">
+              <Link
+                to={`/post/${categoryId}/${board.id}`}
+                onClick={(e) => {
+                  if (
+                    board.isSecret &&
+                    board.writerId != state.member?.memberInfo?.id
+                  )
+                    linkHandler(e, board);
+                }}
+              >
+                <div className="max-w-[50vw] md:max-w-[40vw] sm:max-w-[20vw] inline-block">
+                  <p className="truncate text-md ">
+                    <strong className={board.isSecret ? 'text-slate-400' : ''}>
+                      {board.title}
+                    </strong>
                   </p>
-                </Link>
-              </td>
+                </div>
+                {board.thumbnail ? (
+                  <PhotographIcon className="inline-block h-5 w-5 m-1 text-slate-500 " />
+                ) : (
+                  ''
+                )}
+                {board.files.length != 0 ? (
+                  <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
+                ) : (
+                  ''
+                )}
+                {board.commentCount != 0 ? (
+                  <strong className="text-mainYellow">
+                    {'(' + board.commentCount + ')'}
+                  </strong>
+                ) : (
+                  ''
+                )}
+                {isNewPost(board.registerTime) ? (
+                  <strong className="inline-block rounded-full w-5 h-5 align-middle text-center text-xs m-1 bg-red-500 shadow-lg border-2 border-red-200 text-mainWhite dark:text-mainBlack">
+                    n
+                  </strong>
+                ) : (
+                  ''
+                )}
+                <p className="mt-2 text-xs md:hidden">
+                  글쓴이 : <strong>{board.writer} </strong>| 작성일시 :
+                  <strong>{getDateWithFormat(board.registerTime)} </strong>|{' '}
+                  <span className="inline-block">
+                    조회수 : <strong>{board.visitCount} </strong>
+                  </span>
+                </p>
+              </Link>
+            </td>
 
-              <td className="text-center dark:border-darkComponent hidden sm:table-cell">
-                {board.user}
-              </td>
-              <td className=" text-center dark:border-darkComponent hidden sm:table-cell">
-                {board.date}
-              </td>
-              <td className="text-center dark:border-darkComponent hidden sm:table-cell">
-                {board.watch}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <div class=" px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 dark:border-darkComponent">
-        <div class="flex-1 flex justify-between sm:hidden">
-          <button
-            onClick={() => {
-              setCurrentPage(currentPage - 1);
-            }}
-            class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700  hover:bg-gray-50"
+            <td className="text-center dark:border-darkComponent hidden md:table-cell">
+              {board.writer}
+            </td>
+            <td className="text-center dark:border-darkComponent hidden md:table-cell">
+              {/*getDateWithFormat(board.registerTime)
+                <br />*/}
+              {getDiffTimeWithFormat(board.registerTime)}
+            </td>
+            <td className="text-center dark:border-darkComponent hidden md:table-cell">
+              {board.visitCount}
+            </td>
+          </tr>
+        ))}
+        {/*=============================================================================================*/}
+        {boards?.map((board, index) => (
+          <tr
+            key={board.id}
+            className={
+              ' border-b-2 hover:bg-slate-200 hover:shadow-lg dark:hover:bg-darkComponent dark:border-darkComponent ' +
+              getCurrentBoard(board.id, postId)
+            }
           >
-            {' '}
-            Previous{' '}
-          </button>
-          <button
-            onClick={() => {
-              setCurrentPage(currentPage + 1);
-            }}
-            class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-50"
-          >
-            {' '}
-            Next{' '}
-          </button>
-        </div>
-        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-          <div>
-            <p class="text-sm text-gray-700 dark:text-divisionGray">
-              Showing
-              <span class="font-medium">
-                <strong>
-                  {' ' + ((currentPage - 1) * MAX_POSTS + 1) + ' '}
-                </strong>
-              </span>
-              to
-              <span class="font-medium">
-                <strong>
-                  {' ' +
-                    (currentPage == pageN
-                      ? testData.maxNo
-                      : currentPage * MAX_POSTS) +
-                    ' '}
-                </strong>
-              </span>
-              of
-              <span class="font-medium">
-                <strong>{' ' + testData.maxNo + ' '}</strong>
-              </span>
-              results
-            </p>
-          </div>
-          <div>
-            <nav
-              class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
-              aria-label="Pagination"
-            >
-              <button
-                onClick={() => {
-                  setCurrentPage(currentPage - 1);
+            {/*console.log(board)*/}
+            <td className="w-[3em] border-r border-divisionGray text-center dark:border-darkComponent">
+              {MAX_POSTS * (currentPage - 1) + index + 1}
+            </td>
+            <td className="p-2 dark:border-darkComponent">
+              <Link
+                to={`/post/${categoryId}/${board.id}`}
+                onClick={(e) => {
+                  if (
+                    board.isSecret &&
+                    board.writerId != state.member?.memberInfo?.id
+                  )
+                    linkHandler(e, board);
                 }}
-                class={
-                  hiddenPrevious(currentPage) +
-                  ' relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 text-sm font-medium text-gray-500 hover:bg-gray-50 dark:text-white dark:hover:bg-darkComponent'
-                }
               >
-                <span class="sr-only">Previous</span>
+                <div className="max-w-[50vw] md:max-w-[30vw] md:w-content inline-block">
+                  <p className="truncate text-md ">
+                    {board.isSecret ? (
+                      <LockClosedIcon className="inline-block h-5 w-5 m-1 text-slate-400 " />
+                    ) : (
+                      ''
+                    )}
+                    <strong className={board.isSecret ? 'text-slate-400' : ''}>
+                      {board.title}
+                    </strong>
+                  </p>
+                </div>
+                {board.thumbnail ? (
+                  <PhotographIcon className="inline-block h-5 w-5 m-1 text-slate-500 " />
+                ) : (
+                  ''
+                )}
+                {board.files.length != 0 ? (
+                  <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
+                ) : (
+                  ''
+                )}
+                {board.commentCount != 0 ? (
+                  <strong className="text-mainYellow">
+                    {'(' + board.commentCount + ')'}
+                  </strong>
+                ) : (
+                  ''
+                )}
+                {isNewPost(board.registerTime) ? (
+                  <strong className="inline-block rounded-full w-5 h-5 align-middle text-center text-xs m-1 bg-red-500 shadow-lg border-2 border-red-200 text-mainWhite dark:text-mainBlack">
+                    n
+                  </strong>
+                ) : (
+                  ''
+                )}
 
-                <svg
-                  class="h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </button>
+                <p className="mt-2 text-xs md:hidden">
+                  글쓴이 : <strong>{board.writer} </strong>| 작성일시 :
+                  <strong>{getDateWithFormat(board.registerTime)} </strong>|{' '}
+                  <span className="inline-block">
+                    조회수 : <strong>{board.visitCount} </strong>
+                  </span>
+                </p>
+              </Link>
+            </td>
 
-              {[...Array(pageN).keys()].map((pageNum) => (
-                <button
-                  key={pageNum}
-                  className={
-                    setPageButton(currentPage, pageNum + 1) +
-                    ' relative inline-flex items-center px-4 py-2 border text-sm font-medium'
-                  }
-                  onClick={() => {
-                    setCurrentPage(pageNum + 1);
-                  }}
-                >
-                  {pageNum + 1}
-                </button>
-              ))}
-
-              <button
-                onClick={() => {
-                  setCurrentPage(currentPage + 1);
-                }}
-                class={
-                  hiddenNext(currentPage) +
-                  ' relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 text-sm font-medium text-gray-500 hover:bg-gray-50 dark:text-mainWhite dark:hover:bg-darkComponent'
-                }
-              >
-                <span class="sr-only">Next</span>
-
-                <svg
-                  class="h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </button>
-            </nav>
-          </div>
-        </div>
-      </div>
-      <div name="bottom" className="">
-        <div name="search">
-          <select
-            className="border text-xs focus:ring-mainYellow focus:border-mainYellow dark:border-darkPoint dark:bg-darkComponent dark:text-mainWhite"
-            name="search rule"
-          >
-            <option value="제목+내용">제목+내용</option>
-            <option value="제목">제목</option>
-            <option value="내용">내용</option>
-            <option value="작성자">작성자</option>
-          </select>
-          <input
-            type="text"
-            className="border-2 border-divisionGray m-2 p-1 rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:border-darkComponent dark:text-white"
-            placeholder="검색어"
-          ></input>
-          <button className="border-2 border-mainYellow rounded-lg  m-2 px-2 shadow-lg text-mainYellow active:mr-1 active:ml-3 active:shadow-none">
-            <SearchIcon className="inline-block h-5 w-5" />
-            검색
-          </button>
-        </div>
-      </div>
-    </div>
+            <td className="text-center dark:border-darkComponent hidden md:table-cell">
+              {board.writer}
+            </td>
+            <td className="text-center dark:border-darkComponent hidden md:table-cell">
+              {/*getDateWithFormat(board.registerTime)
+                <br />*/}
+              {getDiffTimeWithFormat(board.registerTime)}
+            </td>
+            <td className="text-center dark:border-darkComponent hidden md:table-cell">
+              {board.visitCount}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 };
-//className={'border-2 text-2xl m-1 rounded-lg px-1  ' +setPageButton(currentPage, pageNum + 1)}
-export default Table;
+const mapStateToProps = (state, OwnProps) => {
+  return {
+    state,
+  };
+};
+export default connect(mapStateToProps)(Table);

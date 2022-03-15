@@ -7,6 +7,7 @@ import attendanceAPI from 'API/v1/attendance';
 import SimpleNotification from 'shared/SimpleNotification';
 import iconPencilAlt from 'assets/img/icons/pecil-alt.svg';
 import EditModal from './EditModal';
+import imgMemberCircle from 'assets/img/memberCircle.svg';
 
 const dateFormat = 'YYYY-MM-DD';
 const headers = ['이름', '메세지', '개근', '등수'];
@@ -39,7 +40,11 @@ const AttandanceTable = ({ member }) => {
         token: member.token,
       })
       .then((data) => {
-        if (data.success) setAttendLogList(data.list);
+        if (data.success) {
+          console.log(member);
+          console.log(data.list);
+          setAttendLogList(data.list);
+        }
       });
   }, [member, reload]);
 
@@ -74,9 +79,7 @@ const AttandanceTable = ({ member }) => {
                           <img
                             className="h-10 w-10 rounded-full"
                             src={
-                              log.thumbnail
-                                ? log.thumbnail
-                                : 'https://avatars.githubusercontent.com/u/23546441?s=400&u=db7abf2929e5518c12189034dc3fed9bda94f0a6&v=4'
+                              log.thumbnail ? log.thumbnail : imgMemberCircle
                             }
                           />
                         </div>
@@ -105,12 +108,14 @@ const AttandanceTable = ({ member }) => {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-xl font-medium">
-                      <button
-                        className="text-mainYellow hover:text-pointYellow"
-                        onClick={() => editModalRef.current.open()}
-                      >
-                        <img className="w-6" src={iconPencilAlt} />
-                      </button>
+                      {log.memberId === member.memberInfo.id ? (
+                        <button
+                          className="text-mainYellow hover:text-pointYellow"
+                          onClick={() => editModalRef.current.open()}
+                        >
+                          <img className="w-6" src={iconPencilAlt} />
+                        </button>
+                      ) : null}
                     </td>
                   </tr>
                 ))}

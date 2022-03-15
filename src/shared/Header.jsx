@@ -13,19 +13,15 @@ import HeaderPopDown from './Component/HeaderPopDown';
 import SignInBox from './Component/SignInBox';
 import Logo from 'assets/img/keeper_logo.png';
 import DarkModeSwitch from 'shared/DarkModeSwitch';
-import categories from './category';
+import { categoriesAll, categoriesHidden } from './category';
 import UserBox from './Component/UserBox';
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
-
 const Header = ({ member }) => {
+  const [categories, setCategories] = useState([]);
   useEffect(() => {
-    // memberAPI.getMember({ token: member.token }).then((data) => {
-    //   console.log(data);
-    // });
-  }, []);
+    if (member.token) setCategories(categoriesAll);
+    else setCategories(categoriesHidden);
+  }, [member]);
 
   return (
     <>
