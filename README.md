@@ -13,7 +13,11 @@ npm install
 - **.env**
 
 ```
-REACT_APP_API_URL=주소
+REACT_APP_MODE=production
+REACT_APP_API_URL=API_URL:port
+REACT_APP_CHAT_URL=FRONT_URL:3002
 ```
+
+- 배포할 때는 REACT_APP_MODE=production
 
 프로젝트 디렉토리에 위와 같이 **.env** 파일 작성
