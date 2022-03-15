@@ -12,22 +12,27 @@ import GrayDownArrow from 'assets/img/gray-down-arrow.png';
 const FirstPage = ({ setIsDownArrow, isDownArrow }) => {
   return (
     <div id="main-first-page" className="grid overflow-x-hidden">
-      <FadeIn><div id="main-notice"><Notice id="main-notice"/></div></FadeIn> 
-      <img id="main-keeper-logo"
-          className="m-auto h-auto w-auto"
-          alt="keeper_logo"
-          src={Logo}
+      {/* <FadeIn>
+        <div id="main-notice">
+          <Notice id="main-notice" />
+        </div>
+      </FadeIn> */}
+      <img
+        id="main-keeper-logo"
+        className="m-auto h-auto w-auto"
+        alt="keeper_logo"
+        src={Logo}
       ></img>
       <div className="font-semibold text-center tracking-wide dark:text-mainYellow text-lg sm:text-xl lg:text-xl">
         <TypedSlogan />
       </div>
-      <a href = {isDownArrow ? "#" : "#main-second-page"}>
+      <a href={isDownArrow ? '#' : '#main-second-page'}>
         <img
-            className="m-auto w-16 h-16 mt-4 mb-4"
-            src={isDownArrow ? GrayDownArrow: GrayUpArrow}
-            onClick={() => {
-              setIsDownArrow(!isDownArrow)
-            }}
+          className="m-auto w-16 h-16 mt-4 mb-4"
+          src={isDownArrow ? GrayDownArrow : GrayUpArrow}
+          onClick={() => {
+            setIsDownArrow(!isDownArrow);
+          }}
         />
       </a>
     </div>
