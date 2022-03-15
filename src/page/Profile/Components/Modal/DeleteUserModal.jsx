@@ -49,6 +49,7 @@ const DeleteUserModal = ({ modalState, token, signOut }) => {
             id="password"
             name="password"
             required
+            placeholder="비밀번호 입력"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             className="bg-backGray dark:bg-darkPoint 

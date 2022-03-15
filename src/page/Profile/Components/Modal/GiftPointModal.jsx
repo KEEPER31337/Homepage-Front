@@ -54,6 +54,7 @@ const GiftPointModal = ({ modalState, token, userId, memberInfo }) => {
             name="point"
             required
             value={point}
+            placeholder="보낼 포인트 입력"
             onChange={(event) => setPoint(event.target.value)}
             className="bg-backGray dark:bg-darkPoint 
                         rounded-xl border-0 w-5/6 h-full 
@@ -68,6 +69,7 @@ const GiftPointModal = ({ modalState, token, userId, memberInfo }) => {
             name="message"
             required
             value={message}
+            placeholder="보낼 메세지 입력"
             onChange={(event) => setMessage(event.target.value)}
             className="bg-backGray dark:bg-darkPoint 
                         rounded-xl border-0 w-5/6 h-full 
