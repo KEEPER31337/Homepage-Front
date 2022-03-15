@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { PlusSmIcon, PaperClipIcon, CogIcon } from '@heroicons/react/solid';
+import {
+  PlusSmIcon,
+  PaperClipIcon,
+  CogIcon,
+  XIcon,
+} from '@heroicons/react/solid';
 //local
 import SimpleCard from 'page/Study/Components/SimpleCard';
 import AboutCard from 'page/Study/Components/AboutCard';
@@ -91,14 +96,20 @@ const StudyList = ({ currentYear, currentSeason, setCurrentSeason }) => {
             }
             onClick={() => setOpen(!open)}
           >
-            <PlusSmIcon
-              className={
-                (open
-                  ? 'text-mainWhite dark:text-mainBlack'
-                  : 'text-gray-400') + ' -ml-1.5 mr-1 h-5 w-5 '
-              }
-              aria-hidden="true"
-            />
+            {open ? (
+              <XIcon
+                className={
+                  'text-mainWhite dark:text-mainBlack -ml-1.5 mr-1 h-5 w-5 '
+                }
+                aria-hidden="true"
+              />
+            ) : (
+              <PlusSmIcon
+                className={'text-gray-400 -ml-1.5 mr-1 h-5 w-5 '}
+                aria-hidden="true"
+              />
+            )}
+
             <span>스터디 추가하기</span>
           </button>
         </div>

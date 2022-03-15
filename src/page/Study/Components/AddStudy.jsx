@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { PlusSmIcon, PaperClipIcon } from '@heroicons/react/solid';
+import {
+  PlusSmIcon,
+  PaperClipIcon,
+  XIcon,
+  PlusIcon,
+} from '@heroicons/react/solid';
 //local
 import ThumbnailZone from 'page/Study/Components/ThumbnailZone';
 
 const AddStudy = ({ setOpen, currentYear, currentSeason }) => {
-  const [thumbnail, setThumbnail] = useState(null);
   const [title, setTitle] = useState('');
   const [information, setInformation] = useState('');
   const [headMember, setHeadMember] = useState();
@@ -13,7 +17,19 @@ const AddStudy = ({ setOpen, currentYear, currentSeason }) => {
   const [gitLink, setGitLink] = useState('');
   const [noteLink, setNoteLink] = useState('');
   const [etcLink, setEtcLink] = useState('');
+  const [thumbnail, setThumbnail] = useState(null);
 
+  const [viewMemberList1, setViewMemberList1] = useState(false);
+  const [viewMemberList2, setViewMemberList2] = useState(false);
+  const [allMemberList, setAllMemberList] = useState([
+    { id: 1, nickName: 'aaa', email: 'abcd@naver.com' },
+    { id: 1, nickName: 'bbb', email: 'abcd@naver.com' },
+    { id: 3, nickName: 'ccc', email: 'abcd@naver.com' },
+    { id: 4, nickName: 'ddd', email: 'abcd@naver.com' },
+    { id: 5, nickName: 'eee', email: 'abcd@naver.com' },
+    { id: 6, nickName: 'fff', email: 'abcd@naver.com' },
+  ]); //멤버 추가 시 보여줄 동아리 회원의 전체 리스트
+  const deleteMember = () => {};
   const createHandler = () => {
     console.log(title);
     console.log(information);
@@ -58,6 +74,7 @@ const AddStudy = ({ setOpen, currentYear, currentSeason }) => {
                 >
                   스터디 소개
                 </label>
+
                 <div className="mt-1">
                   <textarea
                     id="about"
@@ -72,19 +89,170 @@ const AddStudy = ({ setOpen, currentYear, currentSeason }) => {
                   스터디에 대해 소개해주세요.
                 </p>
               </div>
+
               <div className=" sm:col-span-1">
                 <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
                   스터디장
                 </dt>
-                <dd className="mt-1 text-sm text-gray-900 dark:text-mainWhite">
-                  <span className="inline-block border border-gray-300 min-w-[4em] py-1 pl-2 pr-5 m-[1px] text-sm rounded-full"></span>
-                </dd>
+
+                <div className="border mt-1 text-sm text-gray-900 dark:text-mainWhite">
+                  <div className="border min-h-[3em]">
+                    {headMember ? (
+                      <div className="inline-block">
+                        <span className="flex justify-between border border-gray-300 min-w-[5em] px-2 py-1 m-[1px] text-sm rounded-full">
+                          <span>{headMember}</span>
+                          <XIcon
+                            className="inline-block h-5 w-5 text-slate-300 hover:text-slate-400 dark:text-mainBlack"
+                            aria-hidden="true"
+                            onClick={() => setHeadMember(null)}
+                          />
+                        </span>
+                      </div>
+                    ) : (
+                      ''
+                    )}
+                  </div>
+                </div>
+
+                <button
+                  className={
+                    (viewMemberList1
+                      ? 'bg-gray-200 hover:bg-gray-300'
+                      : 'bg-white hover:bg-gray-100 dark:bg-darkComponent ') +
+                    ' inline-flex items-center shadow-sm py-1 px-2 pr-3 my-1 border border-gray-300text-gray-700  text-sm leading-5 font-medium rounded-lg  focus:outline-none dark:text-gray-300 dark:border-mainBlack'
+                  }
+                  onClick={() => setViewMemberList1(!viewMemberList1)}
+                >
+                  {viewMemberList1 ? (
+                    <XIcon
+                      className="text-gray-400 dark:text-mainBlack -ml-1.5 h-5 w-5 "
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    <PlusIcon
+                      className="text-gray-400 -ml-1.5 h-5 w-5 "
+                      aria-hidden="true"
+                    />
+                  )}
+                  선택하기
+                </button>
+                {viewMemberList1 ? (
+                  <div className="border h-[15em] overflow-y-scroll bg-mainWhite">
+                    <ul className="">
+                      {allMemberList.map((member) => (
+                        <li
+                          className="border p-1 flex justify-between items-center group hover:bg-slate-100"
+                          onClick={() => setHeadMember(member.nickName)}
+                        >
+                          <div className="flex items-center">
+                            <div>
+                              <img
+                                className="inline-block h-9 w-9 rounded-full"
+                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                alt=""
+                              />
+                            </div>
+                            <div className="ml-3">
+                              <p className="text-sm font-medium">
+                                {member.nickName}
+                              </p>
+                              <p className="text-xs font-medium text-gray-300">
+                                {member.email}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="text-mainYellow px-3 hidden group-hover:block">
+                            추가하기
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : (
+                  ''
+                )}
+
                 <dt className="text-sm mt-3 font-medium text-gray-500 dark:text-gray-400">
                   스터디원
                 </dt>
-                <dd className="mt-1 text-sm text-gray-900 dark:text-mainWhite">
-                  dd
-                </dd>
+                <div className="border mt-1 text-sm text-gray-900 dark:text-mainWhite">
+                  <div className="border min-h-[3em]">
+                    {memberList ? (
+                      <div className="inline-block">
+                        <span className="flex justify-between border border-gray-300 min-w-[5em] px-2 py-1 m-[1px] text-sm rounded-full">
+                          <span>{headMember}</span>
+                          <XIcon
+                            className="inline-block h-5 w-5 text-slate-300 hover:text-slate-400 dark:text-mainBlack"
+                            aria-hidden="true"
+                            onClick={() => deleteMember()}
+                          />
+                        </span>
+                      </div>
+                    ) : (
+                      ''
+                    )}
+                  </div>
+                </div>
+
+                <button
+                  className={
+                    (viewMemberList2
+                      ? 'bg-gray-200 hover:bg-gray-300'
+                      : 'bg-white hover:bg-gray-100 dark:bg-darkComponent ') +
+                    ' inline-flex items-center shadow-sm py-1 px-2 pr-3 my-1 border border-gray-300text-gray-700  text-sm leading-5 font-medium rounded-lg  focus:outline-none dark:text-gray-300 dark:border-mainBlack'
+                  }
+                  onClick={() => setViewMemberList2(!viewMemberList2)}
+                >
+                  {viewMemberList2 ? (
+                    <XIcon
+                      className="text-gray-400 dark:text-mainBlack -ml-1.5 h-5 w-5 "
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    <PlusIcon
+                      className="text-gray-400 -ml-1.5 h-5 w-5 "
+                      aria-hidden="true"
+                    />
+                  )}
+                  추가하기
+                </button>
+                {viewMemberList2 ? (
+                  <div className="border h-[15em] overflow-y-scroll bg-mainWhite">
+                    <ul className="">
+                      {allMemberList.map((member) => (
+                        <li
+                          className="border p-1 flex justify-between items-center group hover:bg-slate-100"
+                          onClick={() =>
+                            setMemberList([...memberList, member.nickName])
+                          }
+                        >
+                          <div className="flex items-center">
+                            <div>
+                              <img
+                                className="inline-block h-9 w-9 rounded-full"
+                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                alt=""
+                              />
+                            </div>
+                            <div className="ml-3">
+                              <p className="text-sm font-medium">
+                                {member.nickName}
+                              </p>
+                              <p className="text-xs font-medium text-gray-300">
+                                {member.email}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="text-mainYellow px-3 hidden group-hover:block">
+                            추가하기
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : (
+                  ''
+                )}
               </div>
               <div className="border sm:row-span-2">
                 <ThumbnailZone setThumbnail={setThumbnail} />
