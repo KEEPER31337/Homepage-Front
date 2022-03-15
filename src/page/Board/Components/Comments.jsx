@@ -210,7 +210,7 @@ const Comments = ({
             className=" border-b-2 flex border-b my-2 pb-2 dark:border-darkComponent"
           >
             {/*console.log(comment)*/}
-            <div className="mr-4 mt-2 h-[3em] w-[3em] rounded-full flex items-center shadow-lg flex-shrink-0 border-2 text-divisionGray sm:border-4 sm:w-[5em] sm:h-[5em] dark:border-gray-500 dark:text-gray-500">
+            <div className="border-4 w-[5em] h-[5em] mr-4 mt-2 rounded-full items-center shadow-lg flex-shrink-0 text-divisionGray hidden sm:flex dark:border-gray-500 dark:text-gray-500">
               {comment.writerThumbnailId ? (
                 <img
                   src={
@@ -224,101 +224,134 @@ const Comments = ({
             </div>
             <div className="border-2 rounded-lg shadow-sm inline-block p-1 w-full dark:border-darkComponent">
               <div className="flex justify-between">
-                <div>
-                  <h4 className="inline-block font-bold bg-slate-200 rounded-lg px-1 dark:bg-gray-500">
+                <div className=" min-w-[11em] inline-block">
+                  <h4
+                    name="댓글작성자"
+                    className="inline-block font-bold bg-slate-200 rounded-lg px-2 py-[1px] dark:bg-gray-500"
+                  >
                     {comment.writer}
                   </h4>
                   <span className="text-xs mx-2">
                     {getDiffTimeWithFormat2(comment.registerTime)}
                   </span>
                 </div>
-                <div className={comment.writer == '탈퇴회원' ? 'hidden' : ''}>
-                  <button
-                    name="댓글 추천 버튼"
-                    className="mx-1 text-red-400 text-xs sm:text-base hover:text-red-500"
-                    onClick={() => clickLikeHandler(comment.id)}
-                  >
-                    {comment.checkedLike ? (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    ) : (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                    )}
-                  </button>
-                  {comment.likeCount}
-                  <button
-                    name="댓글 비추천 버튼"
-                    className="mx-1 text-blue-400 text-xs sm:text-base hover:text-blue-500"
-                    onClick={() => clickDislikeHandler(comment.id)}
-                  >
-                    {comment.checkedDislike ? (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-7.536 5.879a1 1 0 001.415 0 3 3 0 014.242 0 1 1 0 001.415-1.415 5 5 0 00-7.072 0 1 1 0 000 1.415z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    ) : (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                    )}
-                  </button>
-                  {comment.dislikeCount}
-                  <button
-                    className="mx-1 text-mainYellow text-xs sm:text-base hover:text-pointYellow"
-                    onClick={() => displayInput(comment.id)}
-                  >
-                    <PencilIcon className="inline-block h-5 w-5" />
-                    대댓글
-                  </button>
+                <div
+                  className={
+                    comment.writer == '탈퇴회원'
+                      ? 'hidden'
+                      : ' sm:max-w-full flex flex-wrap justify-end'
+                  }
+                >
+                  <div className=" inline-block">
+                    <button
+                      name="댓글 추천 버튼"
+                      className="mx-1 text-red-400 text-xs sm:text-base hover:text-red-500"
+                      onClick={() => clickLikeHandler(comment.id)}
+                    >
+                      {comment.checkedLike ? (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4 sm:h-5 sm:w-5"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      ) : (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4 sm:h-5 sm:w-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                      )}
+                    </button>
+                    {comment.likeCount}
+                    <button
+                      name="댓글 비추천 버튼"
+                      className="mx-1 text-blue-400 text-xs sm:text-base hover:text-blue-500"
+                      onClick={() => clickDislikeHandler(comment.id)}
+                    >
+                      {comment.checkedDislike ? (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4 sm:h-5 sm:w-5"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-7.536 5.879a1 1 0 001.415 0 3 3 0 014.242 0 1 1 0 001.415-1.415 5 5 0 00-7.072 0 1 1 0 000 1.415z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      ) : (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4 sm:h-5 sm:w-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                      )}
+                    </button>
+                    {comment.dislikeCount}
 
+                    <button
+                      className="mx-1 text-mainYellow text-xs sm:text-base hover:text-pointYellow"
+                      onClick={() => displayInput(comment.id)}
+                    >
+                      <span className="inline-block">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="h-4 w-4 sm:h-5 sm:w-5"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                        </svg>
+                      </span>
+                      대댓글
+                    </button>
+                  </div>
                   {myId == comment.writerId ? (
                     <button
                       onClick={() => deleteCommentHandler(comment.id)}
-                      className="mx-1 text-red-400 text-xs sm:text-base hover:text-red-600"
+                      className="mr-1 text-red-400 text-xs sm:text-base hover:text-red-600"
                     >
-                      <TrashIcon className="inline-block h-5 w-5" />
+                      <span className="inline-block">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="h-4 w-4 sm:h-5 sm:w-5"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                            clip-rule="evenodd"
+                          />
+                        </svg>
+                      </span>
                       삭제
                     </button>
                   ) : (
@@ -334,7 +367,7 @@ const Comments = ({
                   name="대댓글"
                   className="border-b border-slate-200 p-2 flex w-full bg-slate-50 rounded-lg dark:bg-gray-700 dark:border-darkComponent"
                 >
-                  <div className="mr-4 mt-2 h-[2em] w-[2em] rounded-full flex items-center shadow-lg flex-shrink-0 border-2 text-divisionGray sm:border-4 sm:w-[3em] sm:h-[3em] dark:border-gray-500 dark:text-gray-500">
+                  <div className="border-4 w-[3em] h-[3em] mr-4 mt-2 rounded-full items-center shadow-lg flex-shrink-0 text-divisionGray hidden sm:flex dark:border-gray-500 dark:text-gray-500">
                     {comment.writerThumbnailId ? (
                       <img
                         src={
@@ -358,7 +391,20 @@ const Comments = ({
                           onClick={() => deleteCommentHandler(childCom.id)}
                           className="mx-1 text-red-400 text-xs sm:text-base hover:text-red-600"
                         >
-                          <TrashIcon className="inline-block Sh-5 w-5" />
+                          <span className="inline-block">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              class="h-4 w-4 sm:h-5 sm:w-5"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fill-rule="evenodd"
+                                d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                clip-rule="evenodd"
+                              />
+                            </svg>
+                          </span>
                           삭제
                         </button>
                       ) : (
@@ -422,13 +468,22 @@ const Comments = ({
         ''
       )}
 
-      <div name="댓글 작성 창">
-        <textarea
-          value={content}
-          onChange={commentContentHandler}
-          className="resize-none border-2 border-divisionGray m-2 p-1 w-full h-32 rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:border-darkComponent dark:text-white"
-        ></textarea>
-        <div className="flex justify-end">
+      <div name="댓글 작성 창" className=" p-2">
+        <div className="flex">
+          <textarea
+            value={content}
+            onChange={commentContentHandler}
+            className="inline-block resize-none border-2 border-divisionGray p-1 w-[80vw] h-20 sm:w-full sm:h-32 rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:border-darkComponent dark:text-white"
+          ></textarea>
+          <button
+            className="inline-block w-[15vw] border-4 border-mainYellow ml-2 p-2 pr-3 rounded-xl sm:hidden hover:shadow-lg text-mainYellow active:mt-3 active:mb-1 active:shadow-none"
+            onClick={addCommentHandler}
+          >
+            <PencilIcon className="inline-block h-7 w-7 " />
+          </button>
+        </div>
+
+        <div className="justify-end hidden sm:flex">
           <button
             className="border-4 border-mainYellow my-2 p-2 pr-3 rounded-lg hover:shadow-lg text-mainYellow active:mt-3 active:mb-1 active:shadow-none"
             onClick={addCommentHandler}

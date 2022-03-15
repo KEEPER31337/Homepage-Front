@@ -113,7 +113,7 @@ const FilesUploadForm = (props) => {
 
   return (
     <>
-      <div className="mt-2 flex-column h-[200px] w-full border-4 border-dashed rounded-xl hidden sm:block dark:border-slate-500">
+      <div className="mt-2 ml-2 flex-column h-[200px] w-full border-4 border-dashed rounded-xl hidden sm:block dark:border-slate-500">
         <div
           className={
             files.length === 0
@@ -170,10 +170,10 @@ const FilesUploadForm = (props) => {
         </div>
       </div>
       <div>
-        <div className="block sm:hidden">
+        <div className="ml-2 block sm:hidden">
           <button
             {...getRootProps()}
-            className="border-[3px]  border-divisionGray my-3 p-1 pr-2 shadow-lg rounded-lg text-pointYellow flex items-center dark:bg-darkPoint"
+            className="border-[2px]  border-divisionGray my-3 p-1 pr-2 shadow-md rounded-lg text-pointYellow flex items-center dark:bg-darkPoint"
           >
             <input {...InputProps} />
             <DocumentAddIcon

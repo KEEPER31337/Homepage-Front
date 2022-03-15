@@ -12,7 +12,7 @@ const BoardWrite = () => {
     <AuthUser>
       <div className="flex justify-center dark:bg-mainBlack">
         <div className="m-5 w-4/5">
-          <Info />
+          <Info isWrite={true} />
           <div>
             <TextEditer redirectData={redirectData} />
           </div>

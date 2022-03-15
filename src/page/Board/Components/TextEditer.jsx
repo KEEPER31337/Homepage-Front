@@ -47,7 +47,8 @@ const TextEditer = (props) => {
   };
 
   const passwordHandler = ({ target }) => {
-    setPassword(target);
+    console.log(target.value);
+    setPassword(target.value);
   };
 
   const [text, setText] = useState({
