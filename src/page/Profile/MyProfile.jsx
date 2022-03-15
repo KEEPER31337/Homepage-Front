@@ -206,7 +206,7 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
                 <div className="w-1/2 m-1">
                   <div className="p-1 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 rounded">
                     <img
-                      src={googy}
+                      src={memberInfo?.thumbnailPath}
                       alt="profile"
                       className="w-full h-full rounded object-center object-cover"
                     />

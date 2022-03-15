@@ -203,7 +203,7 @@ async function updateThumbnail({ token, ipAddress, thumbnail }) {
 
   const options = {
     method: 'PUT',
-    url: API_URL + '/v1/members/update/thumbnail',
+    url: API_URL + '/v1/members/thumbnail',
     data: formData,
     headers: {
       Authorization: `${token}`,

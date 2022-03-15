@@ -164,20 +164,20 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
                 {/* 1.  닉네임 + 회원 뱃지 */}
                 <div className="flex justify-between m-1">
                   {/*닉네임*/}
-                  <div className="css-font text-5xl m-1">{user.nickName}</div>
+                  <div className="css-font text-5xl m-1">{user?.nickName}</div>
                   {/*회원 뱃지*/}
                   <div className="flex">
-                    {user.rank && (
+                    {user?.rank && (
                       <div className="mr-2">
                         <Group groupName={user.rank} />
                       </div>
                     )}
-                    {user.type && (
+                    {user?.type && (
                       <div className="mr-2">
                         <Group groupName={user.type} />
                       </div>
                     )}
-                    {user.jobs &&
+                    {user?.jobs &&
                       user.jobs.map((job, index) => (
                         <div className="mr-2" key={index}>
                           <Group groupName={job} />
@@ -193,7 +193,7 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
                   <div className="w-1/2 m-1">
                     <div className="p-1 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 rounded">
                       <img
-                        src={googy}
+                        src={user?.thumbnailPath}
                         alt="profile"
                         className="w-full h-full rounded object-center object-cover"
                       />

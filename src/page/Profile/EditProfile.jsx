@@ -1,7 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import ProfileFrame from './Components/Frames/ProfileFrame';
-import InfoBox from './Components/InfoBox';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import memberAPI from 'API/v1/member';
 import authAPI from 'API/v1/auth';
@@ -10,14 +8,7 @@ import actionMember from 'redux/action/member';
 
 //NOTE 프로필 UI
 import './fonts.css';
-import {
-  AcademicCapIcon,
-  GiftIcon,
-  SparklesIcon,
-  MailIcon,
-  PencilAltIcon,
-} from '@heroicons/react/solid';
-import MessageModal from 'shared/MessageModal';
+import { MailIcon, PencilAltIcon } from '@heroicons/react/solid';
 import Group from './Components/Group';
 import DeleteUserModal from './Components/Modal/DeleteUserModal';
 
@@ -30,6 +21,7 @@ const msgTextColor = {
 
 const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
   const navigate = useNavigate();
+  console.log(memberInfo);
 
   const [followCnt, setFollowCnt] = useState(null);
 
@@ -67,23 +59,27 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
     imgInput.click();
   };
   const updateImg = (event) => {
-    ipAPI.getIp().then((ipAddress) => {
-      console.log(ipAddress, event.target.files[0]);
-      memberAPI
-        .updateThumbnail({
-          token,
-          ipAddress: ipAddress,
-          thumbnail: event.target.files[0],
-        })
-        .then((result) => {
-          if (result.success) {
-            console.log(result.data);
-            updateInfo({ memberInfo: result.data });
-          } else {
-            console.log(`${result.code}:${result.msg}`);
-          }
-        });
-    });
+    if (!event?.target?.files[0]) return;
+    else {
+      const file = event.target.files[0];
+      ipAPI.getIp().then((ipAddress) => {
+        console.log(ipAddress, file);
+        memberAPI
+          .updateThumbnail({
+            token,
+            ipAddress: ipAddress,
+            thumbnail: file,
+          })
+          .then((result) => {
+            if (result.success) {
+              console.log(result.data);
+              updateInfo({ memberInfo: result.data });
+            } else {
+              console.log(`${result.code}:${result.msg}`);
+            }
+          });
+      });
+    }
   };
 
   //프로필 정보 변경
@@ -405,7 +401,7 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                 <div className="w-1/2 m-1">
                   <div className="p-1 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 rounded">
                     <img
-                      src={googy}
+                      src={memberInfo?.thumbnailPath}
                       alt="profile"
                       className="w-full h-full rounded object-center object-cover"
                     />
@@ -516,7 +512,7 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                           className="shadow-md hover:shadow-lg rounded"
                         >
                           <img
-                            src={googy}
+                            src={memberInfo?.thumbnailPath}
                             alt="profile"
                             className=" rounded object-center object-cover"
                           />
