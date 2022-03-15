@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 
 // API
 import aboutAPI from 'API/v1/about';
+import memberAPI from 'API/v1/member';
 
 export default function Intro() {
   const [introInfo, setIntroInfo] = useState([
@@ -32,10 +33,20 @@ export default function Intro() {
     },
   ]);
 
+  const [boss, setBoss] = useState();
+
   useEffect(() => {
     aboutAPI.getIntroInfo().then((data) => {
       if (data.success) {
         setIntroInfo(data.list);
+      }
+    });
+    memberAPI.getCommonMembers().then((data) => {
+      if (data.success) {
+        setBoss(
+          data.list.filter((member) => member.jobs.includes('ROLE_회장'))[0]
+            .nickName
+        );
       }
     });
   }, []);
@@ -46,7 +57,6 @@ export default function Intro() {
   const content =
     introInfo[0].subtitleImageResults[0].staticWriteContentResults[0].content;
 
-  const boss = '정현모'; //TODO 회장 직위 가진 사람 받아오기 백엔드 기다리는중~~~~
   const supervisors = `
 동아리 회장 : ${boss}
 지도 교수님 : 김호원 교수님`;
