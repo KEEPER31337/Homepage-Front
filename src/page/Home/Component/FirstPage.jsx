@@ -12,11 +12,11 @@ import GrayDownArrow from 'assets/img/gray-down-arrow.png';
 const FirstPage = ({ setIsDownArrow, isDownArrow }) => {
   return (
     <div id="main-first-page" className="grid overflow-x-hidden">
-      <FadeIn>
+      {/* <FadeIn>
         <div id="main-notice">
           <Notice id="main-notice" />
         </div>
-      </FadeIn>
+      </FadeIn> */}
       <img
         id="main-keeper-logo"
         className="m-auto h-auto w-auto"
