@@ -11,7 +11,7 @@ const ChatLog = ({ chatLogList, member }) => {
     <div className="h-[60vh] sm:h-96 w-full max-h-full overflow-y-scroll">
       <ul role="list" className="">
         {chatLogList.map((chatLog, index) => (
-          <>
+          <Fragment key={index}>
             {member.memberInfo.id === chatLog.member.id ? (
               <div
                 key={index}
@@ -52,7 +52,7 @@ const ChatLog = ({ chatLogList, member }) => {
                 </div>
               </div>
             )}
-          </>
+          </Fragment>
         ))}
       </ul>
     </div>
