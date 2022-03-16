@@ -23,9 +23,6 @@ export default function showDateAndTime(now, dateTimeString) {
         }
     }
 
-    console.log(timeArrayOfNow);
-    console.log(timeArrayOfPost);
-
     for (var i = 0; i < 3; i++) {
         if (timeArrayOfNow[i] != timeArrayOfPost[i]) {
             if (i == 0) {
