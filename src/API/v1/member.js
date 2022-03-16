@@ -28,7 +28,6 @@ async function getMembers({ token }) {
   };
   try {
     const response = await axios(options);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     return error.response.data;
