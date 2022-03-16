@@ -13,7 +13,7 @@ import AttandanceTable from './Component/AttandanceTable';
 import ContinuousModal from './Component/ContinuousModal';
 import RankModal from './Component/RankModal';
 import PointModal from './Component/PointModal';
-import NavigationLayout from '../../shared/NavigationLayout';
+import NavigationLayout from './Component/NavigationLayout';
 
 // asset
 import LeafIcon from 'assets/img/leaf.png';
