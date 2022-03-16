@@ -2,7 +2,7 @@ export default function showDateAndTime(now, dateTimeString) {
     const dateTimeArrayOfPost = dateTimeString.split("T");
 
     const dateArrayOfPost = dateTimeArrayOfPost[0].split("-");
-    const timeArrayOfPost = dateTimeArrayOfPost[0].split(":"); 
+    const timeArrayOfPost = dateTimeArrayOfPost[1].split(":"); 
     
     const dateArrayOfNow = [now.getFullYear(), now.getMonth() + 1, now.getDate()]
     const timeArrayOfNow = [now.getHours(), now.getMinutes(), now.getSeconds()]
@@ -22,6 +22,9 @@ export default function showDateAndTime(now, dateTimeString) {
             }
         }
     }
+
+    console.log(timeArrayOfNow);
+    console.log(timeArrayOfPost);
 
     for (var i = 0; i < 3; i++) {
         if (timeArrayOfNow[i] != timeArrayOfPost[i]) {
