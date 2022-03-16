@@ -116,7 +116,7 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
           res.list?.map((item, index) => ({
             num: index + 1,
             onClick: () => {
-              navigate(`/board/${item.id}`);
+              navigate(`/post/${item.category}/${item.id}`);
             },
             category: item.category,
             title: item.title,
