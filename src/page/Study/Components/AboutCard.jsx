@@ -1,34 +1,48 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { PlusSmIcon, PaperClipIcon, CogIcon } from '@heroicons/react/solid';
+import { connect } from 'react-redux';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-const AboutCard = ({ study }) => {
+const AboutCard = ({ study, setCurrentStudy, state }) => {
+  const myId = state.member?.memberInfo?.id; //게시글을 보고 있는 나의 정보
   return (
     <div
       name="상세보기"
       className="bg-[rgb(255,209,90)] shadow overflow-hidden sm:rounded-lg my-5 border-2 border-mainYellow dark:text-mainWhite"
     >
       <div className="bg-transparent px-3 py-2 sm:rounded-t-lg sm:px-6">
-        <div className="-ml-4 -mt-2 flex items-center justify-between flex-wrap sm:flex-nowrap">
+        <div
+          className={
+            (study.headMember.id == myId ? 'justify-between' : '') +
+            ' -ml-4 -mt-2 flex items-center  flex-wrap sm:flex-nowrap'
+          }
+        >
           <div className="ml-4 mt-2 ">
             <h3 className=" font-bold leading-6 text-gray-900 sm:text-2xl">
               {study.title}
             </h3>
           </div>
-          <div className="ml-4 mt-2 flex-shrink-0">
-            <button
-              type="button"
-              className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none dark:bg-gray-400 dark:text-slate-100 dark:border-slate-300"
-            >
-              <CogIcon
-                className="-ml-1 mr-2 h-5 w-5 text-gray-400 dark:text-mainWhite"
-                aria-hidden="true"
-              />
-              <span>수정하기</span>
-            </button>
-          </div>
+          {study.headMember.id == myId ? (
+            <div className="ml-4 mt-2 flex-shrink-0">
+              <button
+                type="button"
+                className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none dark:bg-gray-500 dark:text-slate-100 dark:border-gray-600"
+                onClick={(e) => {
+                  setCurrentStudy(study);
+                }}
+              >
+                <CogIcon
+                  className="-ml-1 mr-2 h-5 w-5 text-gray-400 dark:text-mainWhite"
+                  aria-hidden="true"
+                />
+                <span>수정하기</span>
+              </button>
+            </div>
+          ) : (
+            ''
+          )}
         </div>
       </div>
       <div className="bg-mainWhite px-4 py-5 sm:px-6 dark:bg-darkComponent">
@@ -142,4 +156,8 @@ const AboutCard = ({ study }) => {
   );
 };
 
-export default AboutCard;
+const mapStateToProps = (state, OwnProps) => {
+  return { state };
+};
+
+export default connect(mapStateToProps)(AboutCard);

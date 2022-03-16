@@ -8,17 +8,20 @@ import {
 } from '@heroicons/react/solid';
 import { connect } from 'react-redux';
 //local
+import { getCurrentYear, getCurrentSeason } from './StudyUtil';
 import AuthUser from 'shared/AuthUser';
 import YearList from 'page/Study/Components/YearList';
 import MobileYearList from 'page/Study/Components/MobileYearList';
 import StudyList from 'page/Study/Components/StudyList';
 import AddStudyModal from 'page/Study/Components/Modals/AddStudyModal';
 import AddStudy from 'page/Study/Components/AddStudy';
+import ModifyModal from 'page/Study/Components/Modals/ModifyModal';
 import studyAPI from 'API/v1/study';
 
 const Study = ({ state }) => {
-  const [currentYear, setCurrentYear] = useState(2022);
-  const [currentSeason, setCurrentSeason] = useState(1);
+  const [currentYear, setCurrentYear] = useState(getCurrentYear());
+  const [currentSeason, setCurrentSeason] = useState(getCurrentSeason());
+  const [currentStudy, setCurrentStudy] = useState();
   const [years, setYears] = useState([]);
   const [open, setOpen] = useState(false);
   const [changeFlag, setChangeFlag] = useState(false);
@@ -42,6 +45,16 @@ const Study = ({ state }) => {
   return (
     <>
       <AuthUser>
+        {currentStudy ? (
+          <ModifyModal
+            currentStudy={currentStudy}
+            setCurrentStudy={setCurrentStudy}
+            changeFlag={changeFlag}
+            setChangeFlag={setChangeFlag}
+          />
+        ) : (
+          ''
+        )}
         <div className="h-fit p-5 flex-col justify-end dark:bg-mainBlack dark:text-mainWhite">
           <MobileYearList
             years={years}
@@ -108,6 +121,7 @@ const Study = ({ state }) => {
                 currentYear={currentYear}
                 currentSeason={currentSeason}
                 setCurrentSeason={setCurrentSeason}
+                setCurrentStudy={setCurrentStudy}
               />
             </div>
           </div>

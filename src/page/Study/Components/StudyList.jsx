@@ -19,8 +19,8 @@ const StudyList = ({
   currentYear,
   currentSeason,
   setCurrentSeason,
+  setCurrentStudy,
   state,
-  changeFlag,
 }) => {
   const [studies, setStudies] = useState([]);
 
@@ -110,7 +110,7 @@ const StudyList = ({
           studies.map((study, index) => (
             <div key={index}>
               {flag ? (
-                <AboutCard study={study} />
+                <AboutCard study={study} setCurrentStudy={setCurrentStudy} />
               ) : (
                 <SimpleCard study={study} />
               )}

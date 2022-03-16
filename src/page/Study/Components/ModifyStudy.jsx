@@ -13,18 +13,24 @@ import ipAPI from 'API/v1/ip';
 import memberAPI from 'API/v1/member';
 import ThumbnailZone from 'page/Study/Components/ThumbnailZone';
 
-const AddStudy = ({ setOpen, state, changeFlag, setChangeFlag }) => {
-  const [title, setTitle] = useState('');
-  const [information, setInformation] = useState('');
-  const [year, setYear] = useState();
-  const [season, setSeason] = useState('');
-  const [headMember, setHeadMember] = useState(state.member.memberInfo); //멤버 오브젝트
-  const [memberList, setMemberList] = useState([]); //멤버 오브젝트 리스트
+const ModifyStudy = ({
+  study,
+  setCurrentStudy,
+  changeFlag,
+  setChangeFlag,
+  state,
+}) => {
+  const [title, setTitle] = useState(study.title);
+  const [information, setInformation] = useState(study.information);
+  const [year, setYear] = useState(study.year);
+  const [season, setSeason] = useState(study.season);
+  const [headMember, setHeadMember] = useState(study.headMember); //멤버 오브젝트
+  const [memberList, setMemberList] = useState(study.memberList); //멤버 오브젝트 리스트
   const [memberIdList, setMemberIdList] = useState([]); //멤버 아이디 리스트
-  const [gitLink, setGitLink] = useState('');
-  const [noteLink, setNoteLink] = useState('');
-  const [etcLink, setEtcLink] = useState('');
-  const [thumbnail, setThumbnail] = useState(null);
+  const [gitLink, setGitLink] = useState(study.gitLink);
+  const [noteLink, setNoteLink] = useState(study.noteLink);
+  const [etcLink, setEtcLink] = useState(study.etcLink);
+  const [thumbnail, setThumbnail] = useState('');
   const token = state.member.token;
   //state.member.memberInfo.nickName;
 
@@ -33,6 +39,9 @@ const AddStudy = ({ setOpen, state, changeFlag, setChangeFlag }) => {
   const [allMemberList, setAllMemberList] = useState([]); //멤버 추가 시 보여줄 동아리 회원의 전체 리스트
 
   useEffect(() => {
+    for (var i = 0; i < study.memberNumber; i++) {
+      setMemberIdList([...memberIdList, memberList[i]?.id]);
+    }
     memberAPI.getAllMembers().then((data) => {
       setAllMemberList(data.list);
     });
@@ -68,7 +77,8 @@ const AddStudy = ({ setOpen, state, changeFlag, setChangeFlag }) => {
     ipAPI.getIp().then((ipAddress) => {
       console.log([headMember.id, ...memberIdList]);
       studyAPI
-        .create({
+        .modify({
+          studyId: study.id,
           year: year,
           season: season,
           title: title,
@@ -84,7 +94,7 @@ const AddStudy = ({ setOpen, state, changeFlag, setChangeFlag }) => {
         .then((res) => {
           setClickable(true);
           if (res.success) {
-            setOpen(false);
+            setCurrentStudy();
             setChangeFlag(!changeFlag);
           } else {
             alert('스터디 생성 실패! 전산관리자에게 문의하세요~');
@@ -96,18 +106,20 @@ const AddStudy = ({ setOpen, state, changeFlag, setChangeFlag }) => {
   return (
     <>
       <div
-        name="스터디 수정 폼"
-        className="p-5 py-3 bg-slate-200 rounded-lg dark:bg-gray-700"
+        name="스터디 추가 폼"
+        className="p-5 py-3 bg-slate-200 dark:text-mainWhite dark:bg-gray-700"
       >
         <div className="">
           <input
             type="text"
             placeholder="연도(숫자만)"
+            defaultValue={year ? year : ''}
             onBlur={(e) => setYear(e.target.value)}
             className="max-w-lg inline-block w-[10em] mx-2 mb-2 shadow-sm focus:ring-mainYellow focus:border-mainYellow sm:max-w-xs sm:text-sm border-gray-300 rounded-md dark:bg-mainBlack dark:border-darkComponent"
           />
           <select
             className="mt-1 inline-block pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-mainYellow focus:border-mainYellow sm:text-sm rounded-md dark:bg-mainBlack dark:border-darkComponent"
+            defaultValue={season ? season : ''}
             onBlur={(e) => setSeason(e.target.value)}
           >
             <option value="0">학기 선택</option>
@@ -132,6 +144,7 @@ const AddStudy = ({ setOpen, state, changeFlag, setChangeFlag }) => {
                     type="text"
                     className="block h-full w-full border-transparent bg-transparent pb-1 pr-3 text-gray-900 font-bold placeholder-[rgb(218,154,70)] focus:outline-none focus:placeholder-[rgb(255,235,110)] focus:ring-0 focus:border-transparent sm:text-2xl"
                     placeholder="스터디명"
+                    defaultValue={title ? title : ''}
                     onBlur={(e) => setTitle(e.target.value)}
                   />
                 </div>
@@ -154,7 +167,7 @@ const AddStudy = ({ setOpen, state, changeFlag, setChangeFlag }) => {
                     name="about"
                     rows={3}
                     className="shadow-sm focus:ring-mainYellow focus:border-mainYellow block w-full sm:text-sm border border-gray-300 rounded-md dark:bg-mainBlack dark:border-gray-600"
-                    defaultValue={''}
+                    defaultValue={information ? information : ''}
                     onBlur={(e) => setInformation(e.target.value)}
                   />
                 </div>
@@ -202,14 +215,18 @@ const AddStudy = ({ setOpen, state, changeFlag, setChangeFlag }) => {
 
                         {memberList.map((member) => (
                           <div key={member.id} className="inline-block">
-                            <span className="flex justify-between bg-mainWhite border border-gray-300 min-w-[5em] px-2 py-1 m-[1px] text-sm rounded-full dark:bg-mainBlack">
-                              <span>{member.nickName}</span>
-                              <XIcon
-                                className="inline-block h-5 w-5 text-slate-300 hover:text-slate-400  dark:text-gray-500 dark:hover:text-gray-300"
-                                aria-hidden="true"
-                                onClick={() => deleteMember(member)}
-                              />
-                            </span>
+                            {member.id != headMember.id ? (
+                              <span className="flex justify-between bg-mainWhite border border-gray-300 min-w-[5em] px-2 py-1 m-[1px] text-sm rounded-full dark:bg-mainBlack">
+                                <span>{member.nickName}</span>
+                                <XIcon
+                                  className="inline-block h-5 w-5 text-slate-300 hover:text-slate-400  dark:text-gray-500 dark:hover:text-gray-300"
+                                  aria-hidden="true"
+                                  onClick={() => deleteMember(member)}
+                                />
+                              </span>
+                            ) : (
+                              ''
+                            )}
                           </div>
                         ))}
                       </div>
@@ -312,6 +329,7 @@ const AddStudy = ({ setOpen, state, changeFlag, setChangeFlag }) => {
                               autoComplete="Github"
                               placeholder="http://"
                               className="py-1 shadow-sm focus:ring-mainYellow focus:border-mainYellow block w-full sm:text-sm border-gray-300 rounded-md  dark:bg-mainBlack dark:border-gray-600"
+                              defaultValue={gitLink ? gitLink : ''}
                               onBlur={(e) => setGitLink(e.target.value)}
                             />
                           </div>
@@ -339,6 +357,7 @@ const AddStudy = ({ setOpen, state, changeFlag, setChangeFlag }) => {
                               autoComplete="Notion"
                               placeholder="http://"
                               className="py-1 shadow-sm focus:ring-mainYellow focus:border-mainYellow block w-full sm:text-sm border-gray-300 rounded-md  dark:bg-mainBlack dark:border-gray-600"
+                              defaultValue={noteLink ? noteLink : ''}
                               onBlur={(e) => setNoteLink(e.target.value)}
                             />
                           </div>
@@ -366,6 +385,7 @@ const AddStudy = ({ setOpen, state, changeFlag, setChangeFlag }) => {
                               autoComplete="etc"
                               placeholder="http://"
                               className="py-1 shadow-sm focus:ring-mainYellow focus:border-mainYellow block w-full sm:text-sm border-gray-300 rounded-md  dark:bg-mainBlack dark:border-gray-600"
+                              defaultValue={etcLink ? etcLink : ''}
                               onBlur={(e) => setEtcLink(e.target.value)}
                             />
                           </div>
@@ -383,7 +403,7 @@ const AddStudy = ({ setOpen, state, changeFlag, setChangeFlag }) => {
             <button
               type="button"
               className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none dark:bg-gray-600 dark:text-gray-300 dark:border-darkComponent"
-              onClick={() => setOpen(false)}
+              onClick={() => setCurrentStudy()}
             >
               닫기
             </button>
@@ -405,4 +425,4 @@ const mapStateToProps = (state, OwnProps) => {
   return { state };
 };
 
-export default connect(mapStateToProps)(AddStudy);
+export default connect(mapStateToProps)(ModifyStudy);
