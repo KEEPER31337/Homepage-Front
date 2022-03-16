@@ -16,6 +16,7 @@ import studyAPI from 'API/v1/study';
 
 const StudyList = ({
   open,
+  changeFlag,
   currentYear,
   currentSeason,
   setCurrentSeason,
@@ -40,7 +41,7 @@ const StudyList = ({
         setStudies(res.list);
       });
     //setOpen(false);
-  }, [currentYear, currentSeason, open, token]);
+  }, [currentYear, currentSeason, open, changeFlag, token]);
 
   var flag = true;
   var link =
