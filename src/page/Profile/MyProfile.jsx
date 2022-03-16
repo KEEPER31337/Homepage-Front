@@ -84,7 +84,7 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
           return list?.map((item, index) => ({
             num: index + 1,
             onClick: () => {
-              navigate(`/board/${item.id}`);
+              navigate(`/post/${item.category}/${item.id}`);
             },
             category: item.category,
             title: item.title,
@@ -105,7 +105,7 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
           return list?.map((item, index) => ({
             num: index + 1,
             onClick: () => {
-              navigate(`/board/${item.id}`);
+              navigate(`/post/${item.category}/${item.id}`);
             },
             category: item.category,
             title: item.title,
