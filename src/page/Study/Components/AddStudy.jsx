@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { connect } from 'react-redux';
 import {
   PlusSmIcon,
   PaperClipIcon,
@@ -7,30 +8,50 @@ import {
   PlusIcon,
 } from '@heroicons/react/solid';
 //local
+import studyAPI from 'API/v1/study';
+import ipAPI from 'API/v1/ip';
+import memberAPI from 'API/v1/member';
 import ThumbnailZone from 'page/Study/Components/ThumbnailZone';
 
-const AddStudy = ({ setOpen, currentYear, currentSeason }) => {
+const AddStudy = ({ setOpen, state, changeFlag, setChangeFlag }) => {
   const [title, setTitle] = useState('');
   const [information, setInformation] = useState('');
-  const [headMember, setHeadMember] = useState();
-  const [memberList, setMemberList] = useState([]);
+  const [year, setYear] = useState();
+  const [season, setSeason] = useState('');
+  const [headMember, setHeadMember] = useState(state.member.memberInfo); //멤버 오브젝트
+  const [memberList, setMemberList] = useState([]); //멤버 오브젝트 리스트
+  const [memberIdList, setMemberIdList] = useState([]); //멤버 아이디 리스트
   const [gitLink, setGitLink] = useState('');
   const [noteLink, setNoteLink] = useState('');
   const [etcLink, setEtcLink] = useState('');
   const [thumbnail, setThumbnail] = useState(null);
+  const token = state.member.token;
+  //state.member.memberInfo.nickName;
 
-  const [viewMemberList1, setViewMemberList1] = useState(false);
+  const [clickable, setClickable] = useState(true);
   const [viewMemberList2, setViewMemberList2] = useState(false);
-  const [allMemberList, setAllMemberList] = useState([
-    { id: 1, nickName: 'aaa', email: 'abcd@naver.com' },
-    { id: 1, nickName: 'bbb', email: 'abcd@naver.com' },
-    { id: 3, nickName: 'ccc', email: 'abcd@naver.com' },
-    { id: 4, nickName: 'ddd', email: 'abcd@naver.com' },
-    { id: 5, nickName: 'eee', email: 'abcd@naver.com' },
-    { id: 6, nickName: 'fff', email: 'abcd@naver.com' },
-  ]); //멤버 추가 시 보여줄 동아리 회원의 전체 리스트
-  const deleteMember = () => {};
-  const createHandler = () => {
+  const [allMemberList, setAllMemberList] = useState([]); //멤버 추가 시 보여줄 동아리 회원의 전체 리스트
+
+  useEffect(() => {
+    memberAPI.getAllMembers().then((data) => {
+      setAllMemberList(data.list);
+    });
+  }, []);
+  const deleteMember = (member) => {
+    setMemberList(memberList.filter((cmember) => cmember.id != member.id));
+    setMemberIdList(memberIdList.filter((cmember) => cmember != member.id));
+  };
+  const addMember = (member) => {
+    if (member.id != headMember.id)
+      if (memberList.findIndex((cmember) => cmember.id == member.id) == -1) {
+        setMemberList([...memberList, member]);
+        setMemberIdList([...memberIdList, member.id]);
+        console.log(memberList);
+      }
+  };
+  const print = () => {
+    console.log(year);
+    console.log(season);
     console.log(title);
     console.log(information);
     console.log(headMember);
@@ -40,16 +61,65 @@ const AddStudy = ({ setOpen, currentYear, currentSeason }) => {
     console.log(etcLink);
     console.log(thumbnail);
   };
+
+  const createHandler = () => {
+    print();
+    setClickable(false);
+    ipAPI.getIp().then((ipAddress) => {
+      console.log([headMember.id, ...memberIdList]);
+      studyAPI
+        .create({
+          year: year,
+          season: season,
+          title: title,
+          information: information,
+          memberIdList: [headMember.id, ...memberIdList],
+          gitLink: gitLink,
+          noteLink: noteLink,
+          etcLink: etcLink,
+          thumbnailFile: thumbnail,
+          token: token,
+          ipAddress: ipAddress,
+        })
+        .then((res) => {
+          setClickable(true);
+          if (res.success) {
+            setOpen(false);
+            setChangeFlag(!changeFlag);
+          } else {
+            alert('스터디 생성 실패! 전산관리자에게 문의하세요~');
+          }
+        });
+    });
+  };
   console.log('load AddStudy');
   return (
     <>
-      <div name="스터디 추가 폼" className="p-5 bg-slate-200 rounded-lg">
+      <div name="스터디 추가 폼" className="p-5 py-3 bg-slate-200 rounded-lg">
+        <div className="">
+          <input
+            type="text"
+            placeholder="연도(숫자만)"
+            onBlur={(e) => setYear(e.target.value)}
+            className="max-w-lg inline-block w-[10em] mx-2 mb-2 shadow-sm focus:ring-mainYellow focus:border-mainYellow sm:max-w-xs sm:text-sm border-gray-300 rounded-md"
+          />
+          <select
+            className="mt-1 inline-block pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+            onBlur={(e) => setSeason(e.target.value)}
+          >
+            <option value="0">학기 선택</option>
+            <option value="1">1학기</option>
+            <option value="2">여름방학</option>
+            <option value="3">2학기</option>
+            <option value="4">겨울방학</option>
+          </select>
+        </div>
         <div className="bg-[rgb(255,209,90)] shadow overflow-hidden border-2 border-mainYellow sm:rounded-lg dark:text-mainWhite">
           <div className="bg-transparent px-4 pb-3 sm:rounded-t-lg sm:px-6">
             <div className="-ml-4 -mt-2 flex items-center justify-between flex-wrap sm:flex-nowrap">
               <div className="border-b-2 border-pointYellow ml-4 mt-2 w-full">
                 <label htmlFor="study-name" className="sr-only">
-                  Search
+                  스터디명
                 </label>
                 <div className="relative w-full text-gray-400 focus-within:text-gray-600">
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center"></div>
@@ -94,18 +164,13 @@ const AddStudy = ({ setOpen, currentYear, currentSeason }) => {
                 <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
                   스터디장
                 </dt>
-
-                <div className="border mt-1 text-sm text-gray-900 dark:text-mainWhite">
-                  <div className="border min-h-[3em]">
+                <div className="border-t mb-1  dark:border-gray-500"></div>
+                <div className="mt-1 text-sm text-gray-900 dark:text-mainWhite">
+                  <div className="bg-slate-100 min-h-[3em] dark:bg-gray-700">
                     {headMember ? (
-                      <div className="inline-block">
-                        <span className="flex justify-between border border-gray-300 min-w-[5em] px-2 py-1 m-[1px] text-sm rounded-full">
-                          <span>{headMember}</span>
-                          <XIcon
-                            className="inline-block h-5 w-5 text-slate-300 hover:text-slate-400 dark:text-mainBlack"
-                            aria-hidden="true"
-                            onClick={() => setHeadMember(null)}
-                          />
+                      <div className="inline-block p-1">
+                        <span className="flex justify-between border border-gray-300 bg-mainWhite min-w-[5em] px-2 py-1 m-[1px] text-sm rounded-full dark:bg-mainBlack">
+                          <span>{headMember.nickName}</span>
                         </span>
                       </div>
                     ) : (
@@ -114,79 +179,36 @@ const AddStudy = ({ setOpen, currentYear, currentSeason }) => {
                   </div>
                 </div>
 
-                <button
-                  className={
-                    (viewMemberList1
-                      ? 'bg-gray-200 hover:bg-gray-300'
-                      : 'bg-white hover:bg-gray-100 dark:bg-darkComponent ') +
-                    ' inline-flex items-center shadow-sm py-1 px-2 pr-3 my-1 border border-gray-300text-gray-700  text-sm leading-5 font-medium rounded-lg  focus:outline-none dark:text-gray-300 dark:border-mainBlack'
-                  }
-                  onClick={() => setViewMemberList1(!viewMemberList1)}
-                >
-                  {viewMemberList1 ? (
-                    <XIcon
-                      className="text-gray-400 dark:text-mainBlack -ml-1.5 h-5 w-5 "
-                      aria-hidden="true"
-                    />
-                  ) : (
-                    <PlusIcon
-                      className="text-gray-400 -ml-1.5 h-5 w-5 "
-                      aria-hidden="true"
-                    />
-                  )}
-                  선택하기
-                </button>
-                {viewMemberList1 ? (
-                  <div className="border h-[15em] overflow-y-scroll bg-mainWhite">
-                    <ul className="">
-                      {allMemberList.map((member) => (
-                        <li
-                          className="border p-1 flex justify-between items-center group hover:bg-slate-100"
-                          onClick={() => setHeadMember(member.nickName)}
-                        >
-                          <div className="flex items-center">
-                            <div>
-                              <img
-                                className="inline-block h-9 w-9 rounded-full"
-                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                alt=""
-                              />
-                            </div>
-                            <div className="ml-3">
-                              <p className="text-sm font-medium">
-                                {member.nickName}
-                              </p>
-                              <p className="text-xs font-medium text-gray-300">
-                                {member.email}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="text-mainYellow px-3 hidden group-hover:block">
-                            추가하기
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : (
-                  ''
-                )}
-
                 <dt className="text-sm mt-3 font-medium text-gray-500 dark:text-gray-400">
                   스터디원
                 </dt>
-                <div className="border mt-1 text-sm text-gray-900 dark:text-mainWhite">
-                  <div className="border min-h-[3em]">
+                <div className=" mt-1 text-sm text-gray-900 dark:text-mainWhite">
+                  <div className="border-t mb-1  dark:border-gray-500"></div>
+                  <div className="bg-slate-100 min-h-[3em] dark:bg-gray-700">
                     {memberList ? (
-                      <div className="inline-block">
-                        <span className="flex justify-between border border-gray-300 min-w-[5em] px-2 py-1 m-[1px] text-sm rounded-full">
-                          <span>{headMember}</span>
-                          <XIcon
-                            className="inline-block h-5 w-5 text-slate-300 hover:text-slate-400 dark:text-mainBlack"
-                            aria-hidden="true"
-                            onClick={() => deleteMember()}
-                          />
-                        </span>
+                      <div className="inline-block p-1">
+                        {headMember ? (
+                          <div className="inline-block">
+                            <span className="flex bg-mainWhite border border-gray-300 min-w-[5em] px-2 py-1 m-[1px] text-sm rounded-full dark:bg-mainBlack">
+                              <span>{headMember.nickName}</span>
+                            </span>
+                          </div>
+                        ) : (
+                          ''
+                        )}
+
+                        {memberList.map((member) => (
+                          <div key={member.id} className="inline-block">
+                            <span className="flex justify-between bg-mainWhite border border-gray-300 min-w-[5em] px-2 py-1 m-[1px] text-sm rounded-full dark:bg-mainBlack">
+                              <span>{member.nickName}</span>
+                              <XIcon
+                                className="inline-block h-5 w-5 text-slate-300 hover:text-slate-400  dark:text-gray-500 dark:hover:text-gray-300"
+                                aria-hidden="true"
+                                onClick={() => deleteMember(member)}
+                              />
+                            </span>
+                          </div>
+                        ))}
                       </div>
                     ) : (
                       ''
@@ -197,7 +219,7 @@ const AddStudy = ({ setOpen, currentYear, currentSeason }) => {
                 <button
                   className={
                     (viewMemberList2
-                      ? 'bg-gray-200 hover:bg-gray-300'
+                      ? 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500'
                       : 'bg-white hover:bg-gray-100 dark:bg-darkComponent ') +
                     ' inline-flex items-center shadow-sm py-1 px-2 pr-3 my-1 border border-gray-300text-gray-700  text-sm leading-5 font-medium rounded-lg  focus:outline-none dark:text-gray-300 dark:border-mainBlack'
                   }
@@ -222,24 +244,23 @@ const AddStudy = ({ setOpen, currentYear, currentSeason }) => {
                       {allMemberList.map((member) => (
                         <li
                           className="border p-1 flex justify-between items-center group hover:bg-slate-100"
-                          onClick={() =>
-                            setMemberList([...memberList, member.nickName])
-                          }
+                          onClick={() => addMember(member)}
                         >
                           <div className="flex items-center">
                             <div>
-                              <img
-                                className="inline-block h-9 w-9 rounded-full"
-                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                alt=""
-                              />
+                              {member.thumbnailPath ? (
+                                <img
+                                  className="border inline-block h-9 w-9 rounded-full"
+                                  src={member.thumbnailPath}
+                                  alt=""
+                                />
+                              ) : (
+                                <div className="inline-block h-9 w-9 rounded-full"></div>
+                              )}
                             </div>
                             <div className="ml-3">
                               <p className="text-sm font-medium">
                                 {member.nickName}
-                              </p>
-                              <p className="text-xs font-medium text-gray-300">
-                                {member.email}
                               </p>
                             </div>
                           </div>
@@ -254,7 +275,7 @@ const AddStudy = ({ setOpen, currentYear, currentSeason }) => {
                   ''
                 )}
               </div>
-              <div className="border sm:row-span-2">
+              <div className="sm:row-span-2">
                 <ThumbnailZone setThumbnail={setThumbnail} />
               </div>
 
@@ -367,6 +388,7 @@ const AddStudy = ({ setOpen, currentYear, currentSeason }) => {
               type="button"
               className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-mainYellow hover:bg-pointYellow focus:outline-none"
               onClick={() => createHandler()}
+              disabled={!clickable}
             >
               추가하기
             </button>
@@ -376,5 +398,8 @@ const AddStudy = ({ setOpen, currentYear, currentSeason }) => {
     </>
   );
 };
+const mapStateToProps = (state, OwnProps) => {
+  return { state };
+};
 
-export default AddStudy;
+export default connect(mapStateToProps)(AddStudy);

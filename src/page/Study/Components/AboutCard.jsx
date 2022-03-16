@@ -20,10 +20,10 @@ const AboutCard = ({ study }) => {
           <div className="ml-4 mt-2 flex-shrink-0">
             <button
               type="button"
-              className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none"
+              className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none dark:bg-gray-400 dark:text-slate-100 dark:border-slate-300"
             >
               <CogIcon
-                className="-ml-1 mr-2 h-5 w-5 text-gray-400"
+                className="-ml-1 mr-2 h-5 w-5 text-gray-400 dark:text-mainWhite"
                 aria-hidden="true"
               />
               <span>수정하기</span>
@@ -64,7 +64,7 @@ const AboutCard = ({ study }) => {
 
           <div className=" sm:row-span-2">
             <img
-              src={API_URL + study.thumbnailPath}
+              src={study.thumbnailPath}
               alt="썸네일 이미지"
               className="w-full h-full object-center object-cover rounded-lg"
             />

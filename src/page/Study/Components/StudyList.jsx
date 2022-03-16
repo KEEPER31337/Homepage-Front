@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { connect } from 'react-redux';
 import {
   PlusSmIcon,
   PaperClipIcon,
@@ -11,16 +12,35 @@ import SimpleCard from 'page/Study/Components/SimpleCard';
 import AboutCard from 'page/Study/Components/AboutCard';
 import AddStudy from 'page/Study/Components/AddStudy';
 import { studylist } from 'page/Study/testData';
+import studyAPI from 'API/v1/study';
 
-const StudyList = ({ currentYear, currentSeason, setCurrentSeason }) => {
+const StudyList = ({
+  open,
+  currentYear,
+  currentSeason,
+  setCurrentSeason,
+  state,
+  changeFlag,
+}) => {
   const [studies, setStudies] = useState([]);
-  const [open, setOpen] = useState(false);
+
+  const token = state.member.token;
 
   useEffect(() => {
     console.log('reload studyList');
-    setStudies(studylist);
-    setOpen(false);
-  }, [currentYear, currentSeason]);
+
+    studyAPI
+      .getStudies({
+        token: token,
+        year: currentYear,
+        season: currentSeason,
+      })
+      .then((res) => {
+        //console.log(res.list);
+        setStudies(res.list);
+      });
+    //setOpen(false);
+  }, [currentYear, currentSeason, open, token]);
 
   var flag = true;
   var link =
@@ -32,7 +52,7 @@ const StudyList = ({ currentYear, currentSeason, setCurrentSeason }) => {
           className={
             (currentSeason == 1
               ? 'border-mainYellow bg-mainYellow'
-              : 'hover:bg-slate-100') +
+              : 'hover:bg-slate-100 dark:border-darkComponent dark:hover:bg-gray-800') +
             ' border-x-2 border-t-2  inline-block w-[5.5em] p-1 px-2 rounded-t-2xl '
           }
           onClick={() => setCurrentSeason(1)}
@@ -43,7 +63,7 @@ const StudyList = ({ currentYear, currentSeason, setCurrentSeason }) => {
           className={
             (currentSeason == 2
               ? 'border-mainYellow bg-mainYellow'
-              : 'hover:bg-slate-100') +
+              : 'hover:bg-slate-100 dark:border-darkComponent dark:hover:bg-gray-800') +
             ' border-x-2 border-t-2  inline-block w-[5.5em] p-1 px-2 rounded-t-2xl '
           }
           onClick={() => setCurrentSeason(2)}
@@ -54,7 +74,7 @@ const StudyList = ({ currentYear, currentSeason, setCurrentSeason }) => {
           className={
             (currentSeason == 3
               ? 'border-mainYellow bg-mainYellow'
-              : 'hover:bg-slate-100') +
+              : 'hover:bg-slate-100 dark:border-darkComponent dark:hover:bg-gray-800') +
             ' border-x-2 border-t-2  inline-block w-[5.5em] p-1 px-2 rounded-t-2xl '
           }
           onClick={() => setCurrentSeason(3)}
@@ -65,7 +85,7 @@ const StudyList = ({ currentYear, currentSeason, setCurrentSeason }) => {
           className={
             (currentSeason == 4
               ? 'border-mainYellow bg-mainYellow'
-              : 'hover:bg-slate-100') +
+              : 'hover:bg-slate-100 dark:border-darkComponent dark:hover:bg-gray-800') +
             ' border-x-2 border-t-2  inline-block w-[5.5em] p-1 px-2 rounded-t-2xl '
           }
           onClick={() => setCurrentSeason(4)}
@@ -73,7 +93,7 @@ const StudyList = ({ currentYear, currentSeason, setCurrentSeason }) => {
           겨울방학
         </button>
       </div>
-      <div className="border-2 border-mainYellow rounded-b-lg rounded-tr-lg bg-gray-50 w-full px-5 md:w-[80vw] dark:bg-darkPoint">
+      <div className="border-2 min-h-[60vh] border-mainYellow rounded-b-lg rounded-tr-lg bg-gray-50 w-full px-5 md:w-[80vw] dark:bg-darkPoint">
         {/*link ? (
             <p className="border-b border-x bg-mainWhite my-3 p-3 rounded-lg dark:border-gray-700 dark:bg-mainBlack">
               노션 링크 :
@@ -85,43 +105,7 @@ const StudyList = ({ currentYear, currentSeason, setCurrentSeason }) => {
           ) : (
             ''
           )*/}
-        <div name="스터디 추가버튼" className="flex justify-end m-3">
-          <button
-            type="button"
-            className={
-              (open
-                ? 'text-mainWhite bg-mainYellow hover:bg-pointYellow dark:text-mainBlack'
-                : 'text-gray-700 bg-white hover:bg-gray-100 dark:bg-darkComponent dark:text-gray-300') +
-              ' inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 text-sm leading-5 font-medium rounded-full  focus:outline-none dark:border-mainBlack'
-            }
-            onClick={() => setOpen(!open)}
-          >
-            {open ? (
-              <XIcon
-                className={
-                  'text-mainWhite dark:text-mainBlack -ml-1.5 mr-1 h-5 w-5 '
-                }
-                aria-hidden="true"
-              />
-            ) : (
-              <PlusSmIcon
-                className={'text-gray-400 -ml-1.5 mr-1 h-5 w-5 '}
-                aria-hidden="true"
-              />
-            )}
 
-            <span>스터디 추가하기</span>
-          </button>
-        </div>
-        {open ? (
-          <AddStudy
-            setOpen={setOpen}
-            currentYear={currentYear}
-            currentSeason={currentSeason}
-          />
-        ) : (
-          ''
-        )}
         {studies ? (
           studies.map((study, index) => (
             <div key={index}>
@@ -139,5 +123,8 @@ const StudyList = ({ currentYear, currentSeason, setCurrentSeason }) => {
     </>
   );
 };
+const mapStateToProps = (state, OwnProps) => {
+  return { state };
+};
 
-export default StudyList;
+export default connect(mapStateToProps)(StudyList);

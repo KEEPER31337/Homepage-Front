@@ -110,13 +110,13 @@ const ThumbnailZone = (props) => {
         ) : (
           <>
             {isDragActive ? (
-              <p className="border text-slate-500 flex items-center text-center dark:text-slate-300">
+              <p className=" text-slate-500 flex items-center text-center dark:text-slate-300">
                 파일을
                 <br />
                 놓으세요
               </p>
             ) : (
-              <p className="border text-slate-500 flex items-center">
+              <p className=" text-slate-500 flex items-center">
                 <PhotographIcon
                   className=" h-7 w-7 inline-block "
                   aria-hidden="true"
