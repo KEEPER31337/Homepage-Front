@@ -1,4 +1,4 @@
-export default function changeTimeFormat(now, dateTimeString) {
+export default function showDateAndTime(now, dateTimeString) {
     const dateTimeArrayOfPost = dateTimeString.split("T");
 
     const dateArrayOfPost = dateTimeArrayOfPost[0].split("-");
