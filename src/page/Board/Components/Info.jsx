@@ -11,7 +11,7 @@ const Info = (props) => {
   const currentCategoryName = props.state.category.current.name;
   useEffect(() => {
     console.log(font);
-  }, [font]);
+  }, [font, currentCategoryName]);
 
   return (
     <div className="flex">

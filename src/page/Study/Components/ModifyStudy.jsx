@@ -11,6 +11,7 @@ import {
 import studyAPI from 'API/v1/study';
 import ipAPI from 'API/v1/ip';
 import memberAPI from 'API/v1/member';
+import utilAPI from 'API/v1/util';
 import ThumbnailZone from 'page/Study/Components/ThumbnailZone';
 
 const ModifyStudy = ({
@@ -45,6 +46,25 @@ const ModifyStudy = ({
     memberAPI.getAllMembers().then((data) => {
       setAllMemberList(data.list);
     });
+    var list = study.thumbnailPath.split('/');
+    utilAPI
+      .getThumbnail({ thumbnailId: list[list.length - 1] })
+      .then((data) => {
+        console.log(data);
+        //const Blob=new Blob([new Uint8Array(img.data.data.data)]);
+        setThumbnail(data);
+        /*
+        const reader = new FileReader();
+        reader.onabort = () => console.log('file reading was aborted');
+        reader.onerror = () => console.log('file reading has failed');
+        reader.onloadend = () => {
+          const base64 = reader.result;
+          if (base64) {
+            setThumbnailBase64(base64);
+          }
+        };
+        reader.readAsDataURL(data);*/
+      });
   }, []);
   const deleteMember = (member) => {
     setMemberList(memberList.filter((cmember) => cmember.id != member.id));
@@ -115,7 +135,7 @@ const ModifyStudy = ({
             placeholder="연도(숫자만)"
             defaultValue={year ? year : ''}
             onBlur={(e) => setYear(e.target.value)}
-            className="max-w-lg inline-block w-[10em] mx-2 mb-2 shadow-sm focus:ring-mainYellow focus:border-mainYellow sm:max-w-xs sm:text-sm border-gray-300 rounded-md dark:bg-mainBlack dark:border-darkComponent"
+            className="max-w-lg inline-block w-[8em] mx-2 mb-2 shadow-sm focus:ring-mainYellow focus:border-mainYellow sm:max-w-xs sm:text-sm border-gray-300 rounded-md dark:bg-mainBlack dark:border-darkComponent"
           />
           <select
             className="mt-1 inline-block pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-mainYellow focus:border-mainYellow sm:text-sm rounded-md dark:bg-mainBlack dark:border-darkComponent"
@@ -413,7 +433,7 @@ const ModifyStudy = ({
               onClick={() => createHandler()}
               disabled={!clickable}
             >
-              추가하기
+              수정하기
             </button>
           </div>
         </div>

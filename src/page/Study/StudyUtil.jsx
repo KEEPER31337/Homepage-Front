@@ -2,7 +2,7 @@ function getCurrentYear() {
   //24시간 이내에 등록된 경우
   let now = new Date();
   let month = now.getMonth() + 1;
-  console.log(now.getFullYear());
+  //console.log(now.getFullYear());
   if (month > 0 && month < 3) return now.getFullYear() - 1;
   return now.getFullYear();
 }

@@ -44,6 +44,7 @@ const Comments = ({
       })
       .then((res) => {
         setComments(res.list);
+        console.log(comments);
         comments.map((comment) => {
           if (comment.checkedLike)
             setLikedComments([...likedComments, comment.id]);
