@@ -21,7 +21,7 @@ async function getMember({ token }) {
 async function getMembers({ token }) {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/members',
+    url: API_URL + '/v1/members/others',
     headers: {
       Authorization: token,
     },
