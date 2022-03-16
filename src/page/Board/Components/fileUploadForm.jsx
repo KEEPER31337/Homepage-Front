@@ -26,8 +26,9 @@ const FileUploadForm = (props) => {
 
   useEffect(() => {
     if (props.modifyFlag) {
+      var list = props.board.thumbnailPath.split('/');
       utilAPI
-        .getThumbnail({ thumbnailId: props.board.thumbnail.id })
+        .getThumbnail({ thumbnailId: list[list.length - 1] })
         .then((data) => {
           console.log(data);
           props.setThumbnail(data);
