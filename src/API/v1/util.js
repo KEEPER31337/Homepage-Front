@@ -2,6 +2,22 @@ import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
+async function getAuthorization({ token }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/auth',
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 async function getImage({ fileId }) {
   const options = {
     method: 'GET',
@@ -28,4 +44,4 @@ async function getThumbnail({ thumbnailId }) {
   }
 }
 
-export default { getImage, getThumbnail };
+export default { getImage, getThumbnail, getAuthorization };

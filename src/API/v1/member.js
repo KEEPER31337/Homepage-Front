@@ -317,6 +317,19 @@ async function getOthersPosts({ token, memberId }) {
   }
 }
 
+async function getCommonMembers() {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/common/members',
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 export default {
   getMember,
   getMembers,
@@ -336,4 +349,5 @@ export default {
   getUsersFollower,
   getUsersFollowCnt,
   getOthersPosts,
+  getCommonMembers,
 };
