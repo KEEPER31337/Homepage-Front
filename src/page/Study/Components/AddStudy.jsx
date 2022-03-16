@@ -104,7 +104,7 @@ const AddStudy = ({ setOpen, state, changeFlag, setChangeFlag }) => {
             type="text"
             placeholder="연도(숫자만)"
             onBlur={(e) => setYear(e.target.value)}
-            className="max-w-lg inline-block w-[10em] mx-2 mb-2 shadow-sm focus:ring-mainYellow focus:border-mainYellow sm:max-w-xs sm:text-sm border-gray-300 rounded-md dark:bg-mainBlack dark:border-darkComponent"
+            className="max-w-lg inline-block w-[8em] mx-2 mb-2 shadow-sm focus:ring-mainYellow focus:border-mainYellow sm:max-w-xs sm:text-sm border-gray-300 rounded-md dark:bg-mainBlack dark:border-darkComponent"
           />
           <select
             className="mt-1 inline-block pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-mainYellow focus:border-mainYellow sm:text-sm rounded-md dark:bg-mainBlack dark:border-darkComponent"

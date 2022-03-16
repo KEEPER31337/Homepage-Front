@@ -32,7 +32,7 @@ const ModifyModal = ({
             &times;
           </button>
         </div>
-        <div className="rounded-b-lg border-mainBlack w-[70vw] h-[80vh] overflow-y-scroll">
+        <div className="rounded-b-lg border-mainBlack w-[90vw] sm:w-[70vw] h-[80vh] overflow-y-scroll">
           <ModifyStudy
             study={currentStudy}
             setCurrentStudy={setCurrentStudy}
