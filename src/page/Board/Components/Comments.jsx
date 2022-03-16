@@ -14,8 +14,6 @@ import ipAPI from 'API/v1/ip';
 import commentAPI from 'API/v1/comment';
 import { getDiffTimeWithFormat2 } from '../BoardUtil';
 
-const API_URL = process.env.REACT_APP_API_URL;
-
 const Comments = ({
   boardId,
   commentCount: commentCount,
@@ -213,9 +211,7 @@ const Comments = ({
             <div className="border-4 w-[5em] h-[5em] mr-4 mt-2 rounded-full items-center shadow-lg flex-shrink-0 text-divisionGray hidden sm:flex dark:border-gray-500 dark:text-gray-500">
               {comment.writerThumbnailId ? (
                 <img
-                  src={
-                    API_URL + '/v1/util/thumbnail/' + comment.writerThumbnailId
-                  }
+                  src={comment.writerThumbnailPath}
                   className="rounded-full"
                 />
               ) : (
@@ -370,11 +366,7 @@ const Comments = ({
                   <div className="border-4 w-[3em] h-[3em] mr-4 mt-2 rounded-full items-center shadow-lg flex-shrink-0 text-divisionGray hidden sm:flex dark:border-gray-500 dark:text-gray-500">
                     {comment.writerThumbnailId ? (
                       <img
-                        src={
-                          API_URL +
-                          '/v1/util/thumbnail/' +
-                          comment.writerThumbnailId
-                        }
+                        src={comment.writerThumbnailPath}
                         className="round-full"
                       />
                     ) : (

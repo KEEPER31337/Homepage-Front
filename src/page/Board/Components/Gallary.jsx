@@ -18,8 +18,6 @@ import {
   isNewPost,
 } from '../BoardUtil';
 
-const API_URL = process.env.REACT_APP_API_URL;
-
 const Gallary = ({ notices, boards, linkHandler, state }) => {
   const { categoryId } = useParams();
   const [thumbnails, setThumbnails] = [];
@@ -73,7 +71,7 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
                           </div>
                         ) : board.thumbnailPath ? (
                           <img
-                            src={API_URL + board.thumbnailPath}
+                            src={board.thumbnailPath}
                             alt="썸네일 이미지"
                             className="w-full h-full object-center object-cover rounded-lg"
                           />
@@ -181,7 +179,7 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
                     </div>
                   ) : board.thumbnailPath ? (
                     <img
-                      src={API_URL + board.thumbnailPath}
+                      src={board.thumbnailPath}
                       alt="썸네일 이미지"
                       className="w-full h-full object-center object-cover rounded-lg"
                     />

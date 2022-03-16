@@ -183,7 +183,7 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
           className={
             'border-4 border-slate-500 m-3 p-1 max-h-[300px] max-w-[300px] rounded-xl'
           }
-          src={API_URL + board.thumbnailPath}
+          src={board.thumbnailPath}
           alt="thumbnail"
         />
       </div>
