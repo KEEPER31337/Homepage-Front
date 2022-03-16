@@ -18,7 +18,7 @@ const Board = () => {
   return (
     <>
       <AuthUser>
-        <div className="flex justify-center h-full dark:bg-mainBlack">
+        <div className="flex justify-center min-h-screen dark:bg-mainBlack">
           <div className="inline-block m-5 w-[90vw]">
             <Info />
             <Boards categoryId={categoryId} />

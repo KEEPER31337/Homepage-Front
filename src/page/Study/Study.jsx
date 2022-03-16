@@ -55,7 +55,7 @@ const Study = ({ state }) => {
         ) : (
           ''
         )}
-        <div className="h-fit p-5 flex-col justify-end dark:bg-mainBlack dark:text-mainWhite">
+        <div className="min-h-screen p-5 flex-col justify-end dark:bg-mainBlack dark:text-mainWhite">
           <MobileYearList
             years={years}
             currentYear={currentYear}
