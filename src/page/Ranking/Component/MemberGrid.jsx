@@ -26,7 +26,7 @@ const MemberGrid = ({ member }) => {
 
         <div className="grid grid-cols-2 justify-self-center justify-center justify-items-center content-center items-center gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-6 xl:gap-x-8 ">
           {memberList?.map((member, index) => (
-            <a key={index} href={member.href} className="group">
+            <div key={index} href={member.href} className="group w-full">
               <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
                 <img
                   src={
@@ -43,8 +43,10 @@ const MemberGrid = ({ member }) => {
                   ? `Keeper ${member.generation}기`
                   : member.loginId}
               </h3>
-              <p className="mt-1 text-lg font-medium">{member.realName}</p>
-            </a>
+              <p className="mt-1 text-lg font-medium truncate">
+                {member.nickName}
+              </p>
+            </div>
           ))}
         </div>
       </div>
