@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 //local
@@ -23,13 +24,15 @@ const MemberGrid = ({ member }) => {
           {memberList?.map((member, index) => (
             <div key={index} href={member.href} className="group w-full">
               <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
-                <img
-                  src={
-                    member.thumbnailPath ? member.thumbnailPath : memberImage
-                  }
-                  alt="profile"
-                  className="w-full h-full object-center object-cover group-hover:opacity-75"
-                />
+                <Link to={`/profile/${member.id}`}>
+                  <img
+                    src={
+                      member.thumbnailPath ? member.thumbnailPath : memberImage
+                    }
+                    alt="profile"
+                    className="w-full h-full object-center object-cover group-hover:opacity-75"
+                  />
+                </Link>
               </div>
               <h3 className="mt-4 text-sm ">
                 {member.generation
