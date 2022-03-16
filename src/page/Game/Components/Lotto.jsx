@@ -174,6 +174,15 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
         }
       });
       setMemberPoint((tmp) => tmp - 1000);
+
+      //오늘 결과 1000원 마이너스
+      lottoAPI
+        .getLottoInfo({
+          token: member.token,
+        })
+        .then((data) => {
+          setTodayResult((prev) => prev - 1000);
+        });
     } else {
       setIsPop(false);
       alertCountModalRef.current.open();

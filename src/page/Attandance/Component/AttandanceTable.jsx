@@ -79,7 +79,9 @@ const AttandanceTable = ({ member }) => {
                           <img
                             className="h-10 w-10 rounded-full"
                             src={
-                              log.thumbnail ? log.thumbnail : imgMemberCircle
+                              log.thumbnailPath
+                                ? log.thumbnailPath
+                                : imgMemberCircle
                             }
                           />
                         </div>
