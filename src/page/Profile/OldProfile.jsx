@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, Fragment } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ProfileFrame from './Components/Frames/ProfileFrame';
 import InfoBox from './Components/InfoBox';
@@ -16,8 +16,7 @@ import {
   PencilAltIcon,
 } from '@heroicons/react/solid';
 import MessageModal from 'shared/MessageModal';
-import MyProfile from './MyProfile';
-import OtherProfile from './OtherProfile';
+import GiftPointModal from './Components/Modal/GiftPointModal';
 
 const Profile = ({ token, memberInfo, updateInfo }) => {
   const params = useParams();
@@ -33,6 +32,32 @@ const Profile = ({ token, memberInfo, updateInfo }) => {
 
   const giftPointModalState = useState(false);
   const [giftPointModal, setGiftPointModal] = giftPointModalState;
+
+  useEffect(() => {
+    if (followTrigger) {
+      memberAPI.follow({ token, loginId: user.loginId }).then((result) => {
+        if (result.success) {
+          getUser();
+          console.log('success', result);
+        } else console.log('fail', result);
+      });
+      setFollowTrigger(false);
+      getUser();
+    }
+  }, [followTrigger]);
+
+  useEffect(() => {
+    if (unFollowTrigger) {
+      memberAPI.unfollow({ token, loginId: user.loginId }).then((result) => {
+        if (result.success) {
+          getUser();
+          console.log(result);
+        } else console.log(result);
+      });
+      setUnFollowTrigger(false);
+      getUser();
+    }
+  }, [unFollowTrigger]);
 
   useEffect(() => {
     console.log(user);
@@ -81,6 +106,26 @@ const Profile = ({ token, memberInfo, updateInfo }) => {
     },
   ];
 
+  const getUser = () => {
+    memberAPI
+      .getOtherById({ token, id: params.userId })
+      .then((getOtherResult) => {
+        if (getOtherResult.success) {
+          const other = getOtherResult.data;
+          console.log(other);
+          other.rank = other.memberRankEntity.name;
+          other.type = other.memberTypeEntity.name;
+          other.jobs = [];
+          other.thumbnailId = other.thumbnailEntity;
+          setUser(other);
+          setIsFollowee(other.checkFollowee);
+        } else {
+          setUser(null);
+          setError(`${getOtherResult.code}:${getOtherResult.msg}`);
+        }
+      });
+  };
+
   useEffect(() => {
     updateInfo({ memberInfo });
   }, [memberInfo]);
@@ -88,26 +133,42 @@ const Profile = ({ token, memberInfo, updateInfo }) => {
   useEffect(() => {
     if (params.userId == memberInfo.id) {
       setIsMe(true);
+      setUser(memberInfo);
     } else {
       setIsMe(false);
+      getUser();
     }
   }, [params.userId, memberInfo.id]);
 
-  if (isMe) {
-    return (
-      <MyProfile
-        token={token}
-        memberInfo={memberInfo}
-        updateInfo={updateInfo}
-      />
-    );
+  useEffect(() => {
+    if (isMe) setBtns(myBtns);
+    else if (isFollowee) setBtns(followerBtns);
+    else setBtns(unFollowerBtns);
+  }, [isMe, isFollowee]);
+
+  const renderBody = () => (
+    <div className="w-full">
+      <InfoBox type="postlist" params={{ token: token }} />
+    </div>
+  );
+
+  if (!user) {
+    return <div className="text-red-500">{error}</div>;
   } else {
     return (
-      <OtherProfile
-        token={token}
-        memberInfo={memberInfo}
-        userId={params.userId}
-      />
+      <Fragment>
+        <ProfileFrame
+          profileBtns={btns}
+          renderBody={renderBody}
+          memberInfo={user}
+        />
+        <GiftPointModal
+          modalState={giftPointModalState}
+          token={token}
+          userId={params.userId}
+          memberInfo={memberInfo}
+        />
+      </Fragment>
     );
   }
 };
