@@ -26,7 +26,7 @@ const SecondPage = ({ goToFirst, visibleArrow }) => {
   }, []);
 
   return (
-    <div id="main-second-page" className="pt-16">
+    <div id="main-second-page">
       <Trends postList={trendPostList} />
       <Latest postList={latestPostList} />
     </div>

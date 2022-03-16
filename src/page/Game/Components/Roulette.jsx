@@ -60,7 +60,8 @@ const Roulette = ({ gameInfo, member, updateInfo }) => {
             const token = member.token;
             const memberInfo = data.data;
             updateInfo({ token, memberInfo });
-            setMemberPoint(memberInfo.point);
+            // setMemberPoint(memberInfo.point);
+            setMemberPoint(data.data.point);
           }
         });
         rouletteAPI

@@ -1,6 +1,12 @@
+import { Link } from 'react-router-dom';
+
 const navigatoinSub = {
   title: '포인트',
-  menuList: ['랭킹', '출석부', '게임'],
+  menuList: [
+    { name: '랭킹', href: '/ranking' },
+    { name: '출석부', href: '/attandance' },
+    { name: '게임', href: '/game' },
+  ],
 };
 
 // TODO: 범용적으로 만들기
@@ -23,12 +29,14 @@ const NavigationLayout = (props) => {
                     </h1>
                     <div className="text-2xl">
                       {navigatoinSub.menuList.map((menu, index) => (
-                        <div
-                          key={index}
-                          className="p-1 cursor-pointer hover:underline"
-                        >
-                          {menu}
-                        </div>
+                        <Link to={menu.href}>
+                          <div
+                            key={index}
+                            className="p-1 cursor-pointer hover:underline"
+                          >
+                            {menu.name}
+                          </div>
+                        </Link>
                       ))}
                     </div>
                   </div>

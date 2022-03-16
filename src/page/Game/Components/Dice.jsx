@@ -45,6 +45,7 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
   const [confirm, setConfirm] = useState(true); // 배팅 포인트 확정
   const [count, setCount] = useState(0); // 하루 주사위 한 횟수 저장
   const [check, setCheck] = useState(false); // 하루 제한된 횟수만큼 했는지 확인
+  const [memberPoint, setMemberPoint] = useState();
   const [firstCheck, setFirstCheck] = useState(true);
   const alertBettingPointModalRef = useRef({});
   const alertCountModalRef = useRef({});
@@ -59,6 +60,16 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
   };
 
   useEffect(() => {
+    memberAPI
+      .getMember({
+        token: member.token,
+      })
+      .then((data) => {
+        if (data.success) {
+          setMemberPoint(data.data.point);
+        }
+      });
+
     diceAPI
       .getDiceInfo({
         token: member.token,
@@ -139,6 +150,7 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
               })
               .then((data) => {
                 if (data.success) {
+                  setMemberPoint(data.data.point);
                   const token = member.token;
                   const memberInfo = data.data;
                   updateInfo({ token, memberInfo });
@@ -215,6 +227,7 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
                 })
                 .then((data) => {
                   if (data.success) {
+                    setMemberPoint(data.data.point);
                     const token = member.token;
                     const memberInfo = data.data;
                     updateInfo({ token, memberInfo });
@@ -239,6 +252,7 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
                 })
                 .then((data) => {
                   if (data.success) {
+                    setMemberPoint(data.data.point);
                     const token = member.token;
                     const memberInfo = data.data;
                     updateInfo({ token, memberInfo });
@@ -263,6 +277,7 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
                 })
                 .then((data) => {
                   if (data.success) {
+                    setMemberPoint(data.data.point);
                     const token = member.token;
                     const memberInfo = data.data;
                     updateInfo({ token, memberInfo });
@@ -704,7 +719,7 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
                 보유 포인트
               </strong>
               <div className="text-right text-yellow-500 w-[70px] px-2 bg-white bg-opacity-20 rounded-md">
-                {member.memberInfo.point}
+                {memberPoint}
               </div>
             </div>
             <div className="flex justify-between md:flex-wrap my-1">

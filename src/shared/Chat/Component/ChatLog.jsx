@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 
 // local
 import imgMemberCircle from 'assets/img/memberCircle.svg';
@@ -7,8 +7,16 @@ import { connect } from 'react-redux';
 const API_URL = process.env.REACT_APP_API_URL;
 
 const ChatLog = ({ chatLogList, member }) => {
+  useEffect(() => {
+    const divChat = document.getElementById('chatlog');
+    divChat.scrollTop = divChat.scrollHeight;
+  }, [chatLogList]);
+
   return (
-    <div className="h-[60vh] sm:h-96 w-full max-h-full overflow-y-scroll">
+    <div
+      id="chatlog"
+      className="h-[60vh] sm:h-96 w-full max-h-full overflow-y-scroll"
+    >
       <ul role="list" className="">
         {chatLogList.map((chatLog, index) => (
           <Fragment key={index}>
