@@ -16,6 +16,9 @@ const MessageModal = forwardRef(({ handleUpdateMessage }, ref) => {
       setIsError(true);
     }
   };
+  const closeModal = () => {
+    setIsOpen(false);
+  };
 
   const handleOpen = () => {
     setIsOpen(true);
@@ -38,7 +41,7 @@ const MessageModal = forwardRef(({ handleUpdateMessage }, ref) => {
         <Dialog
           as="div"
           className="fixed inset-0 z-10 overflow-y-auto bg-red"
-          onClose={handleSave}
+          onClose={closeModal}
         >
           <div className="min-h-screen px-4 text-center">
             <Transition.Child
