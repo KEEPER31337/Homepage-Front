@@ -1,28 +1,23 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
-import './style/height.css';
+import AOS from 'aos';
+import 'aos/dist/aos.css'; 
+import './style/scale.css';
 import './style/drag.css';
+
 import FirstPage from './Component/FirstPage';
 import SecondPage from './Component/SecondPage';
-import { useEffect } from 'react';
-
-import homeAPI from 'API/v1/home';
 
 const Home = () => {
-  const [visible, setVisible] = useState(true);
+  const [isDownArrow, setIsDownArrow] = useState(true);
 
-  const goToFirst = () => {
-    setVisible(true);
-  };
-  const goToSecond = () => {
-    setVisible(false);
-  };
+  AOS.init();
 
   return (
     <div className="overflow-x-hidden drag-false bg-mainWhite dark:bg-mainBlack text-mainBlack dark:text-mainWhite">
-      {visible && <FirstPage goToSecond={goToSecond} />}
-      <SecondPage goToFirst={goToFirst} visibleArrow={visible} />
+      <FirstPage isDownArrow={isDownArrow} setIsDownArrow={setIsDownArrow}/>
+      <SecondPage/>
     </div>
   );
 };

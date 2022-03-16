@@ -22,7 +22,7 @@ function dateFormat(date) {
 
 export default function PostList(props) {
   const token = props.token;
-  const [postList, setPostList] = useState(new Array());
+  const [postList, setPostList] = useState([]);
 
   useEffect(() => {
     const page = 0;

@@ -17,7 +17,7 @@ import memberAPI from 'API/v1/member';
 import MessageModal from 'shared/MessageModal';
 import actionMember from 'redux/action/member';
 
-const width = 350;
+const width = 350; //캔버스 크기
 const height = 500;
 const strokeWidth = 130; //브러쉬 굵기
 const completedAt = 70; //70% 이상 긁어야함
@@ -26,10 +26,15 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
   // ref
   const backgroundCanvasRef = useRef(null);
   const scratchCardCanvasRef = useRef(null);
-  const rankModalRef = useRef({});
+
+  //modal
+  const alertShowResultModalRef = useRef({});
   const alertCountModalRef = useRef({});
   const alertBuyFirstModalRef = useRef({});
+  const alertLoginModalRef = useRef({});
+  const alertPointLackModalRef = useRef({});
 
+  //scratch
   const [isDrawing, setIsDrawing] = useState(false);
   const [startX, setStartX] = useState(0);
   const [startY, setStartY] = useState(0);
@@ -38,119 +43,19 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
   //게임 후, 등수와 포인트 띄워줌
   const [rank, setRank] = useState(0);
   const [point, setPoint] = useState(0);
-  const [result, setResult] = useState(0);
 
   // 게임 상에서 띄워줄 정보
   const [memberPoint, setMemberPoint] = useState();
   const [remainingCount, setRemainingCount] = useState();
+  const [todayResult, setTodayResult] = useState(0);
   const [overCountCheck, setOverCountCheck] = useState(false);
 
-  const [completed, setCompleted] = useState(false);
-  //완료했는지 안했는지 bool값으로
-  const [progress, setProgress] = useState(0);
   //진행 과정 몇 %인지
-  const [isCompleted, setIsCompleted] = useState(false);
+  const [progress, setProgress] = useState(0);
   //alert창 한번만 띄우기 위해서
+  const [isCompleted, setIsCompleted] = useState(false);
 
-  const onCompleted = () => {
-    setCompleted(true);
-  };
-  const onProgress = (percent) => {
-    setProgress(percent);
-  };
-
-  // 초기 정보 세팅
-  useEffect(() => {
-    memberAPI
-      .getMember({
-        token: member.token,
-      })
-      .then((data) => {
-        if (data.success) {
-          setMemberPoint(data.data.point);
-        }
-      });
-
-    lottoAPI
-      .getLottoInfo({
-        token: member.token,
-      })
-      .then((data) => {
-        if (data.success) {
-          setRemainingCount(gameInfo.LOTTO_MAX_PLAYTIME - data.data);
-        }
-      });
-
-    lottoAPI
-      .checkLottoCount({
-        token: member.token,
-      })
-      .then((data) => {
-        if (data.success) {
-          setOverCountCheck(data.data);
-        }
-      });
-  }, [member]);
-
-  const backEnd = () => {
-    //이미지 변경
-    const backgroundCanvas = backgroundCanvasRef.current;
-    const backgroundContext = backgroundCanvas.getContext('2d');
-
-    const backgroundImage = new Image();
-
-    backgroundImage.onload = function () {
-      backgroundContext.drawImage(this, 0, 0);
-    };
-
-    //false일경우 == 횟수가 1번을 안넘어갔음,
-    if (!overCountCheck) {
-      // 횟수 제한
-      //나중에 ! 추가해라..
-      setIsPop(true);
-      //NOTE api 로또 게임 횟수 제한에서, 하루에 1번만 실행되도록 하는데,
-      // 실행해보니, 게임을 총 2번 할 수 있는 것 같습니다
-      //
-
-      lottoAPI.playLotto({ token: member.token }).then((data) => {
-        console.log('등수는 : ', data.data.lottoPointIdx);
-
-        setRank(data.data.lottoPointIdx);
-
-        switch (data.data.lottoPointIdx) {
-          case 1:
-            backgroundImage.src = win1;
-            setPoint(gameInfo.FIRST_POINT);
-            break;
-          case 2:
-            backgroundImage.src = win2;
-            setPoint(gameInfo.SECOND_POINT);
-            break;
-          case 3:
-            backgroundImage.src = win3;
-            setPoint(gameInfo.THIRD_POINT);
-            break;
-          case 4:
-            backgroundImage.src = win4;
-            setPoint(gameInfo.FOURTH_POINT);
-            break;
-          case 5:
-            backgroundImage.src = win5;
-            setPoint(gameInfo.FIFTH_POINT);
-            break;
-          case 6:
-            backgroundImage.src = win6;
-            setPoint(gameInfo.LAST_POINT);
-            break;
-        }
-      });
-      setMemberPoint((tmp) => tmp - 1000);
-    } else {
-      setIsPop(false);
-      alertCountModalRef.current.open();
-    }
-  };
-
+  //초기 캔버스 이미지 불러오기
   useEffect(() => {
     const scratchCardCanvas = scratchCardCanvasRef.current;
     const scratchCardContext = scratchCardCanvas.getContext('2d');
@@ -173,6 +78,109 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
     scratchCardImage.src = scratchCardImageSrc;
   }, []);
 
+  // 초기 정보 세팅
+  useEffect(() => {
+    memberAPI
+      .getMember({
+        token: member.token,
+      })
+      .then((data) => {
+        if (data.success) {
+          setMemberPoint(data.data.point);
+        }
+      });
+
+    lottoAPI
+      .getLottoInfo({
+        token: member.token,
+      })
+      .then((data) => {
+        if (data.success) {
+          setRemainingCount(
+            gameInfo.LOTTO_MAX_PLAYTIME - data.data.lottoPerDay
+          );
+          setTodayResult(data.data.todayResult);
+        }
+      });
+
+    lottoAPI
+      .checkLottoCount({
+        token: member.token,
+      })
+      .then((data) => {
+        if (data.success) {
+          setOverCountCheck(data.data);
+        }
+      });
+  }, [member]);
+
+  //복권 뽑기 버튼 누를시
+  const backEnd = () => {
+    //이미지 변경
+    const backgroundCanvas = backgroundCanvasRef.current;
+    const backgroundContext = backgroundCanvas.getContext('2d');
+    const backgroundImage = new Image();
+
+    backgroundImage.onload = function () {
+      backgroundContext.drawImage(this, 0, 0);
+    };
+
+    //로그인 안되어있을 경우
+    if (member.token === '') {
+      alertLoginModalRef.current.open();
+      return;
+    }
+    //포인트 부족할 경우
+    if (member.memberInfo.point < gameInfo.ROULETTE_FEE) {
+      alertPointLackModalRef.current.open();
+      return;
+    }
+
+    //게임시작
+    //횟수가 1번을 안넘어갔을 경우
+    if (!overCountCheck) {
+      setIsPop(true);
+
+      lottoAPI.playLotto({ token: member.token }).then((data) => {
+        if (data.success) {
+          setRank(data.data.lottoPointIdx);
+
+          switch (data.data.lottoPointIdx) {
+            case 1:
+              backgroundImage.src = win1;
+              setPoint(gameInfo.FIRST_POINT);
+              break;
+            case 2:
+              backgroundImage.src = win2;
+              setPoint(gameInfo.SECOND_POINT);
+              break;
+            case 3:
+              backgroundImage.src = win3;
+              setPoint(gameInfo.THIRD_POINT);
+              break;
+            case 4:
+              backgroundImage.src = win4;
+              setPoint(gameInfo.FOURTH_POINT);
+              break;
+            case 5:
+              backgroundImage.src = win5;
+              setPoint(gameInfo.FIFTH_POINT);
+              break;
+            case 6:
+              backgroundImage.src = win6;
+              setPoint(gameInfo.LAST_POINT);
+              break;
+          }
+        }
+      });
+      setMemberPoint((tmp) => tmp - 1000);
+    } else {
+      setIsPop(false);
+      alertCountModalRef.current.open();
+    }
+  };
+
+  //스크래치 기능 관련 코드
   const scratchStart = ({ nativeEvent }) => {
     if (isPop) {
       const { layerX, layerY } = nativeEvent;
@@ -199,7 +207,6 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
 
   const scratch = ({ nativeEvent }) => {
     const { layerX, layerY } = nativeEvent;
-
     const context = scratchCardCanvasRef.current.getContext('2d');
 
     if (!isDrawing) {
@@ -219,14 +226,14 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
 
     const percent = getFilledInPixels(32);
     onProgress(percent);
-    //
+
+    // 스크래치 70%이상 긁었을때, 포인트 변동 + 오늘결과 보여주기
     if (percent >= completedAt && !isCompleted) {
       setIsCompleted(true);
-      onCompleted();
-      //setIsPop(false);
-      // alert(rank + ' 등 축하합니다!');
-      rankModalRef.current.open();
-      setResult(point);
+      alertShowResultModalRef.current.open();
+      scratchEnd();
+
+      //보유포인트, 잔여횟수 업데이트 됨(useState)
       memberAPI
         .getMember({
           token: member.token,
@@ -245,6 +252,10 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
     setIsDrawing(false);
   };
 
+  const onProgress = (percent) => {
+    setProgress(percent);
+  };
+
   const infos = [
     {
       subtitle: '보유 포인트',
@@ -256,7 +267,7 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
     },
     {
       subtitle: '오늘 결과',
-      content: result,
+      content: todayResult,
     },
     {
       subtitle: '잔여 횟수',
@@ -281,8 +292,8 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
           </div>
         ))}
       </div>
-      <div className="inset-y-5 py-2 pl-5  w-full   bg-gray-900 rounded-md shadow-md text-amber-200 text-xs sm:text-base">
-        <p>
+      <div className="inset-y-5 py-2 pl-5  w-full   bg-gray-900 rounded-md shadow-md text-amber-200 ">
+        <p className="text-lg">
           {isPop
             ? `${progress}% (${completedAt}%이상 긁어야 합니다)`
             : '복권을 뽑아주세요'}
@@ -324,17 +335,23 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
          
           ${
             !isPop
-              ? 'bg-gradient-to-r from-amber-400 via-red-800 to-black hover:bg-pointYellow dark:from-pink-300 dark:via-purple-400 dark:to-indigo-500 dark:border-4'
-              : 'bg-divisionGray dark:bg-darkPoint'
+              ? 'bg-gradient-to-r from-amber-400 via-red-800 to-black dark:from-darkComponent'
+              : 'bg-divisionGray dark:bg-mainBlack dark:text-gray-400'
           }`}
       >
         뽑기
       </button>
-      <MessageModal ref={rankModalRef}>
+      <MessageModal ref={alertShowResultModalRef}>
         {rank}등 입니다! {point.toLocaleString('ko-KR')}point를 획득하셨습니다.
       </MessageModal>
       <MessageModal ref={alertCountModalRef}>
-        오늘은 마감이오! 이미 1회 다했디~
+        로또는 하루 1회만 참여 가능합니다.
+      </MessageModal>
+      <MessageModal ref={alertLoginModalRef}>
+        로그인 후 이용해주십시오.
+      </MessageModal>
+      <MessageModal ref={alertPointLackModalRef}>
+        포인트가 부족합니다.
       </MessageModal>
       <MessageModal ref={alertBuyFirstModalRef}>
         복권을 먼저 뽑으세요!

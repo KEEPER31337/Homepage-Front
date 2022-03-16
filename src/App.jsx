@@ -19,19 +19,22 @@ import SignIn from 'page/SignIn/SignIn';
 import FindId from 'page/SignIn/Components/FindId';
 import FindPassword from 'page/SignIn/Components/FindPassword';
 import SignUp from 'page/SignUp/SignUp';
+import BookAdd from './page/Library/BookAdd';
+import BookManage from './page/Library/BookManage';
 import Ranking from 'page/Ranking/Ranking';
-
-// API
 import attendanceAPI from 'API/v1/attendance';
+import Chatting from 'shared/Chat/Chatting';
+import actionMember from 'redux/action/member';
 
-const App = (props) => {
+const App = ({ member, darkMode, signOut }) => {
   useEffect(() => {
-    attendanceAPI
-      .check({ token: props.state.member.token })
-      .then((data) => console.log(data));
-  }, [props.state.member]);
+    if (member.token) {
+      attendanceAPI.check({ token: member.token }).then((data) => {
+        if (data.code == -1003) signOut();
+      });
+    }
+  }, [member]);
 
-  const darkMode = props.state.darkMode;
   return (
     <div className={darkMode ? 'dark' : 'light'}>
       <>
@@ -40,12 +43,14 @@ const App = (props) => {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/attandance" element={<Attandance />} />
-          <Route path="/board" element={<BoardMain />} />
-          <Route path="/board/:no" element={<BoardView />} />
-          <Route path="/board/write" element={<BoardWrite />} />
+          <Route path="/board/:categoryId" element={<BoardMain />} />
+          <Route path="/post/:categoryId/:postId" element={<BoardView />} />
+          <Route path="/write/:categoryId" element={<BoardWrite />} />
           <Route path="/event" element={<Event />} />
           <Route path="/game" element={<Game />} />
           <Route path="/library" element={<Library />} />
+          <Route path="/library/add" element={<BookAdd />} />
+          <Route path="/library/manage" element={<BookManage />} />
           <Route path="/profile/:userId/*" element={<ProfileRoute />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/signin" element={<SignIn />} />
@@ -54,13 +59,22 @@ const App = (props) => {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/ranking" element={<Ranking />} />
         </Routes>
+        <Chatting />
       </>
     </div>
   );
 };
 
 const mapStateToProps = (state, OwnProps) => {
-  return { state };
+  return { darkMode: state.darkMode, member: state.member };
 };
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = (dispatch, OwnProps) => {
+  return {
+    signOut: () => {
+      dispatch(actionMember.signOut());
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

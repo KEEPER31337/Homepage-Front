@@ -7,6 +7,7 @@ import attendanceAPI from 'API/v1/attendance';
 import SimpleNotification from 'shared/SimpleNotification';
 import iconPencilAlt from 'assets/img/icons/pecil-alt.svg';
 import EditModal from './EditModal';
+import imgMemberCircle from 'assets/img/memberCircle.svg';
 
 const dateFormat = 'YYYY-MM-DD';
 const headers = ['이름', '메세지', '개근', '등수'];
@@ -78,9 +79,7 @@ const AttandanceTable = ({ member }) => {
                           <img
                             className="h-10 w-10 rounded-full"
                             src={
-                              log.thumbnail
-                                ? log.thumbnail
-                                : 'https://avatars.githubusercontent.com/u/23546441?s=400&u=db7abf2929e5518c12189034dc3fed9bda94f0a6&v=4'
+                              log.thumbnail ? log.thumbnail : imgMemberCircle
                             }
                           />
                         </div>

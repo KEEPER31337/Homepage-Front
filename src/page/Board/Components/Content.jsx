@@ -3,7 +3,7 @@ import { testText } from 'page/Board/testText';
 import '@toast-ui/editor/dist/toastui-editor.css'; //마크다운 편집기 뷰어 에디터
 import { Viewer } from '@toast-ui/react-editor';
 import { connect } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
   ThumbUpIcon,
   ThumbDownIcon,
@@ -22,6 +22,7 @@ import utilAPI from 'API/v1/util';
 const API_URL = process.env.REACT_APP_API_URL;
 
 const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
+  const { categoryId, postId } = useParams();
   //board는 게시글 정보가 담긴 객체
   //console.log(state.member.memberId); //(내 아이디)나중에 업데이트 될거임
   const isDark = state.darkMode; //Dark모드 여부
@@ -49,7 +50,6 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
         token: token,
       })
       .then((res) => {
-        console.log(res);
         setLikeChangeFlag(!likeChangeFlag);
       });
     setIsLiked(!isLiked);
@@ -75,7 +75,7 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
     if (window.confirm('정말로 해당 게시글을 삭제하시겠습니까?')) {
       postAPI.remove({ boardId: postingId, token: token }).then((res) => {
         if (res.success) {
-          navigate('/board');
+          navigate(`/board/${categoryId}`);
         } else {
           alert('게시물 삭제 실패! 전산관리자에게 문의하세요~');
         }
@@ -85,12 +85,9 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
   const toggleFiles = () => {
     setToggle(!toggle);
   };
-
   useEffect(() => {
-    console.log('Content:reload');
-    utilAPI.getThumbnail({ thumbnailId: board.thumbnail.id }).then((data) => {
-      console.log(data);
-
+    console.log(board.title + ' Content:reload');
+    /*utilAPI.getThumbnail({ thumbnailId: board.thumbnail.id }).then((data) => {
       const reader = new FileReader();
       reader.onabort = () => console.log('file reading was aborted');
       reader.onerror = () => console.log('file reading has failed');
@@ -101,7 +98,7 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
         }
       };
       reader.readAsDataURL(data);
-    });
+    });*/
 
     postAPI
       .check({
@@ -109,14 +106,13 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
         token: token,
       })
       .then((res) => {
-        //console.log(res);
         setIsLiked(res.data.liked);
         setIsDisliked(res.data.disliked);
       });
     const viwerInstance = viwerRef.current.getInstance();
     viwerInstance.setMarkdown(board.content);
     setFiles(board.files);
-  }, [state.member.token]);
+  }, [state.member.token, board]);
 
   return (
     <div className="my-5">
@@ -149,11 +145,14 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
         </p>
       </div>
       {board.writerId == myId ? (
-        <div className="px-10 absolute w-full text-xs md:w-[75%] sm:text-base flex flex-row-reverse ">
+        <div
+          name="글 수정/삭제"
+          className="px-2 absolute w-[90vw] text-xs sm:text-base flex flex-row-reverse "
+        >
           <div className="rounded-lg bg-slate-100 my-2 dark:bg-darkComponent">
             <UserCircleIcon className="inline-block h-5 w-5 m-1 text-divisionGray dark:text-slate-500 " />
             <Link
-              to="/board/write"
+              to={`/write/${categoryId}`}
               state={{
                 modifyFlag: true,
                 board,
@@ -176,13 +175,15 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
       )}
       <div
         name="썸네일"
-        className={(board.thumbnail ? '' : 'hidden') + ' flex justify-center'}
+        className={
+          (board.thumbnailPath ? '' : 'hidden') + ' flex justify-center'
+        }
       >
         <img
           className={
             'border-4 border-slate-500 m-3 p-1 max-h-[300px] max-w-[300px] rounded-xl'
           }
-          src={thumbnailBase64}
+          src={API_URL + board.thumbnailPath}
           alt="thumbnail"
         />
       </div>

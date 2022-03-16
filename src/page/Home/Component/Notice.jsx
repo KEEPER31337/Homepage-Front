@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const Notice = () => {
     return (
-        <div className="mt-0 ">
-            <div className="max-w-3xl mx-auto px-2 lg:px-8">
+        <div className="mt-0">
+            <div className="max-w-3xl mx-auto px-2 lg:px-8 mt-8">
                 <div className="p-2 rounded-lg bg-mainYellow text-mainBlack shadow-lg sm:p-3">
                     <div className="flex items-center justify-between flex-wrap">
                         {<NoticeIcon />}
@@ -32,8 +32,7 @@ const NoticeContent = () => {
     return (
         <div className="w-0 flex-1 flex items-center">
             <p className="ml-3 font-semibold truncate text-lg">
-                <span className="md:hidden"> We announced a new product! </span>
-                <span className="hidden md:inline"> 곧 (2/25) 기술 문서 최종 발표 날입니다! </span>
+                <span className="inline"> 곧 (2/25) 기술 문서 최종 발표 날입니다! </span>
             </p>
         </div>
     )
