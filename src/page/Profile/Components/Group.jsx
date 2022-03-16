@@ -13,7 +13,7 @@ export default function Group(props) {
     <div>
       <img
         className="h-9 object-cover float-left w-9"
-        src={group.img}
+        src={group?.img}
         onMouseEnter={() => setTooltip(true)}
         onMouseLeave={() => setTooltip(false)}
       />
@@ -25,7 +25,7 @@ export default function Group(props) {
                               rounded-md flex justify-center items-center 
                               shadow shadow-zinc-400/40 "
             >
-              {group.name}
+              {group?.name}
             </div>
             <div
               className="absolute w-0 h-0 border-opacity-75
