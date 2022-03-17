@@ -34,7 +34,7 @@ export default function Latest({ postList }) {
               >
                 <div className="flex-shrink-0">
                   <Link
-                    to={`/post/${categoryId}/${post.id}`}
+                    to={`/post/${post.DatecategoryId}/${post.id}`}
                     className="block mt-2"
                   >
                     <img
@@ -46,17 +46,14 @@ export default function Latest({ postList }) {
                 </div>
                 <div className="flex-1 bg-mainWhite dark:bg-mainBlack p-6 flex flex-col justify-between">
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-mainYellow">
-                      <Link 
-                        /* TO DO : Link to category of the post */
-                        to={""}
-                        className="hover:underline"
-                      >
-                        {post.category}
-                      </Link>
-                    </p>
                     <Link
-                      to={`/post/${categoryId}/${post.id}`}
+                      to={`/board/${post.categoryId}`}
+                      className="text-sm font-medium text-mainYellow hover:underline"
+                    >
+                      {post.category} 
+                    </Link>
+                    <Link
+                      to={`/post/${post.categoryId}/${post.id}`}
                       className="block mt-2"
                     >
                       <p className="truncate text-xl font-semibold dark:text-mainWhite">
