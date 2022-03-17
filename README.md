@@ -8,6 +8,8 @@
 npm install
 ```
 
+---
+
 ### env 환경 설정
 
 - **.env**
@@ -21,3 +23,19 @@ REACT_APP_CHAT_URL=FRONT_URL:3002
 - 배포할 때는 REACT_APP_MODE=production
 
 프로젝트 디렉토리에 위와 같이 **.env** 파일 작성
+
+---
+
+### 실행
+
+- **배포**
+
+```shell
+npm run pro
+```
+
+- **개발**
+
+```shell
+npm run dev
+```
