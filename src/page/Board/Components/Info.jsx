@@ -6,12 +6,13 @@ import WriteButton from './WriteButton';
 
 const fontList = ['돋움', '나눔 고딕', '바탕'];
 
-const Info = (props) => {
-  const [font, setFont] = useState('돋움');
-  const currentCategoryName = props.state.category.current.name;
+const Info = ({ isWrite, state }) => {
+  //const [font, setFont] = useState('돋움');
+  const [currentCategoryName, setCurrentCategoryName] = useState('');
   useEffect(() => {
-    console.log(font);
-  }, [font]);
+    setCurrentCategoryName(state.category.current.name);
+    //console.log(props.state.category);
+  }, [currentCategoryName]);
 
   return (
     <div className="flex">
@@ -24,7 +25,7 @@ const Info = (props) => {
             {currentCategoryName}입니다.
           </p>
           <div>
-            {props.isWrite ? (
+            {isWrite ? (
               ''
             ) : (
               <div

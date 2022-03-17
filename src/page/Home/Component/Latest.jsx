@@ -1,14 +1,17 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import ScrollContainer from 'react-indiana-drag-scroll';
+import { connect } from 'react-redux';
 
 import '../style/scale.css';
 import showDateAndTime from './showDateAndTime.jsx';
 import showPostThumbnail from './showPostThumbnail';
 import showUserThumbnail from './showUserThumbnail';
 
+// redux
+import actionCategory from 'redux/action/category';
 
-export default function Latest({ postList }) {
+function Latest({ postList, currentCategory, updateCurrentCategory }) {
   const now = new Date();
   const categoryId = useParams();
   return (
@@ -36,6 +39,12 @@ export default function Latest({ postList }) {
                   <Link
                     to={`/post/${categoryId}/${post.id}`}
                     className="block mt-2"
+                    onClick={() => {
+                      updateCurrentCategory({
+                        id: post.categoryId,
+                        name: post.category,
+                      });
+                    }}
                   >
                     <img
                       className="h-48 w-full object-cover"
@@ -47,10 +56,16 @@ export default function Latest({ postList }) {
                 <div className="flex-1 bg-mainWhite dark:bg-mainBlack p-6 flex flex-col justify-between">
                   <div className="flex-1">
                     <p className="text-sm font-medium text-mainYellow">
-                      <Link 
+                      <Link
                         /* TO DO : Link to category of the post */
-                        to={""}
+                        to={''}
                         className="hover:underline"
+                        onClick={() => {
+                          updateCurrentCategory({
+                            id: post.categoryId,
+                            name: post.category,
+                          });
+                        }}
                       >
                         {post.category}
                       </Link>
@@ -58,6 +73,12 @@ export default function Latest({ postList }) {
                     <Link
                       to={`/post/${categoryId}/${post.id}`}
                       className="block mt-2"
+                      onClick={() => {
+                        updateCurrentCategory({
+                          id: post.categoryId,
+                          name: post.category,
+                        });
+                      }}
                     >
                       <p className="truncate text-xl font-semibold dark:text-mainWhite">
                         {post.title}
@@ -97,3 +118,16 @@ export default function Latest({ postList }) {
     </div>
   );
 }
+
+const mapStateToProps = (state) => {
+  return { currentCategory: state.category.current };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateCurrentCategory: (categoryId) => {
+      dispatch(actionCategory.updateCurrent(categoryId));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Latest);
