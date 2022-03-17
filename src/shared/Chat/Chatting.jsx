@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { ChatIcon } from '@heroicons/react/solid';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
+import Draggable from 'react-draggable';
 
 //local
 import ChatModal from './Component/ChatModal';
@@ -35,17 +36,25 @@ const Chatting = ({ member }) => {
     <>
       {auth ? (
         <>
-          <div className="fixed bottom-5 right-5 z-50">
-            <button
+          <Draggable disabled={isMobile}>
+            <div
               className={`${
-                open ? 'invisible' : 'visible'
-              } rounded-md px-5 py-1 font-semibold text-mainBlack bg-mainYellow hover:bg-pointYellow`}
-              onClick={handleOpen}
+                isMobile
+                  ? 'absolute top-5 right-20 w-8 h-8'
+                  : 'fixed bottom-5 right-5'
+              } z-30`}
             >
-              <ChatIcon className="h-8 w-8" />
-              Chat
-            </button>
-          </div>
+              <button
+                className={`${open ? 'invisible' : 'visible'} rounded-md ${
+                  isMobile ? 'p-1' : 'px-5 py-1'
+                } font-semibold text-mainBlack bg-mainYellow hover:bg-pointYellow`}
+                onClick={handleOpen}
+              >
+                <ChatIcon className="h-8 w-8" />
+                {isMobile ? '' : 'Chat'}
+              </button>
+            </div>
+          </Draggable>
           <div
             className={`fixed ${
               isMobile ? 'bottom-3 right-3' : 'bottom-20 right-5'
