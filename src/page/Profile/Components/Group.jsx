@@ -42,7 +42,7 @@ export default function Group(props) {
     <div>
       <img
         className="float-left rounded-3xl bg-mainWhite"
-        src={group?.img}
+        src={group?.img ? group.img : defaultBadge}
         onMouseEnter={() => setTooltip(true)}
         onMouseLeave={() => setTooltip(false)}
       />
