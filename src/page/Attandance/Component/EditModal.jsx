@@ -77,34 +77,39 @@ const MessageModal = forwardRef(({ handleUpdateMessage }, ref) => {
                   메세지 업데이트
                 </Dialog.Title>
                 <p className="pb-2"></p>
-                <div>
-                  <input
-                    type="text"
-                    required
-                    value={message}
-                    onChange={(e) => {
-                      setMessage(e.target.value);
-                    }}
-                    className=" rounded-md block w-full px-1 py-1 border border-divisionGray 
-                    focus:border-mainYellow focus:ring-mainYellow autofill:bg-yellow-200"
-                  />
-                </div>
-                <div
-                  className={`block mt-1 text-sm font-medium text-${
-                    isError ? 'red-500' : 'pointYellow'
-                  }`}
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSave();
+                  }}
                 >
-                  {isError ? '1글자 이상 입력해주세요.' : ''}
-                </div>
-                <div className="m-auto mt-4 w-fit">
-                  <button
-                    type="button"
-                    className="inline-flex justify-center px-4 py-2 text-sm font-bold border-2 border-amber-400 rounded-md text-amber-900 bg-amber-100 hover:bg-amber-200"
-                    onClick={handleSave}
+                  <div>
+                    <input
+                      type="text"
+                      required
+                      value={message}
+                      onChange={(e) => {
+                        setMessage(e.target.value);
+                      }}
+                      className=" rounded-md block w-full px-1 py-1 border border-divisionGray 
+                    focus:border-mainYellow focus:ring-mainYellow autofill:bg-yellow-200"
+                    />
+                  </div>
+                  <div
+                    className={`block mt-1 text-sm font-medium text-${
+                      isError ? 'red-500' : 'pointYellow'
+                    }`}
                   >
-                    저장
-                  </button>
-                </div>
+                    {isError ? '1글자 이상 입력해주세요.' : ''}
+                  </div>
+                  <div className="m-auto mt-4 w-fit">
+                    <input
+                      type="submit"
+                      className="inline-flex justify-center px-4 py-2 text-sm font-bold border-2 border-amber-400 rounded-md text-amber-900 bg-amber-100 hover:bg-amber-200"
+                      value="저장"
+                    />
+                  </div>
+                </form>
               </div>
             </Transition.Child>
           </div>
