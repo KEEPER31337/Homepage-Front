@@ -121,16 +121,11 @@ const AddStudy = ({ setOpen, state, changeFlag, setChangeFlag }) => {
           <div className="bg-transparent px-4 pb-3 sm:rounded-t-lg sm:px-6">
             <div className="-ml-4 -mt-2 flex items-center justify-between flex-wrap sm:flex-nowrap">
               <div className="border-b-2 border-pointYellow ml-4 mt-2 w-full">
-                <label htmlFor="study-name" className="sr-only">
-                  스터디명
-                </label>
                 <div className="relative w-full text-gray-400 focus-within:text-gray-600">
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center"></div>
                   <input
-                    name="스터디명"
-                    id="study-name"
                     type="text"
-                    className="block h-full w-full border-transparent bg-transparent pb-1 pr-3 text-gray-900 font-bold placeholder-[rgb(218,154,70)] focus:outline-none focus:placeholder-[rgb(255,235,110)] focus:ring-0 focus:border-transparent sm:text-2xl"
+                    className="block h-full w-full border-transparent bg-transparent pb-1 pr-3 text-gray-900 font-bold placeholder-[rgb(218,154,70)] autofill:bg-red-500 focus:outline-none focus:ring-0 focus:border-transparent sm:text-2xl"
                     placeholder="스터디명"
                     onBlur={(e) => setTitle(e.target.value)}
                   />
@@ -298,16 +293,11 @@ const AddStudy = ({ setOpen, state, changeFlag, setChangeFlag }) => {
                           className="flex-shrink-0 h-5 w-5"
                         />
                         <span className="ml-2 flex-1 w-0 truncate">
-                          <label
-                            htmlFor="Github"
-                            className="block ml-1 text-sm font-medium text-gray-700 dark:text-gray-300"
-                          >
+                          <label className="block ml-1 text-sm font-medium text-gray-700 dark:text-gray-300">
                             Github
                           </label>
                           <div className="m-1">
                             <input
-                              id="Github"
-                              name="Github"
                               type="text"
                               autoComplete="Github"
                               placeholder="http://"
@@ -325,16 +315,11 @@ const AddStudy = ({ setOpen, state, changeFlag, setChangeFlag }) => {
                           className="flex-shrink-0 h-5 w-5"
                         />
                         <span className="ml-2 flex-1 w-0 truncate">
-                          <label
-                            htmlFor="Notion"
-                            className="block ml-1 text-sm font-medium text-gray-700 dark:text-gray-300"
-                          >
+                          <label className="block ml-1 text-sm font-medium text-gray-700 dark:text-gray-300">
                             Notion
                           </label>
                           <div className="m-1">
                             <input
-                              id="Notion"
-                              name="Notion"
                               type="text"
                               autoComplete="Notion"
                               placeholder="http://"
@@ -352,16 +337,11 @@ const AddStudy = ({ setOpen, state, changeFlag, setChangeFlag }) => {
                           aria-hidden="true"
                         />
                         <span className="ml-2 flex-1 w-0 truncate">
-                          <label
-                            htmlFor="etc"
-                            className="block ml-1 text-sm font-medium text-gray-700 dark:text-gray-300"
-                          >
-                            .Etc
+                          <label className="block ml-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+                            기타
                           </label>
                           <div className="m-1">
                             <input
-                              id="etc"
-                              name="etc"
                               type="text"
                               autoComplete="etc"
                               placeholder="http://"

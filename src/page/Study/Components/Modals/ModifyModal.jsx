@@ -10,7 +10,7 @@ import {
 } from '@heroicons/react/solid';
 
 //local
-import ModifyStudy from 'page/Study/Components/ModifyStudy';
+import ModifyStudy from './ModifyStudy';
 
 const ModifyModal = ({
   currentStudy,
