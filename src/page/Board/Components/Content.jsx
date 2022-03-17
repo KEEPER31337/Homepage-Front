@@ -99,6 +99,7 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
       };
       reader.readAsDataURL(data);
     });*/
+    console.log(board);
 
     postAPI
       .check({
@@ -181,7 +182,7 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
       >
         <img
           className={
-            'border-4 border-slate-500 m-3 p-1 max-h-[300px] max-w-[300px] rounded-xl'
+            'border-4 border-slate-500 m-3 p-1 max-h-[400px] max-w-[400px] h-full w-full rounded-xl'
           }
           src={board.thumbnailPath}
           alt="thumbnail"
