@@ -26,7 +26,7 @@ async function create({
   formData.append('isSecret', isSecret);
   formData.append('isTemp', isTemp);
   formData.append('password', password);
-  formData.append('file', files);
+  files.forEach(file => formData.append("file", file));
   formData.append('thumbnail', thumbnailFile);
 
   const config = {
