@@ -29,9 +29,9 @@ const grades = {
   일반회원: { name: '일반회원', img: secondGradeBadge },
 };
 const testGrups = {
-  ROLE_회원: { name: '회원', img: defaultBadge },
-  일반회원: { name: '일반회원', img: defaultBadge },
-  비회원: { name: '비회원', img: defaultBadge },
+  ROLE_회원: { name: '회원', img: firstGradeBadge },
+  일반회원: { name: '일반회원', img: quitBadge },
+  비회원: { name: '비회원', img: reqularBadge },
 };
 const groups = { ...roles, ...states, ...grades, ...testGrups };
 
@@ -41,7 +41,7 @@ export default function Group(props) {
   return (
     <div>
       <img
-        className="float-left rounded-3xl bg-mainWhite"
+        className="float-left rounded bg-mainWhite"
         src={group?.img ? group.img : defaultBadge}
         onMouseEnter={() => setTooltip(true)}
         onMouseLeave={() => setTooltip(false)}
