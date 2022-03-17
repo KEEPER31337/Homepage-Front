@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { formatFileSize } from '../BoardUtil';
 
 const getFileIcon = (filename) => {
-  const extension = filename.split('.')[1];
+  const extension = filename?.split('.')[1];
 
   try {
     return (
@@ -29,20 +29,20 @@ const FilesUploadForm = (props) => {
   const [files, setFiles] = useState([]);
 
   const deleteClickHandler = (fileName) => {
-    props.setFiles(files.filter((file) => file.fileName !== fileName));
-    setFiles(files.filter((file) => file.fileName !== fileName));
+    props.setFiles(files.filter((file) => file.name !== fileName));
+    setFiles(files.filter((file) => file.name !== fileName));
   };
 
   const getFileInfo = (file) => {
     return (
-      <tr className="border-b" key={file.fileName}>
+      <tr className="border-b" key={file.name}>
         <td>
-          {getFileIcon(file.fileName)}
-          {file.fileName}
+          {getFileIcon(file.name)}
+          {file.name}
         </td>
-        <td>{formatFileSize(file.fileSize)}</td>
+        <td>{formatFileSize(file.size)}</td>
         <td className="text-red-500">
-          <button onClick={() => deleteClickHandler(file.fileName)}>
+          <button onClick={() => deleteClickHandler(file.name)}>
             <TrashIcon className=" h-5 w-5 inline-block " aria-hidden="true" />
             삭제
           </button>
@@ -66,7 +66,7 @@ const FilesUploadForm = (props) => {
           notAddFiles = [...notAddFiles, newFile];
         } else {
           temp = [...temp, newFile];
-          const date = new Date(newFile.lastModifiedDate);
+          /*const date = new Date(newFile.lastModifiedDate);
           const uploadTime =
             date.getFullYear() +
             '-' +
@@ -74,9 +74,9 @@ const FilesUploadForm = (props) => {
             '-' +
             date.getDate() +
             'T' +
-            newFile.lastModifiedDate.toString().split(' ')[4];
-          //realAddFiles = [...realAddFiles, newFile];
-          realAddFiles = [
+            newFile.lastModifiedDate.toString().split(' ')[4];*/
+          realAddFiles = [...realAddFiles, newFile];
+          /*realAddFiles = [
             ...realAddFiles,
             {
               id: Date.now(),
@@ -86,7 +86,7 @@ const FilesUploadForm = (props) => {
               uploadTime: uploadTime,
               ipAddress: '1.1.1.1',
             },
-          ];
+          ];*/
         }
       });
       if (notAddFiles.length !== 0) {
