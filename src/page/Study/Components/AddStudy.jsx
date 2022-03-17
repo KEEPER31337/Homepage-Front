@@ -6,6 +6,7 @@ import {
   PaperClipIcon,
   XIcon,
   PlusIcon,
+  ExclamationCircleIcon,
 } from '@heroicons/react/solid';
 //local
 import studyAPI from 'API/v1/study';
@@ -31,7 +32,11 @@ const AddStudy = ({ setOpen, state, changeFlag, setChangeFlag }) => {
   const [clickable, setClickable] = useState(true);
   const [viewMemberList2, setViewMemberList2] = useState(false);
   const [allMemberList, setAllMemberList] = useState([]); //멤버 추가 시 보여줄 동아리 회원의 전체 리스트
-
+  const uploadable = () => {
+    if (year === '' || season === 0 || title === '' || information === '')
+      return false;
+    return true;
+  };
   useEffect(() => {
     memberAPI.getAllMembers().then((data) => {
       setAllMemberList(data.list);
@@ -116,19 +121,48 @@ const AddStudy = ({ setOpen, state, changeFlag, setChangeFlag }) => {
             <option value="3">2학기</option>
             <option value="4">겨울방학</option>
           </select>
+          {year == '' || season == 0 ? (
+            <div className="inline-block group ">
+              <ExclamationCircleIcon
+                className="inline-block h-6 w-6 mr-1 ml-2 bg-mainWhite rounded-full text-red-400 group dark:text-red-700 dark:bg-gray-300"
+                aria-hidden="true"
+              />
+              <div className="absolute border border-red-400 rounded-lg bg-[rgb(240,230,190)] text-red-600 text-sm px-3 hidden group-hover:inline-block dark:bg-[rgb(200,190,150)]">
+                필수로 기입해야하는 내용입니다!
+              </div>
+            </div>
+          ) : (
+            ''
+          )}
         </div>
+
         <div className="bg-[rgb(255,209,90)] shadow overflow-hidden border-2 border-mainYellow sm:rounded-lg dark:text-mainWhite">
           <div className="bg-transparent px-4 pb-3 sm:rounded-t-lg sm:px-6">
             <div className="-ml-4 -mt-2 flex items-center justify-between flex-wrap sm:flex-nowrap">
               <div className="border-b-2 border-pointYellow ml-4 mt-2 w-full">
                 <div className="relative w-full text-gray-400 focus-within:text-gray-600">
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center"></div>
-                  <input
-                    type="text"
-                    className="block h-full w-full border-transparent bg-transparent pb-1 pr-3 text-gray-900 font-bold placeholder-[rgb(218,154,70)] autofill:bg-red-500 focus:outline-none focus:ring-0 focus:border-transparent sm:text-2xl"
-                    placeholder="스터디명"
-                    onBlur={(e) => setTitle(e.target.value)}
-                  />
+                  <div className="flex justify-between items-center ">
+                    <input
+                      type="text"
+                      className="inline-block h-full w-full border-transparent bg-transparent pb-1 pr-3 text-gray-900 font-bold placeholder-[rgb(218,154,70)] focus:outline-none focus:ring-0 focus:border-transparent sm:text-2xl"
+                      placeholder="스터디명"
+                      onBlur={(e) => setTitle(e.target.value)}
+                    />
+                    {title == '' ? (
+                      <div className="inline-block group ">
+                        <div className="absolute right-10 border border-red-400 rounded-lg bg-mainYellow text-red-600 text-sm px-3 hidden group-hover:inline-block">
+                          필수로 기입해야하는 내용입니다!
+                        </div>
+                        <ExclamationCircleIcon
+                          className="inline-block h-6 w-6 mr-1 ml-2 bg-mainWhite rounded-full text-red-500 "
+                          aria-hidden="true"
+                        />
+                      </div>
+                    ) : (
+                      ''
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -136,12 +170,22 @@ const AddStudy = ({ setOpen, state, changeFlag, setChangeFlag }) => {
           <div className="bg-mainWhite border-gray-200 px-4 py-5 sm:px-6 dark:bg-darkComponent">
             <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
               <div className="sm:col-span-2">
-                <label
-                  htmlFor="about"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-400"
-                >
+                <label className="inline-block text-sm font-medium text-gray-700 dark:text-gray-400">
                   스터디 소개
                 </label>
+                {information == '' ? (
+                  <div className="inline-block group ">
+                    <ExclamationCircleIcon
+                      className="inline-block h-4 w-4 mr-1 ml-2 -mt-[1px] mb-[1px] bg-mainWhite rounded-full text-red-400 group dark:text-red-700 dark:bg-gray-300"
+                      aria-hidden="true"
+                    />
+                    <div className="absolute border border-red-400 rounded-lg bg-[rgb(240,230,190)] text-red-600 text-sm px-3 hidden group-hover:inline-block dark:bg-[rgb(200,190,150)]">
+                      필수로 기입해야하는 내용입니다!
+                    </div>
+                  </div>
+                ) : (
+                  ''
+                )}
 
                 <div className="mt-1">
                   <textarea
@@ -359,7 +403,19 @@ const AddStudy = ({ setOpen, state, changeFlag, setChangeFlag }) => {
           </div>
         </div>
         <div className="pt-3 pr-3">
-          <div className="flex justify-end">
+          <div className="flex justify-end items-center">
+            {!uploadable() ? (
+              <div className="text-red-500 mx-2 dark:text-red-600">
+                <ExclamationCircleIcon
+                  className="inline-block h-5 w-5 mr-2 -mt-[2px] mb-[2px] bg-mainWhite rounded-full text-red-400 group dark:text-red-700 dark:bg-gray-300"
+                  aria-hidden="true"
+                />
+                작성되지 않은 내용이 있습니다.
+              </div>
+            ) : (
+              ''
+            )}
+
             <button
               type="button"
               className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none dark:bg-gray-600 dark:text-gray-300 dark:border-darkComponent"
@@ -371,7 +427,7 @@ const AddStudy = ({ setOpen, state, changeFlag, setChangeFlag }) => {
               type="button"
               className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-mainYellow hover:bg-pointYellow focus:outline-none"
               onClick={() => createHandler()}
-              disabled={!clickable}
+              disabled={!clickable || !uploadable()}
             >
               추가하기
             </button>
