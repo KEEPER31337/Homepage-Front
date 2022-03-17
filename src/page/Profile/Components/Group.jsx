@@ -1,10 +1,39 @@
 import React, { useState } from 'react';
+import firstGradeBadge from 'assets/img/profileImg/badge/profile_badge_grade_first.png';
+import secondGradeBadge from 'assets/img/profileImg/badge/profile_badge_grade_second.png';
+import graduateBadge from 'assets/img/profileImg/badge/profile_badge_state_graduate.png';
+import quitBadge from 'assets/img/profileImg/badge/profile_badge_state_quit.png';
+import reqularBadge from 'assets/img/profileImg/badge/profile_badge_state_regular.png';
+import sleepBadge from 'assets/img/profileImg/badge/profile_badge_state_sleep.png';
+import defaultBadge from 'assets/img/profileImg/badge/profile_badge_default.png';
 
-const groups = {
-  ROLE_회원: { name: '회원', img: '' },
-  일반회원: { name: '일반회원', img: '' },
-  비회원: { name: '비회원', img: '' },
+const roles = {
+  ROLE_회장: { name: '회장', img: defaultBadge },
+  ROLE_부회장: { name: '부회장', img: defaultBadge },
+  ROLE_대외부장: { name: '대외부장', img: defaultBadge },
+  ROLE_학술부장: { name: '학술부장', img: defaultBadge },
+  ROLE_전산관리자: { name: '전산관리자', img: defaultBadge },
+  ROLE_서기: { name: '서기', img: defaultBadge },
+  ROLE_총무: { name: '총무', img: defaultBadge },
+  ROLE_사서: { name: '사서', img: defaultBadge },
 };
+const states = {
+  정회원: { name: '정회원', img: reqularBadge },
+  비회원: { name: '비회원', img: defaultBadge },
+  휴면회원: { name: '휴면회원', img: sleepBadge },
+  졸업회원: { name: '졸업회원', img: graduateBadge },
+  탈퇴: { name: '탈퇴', img: quitBadge },
+};
+const grades = {
+  우수회원: { name: '우수회원', img: firstGradeBadge },
+  일반회원: { name: '일반회원', img: secondGradeBadge },
+};
+const testGrups = {
+  ROLE_회원: { name: '회원', img: defaultBadge },
+  일반회원: { name: '일반회원', img: defaultBadge },
+  비회원: { name: '비회원', img: defaultBadge },
+};
+const groups = { ...roles, ...states, ...grades, ...testGrups };
 
 export default function Group(props) {
   const group = groups[props.groupName];
@@ -12,7 +41,7 @@ export default function Group(props) {
   return (
     <div>
       <img
-        className="h-9 object-cover float-left w-9"
+        className="float-left rounded-3xl bg-mainWhite"
         src={group?.img}
         onMouseEnter={() => setTooltip(true)}
         onMouseLeave={() => setTooltip(false)}
