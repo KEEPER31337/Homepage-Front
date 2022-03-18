@@ -7,8 +7,7 @@ import showDateAndTime from './showDateAndTime';
 import showPostThumbnail from './showPostThumbnail';
 import showUserThumbnail from './showUserThumbnail';
 
-
-export default function Trends({ postList }) {
+function Trends({ postList }) {
   const now = new Date();
   return (
     <div
@@ -32,9 +31,7 @@ export default function Trends({ postList }) {
                 className="w-[300px] grow-0 shrink-0 flex flex-col rounded-lg shadow-lg overflow-hidden"
               >
                 <div className="flex-shrink-0">
-                  <Link
-                  to={`/post/${post.categoryId}/${post.id}`}
-                  >
+                  <Link to={`/post/${post.categoryId}/${post.id}`}>
                     <img
                       className="h-48 w-full object-cover"
                       src={showPostThumbnail(post.thumbnailPath)}
@@ -48,15 +45,13 @@ export default function Trends({ postList }) {
                       to={`/board/${post.categoryId}`}
                       className="text-sm font-medium text-mainYellow hover:underline"
                     >
-                      {post.category} 
+                      {post.category}
                     </Link>
-                    <Link
-                        to={`/post/${post.categoryId}/${post.id}`}
-                      > 
-                    <p className="block mt-2 truncate text-xl font-semibold dark:text-mainWhite"> 
+                    <Link to={`/post/${post.categoryId}/${post.id}`}>
+                      <p className="block mt-2 truncate text-xl font-semibold dark:text-mainWhite">
                         {post.title}
-                    </p>
-                  </Link>
+                      </p>
+                    </Link>
                   </div>
                   <div className="mt-6 flex items-center">
                     <div className="flex-shrink-0">
@@ -74,7 +69,10 @@ export default function Trends({ postList }) {
                         {post.user}
                       </p>
                       <div className="flex space-x-1 text-sm text-gray-500">
-                        <time dateTime={post.dateTime}> {showDateAndTime(now, post.dateTime)} </time>
+                        <time dateTime={post.dateTime}>
+                          {' '}
+                          {showDateAndTime(now, post.dateTime)}{' '}
+                        </time>
                         <span aria-hidden="true">&middot;</span>
                         <span>{post.watch} watch</span>
                       </div>
@@ -89,3 +87,5 @@ export default function Trends({ postList }) {
     </div>
   );
 }
+
+export default Trends;

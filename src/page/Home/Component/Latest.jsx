@@ -7,10 +7,8 @@ import showDateAndTime from './showDateAndTime.jsx';
 import showPostThumbnail from './showPostThumbnail';
 import showUserThumbnail from './showUserThumbnail';
 
-
-export default function Latest({ postList }) {
+function Latest({ postList }) {
   const now = new Date();
-  const categoryId = useParams();
   return (
     <div
       className="relative bg-gray-50 dark:bg-neutral-900 h-auto pt-16 pb-4 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8"
@@ -34,7 +32,7 @@ export default function Latest({ postList }) {
               >
                 <div className="flex-shrink-0">
                   <Link
-                    to={`/post/${categoryId}/${post.id}`}
+                    to={`/post/${post.categoryId}/${post.id}`}
                     className="block mt-2"
                   >
                     <img
@@ -47,16 +45,15 @@ export default function Latest({ postList }) {
                 <div className="flex-1 bg-mainWhite dark:bg-mainBlack p-6 flex flex-col justify-between">
                   <div className="flex-1">
                     <p className="text-sm font-medium text-mainYellow">
-                      <Link 
-                        /* TO DO : Link to category of the post */
-                        to={""}
+                      <Link
+                        to={`/board/${post.categoryId}`}
                         className="hover:underline"
                       >
                         {post.category}
                       </Link>
                     </p>
                     <Link
-                      to={`/post/${categoryId}/${post.id}`}
+                      to={`/post/${post.categoryId}/${post.id}`}
                       className="block mt-2"
                     >
                       <p className="truncate text-xl font-semibold dark:text-mainWhite">
@@ -97,3 +94,5 @@ export default function Latest({ postList }) {
     </div>
   );
 }
+
+export default Latest;

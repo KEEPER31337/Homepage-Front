@@ -37,7 +37,7 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
             </div>
             <div className="relative flex justify-center">
               <span className="px-3 bg-gray-100 text-2xl font-medium text-gray-900 dark:bg-gray-800 dark:text-mainWhite">
-                공지사항
+                공지
               </span>
             </div>
           </div>
