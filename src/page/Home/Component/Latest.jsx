@@ -34,7 +34,7 @@ export default function Latest({ postList }) {
               >
                 <div className="flex-shrink-0">
                   <Link
-                    to={`/post/${post.DatecategoryId}/${post.id}`}
+                    to={`/post/${post.categoryId}/${post.id}`}
                     className="block mt-2"
                   >
                     <img
