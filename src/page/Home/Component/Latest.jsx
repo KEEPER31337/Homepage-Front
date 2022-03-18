@@ -4,11 +4,20 @@ import ScrollContainer from 'react-indiana-drag-scroll';
 
 import '../style/scale.css';
 import showDateAndTime from './showDateAndTime.jsx';
-import showPostThumbnail from './showPostThumbnail';
-import showUserThumbnail from './showUserThumbnail';
+import DefaultUserThumbnail from 'assets/img/memberCircle.svg';
+import StringLogo from 'assets/img/keeper_logo_string.png';
 
 function Latest({ postList }) {
   const now = new Date();
+
+  const handleImgErrorUser = (e) => {
+    e.target.src = DefaultUserThumbnail;
+  };
+
+  const handleImgErrorPost = (e) => {
+    e.target.src = StringLogo;
+  };
+
   return (
     <div
       className="relative bg-gray-50 dark:bg-neutral-900 h-auto pt-16 pb-4 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8"
@@ -36,9 +45,10 @@ function Latest({ postList }) {
                     className="block mt-2"
                   >
                     <img
-                      className="h-48 w-full object-cover"
-                      src={showPostThumbnail(post.thumbnailPath)}
-                      alt="postThumbnail"
+                      className="h-48 w-full object-scale-down"
+                      src={post.thumbnailPath ? post.thumbnailPath : StringLogo}
+                      alt="post"
+                      onError={handleImgErrorPost}
                     />
                   </Link>
                 </div>
@@ -67,8 +77,13 @@ function Latest({ postList }) {
                       <span className="sr-only">{'author name'}</span>
                       <img
                         className="h-10 w-10 rounded-full"
-                        src={showUserThumbnail(post.writerThumbnailPath)}
-                        alt="userThumbnail"
+                        src={
+                          post.writerThumbnailPath
+                            ? post.writerThumbnailPath
+                            : DefaultUserThumbnail
+                        }
+                        alt="user"
+                        onError={handleImgErrorUser}
                       />
                     </div>
                     <div className="ml-3">

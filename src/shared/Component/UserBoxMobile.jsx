@@ -3,7 +3,8 @@ import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-// API
+// local
+import imgMemberCircle from 'assets/img/memberCircle.svg';
 import actionMember from 'redux/action/member';
 
 function classNames(...classes) {
@@ -11,7 +12,10 @@ function classNames(...classes) {
 }
 
 const UserBoxMobile = ({ member, signOut }) => {
-  console.log(member);
+  const handleErrorImg = (e) => {
+    e.target.src = imgMemberCircle;
+  };
+
   return (
     <div className="md:flex items-center justify-end md:flex-1 lg:w-0">
       <Menu as="div" className="ml-3 relative">
@@ -21,8 +25,9 @@ const UserBoxMobile = ({ member, signOut }) => {
               <img
                 className="h-12 w-12 rounded-full"
                 // user Image
-                src="https://avatars.githubusercontent.com/u/23546441?s=400&u=db7abf2929e5518c12189034dc3fed9bda94f0a6&v=4"
+                src={member?.memberInfo?.thumbnailPath}
                 alt=""
+                onError={handleErrorImg}
               />
               <div className="text-lg self-center mx-5 text-mainBlack dark:text-mainWhite">
                 {member?.memberInfo?.nickName}

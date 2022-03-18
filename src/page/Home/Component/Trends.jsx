@@ -4,11 +4,19 @@ import ScrollContainer from 'react-indiana-drag-scroll';
 
 import '../style/scale.css';
 import showDateAndTime from './showDateAndTime';
-import showPostThumbnail from './showPostThumbnail';
-import showUserThumbnail from './showUserThumbnail';
+import DefaultUserThumbnail from 'assets/img/memberCircle.svg';
+import StringLogo from 'assets/img/keeper_logo_string.png';
 
 function Trends({ postList }) {
   const now = new Date();
+
+  const handleImgErrorUser = (e) => {
+    e.target.src = DefaultUserThumbnail;
+  };
+
+  const handleImgErrorPost = (e) => {
+    e.target.src = StringLogo;
+  };
   return (
     <div
       className="relative bg-gray-50 dark:bg-neutral-900 h-auto pt-16 pb-4 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8"
@@ -33,9 +41,10 @@ function Trends({ postList }) {
                 <div className="flex-shrink-0">
                   <Link to={`/post/${post.categoryId}/${post.id}`}>
                     <img
-                      className="h-48 w-full object-cover"
-                      src={showPostThumbnail(post.thumbnailPath)}
-                      alt="postThumbnail"
+                      className="h-48 w-full object-scale-down"
+                      src={post.thumbnailPath ? post.thumbnailPath : StringLogo}
+                      alt="post"
+                      onError={handleImgErrorPost}
                     />
                   </Link>
                 </div>
@@ -59,8 +68,13 @@ function Trends({ postList }) {
                       <span className="sr-only">{''}</span>
                       <img
                         className="h-10 w-10 rounded-full"
-                        src={showUserThumbnail(post.userThumbnailPath)} // Member Profile Image
-                        alt="userThumbnail"
+                        src={
+                          post.userThumbnailPath
+                            ? post.userThumbnailPath
+                            : DefaultUserThumbnail
+                        }
+                        alt="user"
+                        onError={handleImgErrorUser}
                       />
                     </div>
                     <div className="ml-3">
