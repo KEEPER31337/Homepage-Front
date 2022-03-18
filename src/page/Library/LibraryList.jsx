@@ -27,7 +27,7 @@ const LibraryList = ({
           department: department,
           total: total,
           enable: enable,
-          thumbnailId:thumbnailId,
+          thumbnailId: thumbnailId,
           registerDate: moment(registerDate).fromNow(),
         });
       }}
@@ -54,7 +54,7 @@ const LibraryList = ({
               width: '200px',
               height: '250px',
               objectFit: 'contain',
-              background:"white"
+              background: 'white',
             }}
           />
         ) : (
@@ -65,7 +65,7 @@ const LibraryList = ({
               width: '200px',
               height: '250px',
               objectFit: 'contain',
-              background:"white"
+              background: 'white',
             }}
           />
         )}

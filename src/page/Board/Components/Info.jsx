@@ -1,30 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-
+import { useParams } from 'react-router-dom';
 import { ViewGridIcon } from '@heroicons/react/solid';
+
 import WriteButton from './WriteButton';
+import categoryMapper from './categoryMapper';
 
 const fontList = ['돋움', '나눔 고딕', '바탕'];
 
-const Info = (props) => {
-  const [font, setFont] = useState('돋움');
-  const currentCategoryName = props.state.category.current.name;
-  useEffect(() => {
-    console.log(font);
-  }, [font]);
+const Info = ({ isWrite, state }) => {
+  //const [font, setFont] = useState('돋움');
+  const { categoryId } = useParams();
+  const categoryName = categoryMapper[categoryId]?.name;
+
+  useEffect(() => {}, [categoryId]);
 
   return (
     <div className="flex">
       <div className="dark:text-mainWhite w-full mx-3">
         <p className="text-3xl border-b-2 dark:text-mainWhite py-2 dark:border-darkComponent">
-          {currentCategoryName}
+          {categoryName}
         </p>
         <div className="flex justify-between">
           <p className="m-3 text-gray-400 inline-block w-3/5 dark:text-divisionGray">
-            {currentCategoryName}입니다.
+            {categoryName}입니다.
           </p>
           <div>
-            {props.isWrite ? (
+            {isWrite ? (
               ''
             ) : (
               <div

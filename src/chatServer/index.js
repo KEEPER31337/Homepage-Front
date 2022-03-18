@@ -42,7 +42,11 @@ wsServer.on(event.connection, (socket) => {
     authAPI.getAuth({ token }).then((data) => {
       if (data.success && msg) {
         socket.to(roomName).emit(event.msg, {
-          member: data.data,
+          member: {
+            id: data.data.id,
+            nickName: data.data.nickName,
+            thumbnailPath: data.data.thumbnailPath,
+          },
           msg,
           time,
         });

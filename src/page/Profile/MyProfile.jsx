@@ -253,12 +253,16 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
               <div className="items-center text-left border-2 shadow p-3 m-1  rounded-md">
                 <div className="flex py-1 ">
                   <div className="p-2  w-2/5 text-gray-500">기수</div>
-                  <div className="p-2 w-3/5 font-bold">{`Keeper ${memberInfo?.generation}기`}</div>
+                  <div className="p-2 w-3/5 font-bold">
+                    {memberInfo?.generation
+                      ? `Keeper ${memberInfo.generation}기`
+                      : ''}
+                  </div>
                 </div>
                 <div className="flex py-1 ">
                   <div className="p-2  w-2/5  text-gray-500">이메일</div>
                   <div className="p-2 w-3/5 font-bold">
-                    {memberInfo?.emailAddress}
+                    {memberInfo?.emailAddress ? memberInfo.emailAddress : ''}
                   </div>
                 </div>
                 <div className="flex py-1 ">
