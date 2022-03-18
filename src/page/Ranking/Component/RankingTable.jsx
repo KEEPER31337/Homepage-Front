@@ -14,6 +14,10 @@ const AttandanceTable = ({ member }) => {
   const successNotiRef = useRef({});
   const failNotiRef = useRef({});
 
+  const handleErrorImg = (e) => {
+    e.target.src = imgMemberCircle;
+  };
+
   useEffect(() => {
     rankAPI
       .getRank({
@@ -67,6 +71,7 @@ const AttandanceTable = ({ member }) => {
                                 ? member.thumbnailPath
                                 : imgMemberCircle
                             }
+                            onError={handleErrorImg}
                           />
                         </div>
                         <div className="ml-4">

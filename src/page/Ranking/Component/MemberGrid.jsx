@@ -10,6 +10,10 @@ import memberAPI from 'API/v1/member';
 const MemberGrid = ({ member }) => {
   const [memberList, setMemberList] = useState([]);
 
+  const handleErrorImg = (e) => {
+    e.target.src = memberImage;
+  };
+
   useEffect(() => {
     memberAPI.getMembers({ token: member.token }).then((data) => {
       setMemberList(data.list);
@@ -30,6 +34,7 @@ const MemberGrid = ({ member }) => {
                       member.thumbnailPath ? member.thumbnailPath : memberImage
                     }
                     alt="profile"
+                    onError={handleErrorImg}
                     className="w-full h-full object-center object-cover group-hover:opacity-75"
                   />
                 </Link>
