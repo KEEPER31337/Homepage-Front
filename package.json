@@ -53,7 +53,7 @@
   },
   "scripts": {
     "pro": "npm-run-all --parallel pro::**",
-    "pro:front": "react-app-rewired build && serve -s build -l 80",
+    "pro:front": "react-scripts build && serve -s build -l 80",
     "pro:chat": "nodemon src/chatServer/index.js",
     "dev": "npm-run-all --parallel dev::**",
     "dev:front": "react-app-rewired start",
