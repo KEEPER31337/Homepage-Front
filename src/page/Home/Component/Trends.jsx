@@ -1,17 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ScrollContainer from 'react-indiana-drag-scroll';
-import { connect } from 'react-redux';
 
 import '../style/scale.css';
 import showDateAndTime from './showDateAndTime';
 import showPostThumbnail from './showPostThumbnail';
 import showUserThumbnail from './showUserThumbnail';
 
-// redux
-import actionCategory from 'redux/action/category';
-
-function Trends({ postList, currentCategory, updateCurrentCategory }) {
+function Trends({ postList }) {
   const now = new Date();
   return (
     <div
@@ -35,16 +31,7 @@ function Trends({ postList, currentCategory, updateCurrentCategory }) {
                 className="w-[300px] grow-0 shrink-0 flex flex-col rounded-lg shadow-lg overflow-hidden"
               >
                 <div className="flex-shrink-0">
-                  <Link
-                    to={`/post/${post.categoryId}/${post.id}`}
-                    onClick={() => {
-                      updateCurrentCategory({
-                        id: post.categoryId,
-                        name: post.category,
-                      });
-                      //console.log(currentCategory);
-                    }}
-                  >
+                  <Link to={`/post/${post.categoryId}/${post.id}`}>
                     <img
                       className="h-48 w-full object-cover"
                       src={showPostThumbnail(post.thumbnailPath)}
@@ -57,26 +44,10 @@ function Trends({ postList, currentCategory, updateCurrentCategory }) {
                     <Link
                       to={`/board/${post.categoryId}`}
                       className="text-sm font-medium text-mainYellow hover:underline"
-                      onClick={() => {
-                        updateCurrentCategory({
-                          id: post.categoryId,
-                          name: post.category,
-                        });
-                        //console.log(currentCategory);
-                      }}
                     >
                       {post.category}
                     </Link>
-                    <Link
-                      to={`/post/${post.categoryId}/${post.id}`}
-                      onClick={() => {
-                        updateCurrentCategory({
-                          id: post.categoryId,
-                          name: post.category,
-                        });
-                        //console.log(currentCategory);
-                      }}
-                    >
+                    <Link to={`/post/${post.categoryId}/${post.id}`}>
                       <p className="block mt-2 truncate text-xl font-semibold dark:text-mainWhite">
                         {post.title}
                       </p>
@@ -117,15 +88,4 @@ function Trends({ postList, currentCategory, updateCurrentCategory }) {
   );
 }
 
-const mapStateToProps = (state) => {
-  return { currentCategory: state.category.current };
-};
-const mapDispatchToProps = (dispatch) => {
-  return {
-    updateCurrentCategory: (categoryId) => {
-      dispatch(actionCategory.updateCurrent(categoryId));
-    },
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Trends);
+export default Trends;
