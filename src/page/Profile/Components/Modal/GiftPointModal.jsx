@@ -24,11 +24,9 @@ const GiftPointModal = ({ modalState, token, userId, memberInfo }) => {
       })
       .then((result) => {
         if (result.success) {
-          console.log(result.data);
           memberInfo.point = result.data.finalPointMember;
           closeModal();
         } else {
-          console.log(`${result.code}:${result.msg}`);
         }
         setIsClosing(false);
       });

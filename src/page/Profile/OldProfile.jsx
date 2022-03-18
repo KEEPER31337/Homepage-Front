@@ -38,8 +38,8 @@ const Profile = ({ token, memberInfo, updateInfo }) => {
       memberAPI.follow({ token, loginId: user.loginId }).then((result) => {
         if (result.success) {
           getUser();
-          console.log('success', result);
-        } else console.log('fail', result);
+        } else {
+        }
       });
       setFollowTrigger(false);
       getUser();
@@ -51,17 +51,13 @@ const Profile = ({ token, memberInfo, updateInfo }) => {
       memberAPI.unfollow({ token, loginId: user.loginId }).then((result) => {
         if (result.success) {
           getUser();
-          console.log(result);
-        } else console.log(result);
+        } else {
+        }
       });
       setUnFollowTrigger(false);
       getUser();
     }
   }, [unFollowTrigger]);
-
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
 
   const myBtns = [
     {
@@ -112,7 +108,6 @@ const Profile = ({ token, memberInfo, updateInfo }) => {
       .then((getOtherResult) => {
         if (getOtherResult.success) {
           const other = getOtherResult.data;
-          console.log(other);
           other.rank = other.memberRankEntity.name;
           other.type = other.memberTypeEntity.name;
           other.jobs = [];

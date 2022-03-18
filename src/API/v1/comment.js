@@ -3,7 +3,6 @@ import axios from 'axios';
 const API_URL = process.env.REACT_APP_API_URL;
 
 async function create({ boardId, content, ipAddress, parentId, token }) {
-  console.log(boardId, content, ipAddress, parentId, token);
   const url = API_URL + '/v1/comment/' + boardId;
   const data = {
     content,
@@ -57,7 +56,6 @@ async function remove({ commentId, token }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    console.log(error.response.data);
     return error.response.data;
   }
 }

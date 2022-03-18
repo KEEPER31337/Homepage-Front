@@ -26,7 +26,6 @@ const AttandanceTable = ({ member }) => {
       .then((data) => {
         if (data.success) {
           setRankList(data.list);
-          console.log(data.list);
         }
       });
   }, [member]);

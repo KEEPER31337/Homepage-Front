@@ -9,7 +9,7 @@ function getDiffTimeWithFormat(boardDate) {
   if (sec < 60 * 60 * 24) {
     var min = parseInt(sec / 60);
     var hour = parseInt(min / 60);
-    //console.log(min, hour);
+
     if (min < 60) {
       return min + '분 전';
     }
@@ -25,7 +25,6 @@ function getDiffTimeWithFormat2(boardDate) {
   if (sec < 60 * 60 * 24) {
     var min = parseInt(sec / 60);
     var hour = parseInt(min / 60);
-    //console.log(min, hour);
     if (min < 60) {
       return min + '분 전';
     }

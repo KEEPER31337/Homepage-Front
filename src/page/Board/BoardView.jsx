@@ -28,7 +28,6 @@ const BoardView = (props) => {
 
   useEffect(() => {
     prevBoard ? setPrevBoard({ id: -1 }) : setPrevBoard(board);
-    console.log(prevBoard?.id);
     if (token) {
       postAPI
         .getOne({
@@ -38,7 +37,6 @@ const BoardView = (props) => {
         })
         .then((res) => {
           setIsAuthority(res.success);
-          console.log(res);
           if (res.code == -11000) {
             window.alert('비밀번호가 틀렸습니다. 게시글 목록으로 돌아갑니다.');
             navigate(`/board/${categoryId}`);

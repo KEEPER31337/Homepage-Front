@@ -1,7 +1,6 @@
 import React from 'react';
 
 export default function Social({ socialList }) {
-  console.log(socialList);
   return (
     <div className="w-full h-full flex-row rounded-lg overflow-hidden dark:text-mainWhite">
       {socialList.map((social) => (

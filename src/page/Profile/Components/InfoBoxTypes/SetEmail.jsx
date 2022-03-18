@@ -81,7 +81,6 @@ function SetEmail({ member, infoState }) {
   };
 
   const changeEmail = () => {
-    console.log(email, code);
     setIsChanging(true);
 
     memberAPI
@@ -91,7 +90,6 @@ function SetEmail({ member, infoState }) {
         token: member.token,
       })
       .then((data) => {
-        console.log(data);
         if (!data.success) {
           //실패했을 경우
           setCodeMsg({

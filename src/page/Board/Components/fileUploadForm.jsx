@@ -29,7 +29,6 @@ const FileUploadForm = (props) => {
       utilAPI
         .getThumbnail({ thumbnailId: props.board.thumbnail.id })
         .then((data) => {
-          console.log(data);
           props.setThumbnail(data);
 
           const reader = new FileReader();
@@ -55,7 +54,6 @@ const FileUploadForm = (props) => {
     setThumbnailBase64('');
     acceptedFiles.forEach((file) => {
       if (validateName(file.name)) {
-        console.log(file);
         props.setThumbnail(file);
         const reader = new FileReader();
 
@@ -66,7 +64,6 @@ const FileUploadForm = (props) => {
           for (var i = 0; i < reader.result.length; i++) {
             array.push(reader.result.charCodeAt(i));
           }
-          console.log(new Uint8Array(array));
           const base64 = reader.result;
           if (base64) {
             const base64Sub = base64.toString();
