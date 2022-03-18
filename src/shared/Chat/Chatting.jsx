@@ -7,6 +7,7 @@ import Draggable from 'react-draggable';
 //local
 import ChatModal from './Component/ChatModal';
 import authAPI from 'API/v1/auth';
+import imgChat from 'assets/img/chat.png';
 
 const Chatting = ({ member }) => {
   const [open, setOpen] = useState(false);
@@ -45,13 +46,16 @@ const Chatting = ({ member }) => {
               } z-30`}
             >
               <button
-                className={`${open ? 'invisible' : 'visible'} rounded-md ${
-                  isMobile ? 'p-1' : 'px-5 py-1'
+                className={`${open ? 'invisible' : 'visible'} ${
+                  isMobile ? 'p-1 rounded-md' : 'p-2 rounded-full'
                 } font-semibold text-mainBlack bg-mainYellow hover:bg-pointYellow`}
                 onClick={handleOpen}
               >
-                <ChatIcon className="h-8 w-8" />
-                {isMobile ? '' : 'Chat'}
+                {isMobile ? (
+                  <ChatIcon className="h-8 w-8" />
+                ) : (
+                  <img src={imgChat} className="w-14 h-14" />
+                )}
               </button>
             </div>
           </Draggable>
