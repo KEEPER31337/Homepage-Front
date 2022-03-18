@@ -32,6 +32,10 @@ const AttandanceTable = ({ member }) => {
       });
   };
 
+  const handleErrorImg = (e) => {
+    e.target.src = imgMemberCircle;
+  };
+
   useEffect(() => {
     const date = dayjs();
     attendanceAPI
@@ -93,6 +97,7 @@ const AttandanceTable = ({ member }) => {
                                 ? log.thumbnailPath
                                 : imgMemberCircle
                             }
+                            onError={handleErrorImg}
                           />
                         </div>
                         <div className="ml-4">
