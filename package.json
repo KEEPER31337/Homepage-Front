@@ -53,7 +53,7 @@
   },
   "scripts": {
     "pro": "npm-run-all --parallel pro::**",
-    "pro:front": "set PORT=80 && react-scripts start",
+    "pro:front": "export PORT=80 && react-scripts start",
     "pro:chat": "nodemon src/chatServer/index.js",
     "dev": "npm-run-all --parallel dev::**",
     "dev:front": "react-app-rewired start",
