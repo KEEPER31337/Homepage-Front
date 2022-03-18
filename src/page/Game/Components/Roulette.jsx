@@ -90,17 +90,14 @@ const Roulette = ({ gameInfo, member, updateInfo }) => {
       })
       .then((data) => {
         if (data.success) {
-          console.log('횟수 제한', data);
           if (!data.data) {
             // 3회 초과 안 했을 때
-            console.log('실행');
             rouletteAPI
               .playRoulette({
                 token: member.token,
               })
               .then((data) => {
                 if (data.success) {
-                  console.log('play', data);
                   setRemainingCount(
                     MAX_PLAY_ROULETTE - data.data.roulettePerDay
                   );

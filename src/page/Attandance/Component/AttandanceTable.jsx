@@ -45,8 +45,6 @@ const AttandanceTable = ({ member }) => {
       })
       .then((data) => {
         if (data.success) {
-          console.log(member);
-          console.log(data.list);
           setAttendLogList(data.list);
         }
       });

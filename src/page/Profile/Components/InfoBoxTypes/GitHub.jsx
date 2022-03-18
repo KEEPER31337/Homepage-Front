@@ -19,9 +19,7 @@ export default function GitHub(props) {
             )
           );
         });
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   }, []);
 
   if (gitMd == null) return <div />;

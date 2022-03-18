@@ -11,10 +11,8 @@ const AuthUser = ({ member, signOut, children }) => {
 
   useEffect(() => {
     if (member.token) {
-      console.log('tokenTest', member.token);
       authAPI.getAuth({ token: member.token }).then((data) => {
         if (data.code === -1003) {
-          console.log('signOut', member.token, data);
           signOut();
         }
       });

@@ -40,8 +40,6 @@ const FindId = ({ member }) => {
   const handleFindId = () => {
     setEmailAddressMessage('이메일을 보내고 있습니다...');
     authAPI.findId({ emailAddress: emailAddress }).then((data) => {
-      console.log(data);
-
       if (data.success) {
         setEmailAddressMessage('');
 

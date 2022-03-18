@@ -21,7 +21,6 @@ const HeaderMobile = ({ member }) => {
   const [openTab, setOpenTab] = useState(-1);
 
   const handleOpen = (index) => {
-    console.log(index, openTab);
     if (index === openTab) setOpenTab(-1);
     else setOpenTab(index);
   };

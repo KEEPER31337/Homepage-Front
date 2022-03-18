@@ -41,8 +41,6 @@ const FindPassword = ({ member }) => {
   const handleFindPw = () => {
     setEmailAddressMessage('이메일을 보내고 있습니다...');
     authAPI.findPassword({ emailAddress: emailAddress }).then((data) => {
-      console.log(data);
-
       if (data.success) {
         setEmailAddressMessage('');
 
