@@ -7,7 +7,6 @@ const reducerMember = (state = initialState, action) => {
     case actionMember.updateToken.type:
       return { ...state, token: action.payload };
     case actionMember.signIn.type:
-      // console.log('payload', action.payload);
       return {
         token: action.payload.token,
         memberInfo: action.payload.memberInfo,

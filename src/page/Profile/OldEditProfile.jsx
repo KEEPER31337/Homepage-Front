@@ -14,7 +14,6 @@ import ipAPI from 'API/v1/ip';
 import Modal from './Components/Modal/Modal';
 
 const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
-  console.log(memberInfo);
   const params = useParams();
   const navigate = useNavigate();
 
@@ -40,7 +39,6 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
 
   const updateImg = (event) => {
     ipAPI.getIp().then((ipAddress) => {
-      console.log(ipAddress, event.target.files[0]);
       memberAPI
         .updateThumbnail({
           token,
@@ -49,10 +47,8 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
         })
         .then((result) => {
           if (result.success) {
-            console.log(result.data);
             setInfo(result.data);
           } else {
-            console.log(`${result.code}:${result.msg}`);
           }
         });
     });
@@ -99,7 +95,6 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
   );
 
   useEffect(() => {
-    console.log('info:', info);
     if (info) updateInfo({ memberInfo: info });
   }, [info]);
 

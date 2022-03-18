@@ -21,7 +21,6 @@ const msgTextColor = {
 
 const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
   const navigate = useNavigate();
-  console.log(memberInfo);
 
   const [followCnt, setFollowCnt] = useState(null);
 
@@ -63,7 +62,6 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
     else {
       const file = event.target.files[0];
       ipAPI.getIp().then((ipAddress) => {
-        console.log(ipAddress, file);
         memberAPI
           .updateThumbnail({
             token,
@@ -72,10 +70,8 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
           })
           .then((result) => {
             if (result.success) {
-              console.log(result.data);
               updateInfo({ memberInfo: result.data });
             } else {
-              console.log(`${result.code}:${result.msg}`);
             }
           });
       });
@@ -104,7 +100,6 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
           token: token,
         })
         .then((data) => {
-          console.log(data);
           if (!data.success) {
             //실패했을 경우
             setInfoMsg({
@@ -202,7 +197,6 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
   const changeEmail = () => {
     if (isEmailChanging) return;
     else {
-      console.log(email, code);
       setIsEmailChanging(true);
 
       memberAPI
@@ -212,7 +206,6 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
           token: token,
         })
         .then((data) => {
-          console.log(data);
           if (!data.success) {
             //실패했을 경우
             setCodeMsg({
@@ -283,7 +276,6 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
       memberAPI
         .changePassword({ password: password, token: token })
         .then((data) => {
-          console.log(data);
           if (!data.success) {
             setPwdMsg({
               text: `${data.code}:${data.msg}`,

@@ -42,7 +42,6 @@ function SetInfo({ member, memberInfo, infoState }) {
         token: member.token,
       })
       .then((data) => {
-        console.log(data);
         if (!data.success) {
           //실패했을 경우
           setMsg({

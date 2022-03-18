@@ -150,8 +150,6 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
     });
   }, [myPage]);
 
-  console.log(memberInfo);
-
   return (
     <div className="min-h-screen  dark:bg-mainBlack dark:text-mainWhite ">
       <div className="h-full sm:w-full md:w-full lg:w-10/12 xl:w-8/12 container mx-auto pt-10 p-5 justify-center items-center">

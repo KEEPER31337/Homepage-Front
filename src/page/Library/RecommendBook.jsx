@@ -10,15 +10,11 @@ const RecommendBook = ({ setBookList, mainBook }) => {
   };
   const bookSearch = async () => {
     try {
-      console.log(searchValue);
       const { data } = await axios.get(
         `${API_URL}/v1/searchbooks?keyword=${searchValue}`
       );
-      console.log(data);
       setBookList(data);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
   return (
     <div>

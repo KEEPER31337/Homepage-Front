@@ -16,7 +16,6 @@ const handleErrorImg = (e) => {
 };
 
 const UserBox = ({ member, signOut }) => {
-  console.log(member);
   return (
     <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
       <Menu as="div" className="ml-3 relative">
