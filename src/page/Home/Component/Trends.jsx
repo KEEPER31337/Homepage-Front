@@ -41,9 +41,9 @@ function Trends({ postList }) {
                 <div className="flex-shrink-0">
                   <Link to={`/post/${post.categoryId}/${post.id}`}>
                     <img
-                      className="h-48 w-full object-cover"
+                      className="h-48 w-full object-scale-down"
                       src={post.thumbnailPath ? post.thumbnailPath : StringLogo}
-                      alt="postThumbnail"
+                      alt="post"
                       onError={handleImgErrorPost}
                     />
                   </Link>
@@ -73,7 +73,8 @@ function Trends({ postList }) {
                             ? post.userThumbnailPath
                             : DefaultUserThumbnail
                         }
-                        alt="userThumbnail"
+                        alt="user"
+                        onError={handleImgErrorUser}
                       />
                     </div>
                     <div className="ml-3">

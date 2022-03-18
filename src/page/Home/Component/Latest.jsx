@@ -45,9 +45,9 @@ function Latest({ postList }) {
                     className="block mt-2"
                   >
                     <img
-                      className="h-48 w-full object-cover"
+                      className="h-48 w-full object-scale-down"
                       src={post.thumbnailPath ? post.thumbnailPath : StringLogo}
-                      alt="postThumbnail"
+                      alt="post"
                       onError={handleImgErrorPost}
                     />
                   </Link>
@@ -82,7 +82,7 @@ function Latest({ postList }) {
                             ? post.writerThumbnailPath
                             : DefaultUserThumbnail
                         }
-                        alt="userThumbnail"
+                        alt="user"
                         onError={handleImgErrorUser}
                       />
                     </div>
