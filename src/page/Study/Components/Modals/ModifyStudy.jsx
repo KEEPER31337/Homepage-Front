@@ -39,10 +39,29 @@ const ModifyStudy = ({
   //state.member.memberInfo.nickName;
 
   const [clickable, setClickable] = useState(true);
+  const [notNumber, setNotNumber] = useState(false); //year이 숫자값인지 아닌지 확인
   const [viewMemberList2, setViewMemberList2] = useState(false);
   const [allMemberList, setAllMemberList] = useState([]); //멤버 추가 시 보여줄 동아리 회원의 전체 리스트
+
+  const checkYear = (text) => {
+    console.log(parseInt(text));
+    setYear(text);
+    if (isNaN(text) || parseInt(text) < 2000 || parseInt(text) > 2100) {
+      setNotNumber(true);
+    } else {
+      setNotNumber(false);
+    }
+    console.log(notNumber);
+  };
+
   const uploadable = () => {
-    if (year === '' || season === 0 || title === '' || information === '')
+    if (
+      notNumber ||
+      year === '' ||
+      season === 0 ||
+      title === '' ||
+      information === ''
+    )
       return false;
     return true;
   };
@@ -111,7 +130,7 @@ const ModifyStudy = ({
         });
     });
   };
-  console.log('load AddStudy');
+  //console.log('load ModifyStudy');
   return (
     <>
       <div
@@ -123,7 +142,7 @@ const ModifyStudy = ({
             type="text"
             placeholder="연도(숫자만)"
             defaultValue={year ? year : ''}
-            onBlur={(e) => setYear(e.target.value)}
+            onBlur={(e) => checkYear(e.target.value)}
             className="max-w-lg inline-block w-[8em] mx-2 mb-2 shadow-sm focus:ring-mainYellow focus:border-mainYellow sm:max-w-xs sm:text-sm border-gray-300 rounded-md dark:bg-mainBlack dark:border-darkComponent"
           />
           <select
@@ -137,14 +156,16 @@ const ModifyStudy = ({
             <option value="3">2학기</option>
             <option value="4">겨울방학</option>
           </select>
-          {year == '' || season == 0 ? (
+          {notNumber || year == '' || season == 0 ? (
             <div className="inline-block group ">
               <ExclamationCircleIcon
                 className="inline-block h-6 w-6 mr-1 ml-2 bg-mainWhite rounded-full text-red-400 group dark:text-red-700 dark:bg-gray-300"
                 aria-hidden="true"
               />
               <div className="absolute border border-red-400 rounded-lg bg-[rgb(240,230,190)] text-red-600 text-sm px-3 hidden group-hover:inline-block dark:bg-[rgb(200,190,150)]">
-                필수로 기입해야하는 내용입니다!
+                {notNumber
+                  ? '연도는 유효한 숫자(2000~2100) 값만 기입할 수 있습니다'
+                  : '필수로 기입해야하는 내용입니다!'}
               </div>
             </div>
           ) : (

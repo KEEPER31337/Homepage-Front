@@ -10,8 +10,6 @@ import {
 //local
 import SimpleCard from 'page/Study/Components/SimpleCard';
 import AboutCard from 'page/Study/Components/AboutCard';
-import AddStudy from 'page/Study/Components/AddStudy';
-import { studylist } from 'page/Study/testData';
 import studyAPI from 'API/v1/study';
 
 const StudyList = ({

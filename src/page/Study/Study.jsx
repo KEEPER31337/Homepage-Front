@@ -13,7 +13,6 @@ import AuthUser from 'shared/AuthUser';
 import YearList from 'page/Study/Components/YearList';
 import MobileYearList from 'page/Study/Components/MobileYearList';
 import StudyList from 'page/Study/Components/StudyList';
-import AddStudyModal from 'page/Study/Components/Modals/AddStudyModal';
 import AddStudy from 'page/Study/Components/AddStudy';
 import ModifyModal from 'page/Study/Components/Modals/ModifyModal';
 import studyAPI from 'API/v1/study';
@@ -107,6 +106,8 @@ const Study = ({ state }) => {
               </div>
               {open ? (
                 <AddStudy
+                  currentYear={currentYear}
+                  currentSeason={currentSeason}
                   setOpen={setOpen}
                   changeFlag={changeFlag}
                   setChangeFlag={setChangeFlag}
