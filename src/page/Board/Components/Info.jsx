@@ -36,6 +36,16 @@ const Info = (props) => {
             )}
           </div>
         </div>
+        {props.isWrite ? (
+          ''
+        ) : (
+          <div
+            name="right-sideBar"
+            className="w-full md:hidden flex justify-end"
+          >
+            <WriteButton />
+          </div>
+        )}
       </div>
       {/*
       <WriteButton />

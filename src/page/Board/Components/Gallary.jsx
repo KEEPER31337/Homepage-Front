@@ -86,22 +86,23 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
                       )}
 
                       <div className="relative mt-4">
-                        <div className="max-w-[75%] inline-block">
-                          <h3 className="text-sm font-medium truncate bold text-gray-900 dark:text-mainWhite">
-                            {board.title}
-                          </h3>
+                        <div className="flex items-center">
+                          <div className="max-w-[75%] inline-block">
+                            <h3 className="text-sm font-medium truncate bold text-gray-900 dark:text-mainWhite">
+                              {board.title}
+                            </h3>
+                          </div>
+
+                          {board.files.length != 0 ? (
+                            <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
+                          ) : (
+                            ''
+                          )}
+                          <strong className="text-mainYellow">
+                            <ChatAltIcon className="inline-block h-5 w-5" />
+                            {board.commentCount}
+                          </strong>
                         </div>
-
-                        {board.files.length != 0 ? (
-                          <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
-                        ) : (
-                          ''
-                        )}
-                        <strong className="text-mainYellow">
-                          <ChatAltIcon className="inline-block h-5 w-5" />
-                          {board.commentCount}
-                        </strong>
-
                         <p className=" flex justify-between">
                           <span className="mt-1 text-sm text-gray-500">
                             {board.writer}
@@ -185,22 +186,23 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
                   ''
                 )}
                 <div className="relative mt-4">
-                  <div className="max-w-[75%] inline-block">
-                    <h3 className="text-sm font-medium truncate bold text-gray-900 dark:text-mainWhite">
-                      {board.title}
-                    </h3>
+                  <div className="flex items-center">
+                    <div className="max-w-[75%] inline-block">
+                      <h3 className="text-sm font-medium truncate bold text-gray-900 dark:text-mainWhite">
+                        {board.title}
+                      </h3>
+                    </div>
+                    {board.files.length != 0 ? (
+                      <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
+                    ) : (
+                      ''
+                    )}
+
+                    <strong className="text-mainYellow">
+                      <ChatAltIcon className="inline-block h-5 w-5" />
+                      {board.commentCount}
+                    </strong>
                   </div>
-                  {board.files.length != 0 ? (
-                    <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
-                  ) : (
-                    ''
-                  )}
-
-                  <strong className="text-mainYellow">
-                    <ChatAltIcon className="inline-block h-5 w-5" />
-                    {board.commentCount}
-                  </strong>
-
                   <p className=" flex justify-between">
                     <span className="mt-1 text-sm text-gray-500">
                       {board.writer}
