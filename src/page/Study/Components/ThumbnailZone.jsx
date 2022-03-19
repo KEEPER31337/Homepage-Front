@@ -25,7 +25,7 @@ const ThumbnailZone = (props) => {
 
   useEffect(() => {
     if (props.modifyFlag) {
-      var list = props.board.thumbnailPath.split('/');
+      var list = props.study?.thumbnailPath.split('/');
       utilAPI
         .getThumbnail({ thumbnailId: list[list.length - 1] })
         .then((data) => {

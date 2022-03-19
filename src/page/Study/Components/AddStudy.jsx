@@ -318,7 +318,7 @@ const AddStudy = ({ setOpen, state, changeFlag, setChangeFlag }) => {
                 )}
               </div>
               <div className="sm:row-span-2">
-                <ThumbnailZone setThumbnail={setThumbnail} />
+                <ThumbnailZone modifyFlag={false} setThumbnail={setThumbnail} />
               </div>
 
               <div className="sm:col-span-2">

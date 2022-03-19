@@ -28,7 +28,9 @@ const ModifyStudy = ({
   const [season, setSeason] = useState(study.season);
   const [headMember, setHeadMember] = useState(study.headMember); //멤버 오브젝트
   const [memberList, setMemberList] = useState(study.memberList); //멤버 오브젝트 리스트
-  const [memberIdList, setMemberIdList] = useState([]); //멤버 아이디 리스트
+  const [memberIdList, setMemberIdList] = useState(
+    memberList.map((member) => member.id)
+  ); //멤버 아이디 리스트
   const [gitLink, setGitLink] = useState(study.gitLink);
   const [noteLink, setNoteLink] = useState(study.noteLink);
   const [etcLink, setEtcLink] = useState(study.etcLink);
@@ -44,32 +46,14 @@ const ModifyStudy = ({
       return false;
     return true;
   };
+
   useEffect(() => {
-    for (var i = 0; i < study.memberNumber; i++) {
-      setMemberIdList([...memberIdList, memberList[i]?.id]);
-    }
+    console.log(study);
+    console.log('load ModifyStudy');
+    console.log(memberIdList);
     memberAPI.getAllMembers().then((data) => {
       setAllMemberList(data.list);
     });
-    var list = study.thumbnailPath.split('/');
-    utilAPI
-      .getThumbnail({ thumbnailId: list[list.length - 1] })
-      .then((data) => {
-        console.log(data);
-        //const Blob=new Blob([new Uint8Array(img.data.data.data)]);
-        setThumbnail(data);
-        /*
-        const reader = new FileReader();
-        reader.onabort = () => console.log('file reading was aborted');
-        reader.onerror = () => console.log('file reading has failed');
-        reader.onloadend = () => {
-          const base64 = reader.result;
-          if (base64) {
-            setThumbnailBase64(base64);
-          }
-        };
-        reader.readAsDataURL(data);*/
-      });
   }, []);
   const deleteMember = (member) => {
     setMemberList(memberList.filter((cmember) => cmember.id != member.id));
@@ -108,7 +92,7 @@ const ModifyStudy = ({
           season: season,
           title: title,
           information: information,
-          memberIdList: [headMember.id, ...memberIdList],
+          memberIdList: memberIdList,
           gitLink: gitLink,
           noteLink: noteLink,
           etcLink: etcLink,
@@ -122,7 +106,7 @@ const ModifyStudy = ({
             setCurrentStudy();
             setChangeFlag(!changeFlag);
           } else {
-            alert('스터디 생성 실패! 전산관리자에게 문의하세요~');
+            alert('스터디 수정 실패! 전산관리자에게 문의하세요~');
           }
         });
     });
@@ -353,7 +337,11 @@ const ModifyStudy = ({
                 )}
               </div>
               <div className="sm:row-span-2">
-                <ThumbnailZone setThumbnail={setThumbnail} />
+                <ThumbnailZone
+                  modifyFlag={true}
+                  study={study}
+                  setThumbnail={setThumbnail}
+                />
               </div>
 
               <div className="sm:col-span-2">
