@@ -63,10 +63,10 @@ const BoardView = (props) => {
         </div>
       ) : (
         <AuthUser>
-          <div className="w-full flex justify-center">
+          <div className="w-full flex justify-center dark:bg-mainBlack">
             <div className="max-w-[70vw]">
               <ScrollToTop />
-              <div className="flex justify-center dark:bg-mainBlack">
+              <div className="flex justify-center">
                 <div className="inline-block m-5 w-[90vw]">
                   <Info />
                   {board?.id && prevBoard.id !== board.id ? (

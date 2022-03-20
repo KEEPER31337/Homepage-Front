@@ -101,8 +101,8 @@ const Table = ({
                     ''
                   )}
                   {isNewPost(board.registerTime) ? (
-                    <strong className="inline-block rounded-full w-5 h-5 align-middle text-center text-xs m-1 bg-red-500 shadow-lg border-2 border-red-200 text-mainWhite dark:text-mainBlack">
-                      n
+                    <strong className="inline-block rounded-full w-5 h-5 align-middle text-center text-xs m-1 pb-1 bg-red-500 shadow-lg border-2 border-red-200 text-mainWhite dark:text-mainBlack">
+                      N
                     </strong>
                   ) : (
                     ''
@@ -189,8 +189,8 @@ const Table = ({
                     ''
                   )}
                   {isNewPost(board.registerTime) ? (
-                    <strong className="inline-block rounded-full w-5 h-5 align-middle text-center text-xs m-1 bg-red-500 shadow-lg border-2 border-red-200 text-mainWhite">
-                      n
+                    <strong className="inline-block rounded-full w-5 h-5 align-middle text-center text-xs m-1 pb-1 bg-red-500 shadow-lg border-2 border-red-200 text-mainWhite">
+                      N
                     </strong>
                   ) : (
                     ''

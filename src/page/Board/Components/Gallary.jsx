@@ -23,7 +23,7 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
   const [thumbnails, setThumbnails] = [];
   useEffect(() => {}, []);
   return (
-    <div className=" max-w-2xl mx-auto py-8 px-4 sm:py-8 sm:px-6 lg:max-w-7xl lg:px-8">
+    <div className=" max-w-[70vw] mx-auto py-8 px-4 sm:py-8 sm:px-6 lg:px-8">
       {notices.length != 0 ? (
         <div className="block mb-5 bg-gray-100 px-2 rounded-xl dark:bg-gray-800">
           <div name="공지사항" className="relative my-3 mt-5 py-2">
@@ -78,7 +78,7 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
                         )}
                       </div>
                       {isNewPost(board.registerTime) ? (
-                        <strong className="inline-block absolute top-[-20px] right-[-20px] rounded-full shadow-md shadow-red-500/50 m-1 w-7 h-7 align-middle text-center text-base bg-red-500 border-2 text-mainWhite dark:text-mainBlack">
+                        <strong className="inline-block absolute top-[-20px] right-[-20px] rounded-full shadow-md shadow-red-500/50 m-1 w-7 h-7 align-middle text-center text-base bg-red-500 border-2 text-mainWhite">
                           N
                         </strong>
                       ) : (
@@ -87,7 +87,7 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
 
                       <div className="relative mt-4">
                         <div className="flex items-center">
-                          <div className="max-w-[75%] inline-block">
+                          <div className="max-w-[70vw] inline-block">
                             <h3 className="text-sm font-medium truncate bold text-gray-900 dark:text-mainWhite">
                               {board.title}
                             </h3>
@@ -179,7 +179,7 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
                   )}
                 </div>
                 {isNewPost(board.registerTime) ? (
-                  <strong className="inline-block absolute top-[-20px] right-[-20px] rounded-full shadow-md shadow-red-500/50 m-1 w-7 h-7 align-middle text-center text-base bg-red-500 border-2 text-mainWhite dark:text-mainBlack">
+                  <strong className="inline-block absolute top-[-20px] right-[-20px] rounded-full shadow-md shadow-red-500/50 m-1 w-7 h-7 align-middle text-center text-base bg-red-500 border-2 text-mainWhite ">
                     N
                   </strong>
                 ) : (
