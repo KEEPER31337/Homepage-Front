@@ -1,0 +1,67 @@
+const years = [
+  { year: 2022, season: [1, 2] },
+  { year: 2021, season: [1, 2, 3, 4] },
+  { year: 2020, season: [1, 2, 3, 4] },
+  { year: 2019, season: [1, 2, 3, 4] },
+];
+const studylist = [
+  {
+    thumbnailPath: '/v1/util/thumbnail/135',
+    title: 'CTF 스터디',
+    information: 'ctf스터디입니다.',
+    year: 2022,
+    season: 1,
+    headMember: { id: 1, nickName: '김김김' },
+    memberNumber: 5,
+    memberList: [
+      { id: 1, nickName: '김김김' },
+      { id: 2, nickName: '정정정' },
+      { id: 3, nickName: '최최최' },
+      { id: 4, nickName: '이이이' },
+      { id: 5, nickName: '박박박' },
+    ],
+    gitLink: '깃헙링크',
+    noteLink: '노션링크',
+    etcLink: null,
+  },
+  {
+    thumbnailPath: '/v1/util/thumbnail/135',
+    title: 'ctf스터디2',
+    information: 'ctf스터디입니다.',
+    year: 2022,
+    season: 1,
+    headMember: { id: 1, nickName: '김김김' },
+    memberNumber: 5,
+    memberList: [
+      { id: 1, nickName: '김김김' },
+      { id: 2, nickName: '정정정' },
+      { id: 3, nickName: '최최최' },
+      { id: 4, nickName: '이이이' },
+      { id: 5, nickName: '박박박' },
+    ],
+    gitLink: '깃헙링크',
+    noteLink: '노션링크',
+    etcLink: null,
+  },
+  {
+    thumbnailPath: '/v1/util/thumbnail/135',
+    title: 'ctf스터디3',
+    information: 'ctf스터디입니다.',
+    year: 2022,
+    season: 1,
+    headMember: { id: 1, nickName: '김김김' },
+    memberNumber: 5,
+    memberList: [
+      { id: 1, nickName: '김김김' },
+      { id: 2, nickName: '정정정' },
+      { id: 3, nickName: '최최최' },
+      { id: 4, nickName: '이이이' },
+      { id: 5, nickName: '박박박' },
+    ],
+    gitLink: '깃헙링크',
+    noteLink: '노션링크',
+    etcLink: null,
+  },
+];
+
+export { studylist, years };

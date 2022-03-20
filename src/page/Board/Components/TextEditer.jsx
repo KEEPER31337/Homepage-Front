@@ -88,6 +88,8 @@ const TextEditer = (props) => {
 
   const uploadPostinghandler = (isTemp) => {
     setUploadAble(false);
+    console.log(thumbnailBase64);
+    console.log(thumbnail);
     ipAPI.getIp().then((ipAddress) => {
       postAPI
         .create({

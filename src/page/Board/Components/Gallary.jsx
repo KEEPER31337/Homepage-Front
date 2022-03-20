@@ -18,8 +18,6 @@ import {
   isNewPost,
 } from '../BoardUtil';
 
-const API_URL = process.env.REACT_APP_API_URL;
-
 const Gallary = ({ notices, boards, linkHandler, state }) => {
   const { categoryId } = useParams();
   const [thumbnails, setThumbnails] = [];
@@ -61,29 +59,21 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
                     }}
                   >
                     <div className={' relative'}>
-                      <div className="relative w-full h-72 rounded-lg overflow-hidden">
-                        {/*console.log(board.thumbnail.id)*/}
+                      <div className="relative w-full h-72 p-1 rounded-lg overflow-hidden flex items-center bg-gray-300 dark:bg-gray-700">
+                        {/*console.log(board.thumbnailPath)*/}
                         {board.isSecret ? (
-                          <div className="border bg-gray-300 bg-opacity-50 text-slate-500 flex items-center text-center w-full h-full object-center object-cover rounded-lg dark:border-gray-600">
+                          <div className="bg-gray-300 bg-opacity-50 text-slate-500 flex items-center text-center w-full h-full object-center object-cover rounded-lg dark:text-gray-200">
                             <div className="w-full">
                               <LockClosedIcon className="inline-block h-10 w-10" />
                               <br />
                               비밀글입니다.
                             </div>
                           </div>
-                        ) : board.thumbnailPath ? (
-                          <img
-                            src={API_URL + board.thumbnailPath}
-                            alt="썸네일 이미지"
-                            className="w-full h-full object-center object-cover rounded-lg"
-                          />
                         ) : (
                           <img
-                            src={
-                              'https://avatars.githubusercontent.com/u/23546441?s=400&u=db7abf2929e5518c12189034dc3fed9bda94f0a6&v=4'
-                            }
+                            src={board.thumbnailPath}
                             alt="썸네일 이미지"
-                            className="w-full h-full object-center object-cover rounded-lg"
+                            className="w-full h-full object-center object-cover rounded-lg bg-mainWhite dark:bg-mainBlack"
                           />
                         )}
                       </div>
@@ -96,22 +86,23 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
                       )}
 
                       <div className="relative mt-4">
-                        <div className="max-w-[75%] inline-block">
-                          <h3 className="text-sm font-medium truncate bold text-gray-900 dark:text-mainWhite">
-                            {board.title}
-                          </h3>
+                        <div className="flex items-center">
+                          <div className="max-w-[75%] inline-block">
+                            <h3 className="text-sm font-medium truncate bold text-gray-900 dark:text-mainWhite">
+                              {board.title}
+                            </h3>
+                          </div>
+
+                          {board.files.length != 0 ? (
+                            <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
+                          ) : (
+                            ''
+                          )}
+                          <strong className="text-mainYellow">
+                            <ChatAltIcon className="inline-block h-5 w-5" />
+                            {board.commentCount}
+                          </strong>
                         </div>
-
-                        {board.files.length != 0 ? (
-                          <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
-                        ) : (
-                          ''
-                        )}
-                        <strong className="text-mainYellow">
-                          <ChatAltIcon className="inline-block h-5 w-5" />
-                          {board.commentCount}
-                        </strong>
-
                         <p className=" flex justify-between">
                           <span className="mt-1 text-sm text-gray-500">
                             {board.writer}
@@ -124,10 +115,10 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
                       <div className="absolute top-0 inset-x-0 h-72 rounded-lg p-4 flex items-end justify-end overflow-hidden ">
                         <div
                           aria-hidden="true"
-                          className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black opacity-50 hidden group-hover:block"
+                          className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black dark:from-white opacity-50 hidden group-hover:block"
                         />
-                        <p className="relative text-lg font-semibold text-white hidden group-hover:block">
-                          <EyeIcon className="inline-block h-5 w-5 mx-2 text-divisionGray " />
+                        <p className="relative text-lg font-semibold text-white hidden group-hover:block dark:text-black">
+                          <EyeIcon className="inline-block h-5 w-5 mx-2 text-divisionGray dark:text-gray-700" />
                           {board.visitCount}
                         </p>
                       </div>
@@ -170,28 +161,20 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
               }}
             >
               <div className={' relative'}>
-                <div className="relative w-full h-72 rounded-lg overflow-hidden">
+                <div className="relative w-full h-72 p-1 rounded-lg flex items-center bg-gray-300 dark:bg-gray-700">
                   {board.isSecret ? (
-                    <div className="border bg-gray-500 bg-opacity-50 text-slate-500 flex items-center text-center w-full h-full object-center object-cover rounded-lg dark:border-gray-600">
+                    <div className="bg-gray-300 bg-opacity-50 text-slate-500 flex items-center text-center w-full h-full object-center object-cover rounded-lg dark:text-gray-200">
                       <div className="w-full">
                         <LockClosedIcon className="inline-block h-10 w-10" />
                         <br />
                         비밀글입니다.
                       </div>
                     </div>
-                  ) : board.thumbnailPath ? (
-                    <img
-                      src={API_URL + board.thumbnailPath}
-                      alt="썸네일 이미지"
-                      className="w-full h-full object-center object-cover rounded-lg"
-                    />
                   ) : (
                     <img
-                      src={
-                        'https://avatars.githubusercontent.com/u/23546441?s=400&u=db7abf2929e5518c12189034dc3fed9bda94f0a6&v=4'
-                      }
+                      src={board.thumbnailPath}
                       alt="썸네일 이미지"
-                      className="w-full h-full object-center object-cover rounded-lg"
+                      className="w-full h-full object-center object-cover rounded-lg bg-mainWhite dark:bg-mainBlack"
                     />
                   )}
                 </div>
@@ -203,22 +186,23 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
                   ''
                 )}
                 <div className="relative mt-4">
-                  <div className="max-w-[75%] inline-block">
-                    <h3 className="text-sm font-medium truncate bold text-gray-900 dark:text-mainWhite">
-                      {board.title}
-                    </h3>
+                  <div className="flex items-center">
+                    <div className="max-w-[75%] inline-block">
+                      <h3 className="text-sm font-medium truncate bold text-gray-900 dark:text-mainWhite">
+                        {board.title}
+                      </h3>
+                    </div>
+                    {board.files.length != 0 ? (
+                      <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
+                    ) : (
+                      ''
+                    )}
+
+                    <strong className="text-mainYellow">
+                      <ChatAltIcon className="inline-block h-5 w-5" />
+                      {board.commentCount}
+                    </strong>
                   </div>
-                  {board.files.length != 0 ? (
-                    <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
-                  ) : (
-                    ''
-                  )}
-
-                  <strong className="text-mainYellow">
-                    <ChatAltIcon className="inline-block h-5 w-5" />
-                    {board.commentCount}
-                  </strong>
-
                   <p className=" flex justify-between">
                     <span className="mt-1 text-sm text-gray-500">
                       {board.writer}
@@ -231,10 +215,10 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
                 <div className="absolute top-0 inset-x-0 h-72 rounded-lg p-4 flex items-end justify-end overflow-hidden ">
                   <div
                     aria-hidden="true"
-                    className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black opacity-50 hidden group-hover:block"
+                    className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black opacity-50 hidden group-hover:block dark:from-white"
                   />
-                  <p className="relative text-lg font-semibold text-white hidden group-hover:block">
-                    <EyeIcon className="inline-block h-5 w-5 mx-2 text-divisionGray " />
+                  <p className="relative text-lg font-semibold text-white hidden group-hover:block dark:text-black">
+                    <EyeIcon className="inline-block h-5 w-5 mx-2 text-divisionGray dark:text-gray-700" />
                     {board.visitCount}
                   </p>
                 </div>

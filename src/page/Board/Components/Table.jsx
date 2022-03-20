@@ -13,8 +13,6 @@ import {
   isNewPost,
 } from '../BoardUtil';
 
-const API_URL = process.env.REACT_APP_API_URL;
-
 const Table = ({
   notices,
   boards,
@@ -75,37 +73,41 @@ const Table = ({
                     linkHandler(e, board);
                 }}
               >
-                <div className="max-w-[50vw] md:max-w-[40vw] sm:max-w-[20vw] inline-block">
-                  <p className="truncate text-md ">
-                    <strong className={board.isSecret ? 'text-slate-400' : ''}>
-                      {board.title}
+                <div className=" w-full flex items-center">
+                  <div className=" max-w-[50vw] md:max-w-[40vw] sm:max-w-[20vw] inline-block">
+                    <p className="truncate text-md ">
+                      <strong
+                        className={board.isSecret ? 'text-slate-400' : ''}
+                      >
+                        {board.title}
+                      </strong>
+                    </p>
+                  </div>
+                  {board.thumbnail ? (
+                    <PhotographIcon className="inline-block h-5 w-5 m-1 text-slate-500 " />
+                  ) : (
+                    ''
+                  )}
+                  {board.files.length != 0 ? (
+                    <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
+                  ) : (
+                    ''
+                  )}
+                  {board.commentCount != 0 ? (
+                    <strong className="text-mainYellow">
+                      {'(' + board.commentCount + ')'}
                     </strong>
-                  </p>
+                  ) : (
+                    ''
+                  )}
+                  {isNewPost(board.registerTime) ? (
+                    <strong className="inline-block rounded-full w-5 h-5 align-middle text-center text-xs m-1 bg-red-500 shadow-lg border-2 border-red-200 text-mainWhite dark:text-mainBlack">
+                      n
+                    </strong>
+                  ) : (
+                    ''
+                  )}
                 </div>
-                {board.thumbnail ? (
-                  <PhotographIcon className="inline-block h-5 w-5 m-1 text-slate-500 " />
-                ) : (
-                  ''
-                )}
-                {board.files.length != 0 ? (
-                  <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
-                ) : (
-                  ''
-                )}
-                {board.commentCount != 0 ? (
-                  <strong className="text-mainYellow">
-                    {'(' + board.commentCount + ')'}
-                  </strong>
-                ) : (
-                  ''
-                )}
-                {isNewPost(board.registerTime) ? (
-                  <strong className="inline-block rounded-full w-5 h-5 align-middle text-center text-xs m-1 bg-red-500 shadow-lg border-2 border-red-200 text-mainWhite dark:text-mainBlack">
-                    n
-                  </strong>
-                ) : (
-                  ''
-                )}
                 <p className="mt-2 text-xs md:hidden">
                   글쓴이 : <strong>{board.writer} </strong>| 작성일시 :
                   <strong>{getDateWithFormat(board.registerTime)} </strong>|{' '}
@@ -153,43 +155,47 @@ const Table = ({
                     linkHandler(e, board);
                 }}
               >
-                <div className="max-w-[50vw] md:max-w-[30vw] md:w-content inline-block">
-                  <p className="truncate text-md ">
-                    {board.isSecret ? (
-                      <LockClosedIcon className="inline-block h-5 w-5 m-1 text-slate-400 " />
-                    ) : (
-                      ''
-                    )}
-                    <strong className={board.isSecret ? 'text-slate-400' : ''}>
-                      {board.title}
+                {' '}
+                <div className=" w-full flex items-center">
+                  <div className="max-w-[50vw] md:max-w-[30vw] md:w-content inline-block">
+                    <p className="truncate text-md ">
+                      {board.isSecret ? (
+                        <LockClosedIcon className="inline-block h-5 w-5 m-1 text-slate-400 " />
+                      ) : (
+                        ''
+                      )}
+                      <strong
+                        className={board.isSecret ? 'text-slate-400' : ''}
+                      >
+                        {board.title}
+                      </strong>
+                    </p>
+                  </div>
+                  {board.thumbnail ? (
+                    <PhotographIcon className="inline-block h-5 w-5 m-1 text-slate-500 " />
+                  ) : (
+                    ''
+                  )}
+                  {board.files.length != 0 ? (
+                    <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
+                  ) : (
+                    ''
+                  )}
+                  {board.commentCount != 0 ? (
+                    <strong className="text-mainYellow">
+                      {'(' + board.commentCount + ')'}
                     </strong>
-                  </p>
+                  ) : (
+                    ''
+                  )}
+                  {isNewPost(board.registerTime) ? (
+                    <strong className="inline-block rounded-full w-5 h-5 align-middle text-center text-xs m-1 bg-red-500 shadow-lg border-2 border-red-200 text-mainWhite">
+                      n
+                    </strong>
+                  ) : (
+                    ''
+                  )}
                 </div>
-                {board.thumbnail ? (
-                  <PhotographIcon className="inline-block h-5 w-5 m-1 text-slate-500 " />
-                ) : (
-                  ''
-                )}
-                {board.files.length != 0 ? (
-                  <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
-                ) : (
-                  ''
-                )}
-                {board.commentCount != 0 ? (
-                  <strong className="text-mainYellow">
-                    {'(' + board.commentCount + ')'}
-                  </strong>
-                ) : (
-                  ''
-                )}
-                {isNewPost(board.registerTime) ? (
-                  <strong className="inline-block rounded-full w-5 h-5 align-middle text-center text-xs m-1 bg-red-500 shadow-lg border-2 border-red-200 text-mainWhite dark:text-mainBlack">
-                    n
-                  </strong>
-                ) : (
-                  ''
-                )}
-
                 <p className="mt-2 text-xs md:hidden">
                   글쓴이 : <strong>{board.writer} </strong>| 작성일시 :
                   <strong>{getDateWithFormat(board.registerTime)} </strong>|{' '}
