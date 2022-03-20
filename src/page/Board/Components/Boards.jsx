@@ -40,7 +40,6 @@ const Boards = ({ categoryId, commentChangeFlag, state, changeMode }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const { no } = useParams();
   const viewStyle = state.boardStyle.mode;
-  //console.log(viewStyle);
 
   const openModal = () => {
     //비밀번호 입력창 열기
@@ -56,7 +55,6 @@ const Boards = ({ categoryId, commentChangeFlag, state, changeMode }) => {
     //console.log(e.target);
     setSecretBoardId(board.id); //열람하려는 게시글의 id 저장(url로 쓸 수 있도록)
     //console.log(boardId);
-    console.log(board.writerId);
     openModal(); //비밀번호 입력창 열기
   };
 
@@ -109,7 +107,6 @@ const Boards = ({ categoryId, commentChangeFlag, state, changeMode }) => {
           size: MAX_POSTS,
         })
         .then((res) => {
-          console.log(res);
           setSearchFlag(true);
           if (res?.list?.length == 0) {
             setPageN(0);
@@ -166,7 +163,6 @@ const Boards = ({ categoryId, commentChangeFlag, state, changeMode }) => {
     // 현재 페이지 변화에 따른 총 페이지 개수 갱신
     // 검색중이면 페이지네이션을 검색으로, 검색중이 아니면 기본으로 설정
     closeModal();
-    console.log('close');
     if (searchFlag) {
       postAPI
         .search({

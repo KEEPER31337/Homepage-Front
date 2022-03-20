@@ -27,10 +27,7 @@ const Library = () => {
         `${API_URL}/v1/recentbooks?page=${page}`
       );
       setBookList(data);
-      console.log(data);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
   useEffect(() => {
     getRecentBookList();
@@ -52,7 +49,6 @@ const Library = () => {
       />
     );
   });
-  console.log(listData);
   return (
     <AuthUser>
       <div

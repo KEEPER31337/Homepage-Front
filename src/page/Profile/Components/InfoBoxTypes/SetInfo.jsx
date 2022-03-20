@@ -21,7 +21,7 @@ function SetInfo({ member, memberInfo, infoState }) {
   const [info, setInfo] = infoState;
 
   const editInputs = [
-    //{ title: '이름', state: name, setState: setName, id: 'name' },
+    { title: '이름', state: name, setState: setName, id: 'name' },
     { title: '닉네임', state: nickName, setState: setNickName, id: 'nickName' },
     {
       title: '학번',
@@ -42,7 +42,6 @@ function SetInfo({ member, memberInfo, infoState }) {
         token: member.token,
       })
       .then((data) => {
-        console.log(data);
         if (!data.success) {
           //실패했을 경우
           setMsg({

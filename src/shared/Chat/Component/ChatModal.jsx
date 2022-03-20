@@ -2,7 +2,11 @@ import { useState, useEffect } from 'react';
 import Draggable from 'react-draggable';
 import io from 'socket.io-client';
 import { connect } from 'react-redux';
-import { XCircleIcon, PaperAirplaneIcon } from '@heroicons/react/solid';
+import {
+  XCircleIcon,
+  PaperAirplaneIcon,
+  UsersIcon,
+} from '@heroicons/react/solid';
 
 // local
 import ChatLog from './ChatLog';
@@ -14,6 +18,7 @@ const socket = io.connect(url);
 
 const event = {
   connection: 'connection',
+  disconnect: 'disconnect',
   joinRoom: 'join_room',
   msg: 'msg',
 };
@@ -21,19 +26,22 @@ const event = {
 const ChatModal = ({ member, visible, handleClose }) => {
   const [msg, setMsg] = useState('');
   const [chatLogList, setChatLogList] = useState([]);
+  const [peopleCount, setPeopleCount] = useState(1);
 
   const sendDone = (time) => {
     setChatLogList((prevChatLogList) => [
       ...prevChatLogList,
       {
-        userName: 'You',
-        profileImage:
-          'https://avatars.githubusercontent.com/u/23546441?s=400&u=db7abf2929e5518c12189034dc3fed9bda94f0a6&v=4',
+        member: member.memberInfo,
         msg,
         time,
       },
     ]);
     setMsg('');
+  };
+
+  const joinDone = ({ peopleCount }) => {
+    setPeopleCount((prevPeopleCount) => peopleCount);
   };
 
   const handleSend = () => {
@@ -49,10 +57,23 @@ const ChatModal = ({ member, visible, handleClose }) => {
   const handleReceive = (chatLog) => {
     setChatLogList((prevChatLogList) => [...prevChatLogList, chatLog]);
   };
+  const handleReceiveJoin = ({ peopleCount }) => {
+    setPeopleCount((prevPeopleCount) => peopleCount);
+  };
+  const handleReceiveLeave = ({ peopleCount }) => {
+    setPeopleCount((prevPeopleCount) => peopleCount);
+  };
+
   useEffect(() => {
     if (member.token) {
-      socket.emit(event.joinRoom, { token: member.token, roomName: 'global' });
+      socket.emit(
+        event.joinRoom,
+        { token: member.token, roomName: 'global' },
+        joinDone
+      );
       socket.on(event.msg, handleReceive);
+      socket.on(event.joinRoom, handleReceiveJoin);
+      socket.on(event.disconnect, handleReceiveLeave);
       return () => socket.off(event.msg, handleReceive);
     }
   }, [member]);
@@ -62,11 +83,15 @@ const ChatModal = ({ member, visible, handleClose }) => {
       <Draggable disabled={isMobile}>
         <div
           className={`${
-            visible ? 'visible' : 'invisible'
-          } w-full sm:w-80 rounded-md cursor-grabbing text-center ring-amber-400 bg-amber-50 text-mainBlack dark:bg-darkComponent dark:text-mainWhite`}
+            visible ? 'visible' : 'hidden'
+          } w-full sm:w-80 rounded-md cursor-grabbing text-center ring-amber-400 bg-orange-50 text-mainBlack dark:bg-darkComponent dark:text-mainWhite`}
         >
           <div className="rounded-t-md h-10 pt-2 font-semibold bg-amber-400 w-full">
             Keeper
+            <span className="px-1">
+              <UsersIcon className="inline-block h-6 w-6" />
+              {peopleCount}
+            </span>
             <button
               className="absolute right-1 top-1 bg-mainYellow text-white hover:text-pointYellow"
               onClick={handleClose}

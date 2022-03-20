@@ -2,34 +2,22 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import ScrollContainer from 'react-indiana-drag-scroll';
 
-const imageTemp =
-  'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80';
-const imageMember =
-  'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80';
+import '../style/scale.css';
+import showDateAndTime from './showDateAndTime.jsx';
+import DefaultUserThumbnail from 'assets/img/memberCircle.svg';
+import StringLogo from 'assets/img/keeper_logo_string.png';
 
-const posts = [
-  {
-    title: 'Boost your conversion rate',
-    href: '#',
-    category: { name: 'Article', href: '#' },
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto accusantium praesentium eius, ut atque fuga culpa, similique sequi cum eos quis dolorum.',
-    date: 'Mar 16, 2020',
-    datetime: '2020-03-16',
-    imageUrl:
-      'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1679&q=80',
-    readingTime: '6 min',
-    author: {
-      name: 'Roel Aufderehar',
-      href: '#',
-      imageUrl:
-        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    },
-  },
-];
+function Latest({ postList }) {
+  const now = new Date();
 
-export default function Latest({ postList }) {
-  const categoryId = useParams();
+  const handleImgErrorUser = (e) => {
+    e.target.src = DefaultUserThumbnail;
+  };
+
+  const handleImgErrorPost = (e) => {
+    e.target.src = StringLogo;
+  };
+
   return (
     <div
       className="relative bg-gray-50 dark:bg-neutral-900 h-auto pt-16 pb-4 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8"
@@ -45,57 +33,67 @@ export default function Latest({ postList }) {
           </h2>
         </div>
         <ScrollContainer vertical={false} className="overflow-hidden">
-          <div className="flex flex-nowrap mt-12 m-3 max-w-lg mx-auto gap-3 lg:max-w-none">
+          <div className="flex flex-nowrap mt-12 m-3 mx-auto gap-3">
             {postList.map((post, index) => (
               <div
                 key={index}
-                className="grow-0 shrink-0 basis-1/2 lg:basis-1/4 flex flex-col rounded-lg shadow-lg overflow-hidden"
+                className="w-[300px] grow-0 shrink-0 flex flex-col rounded-lg shadow-lg overflow-hidden"
               >
                 <div className="flex-shrink-0">
-                  <img
-                    className="h-48 w-full object-cover"
-                    src={imageTemp}
-                    alt=""
-                  />
+                  <Link
+                    to={`/post/${post.categoryId}/${post.id}`}
+                    className="block mt-2"
+                  >
+                    <img
+                      className="h-48 w-full object-scale-down"
+                      src={post.thumbnailPath ? post.thumbnailPath : StringLogo}
+                      alt="post"
+                      onError={handleImgErrorPost}
+                    />
+                  </Link>
                 </div>
                 <div className="flex-1 bg-mainWhite dark:bg-mainBlack p-6 flex flex-col justify-between">
                   <div className="flex-1">
                     <p className="text-sm font-medium text-mainYellow">
-                      <a href={'category link'} className="hover:underline">
+                      <Link
+                        to={`/board/${post.categoryId}`}
+                        className="hover:underline"
+                      >
                         {post.category}
-                      </a>
+                      </Link>
                     </p>
                     <Link
-                      to={`/post/${categoryId}/${post.id}`}
+                      to={`/post/${post.categoryId}/${post.id}`}
                       className="block mt-2"
                     >
-                      <p className="text-xl font-semibold dark:text-mainWhite">
+                      <p className="truncate text-xl font-semibold dark:text-mainWhite">
                         {post.title}
                       </p>
                     </Link>
                   </div>
                   <div className="mt-6 flex items-center">
                     <div className="flex-shrink-0">
-                      {/* NOTE :: user link는 일단 안씀 (나중에 드롭다운으로 기능 제작) */}
-                      <a href={'user link'}>
-                        <span className="sr-only">{'author name'}</span>
-                        <img
-                          className="h-10 w-10 rounded-full"
-                          src={imageMember}
-                          alt=""
-                        />
-                      </a>
+                      {/* TO DO : Link to user information with "drop-down" */}
+                      <span className="sr-only">{'author name'}</span>
+                      <img
+                        className="h-10 w-10 rounded-full"
+                        src={
+                          post.writerThumbnailPath
+                            ? post.writerThumbnailPath
+                            : DefaultUserThumbnail
+                        }
+                        alt="user"
+                        onError={handleImgErrorUser}
+                      />
                     </div>
                     <div className="ml-3">
                       <p className="text-sm font-medium">
-                        {/* NOTE :: user link는 일단 안씀 (나중에 드롭다운으로 기능 제작) */}
-                        <a href={'user link'} className="hover:underline">
-                          {post.writer}
-                        </a>
+                        {/* TO DO : Link to user information with "drop-down" */}
+                        {post.writer}
                       </p>
                       <div className="flex space-x-1 text-sm text-gray-500">
                         <time dateTime={post.updateTime}>
-                          {post.updateTime}
+                          {showDateAndTime(now, post.updateTime)}
                         </time>
                         <span aria-hidden="true">&middot;</span>
                         <span>{post.visitCount} watch</span>
@@ -111,3 +109,5 @@ export default function Latest({ postList }) {
     </div>
   );
 }
+
+export default Latest;

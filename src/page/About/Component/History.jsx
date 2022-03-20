@@ -98,9 +98,7 @@ export default function History() {
           id: null,
           subtitle: null,
           staticWriteTitleId: null,
-          thumbnail: {
-            id: null,
-          },
+          thumbnailPath: null,
           displayOrder: null,
           staticWriteContentResults: [
             {
@@ -150,7 +148,7 @@ export default function History() {
   return (
     <div className="py-4 lg:py-5 / my-5">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="py-6 lg:py-10 px-12 lg:px-16">
+        <div className="py-6 lg:py-10 px-3 md:px-12 lg:px-16">
           <h2 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow">
             {historyInfo[0].title}
           </h2>
@@ -160,13 +158,16 @@ export default function History() {
                 <div
                   key={article.subtitle}
                   className={classNames(
-                    articleIdx !== historyInfo[0].length - 1 ? 'pb-10' : '',
+                    articleIdx !==
+                      historyInfo[0].subtitleImageResults.length - 1
+                      ? 'pb-10'
+                      : '',
                     'relative'
                   )}
                 >
-                  {console.log(article.staticWriteContentResults)}
                   <>
-                    {articleIdx !== historyInfo[0].length - 1 ? ( // 원 사이 잇는 짝대기
+                    {articleIdx !==
+                    historyInfo[0].subtitleImageResults.length - 1 ? ( // 원 사이 잇는 짝대기
                       <div
                         className="-ml-px absolute mt-0.5 top-4 left-3.5 w-1.5 h-full bg-mainYellow"
                         aria-hidden="true"

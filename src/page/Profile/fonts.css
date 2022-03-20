@@ -1,0 +1,21 @@
+.text-shadow {
+  text-shadow: 2px 2px #000000;
+}
+
+.css-font {
+  font-family: 'nickname';
+}
+
+.css-digit-font {
+  font-family: 'digit';
+}
+
+@font-face {
+  font-family: 'nickname';
+  src: url('./fonts/DoHyeon-Regular.ttf');
+}
+@font-face {
+  font-family: 'digit';
+  src: url('./fonts/digital-7.regular.ttf');
+}
+/* digit 폰트는 상업적 이용은 불가능합니다! */

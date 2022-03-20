@@ -69,14 +69,15 @@ export default function PostList(props) {
               <tr
                 className="w-full h-10 hover:bg-divisionGray dark:hover:bg-[#0b1523] select-none"
                 onClick={() => {
-                  console.log(post.postId);
+                  console.log(post);
                 }}
               >
                 <td className="text-center">{post.postId}</td>
                 <td className="text-center">{post.postBoard}</td>
                 <td className="text-center">{post.postTitle}</td>
-                {/* NOTE : 변환처리는 state에 set할 때 처리해서 넣어줍시다. */}
-                <td className="text-center">{post.createdAt}</td>
+                <td className="text-center">
+                  {dateFormat(new Date(post.createdAt))}
+                </td>
                 <td className="text-center">{post.showCnt}</td>
                 <td className="text-center">{post.recoCnt}</td>
               </tr>

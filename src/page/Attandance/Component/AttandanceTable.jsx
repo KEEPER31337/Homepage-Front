@@ -32,6 +32,10 @@ const AttandanceTable = ({ member }) => {
       });
   };
 
+  const handleErrorImg = (e) => {
+    e.target.src = imgMemberCircle;
+  };
+
   useEffect(() => {
     const date = dayjs();
     attendanceAPI
@@ -41,8 +45,6 @@ const AttandanceTable = ({ member }) => {
       })
       .then((data) => {
         if (data.success) {
-          console.log(member);
-          console.log(data.list);
           setAttendLogList(data.list);
         }
       });
@@ -56,15 +58,25 @@ const AttandanceTable = ({ member }) => {
             <table className="min-w-full">
               <thead className="bg-gray-50 text-gray-500 dark:bg-darkPoint dark:text-mainYellow">
                 <tr>
-                  {headers.map((header, index) => (
-                    <th
-                      key={index}
-                      scope="col"
-                      className="px-6 py-3 text-left text-xl font-medium uppercase tracking-wider"
-                    >
-                      {header}
-                    </th>
-                  ))}
+                  {headers.map((header, index) =>
+                    index == 1 ? (
+                      <th
+                        key={index}
+                        scope="col"
+                        className="hidden md:block px-6 py-3 text-left text-xl font-medium uppercase tracking-wider"
+                      >
+                        {header}
+                      </th>
+                    ) : (
+                      <th
+                        key={index}
+                        scope="col"
+                        className="px-6 py-3 text-left text-xl font-medium uppercase tracking-wider"
+                      >
+                        {header}
+                      </th>
+                    )
+                  )}
                   <th scope="col" className="relative px-6 py-3">
                     <span className="sr-only">Edit</span>
                   </th>
@@ -79,8 +91,11 @@ const AttandanceTable = ({ member }) => {
                           <img
                             className="h-10 w-10 rounded-full"
                             src={
-                              log.thumbnail ? log.thumbnail : imgMemberCircle
+                              log.thumbnailPath
+                                ? log.thumbnailPath
+                                : imgMemberCircle
                             }
+                            onError={handleErrorImg}
                           />
                         </div>
                         <div className="ml-4">
@@ -90,13 +105,13 @@ const AttandanceTable = ({ member }) => {
                         </div>
                       </div>
                     </td>
-                    <td className="w-xl px-6 py-4 whitespace-nowrap">
-                      <div className="text-md text-gray-900 dark:text-mainWhite">
+                    <td className="hidden md:block w-xl px-6 py-4 whitespace-nowrap">
+                      <div className="max-w-[250px] whitespace-normal break-all text-clip text-md text-gray-900 dark:text-mainWhite">
                         {log.greetings}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-lg leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      <span className="px-2 inline-flex break-words text-lg leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                         {log.continuousDay
                           ? `${log.continuousDay}일째 개근`
                           : ''}

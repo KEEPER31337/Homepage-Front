@@ -47,7 +47,6 @@ const TextEditer = (props) => {
   };
 
   const passwordHandler = ({ target }) => {
-    console.log(target.value);
     setPassword(target.value);
   };
 
@@ -92,7 +91,6 @@ const TextEditer = (props) => {
     console.log(thumbnailBase64);
     console.log(thumbnail);
     ipAPI.getIp().then((ipAddress) => {
-      console.log(files);
       postAPI
         .create({
           title: text.title,

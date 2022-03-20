@@ -42,7 +42,6 @@ const BookAdd = ({ token, memberInfo }) => {
     formData.append('department', department);
     formData.append('quantity', quantity);
     formData.append('thumbnail', thumbnail);
-    console.log(quantity);
     try {
       const { data } = await axios.post(
         `${API_URL}/v1/admin/addbook`,
@@ -50,9 +49,7 @@ const BookAdd = ({ token, memberInfo }) => {
         { headers: headers }
       );
       alert(data);
-      console.log(data);
     } catch (err) {
-      console.log(err);
       alert(err);
     }
   };

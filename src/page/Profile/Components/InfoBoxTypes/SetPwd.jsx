@@ -33,7 +33,6 @@ function SetPwd({ member }) {
     memberAPI
       .changePassword({ password: password, token: member.token })
       .then((data) => {
-        console.log(data);
         if (!data.success) {
           //실패했을 경우
 

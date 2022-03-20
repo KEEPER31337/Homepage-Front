@@ -51,9 +51,7 @@ const FilesUploadForm = (props) => {
     );
   };
 
-  useEffect(() => {
-    console.log(files);
-  }, [files]);
+  useEffect(() => {}, [files]);
   const onDrop = useCallback(
     (acceptedFiles) => {
       var temp = [...files];

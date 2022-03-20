@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 // local
 import rankAPI from 'API/v1/rank';
 import SimpleNotification from 'shared/SimpleNotification';
-import iconPencilAlt from 'assets/img/icons/pecil-alt.svg';
 import imgMemberCircle from 'assets/img/memberCircle.svg';
 
 const headers = ['랭킹', '이름', '포인트', '직책'];
@@ -15,6 +14,10 @@ const AttandanceTable = ({ member }) => {
   const successNotiRef = useRef({});
   const failNotiRef = useRef({});
 
+  const handleErrorImg = (e) => {
+    e.target.src = imgMemberCircle;
+  };
+
   useEffect(() => {
     rankAPI
       .getRank({
@@ -23,7 +26,6 @@ const AttandanceTable = ({ member }) => {
       .then((data) => {
         if (data.success) {
           setRankList(data.list);
-          console.log(data.list);
         }
       });
   }, [member]);
@@ -64,10 +66,11 @@ const AttandanceTable = ({ member }) => {
                           <img
                             className="h-10 w-10 rounded-full"
                             src={
-                              member.thumbnail
-                                ? member.thumbnail
+                              member.thumbnailPath
+                                ? member.thumbnailPath
                                 : imgMemberCircle
                             }
+                            onError={handleErrorImg}
                           />
                         </div>
                         <div className="ml-4">

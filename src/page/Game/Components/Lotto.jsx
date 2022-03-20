@@ -142,36 +142,47 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
       setIsPop(true);
 
       lottoAPI.playLotto({ token: member.token }).then((data) => {
-        setRank(data.data.lottoPointIdx);
+        if (data.success) {
+          setRank(data.data.lottoPointIdx);
 
-        switch (data.data.lottoPointIdx) {
-          case 1:
-            backgroundImage.src = win1;
-            setPoint(gameInfo.FIRST_POINT);
-            break;
-          case 2:
-            backgroundImage.src = win2;
-            setPoint(gameInfo.SECOND_POINT);
-            break;
-          case 3:
-            backgroundImage.src = win3;
-            setPoint(gameInfo.THIRD_POINT);
-            break;
-          case 4:
-            backgroundImage.src = win4;
-            setPoint(gameInfo.FOURTH_POINT);
-            break;
-          case 5:
-            backgroundImage.src = win5;
-            setPoint(gameInfo.FIFTH_POINT);
-            break;
-          case 6:
-            backgroundImage.src = win6;
-            setPoint(gameInfo.LAST_POINT);
-            break;
+          switch (data.data.lottoPointIdx) {
+            case 1:
+              backgroundImage.src = win1;
+              setPoint(gameInfo.FIRST_POINT);
+              break;
+            case 2:
+              backgroundImage.src = win2;
+              setPoint(gameInfo.SECOND_POINT);
+              break;
+            case 3:
+              backgroundImage.src = win3;
+              setPoint(gameInfo.THIRD_POINT);
+              break;
+            case 4:
+              backgroundImage.src = win4;
+              setPoint(gameInfo.FOURTH_POINT);
+              break;
+            case 5:
+              backgroundImage.src = win5;
+              setPoint(gameInfo.FIFTH_POINT);
+              break;
+            case 6:
+              backgroundImage.src = win6;
+              setPoint(gameInfo.LAST_POINT);
+              break;
+          }
         }
       });
       setMemberPoint((tmp) => tmp - 1000);
+
+      //오늘 결과 1000원 마이너스
+      lottoAPI
+        .getLottoInfo({
+          token: member.token,
+        })
+        .then((data) => {
+          setTodayResult((prev) => prev - 1000);
+        });
     } else {
       setIsPop(false);
       alertCountModalRef.current.open();
@@ -229,6 +240,7 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
     if (percent >= completedAt && !isCompleted) {
       setIsCompleted(true);
       alertShowResultModalRef.current.open();
+      scratchEnd();
 
       //보유포인트, 잔여횟수 업데이트 됨(useState)
       memberAPI
@@ -289,8 +301,8 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
           </div>
         ))}
       </div>
-      <div className="inset-y-5 py-2 pl-5  w-full   bg-gray-900 rounded-md shadow-md text-amber-200 text-xs sm:text-base">
-        <p>
+      <div className="inset-y-5 py-2 pl-5  w-full   bg-gray-900 rounded-md shadow-md text-amber-200 ">
+        <p className="text-lg">
           {isPop
             ? `${progress}% (${completedAt}%이상 긁어야 합니다)`
             : '복권을 뽑아주세요'}
@@ -332,8 +344,8 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
          
           ${
             !isPop
-              ? 'bg-gradient-to-r from-amber-400 via-red-800 to-black dark:from-darkPoint'
-              : 'bg-divisionGray'
+              ? 'bg-gradient-to-r from-amber-400 via-red-800 to-black dark:from-darkComponent'
+              : 'bg-divisionGray dark:bg-mainBlack dark:text-gray-400'
           }`}
       >
         뽑기

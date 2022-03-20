@@ -10,15 +10,11 @@ const RecommendBook = ({ setBookList, mainBook }) => {
   };
   const bookSearch = async () => {
     try {
-      console.log(searchValue);
       const { data } = await axios.get(
         `${API_URL}/v1/searchbooks?keyword=${searchValue}`
       );
-      console.log(data);
       setBookList(data);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
   return (
     <div>
@@ -30,7 +26,7 @@ const RecommendBook = ({ setBookList, mainBook }) => {
         }}
       >
         <input
-          style={{ width: '500px', height: '50px', marginTop: 50 }}
+          style={{ width: '50%', height: '50px', marginTop: 50 }}
           onChange={onChange}
           value={searchValue}
         ></input>
@@ -73,11 +69,11 @@ const RecommendBook = ({ setBookList, mainBook }) => {
         style={{
           alignItems: 'center',
           display: 'flex',
-          flexDirection: 'row',
-          width: '100%',
-          height: '400px',
-          paddingLeft: '20px',
-          paddingRight: '20px',
+          flexDirection: 'column',
+          height: '800px',
+          marginTop: '50px',
+          paddingLeft: 'auto',
+          paddingRight: 'auto',
           justifyContent: 'center',
         }}
       >
@@ -110,6 +106,9 @@ const RecommendBook = ({ setBookList, mainBook }) => {
             flexDirection: 'column',
             marginTop: 50,
             marginBottom: 'auto',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            width: '350px',
           }}
         >
           <div
@@ -151,7 +150,7 @@ const RecommendBook = ({ setBookList, mainBook }) => {
           >
             {mainBook.information}
           </div>
-          <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <div className="flex">
             <div
               className="font"
               style={{

@@ -35,7 +35,6 @@ const Comments = ({
   const myId = state.member?.memberInfo?.id;
 
   useEffect(() => {
-    console.log('reload');
     commentAPI
       .get({
         boardId: boardId,

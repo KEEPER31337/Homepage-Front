@@ -11,6 +11,7 @@ const timeFormat = 'YYYY-MM-DD hh:mm:ss';
 
 const event = {
   connection: 'connection',
+  disconnect: 'disconnect',
   joinRoom: 'join_room',
   msg: 'msg',
 };
@@ -25,10 +26,14 @@ const wsServer = SocketIO(httpServer, {
 });
 
 wsServer.on(event.connection, (socket) => {
-  console.log('socketID:', socket.id);
-  socket.on(event.joinRoom, ({ token, roomName }) => {
+  socket.on(event.joinRoom, ({ token, roomName }, done) => {
     authAPI.getAuth({ token }).then((data) => {
-      if (data.success) socket.join(roomName);
+      if (data.success) {
+        socket.join(roomName);
+        const peopleCount = wsServer.sockets.adapter.rooms.get(roomName)?.size;
+        socket.to(roomName).emit(event.joinRoom, { peopleCount });
+        done({ peopleCount });
+      }
     });
   });
 
@@ -37,14 +42,22 @@ wsServer.on(event.connection, (socket) => {
     authAPI.getAuth({ token }).then((data) => {
       if (data.success && msg) {
         socket.to(roomName).emit(event.msg, {
-          userName: data.data.nickName,
-          profileImage: data.thumbnail,
+          member: {
+            id: data.data.id,
+            nickName: data.data.nickName,
+            thumbnailPath: data.data.thumbnailPath,
+          },
           msg,
           time,
         });
         done(time);
       }
     });
+  });
+
+  socket.on(event.disconnect, () => {
+    const peopleCount = wsServer.sockets.adapter.rooms.get('global')?.size;
+    if (peopleCount) socket.to('global').emit(event.joinRoom, { peopleCount });
   });
 });
 
