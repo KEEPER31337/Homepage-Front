@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import { Disclosure, Menu, Transition } from '@headlessui/react';
+import { Disclosure, Menu, Transition, Popover } from '@headlessui/react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -44,47 +44,59 @@ const UserBoxMobile = ({ member, signOut }) => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <Menu.Items className="origin-top-right absolute right-0 mt-2 w-fit rounded-md shadow-lg p-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
             <Menu.Item>
               {({ active }) => (
-                <Link
-                  to={`/profile/${member?.memberInfo?.id}`}
+                <Popover.Button
                   className={classNames(
                     active ? 'bg-gray-100' : '',
-                    'block px-4 py-2 text-sm text-gray-700'
+                    'w-full h-10 block text-sm text-gray-700'
                   )}
                 >
-                  프로필
-                </Link>
+                  <Link
+                    to={`/profile/${member?.memberInfo?.id}`}
+                    className="w-full h-full px-3"
+                  >
+                    프로필
+                  </Link>
+                </Popover.Button>
               )}
             </Menu.Item>
             <Menu.Item>
               {({ active }) => (
-                <Link
-                  to={`/profile/${member.memberInfo.id}/edit`}
+                <Popover.Button
                   className={classNames(
                     active ? 'bg-gray-100' : '',
-                    'block px-4 py-2 text-sm text-gray-700'
+                    'w-full h-10 block text-sm text-gray-700'
                   )}
                 >
-                  프로필 수정
-                </Link>
+                  <Link
+                    to={`/profile/${member?.memberInfo?.id}/edit`}
+                    className="w-full h-10 px-3"
+                  >
+                    프로필 수정
+                  </Link>
+                </Popover.Button>
               )}
             </Menu.Item>
             <Menu.Item>
               {({ active }) => (
-                <Link
-                  to="/"
-                  onClick={() => {
-                    signOut();
-                  }}
+                <Popover.Button
                   className={classNames(
                     active ? 'bg-gray-100' : '',
-                    'block px-4 py-2 text-sm text-gray-700'
+                    'w-full h-10 block text-sm text-gray-700'
                   )}
                 >
-                  로그아웃
-                </Link>
+                  <Link
+                    to="/"
+                    className="w-full h-full px-3"
+                    onClick={() => {
+                      signOut();
+                    }}
+                  >
+                    로그아웃
+                  </Link>
+                </Popover.Button>
               )}
             </Menu.Item>
           </Menu.Items>
