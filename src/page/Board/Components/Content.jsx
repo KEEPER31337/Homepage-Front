@@ -238,6 +238,7 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
                       <a
                         href={API_URL + '/v1/post/download/' + file.id}
                         className=" w-full inline-block "
+                        download={file.fileName}
                       >
                         <td className="border-b px-2 flex justify-between dark:border-darkComponent ">
                           <div className="w-[50vw] md:w-[40vw] ">
