@@ -94,7 +94,7 @@ const RecommendBook = ({ setBookList, mainBook }) => {
           />
         ) : (
           <img
-            src={`${API_URL}/v1/util/thumbnail/${mainBook.thumbnailId}`}
+            src={`${mainBook.thumbnailId}`}
             style={{
               boxShadow: '2px 2px 5px 2px #0000001A',
               width: '200px',

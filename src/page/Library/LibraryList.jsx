@@ -59,7 +59,7 @@ const LibraryList = ({
           />
         ) : (
           <img
-            src={`${API_URL}/v1/util/thumbnail/${thumbnailId}`}
+            src={`${thumbnailId}`}
             style={{
               boxShadow: '2px 2px 5px 2px #0000001A',
               width: '200px',

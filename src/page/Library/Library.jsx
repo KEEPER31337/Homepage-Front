@@ -47,7 +47,7 @@ const Library = () => {
         total={x?.total}
         enable={x?.enable}
         registerDate={x?.registerDate}
-        thumbnailId={x?.thumbnailId}
+        thumbnailId={x?.thumbnailPath}
         setMainBook={setMainBook}
       />
     );
