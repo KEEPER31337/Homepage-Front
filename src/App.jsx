@@ -26,6 +26,7 @@ const SignUp = lazy(() => import('page/SignUp/SignUp'));
 const BookAdd = lazy(() => import('./page/Library/BookAdd'));
 const BookManage = lazy(() => import('./page/Library/BookManage'));
 const Ranking = lazy(() => import('page/Ranking/Ranking'));
+const Study = lazy(() => import('page/Study/Study'));
 
 const App = ({ member, darkMode, signOut }) => {
   useEffect(() => {
@@ -60,6 +61,7 @@ const App = ({ member, darkMode, signOut }) => {
             <Route path="/signin/findpassword" element={<FindPassword />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/ranking" element={<Ranking />} />
+            <Route path="/study" element={<Study />} />
           </Routes>
         </Suspense>
         <Chatting />

@@ -60,9 +60,11 @@ const TextEditer = (props) => {
 
   useEffect(() => {
     if (modifyFlag) {
+      setText({ title: board.title, content: board.content });
       setAllowComment(!!board.allowComment);
       setIsNotice(!!board.isNotice);
       setIsSecret(!!board.isSecret);
+      setUploadAble(true);
     }
   }, []);
 

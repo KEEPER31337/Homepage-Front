@@ -51,7 +51,15 @@ const FilesUploadForm = (props) => {
     );
   };
 
-  useEffect(() => {}, [files]);
+  useEffect(() => {
+    console.log(files);
+  }, [files]);
+  useEffect(() => {
+    if (props.modifyFlag) {
+      console.log(props.board.files);
+      //setFiles(props.board.files);
+    }
+  }, []);
   const onDrop = useCallback(
     (acceptedFiles) => {
       var temp = [...files];
@@ -187,7 +195,7 @@ const FilesUploadForm = (props) => {
           </button>
           {files.length !== 0 ? (
             <table className="w-full dark:text-mainWhite">
-              {console.log(files.length)}
+              {/*console.log(files.length)*/}
               <thead className="bg-mainYellow bg-opacity-100 ">
                 <tr className="">
                   <th className="rounded-tl-lg">파일명</th>
