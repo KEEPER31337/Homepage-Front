@@ -70,8 +70,8 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
       memberAPI.follow({ token, loginId: user.loginId }).then((result) => {
         if (result.success) {
           getUser();
-          console.log('success', result);
-        } else console.log('fail', result);
+        } else {
+        }
         setIsFollowing(false);
       });
     }
@@ -81,12 +81,11 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
     if (isUnFollowing) return;
     else {
       setIsUnFollowing(true);
-      console.log(token, user.loginId);
       memberAPI.unfollow({ token, loginId: user.loginId }).then((result) => {
         if (result.success) {
           getUser();
-          console.log('success', result);
-        } else console.log('fail', result);
+        } else {
+        }
         setIsUnFollowing(false);
       });
     }
@@ -96,7 +95,6 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
     memberAPI.getOtherById({ token, id: userId }).then((getOtherResult) => {
       if (getOtherResult.success) {
         const other = getOtherResult.data;
-        console.log(other);
         other.rank = other.memberRank;
         other.type = other.memberType;
         other.jobs = [];
@@ -105,7 +103,6 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
         setIsFollowee(other.checkFollowee);
       } else {
         setUser(null);
-        console.log(`${getOtherResult.code}:${getOtherResult.msg}`);
       }
     });
   };

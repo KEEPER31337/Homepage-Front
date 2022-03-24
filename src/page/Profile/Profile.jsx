@@ -34,10 +34,6 @@ const Profile = ({ token, memberInfo, updateInfo }) => {
   const giftPointModalState = useState(false);
   const [giftPointModal, setGiftPointModal] = giftPointModalState;
 
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
-
   const myBtns = [
     {
       text: '수정',

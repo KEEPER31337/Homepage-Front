@@ -10,6 +10,10 @@ import memberAPI from 'API/v1/member';
 const MemberGrid = ({ member }) => {
   const [memberList, setMemberList] = useState([]);
 
+  const handleErrorImg = (e) => {
+    e.target.src = memberImage;
+  };
+
   useEffect(() => {
     memberAPI.getMembers({ token: member.token }).then((data) => {
       setMemberList(data.list);
@@ -24,12 +28,13 @@ const MemberGrid = ({ member }) => {
           {memberList?.map((member, index) => (
             <div key={index} href={member.href} className="group w-full">
               <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
-                <Link to={`/profile/${member.id}`}>
+                <Link to={`/profile/${member.memberId}`}>
                   <img
                     src={
                       member.thumbnailPath ? member.thumbnailPath : memberImage
                     }
                     alt="profile"
+                    onError={handleErrorImg}
                     className="w-full h-full object-center object-cover group-hover:opacity-75"
                   />
                 </Link>

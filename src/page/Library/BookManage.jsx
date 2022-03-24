@@ -37,9 +37,7 @@ const BookManage = ({ token }) => {
         `${API_URL}/v1/recentbooks?page=${page}`
       );
       setBookList(data);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
   const delBookAjax = async () => {
     try {
@@ -50,7 +48,6 @@ const BookManage = ({ token }) => {
       );
       setOpenDel(false);
     } catch (err) {
-      console.log(err);
       alert('에러가 발생했습니다.');
     }
   };
@@ -63,7 +60,6 @@ const BookManage = ({ token }) => {
       );
       setOpenBorrow(false);
     } catch (err) {
-      console.log(err);
       alert('에러가 발생했습니다.');
     }
   };
@@ -76,7 +72,6 @@ const BookManage = ({ token }) => {
       );
       setOpenReturn(false);
     } catch (err) {
-      console.log(err);
       alert('에러가 발생했습니다.');
     }
   };

@@ -1,9 +1,10 @@
 import { Fragment } from 'react';
-import { Disclosure, Menu, Transition } from '@headlessui/react';
+import { Disclosure, Menu, Transition, Popover } from '@headlessui/react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-// API
+// local
+import imgMemberCircle from 'assets/img/memberCircle.svg';
 import actionMember from 'redux/action/member';
 
 function classNames(...classes) {
@@ -11,7 +12,10 @@ function classNames(...classes) {
 }
 
 const UserBoxMobile = ({ member, signOut }) => {
-  console.log(member);
+  const handleErrorImg = (e) => {
+    e.target.src = imgMemberCircle;
+  };
+
   return (
     <div className="md:flex items-center justify-end md:flex-1 lg:w-0">
       <Menu as="div" className="ml-3 relative">
@@ -21,8 +25,9 @@ const UserBoxMobile = ({ member, signOut }) => {
               <img
                 className="h-12 w-12 rounded-full"
                 // user Image
-                src="https://avatars.githubusercontent.com/u/23546441?s=400&u=db7abf2929e5518c12189034dc3fed9bda94f0a6&v=4"
+                src={member?.memberInfo?.thumbnailPath}
                 alt=""
+                onError={handleErrorImg}
               />
               <div className="text-lg self-center mx-5 text-mainBlack dark:text-mainWhite">
                 {member?.memberInfo?.nickName}
@@ -39,49 +44,59 @@ const UserBoxMobile = ({ member, signOut }) => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <Menu.Items className="origin-top-right absolute right-0 mt-2 w-fit rounded-md shadow-lg p-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
             <Menu.Item>
               {({ active }) => (
-                <Link
-                  // TODO : 링크 수정
-                  to="/profile/1"
+                <Popover.Button
                   className={classNames(
                     active ? 'bg-gray-100' : '',
-                    'block px-4 py-2 text-sm text-gray-700'
+                    'w-full h-10 block text-sm text-gray-700'
                   )}
                 >
-                  프로필
-                </Link>
+                  <Link
+                    to={`/profile/${member?.memberInfo?.id}`}
+                    className="w-full h-full px-3"
+                  >
+                    프로필
+                  </Link>
+                </Popover.Button>
               )}
             </Menu.Item>
             <Menu.Item>
               {({ active }) => (
-                <Link
-                  // TODO : 링크 수정
-                  to="/profile/1/edit"
+                <Popover.Button
                   className={classNames(
                     active ? 'bg-gray-100' : '',
-                    'block px-4 py-2 text-sm text-gray-700'
+                    'w-full h-10 block text-sm text-gray-700'
                   )}
                 >
-                  프로필 수정
-                </Link>
+                  <Link
+                    to={`/profile/${member?.memberInfo?.id}/edit`}
+                    className="w-full h-10 px-3"
+                  >
+                    프로필 수정
+                  </Link>
+                </Popover.Button>
               )}
             </Menu.Item>
             <Menu.Item>
               {({ active }) => (
-                <Link
-                  to="/"
-                  onClick={() => {
-                    signOut();
-                  }}
+                <Popover.Button
                   className={classNames(
                     active ? 'bg-gray-100' : '',
-                    'block px-4 py-2 text-sm text-gray-700'
+                    'w-full h-10 block text-sm text-gray-700'
                   )}
                 >
-                  로그아웃
-                </Link>
+                  <Link
+                    to="/"
+                    className="w-full h-full px-3"
+                    onClick={() => {
+                      signOut();
+                    }}
+                  >
+                    로그아웃
+                  </Link>
+                </Popover.Button>
               )}
             </Menu.Item>
           </Menu.Items>

@@ -86,7 +86,7 @@ const Calendar = ({ member }) => {
               <div className="w-full h-full">
                 <div className="flex items-center justify-center w-full rounded-full">
                   <p
-                    className={`text-lg w-14 h-14 flex items-center justify-center font-medium ${
+                    className={`w-10 h-10 sm:w-14 sm:h-14 text-sm sm:text-lg flex items-center justify-center font-medium ${
                       date.format(dateFormat) === now.format(dateFormat)
                         ? 'bg-mainYellow text-white'
                         : attendDateList.includes(date.format(dateFormat)) &&

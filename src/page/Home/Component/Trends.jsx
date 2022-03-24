@@ -4,12 +4,19 @@ import ScrollContainer from 'react-indiana-drag-scroll';
 
 import '../style/scale.css';
 import showDateAndTime from './showDateAndTime';
-import showPostThumbnail from './showPostThumbnail';
-import showUserThumbnail from './showUserThumbnail';
+import DefaultUserThumbnail from 'assets/img/memberCircle.svg';
+import StringLogo from 'assets/img/keeper_logo_string.png';
 
-
-export default function Trends({ postList }) {
+function Trends({ postList }) {
   const now = new Date();
+
+  const handleImgErrorUser = (e) => {
+    e.target.src = DefaultUserThumbnail;
+  };
+
+  const handleImgErrorPost = (e) => {
+    e.target.src = StringLogo;
+  };
   return (
     <div
       className="relative bg-gray-50 dark:bg-neutral-900 h-auto pt-16 pb-4 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8"
@@ -32,13 +39,12 @@ export default function Trends({ postList }) {
                 className="w-[300px] grow-0 shrink-0 flex flex-col rounded-lg shadow-lg overflow-hidden"
               >
                 <div className="flex-shrink-0">
-                  <Link
-                  to={`/post/${post.categoryId}/${post.id}`}
-                  >
+                  <Link to={`/post/${post.categoryId}/${post.id}`}>
                     <img
-                      className="h-48 w-full object-cover"
-                      src={showPostThumbnail(post.thumbnailPath)}
-                      alt="postThumbnail"
+                      className="h-48 w-full object-scale-down"
+                      src={post.thumbnailPath ? post.thumbnailPath : StringLogo}
+                      alt="post"
+                      onError={handleImgErrorPost}
                     />
                   </Link>
                 </div>
@@ -48,15 +54,13 @@ export default function Trends({ postList }) {
                       to={`/board/${post.categoryId}`}
                       className="text-sm font-medium text-mainYellow hover:underline"
                     >
-                      {post.category} 
+                      {post.category}
                     </Link>
-                    <Link
-                        to={`/post/${post.categoryId}/${post.id}`}
-                      > 
-                    <p className="block mt-2 truncate text-xl font-semibold dark:text-mainWhite"> 
+                    <Link to={`/post/${post.categoryId}/${post.id}`}>
+                      <p className="block mt-2 truncate text-xl font-semibold dark:text-mainWhite">
                         {post.title}
-                    </p>
-                  </Link>
+                      </p>
+                    </Link>
                   </div>
                   <div className="mt-6 flex items-center">
                     <div className="flex-shrink-0">
@@ -64,8 +68,13 @@ export default function Trends({ postList }) {
                       <span className="sr-only">{''}</span>
                       <img
                         className="h-10 w-10 rounded-full"
-                        src={showUserThumbnail(post.userThumbnailPath)} // Member Profile Image
-                        alt="userThumbnail"
+                        src={
+                          post.userThumbnailPath
+                            ? post.userThumbnailPath
+                            : DefaultUserThumbnail
+                        }
+                        alt="user"
+                        onError={handleImgErrorUser}
                       />
                     </div>
                     <div className="ml-3">
@@ -74,7 +83,10 @@ export default function Trends({ postList }) {
                         {post.user}
                       </p>
                       <div className="flex space-x-1 text-sm text-gray-500">
-                        <time dateTime={post.dateTime}> {showDateAndTime(now, post.dateTime)} </time>
+                        <time dateTime={post.dateTime}>
+                          {' '}
+                          {showDateAndTime(now, post.dateTime)}{' '}
+                        </time>
                         <span aria-hidden="true">&middot;</span>
                         <span>{post.watch} watch</span>
                       </div>
@@ -89,3 +101,5 @@ export default function Trends({ postList }) {
     </div>
   );
 }
+
+export default Trends;

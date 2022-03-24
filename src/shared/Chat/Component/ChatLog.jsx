@@ -4,9 +4,11 @@ import { Fragment, useEffect } from 'react';
 import imgMemberCircle from 'assets/img/memberCircle.svg';
 import { connect } from 'react-redux';
 
-const API_URL = process.env.REACT_APP_API_URL;
-
 const ChatLog = ({ chatLogList, member }) => {
+  const handleErrorImg = (e) => {
+    e.target.src = imgMemberCircle;
+  };
+
   useEffect(() => {
     const divChat = document.getElementById('chatlog');
     divChat.scrollTop = divChat.scrollHeight;
@@ -41,10 +43,11 @@ const ChatLog = ({ chatLogList, member }) => {
                     className="h-6 w-6 rounded-full"
                     src={
                       chatLog.member.thumbnailPath
-                        ? API_URL + chatLog.member.thumbnailPath
+                        ? chatLog.member.thumbnailPath
                         : imgMemberCircle
                     }
                     alt=""
+                    onError={handleErrorImg}
                   />
                   <div className="w-15 truncate ...">
                     {chatLog.member.nickName}

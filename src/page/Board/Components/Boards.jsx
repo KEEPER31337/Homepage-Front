@@ -23,9 +23,9 @@ const setPageButton = (currentPage, page) => {
 
 const getStyleIcon = (item) => {
   if (item == styleList[0]) {
-    return <ViewListIcon className="inline-block h-5 w-5" />;
+    return <ViewListIcon className="inline-block h-5 w-5 -mt-[2px] mb-[2px]" />;
   } else {
-    return <ViewGridIcon className="inline-block h-5 w-5" />;
+    return <ViewGridIcon className="inline-block h-5 w-5 -mt-[2px] mb-[2px]" />;
   }
 };
 
@@ -40,7 +40,6 @@ const Boards = ({ categoryId, commentChangeFlag, state, changeMode }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const { no } = useParams();
   const viewStyle = state.boardStyle.mode;
-  //console.log(viewStyle);
 
   const openModal = () => {
     //비밀번호 입력창 열기
@@ -56,7 +55,6 @@ const Boards = ({ categoryId, commentChangeFlag, state, changeMode }) => {
     //console.log(e.target);
     setSecretBoardId(board.id); //열람하려는 게시글의 id 저장(url로 쓸 수 있도록)
     //console.log(boardId);
-    console.log(board.writerId);
     openModal(); //비밀번호 입력창 열기
   };
 
@@ -109,7 +107,6 @@ const Boards = ({ categoryId, commentChangeFlag, state, changeMode }) => {
           size: MAX_POSTS,
         })
         .then((res) => {
-          console.log(res);
           setSearchFlag(true);
           if (res?.list?.length == 0) {
             setPageN(0);
@@ -135,7 +132,7 @@ const Boards = ({ categoryId, commentChangeFlag, state, changeMode }) => {
           category: currentCategoryId,
         })
         .then((res) => {
-          if (res.success) setNoticeBoardContent(res?.list);
+          if (res.success) setNoticeBoardContent(res?.list.reverse());
         });
 
       postAPI
@@ -166,7 +163,6 @@ const Boards = ({ categoryId, commentChangeFlag, state, changeMode }) => {
     // 현재 페이지 변화에 따른 총 페이지 개수 갱신
     // 검색중이면 페이지네이션을 검색으로, 검색중이 아니면 기본으로 설정
     closeModal();
-    console.log('close');
     if (searchFlag) {
       postAPI
         .search({
@@ -213,7 +209,7 @@ const Boards = ({ categoryId, commentChangeFlag, state, changeMode }) => {
   }, [currentPage, viewStyle, commentChangeFlag]); //currentPage 값이 변경될 때마다
 
   return (
-    <div className="dark:bg-mainBlack dark:text-mainWhite ">
+    <div className="w-full dark:bg-mainBlack dark:text-mainWhite ">
       {noticeBoardContent.length === 0 && boardContent.length === 0 ? (
         <div className="text-center text-slate-400 text-xl h-[400px] pt-[150px]">
           <strong className="text-3xl">
@@ -506,9 +502,9 @@ const Boards = ({ categoryId, commentChangeFlag, state, changeMode }) => {
             </div>
           </div>
           <div name="bottom" className="mb-10">
-            <div name="search" className="flex flex-col sm:block">
+            <div name="search" className="flex flex-col gap-y-2 sm:block">
               <select
-                className="border mx-1 mb-2 my-2 py-1 w-fit text-xs focus:ring-mainYellow focus:border-mainYellow dark:border-darkPoint dark:bg-darkComponent dark:text-mainWhite"
+                className="border mx-1 w-fit text-xs focus:ring-mainYellow focus:border-mainYellow dark:border-darkPoint dark:bg-darkComponent dark:text-mainWhite"
                 name="search rule"
                 onChange={(e) => SetSelectedSearchVal(e.target.value)}
               >

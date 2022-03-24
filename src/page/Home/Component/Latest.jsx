@@ -4,13 +4,20 @@ import ScrollContainer from 'react-indiana-drag-scroll';
 
 import '../style/scale.css';
 import showDateAndTime from './showDateAndTime.jsx';
-import showPostThumbnail from './showPostThumbnail';
-import showUserThumbnail from './showUserThumbnail';
+import DefaultUserThumbnail from 'assets/img/memberCircle.svg';
+import StringLogo from 'assets/img/keeper_logo_string.png';
 
-
-export default function Latest({ postList }) {
+function Latest({ postList }) {
   const now = new Date();
-  const categoryId = useParams();
+
+  const handleImgErrorUser = (e) => {
+    e.target.src = DefaultUserThumbnail;
+  };
+
+  const handleImgErrorPost = (e) => {
+    e.target.src = StringLogo;
+  };
+
   return (
     <div
       className="relative bg-gray-50 dark:bg-neutral-900 h-auto pt-16 pb-4 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8"
@@ -34,29 +41,29 @@ export default function Latest({ postList }) {
               >
                 <div className="flex-shrink-0">
                   <Link
-                    to={`/post/${categoryId}/${post.id}`}
+                    to={`/post/${post.categoryId}/${post.id}`}
                     className="block mt-2"
                   >
                     <img
-                      className="h-48 w-full object-cover"
-                      src={showPostThumbnail(post.thumbnailPath)}
-                      alt="postThumbnail"
+                      className="h-48 w-full object-scale-down"
+                      src={post.thumbnailPath ? post.thumbnailPath : StringLogo}
+                      alt="post"
+                      onError={handleImgErrorPost}
                     />
                   </Link>
                 </div>
                 <div className="flex-1 bg-mainWhite dark:bg-mainBlack p-6 flex flex-col justify-between">
                   <div className="flex-1">
                     <p className="text-sm font-medium text-mainYellow">
-                      <Link 
-                        /* TO DO : Link to category of the post */
-                        to={""}
+                      <Link
+                        to={`/board/${post.categoryId}`}
                         className="hover:underline"
                       >
                         {post.category}
                       </Link>
                     </p>
                     <Link
-                      to={`/post/${categoryId}/${post.id}`}
+                      to={`/post/${post.categoryId}/${post.id}`}
                       className="block mt-2"
                     >
                       <p className="truncate text-xl font-semibold dark:text-mainWhite">
@@ -70,8 +77,13 @@ export default function Latest({ postList }) {
                       <span className="sr-only">{'author name'}</span>
                       <img
                         className="h-10 w-10 rounded-full"
-                        src={showUserThumbnail(post.writerThumbnailPath)}
-                        alt="userThumbnail"
+                        src={
+                          post.writerThumbnailPath
+                            ? post.writerThumbnailPath
+                            : DefaultUserThumbnail
+                        }
+                        alt="user"
+                        onError={handleImgErrorUser}
                       />
                     </div>
                     <div className="ml-3">
@@ -97,3 +109,5 @@ export default function Latest({ postList }) {
     </div>
   );
 }
+
+export default Latest;

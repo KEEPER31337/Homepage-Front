@@ -2,6 +2,18 @@ import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
+async function getAllMembers() {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/common/members',
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
 async function getMember({ token }) {
   const options = {
     method: 'GET',
@@ -64,13 +76,11 @@ async function updateProfile({ realName, nickName, studentId, token }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    console.log(error.response);
     return error.response.data;
   }
 }
 
 async function changePassword({ password, token }) {
-  console.log({ password, token });
   const options = {
     method: 'POST',
     url: API_URL + '/v1/signin/change-password',
@@ -87,7 +97,6 @@ async function changePassword({ password, token }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    console.log(error.response);
     return error.response.data;
   }
 }
@@ -105,7 +114,6 @@ async function getOtherById({ token, id }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    console.log(error.response);
     return error.response.data;
   }
 }
@@ -119,7 +127,6 @@ async function deleteMember({ token, password }) {
       Authorization: token,
     },
   };
-  console.log(options);
   try {
     const response = await axios(options);
     return response.data;
@@ -213,7 +220,6 @@ async function updateThumbnail({ token, ipAddress, thumbnail }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    console.log(error, error.response);
     return error.response.data;
   }
 }
@@ -236,7 +242,6 @@ async function getPointList({ token, page, size }) {
 }
 
 async function giftPoint({ token, time, point, detail, presentedId }) {
-  console.log({ time, point, detail, presentedId });
   const options = {
     method: 'POST',
     url: API_URL + '/v1/points/present',
@@ -331,6 +336,7 @@ async function getCommonMembers() {
 }
 
 export default {
+  getAllMembers,
   getMember,
   getMembers,
   updateEmail,

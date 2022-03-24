@@ -29,7 +29,6 @@ export default function PostList(props) {
     const size = 10;
     memberAPI.getUsersPosts({ token, page, size }).then((result) => {
       if (result.success) {
-        console.log(result.list);
         setPostList(
           result.list.map((item, index) => ({
             postId: index,
