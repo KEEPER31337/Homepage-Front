@@ -63,50 +63,54 @@ const BoardView = (props) => {
         </div>
       ) : (
         <AuthUser>
-          <ScrollToTop />
-          <div className="flex justify-center dark:bg-mainBlack">
-            <div className="inline-block m-5 w-[90vw]">
-              <Info />
-              {board?.id && prevBoard.id !== board.id ? (
-                <Content
-                  board={board}
-                  commentChangeFlag={commentChangeFlag}
-                  likeChangeFlag={likeChangeFlag}
-                  setLikeChangeFlag={setLikeChangeFlag}
-                />
-              ) : (
-                ''
-              )}
-              {board?.allowComment == 0 ? (
-                <div className="text-center text-slate-400 text-xl h-[200px] pt-[80px]">
-                  작성자가 댓글 작성을 허용하지 않은 게시글입니다.
-                </div>
-              ) : (
-                <div>
+          <div className="w-full flex justify-center dark:bg-mainBlack">
+            <div className="max-w-[50vw]">
+              <ScrollToTop />
+              <div className="flex justify-center">
+                <div className="inline-block m-5 w-[90vw]">
+                  <Info />
                   {board?.id && prevBoard.id !== board.id ? (
-                    <Comments
-                      boardId={board.id}
-                      commentCount={board.commentCount}
+                    <Content
+                      board={board}
                       commentChangeFlag={commentChangeFlag}
-                      setCommentChangeFlag={setCommentChangeFlag}
+                      likeChangeFlag={likeChangeFlag}
+                      setLikeChangeFlag={setLikeChangeFlag}
                     />
                   ) : (
                     ''
                   )}
-                </div>
-              )}
+                  {board?.allowComment == 0 ? (
+                    <div className="text-center text-slate-400 text-xl h-[200px] pt-[80px]">
+                      작성자가 댓글 작성을 허용하지 않은 게시글입니다.
+                    </div>
+                  ) : (
+                    <div>
+                      {board?.id && prevBoard.id !== board.id ? (
+                        <Comments
+                          boardId={board.id}
+                          commentCount={board.commentCount}
+                          commentChangeFlag={commentChangeFlag}
+                          setCommentChangeFlag={setCommentChangeFlag}
+                        />
+                      ) : (
+                        ''
+                      )}
+                    </div>
+                  )}
 
-              <Boards
-                commentChangeFlag={commentChangeFlag}
-                categoryId={categoryId}
-              />
+                  <Boards
+                    commentChangeFlag={commentChangeFlag}
+                    categoryId={categoryId}
+                  />
+                </div>
+              </div>
+              <div
+                name="mobile 글쓰기 버튼"
+                className="fixed right-0 bottom-10 m-5 inline-block md:hidden"
+              >
+                <WriteButtonMobile />
+              </div>
             </div>
-          </div>
-          <div
-            name="mobile 글쓰기 버튼"
-            className="fixed right-0 bottom-10 m-5 inline-block md:hidden"
-          >
-            <WriteButtonMobile />
           </div>
         </AuthUser>
       )}

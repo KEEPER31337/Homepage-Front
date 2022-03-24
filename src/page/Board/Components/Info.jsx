@@ -29,15 +29,22 @@ const Info = ({ isWrite, state }) => {
             {isWrite ? (
               ''
             ) : (
-              <div
-                name="right-sideBar"
-                className="m-5 w-[20vw] hidden md:inline-block"
-              >
+              <div name="right-sideBar" className="m-5 hidden md:inline-block">
                 <WriteButton />
               </div>
             )}
           </div>
         </div>
+        {isWrite ? (
+          ''
+        ) : (
+          <div
+            name="right-sideBar"
+            className="w-full md:hidden flex justify-end"
+          >
+            <WriteButton />
+          </div>
+        )}
       </div>
       {/*
       <WriteButton />

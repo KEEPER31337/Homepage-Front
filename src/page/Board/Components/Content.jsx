@@ -98,6 +98,7 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
       };
       reader.readAsDataURL(data);
     });*/
+    console.log(board);
 
     postAPI
       .check({
@@ -146,7 +147,7 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
       {board.writerId == myId ? (
         <div
           name="글 수정/삭제"
-          className="px-2 absolute w-[90vw] text-xs sm:text-base flex flex-row-reverse "
+          className="px-2 text-xs sm:text-base flex flex-row-reverse "
         >
           <div className="rounded-lg bg-slate-100 my-2 dark:bg-darkComponent">
             <UserCircleIcon className="inline-block h-5 w-5 m-1 text-divisionGray dark:text-slate-500 " />
@@ -180,9 +181,9 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
       >
         <img
           className={
-            'border-4 border-slate-500 m-3 p-1 max-h-[300px] max-w-[300px] rounded-xl'
+            'border-4 border-slate-500 m-3 p-1 max-h-[400px] max-w-[400px] h-full w-full rounded-xl'
           }
-          src={API_URL + board.thumbnailPath}
+          src={board.thumbnailPath}
           alt="thumbnail"
         />
       </div>
@@ -237,6 +238,7 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
                       <a
                         href={API_URL + '/v1/post/download/' + file.id}
                         className=" w-full inline-block "
+                        download={file.fileName}
                       >
                         <td className="border-b px-2 flex justify-between dark:border-darkComponent ">
                           <div className="w-[50vw] md:w-[40vw] ">

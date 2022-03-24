@@ -18,17 +18,19 @@ const Board = () => {
   return (
     <>
       <AuthUser>
-        <div className="flex justify-center h-full dark:bg-mainBlack">
-          <div className="inline-block m-5 w-[90vw]">
-            <Info />
-            <Boards categoryId={categoryId} />
+        <div className="w-full flex justify-center dark:bg-mainBlack">
+          <div className="flex justify-center min-h-screen max-w-[70rem]">
+            <div className="inline-block m-5 w-[90vw]">
+              <Info />
+              <Boards categoryId={categoryId} />
+            </div>
           </div>
-        </div>
-        <div
-          name="mobile 글쓰기 버튼"
-          className="fixed right-0 bottom-10 m-5 inline-block md:hidden"
-        >
-          <WriteButtonMobile />
+          <div
+            name="mobile 글쓰기 버튼"
+            className="fixed right-0 bottom-10 m-5 inline-block md:hidden"
+          >
+            <WriteButtonMobile />
+          </div>
         </div>
       </AuthUser>
     </>

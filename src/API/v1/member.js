@@ -2,6 +2,18 @@ import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
+async function getAllMembers() {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/common/members',
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
 async function getMember({ token }) {
   const options = {
     method: 'GET',
@@ -294,7 +306,7 @@ async function getUsersFollowCnt({ token }) {
   }
 }
 
-async function getOthersPosts({ token, memberId }) {
+async function getOthersPosts({ token, memberId, page, size }) {
   const options = {
     method: 'GET',
     url: `${API_URL}/v1/members/${memberId}/posts`,
@@ -324,6 +336,7 @@ async function getCommonMembers() {
 }
 
 export default {
+  getAllMembers,
   getMember,
   getMembers,
   updateEmail,

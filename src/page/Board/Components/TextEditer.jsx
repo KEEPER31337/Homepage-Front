@@ -60,9 +60,11 @@ const TextEditer = (props) => {
 
   useEffect(() => {
     if (modifyFlag) {
+      setText({ title: board.title, content: board.content });
       setAllowComment(!!board.allowComment);
       setIsNotice(!!board.isNotice);
       setIsSecret(!!board.isSecret);
+      setUploadAble(true);
     }
   }, []);
 
@@ -88,6 +90,8 @@ const TextEditer = (props) => {
 
   const uploadPostinghandler = (isTemp) => {
     setUploadAble(false);
+    console.log(thumbnailBase64);
+    console.log(thumbnail);
     ipAPI.getIp().then((ipAddress) => {
       postAPI
         .create({
@@ -214,7 +218,7 @@ const TextEditer = (props) => {
               </div>
             </div>
           </div>
-          <div className="m-2 w-full h-screen inline-block">
+          <div className="m-2 w-full h-[50vh] min-h-[500px] inline-block">
             <ResponsiveEditor
               content={content}
               isDark={isDark}
