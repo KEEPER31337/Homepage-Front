@@ -59,6 +59,8 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
 
   const [items, setItems] = useState(new Array());
   const [page, setPage] = useState(0);
+  const [canGoNext, setCanGoNext] = useState(false);
+  const [canGoPrev, setCanGoPrev] = useState(false);
   const size = 10;
 
   const follow = () => {
@@ -108,28 +110,41 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
     });
   };
 
-  const getPosts = () => {
-    memberAPI.getOthersPosts({ token, memberId: userId }).then((res) => {
-      if (res.success) {
-        console.log(res);
-        setItems(
-          res.list?.map((item, index) => ({
-            num: index + 1,
-            onClick: () => {
-              navigate(`/post/${item.category}/${item.id}`);
-            },
-            category: item.category,
-            title: item.title,
-            createdAt: formatDate({
-              origin: item.registerTime,
-              separator: '.',
-            }),
-            visitCount: item.visitCount,
-            likeCount: item.likeCount,
-          }))
-        );
-      }
-    });
+  const updatePosts = (updatePage) => {
+    memberAPI
+      .getOthersPosts({ token, memberId: userId, page: updatePage, size })
+      .then((res) => {
+        if (res.success) {
+          console.log(res);
+          setCanGoPrev(updatePage != 0);
+          setCanGoNext(res.list.length == size);
+          setItems(
+            res.list?.map((item, index) => ({
+              num: index + 1,
+              onClick: () => {
+                navigate(`/post/${item.category}/${item.id}`);
+              },
+              category: item.category,
+              title: item.title,
+              createdAt: formatDate({
+                origin: item.registerTime,
+                separator: '.',
+              }),
+              visitCount: item.visitCount,
+              likeCount: item.likeCount,
+            }))
+          );
+          setPage(updatePage);
+        }
+      });
+  };
+
+  const goNextPage = () => {
+    updatePosts(page + 1);
+  };
+
+  const goPrevPage = () => {
+    updatePosts(page - 1);
   };
 
   const renderItemComponents = (item) => {
@@ -148,7 +163,7 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
   useEffect(() => {
     if (token) {
       getUser();
-      getPosts();
+      updatePosts(0);
     }
   }, [token]);
   if (!user) {
@@ -284,9 +299,31 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
                     </tbody>
                   </table>
                 </div>
-                <button className="w-full text-sm font-semibold rounded-lg hover:bg-gray-100 hover:shadow-xs p-3 my-1 dark:bg-[#0c111f] dark:hover:bg-mainBlack">
-                  다음으로
-                </button>
+                <div className="flex">
+                  {canGoPrev ? (
+                    <button
+                      onClick={goPrevPage}
+                      className="self-start w-1/5 text-sm font-semibold rounded-lg hover:bg-gray-100 hover:shadow-xs p-3 my-1 dark:bg-[#0c111f] dark:hover:bg-mainBlack"
+                    >
+                      이전으로
+                    </button>
+                  ) : (
+                    <div className="w-1/5" />
+                  )}
+                  <div className="mx-auto w-3/5 self-center text-sm text-center font-semibold rounded-lg p-3 my-1 dark:bg-[#0c111f]">
+                    {page + 1}
+                  </div>
+                  {canGoNext ? (
+                    <button
+                      onClick={goNextPage}
+                      className="self-end w-1/5 text-sm font-semibold rounded-lg hover:bg-gray-100 hover:shadow-xs p-3 my-1 dark:bg-[#0c111f] dark:hover:bg-mainBlack"
+                    >
+                      다음으로
+                    </button>
+                  ) : (
+                    <div className="w-1/5" />
+                  )}
+                </div>
               </div>
             </div>
           </div>

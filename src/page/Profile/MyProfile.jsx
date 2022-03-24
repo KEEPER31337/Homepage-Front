@@ -38,7 +38,7 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
   const [page, setPage] = useState(0);
   const [canGoNext, setCanGoNext] = useState(false);
   const [canGoPrev, setCanGoPrev] = useState(false);
-  const size = 2;
+  const size = 10;
 
   const add0 = (num, maxDigits) => {
     let digits = 10;
