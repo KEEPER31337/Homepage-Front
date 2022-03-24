@@ -64,7 +64,7 @@ const BoardView = (props) => {
       ) : (
         <AuthUser>
           <div className="w-full flex justify-center dark:bg-mainBlack">
-            <div className="max-w-[70vw]">
+            <div className="max-w-[50vw]">
               <ScrollToTop />
               <div className="flex justify-center">
                 <div className="inline-block m-5 w-[90vw]">

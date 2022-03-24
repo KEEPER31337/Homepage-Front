@@ -218,7 +218,7 @@ const TextEditer = (props) => {
               </div>
             </div>
           </div>
-          <div className="m-2 w-full h-screen inline-block">
+          <div className="m-2 w-full h-[50vh] min-h-[500px] inline-block">
             <ResponsiveEditor
               content={content}
               isDark={isDark}

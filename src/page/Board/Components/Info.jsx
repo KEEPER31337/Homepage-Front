@@ -29,10 +29,7 @@ const Info = ({ isWrite, state }) => {
             {isWrite ? (
               ''
             ) : (
-              <div
-                name="right-sideBar"
-                className="m-5 w-[20vw] hidden md:inline-block"
-              >
+              <div name="right-sideBar" className="m-5 hidden md:inline-block">
                 <WriteButton />
               </div>
             )}

@@ -69,7 +69,7 @@ const Study = ({ state }) => {
               setCurrentYear={setCurrentYear}
               setCurrentSeason={setCurrentSeason}
             />
-            <div className="">
+            <div className=" max-w-[80rem]">
               {/*<AddStudyModal
                 open={open}
                 setOpen={setOpen}
