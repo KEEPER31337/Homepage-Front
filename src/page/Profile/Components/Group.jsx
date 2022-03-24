@@ -1,21 +1,35 @@
 import React, { useState } from 'react';
-import firstGradeBadge from 'assets/img/profileImg/badge/profile_badge_grade_first.png';
-import secondGradeBadge from 'assets/img/profileImg/badge/profile_badge_grade_second.png';
-import graduateBadge from 'assets/img/profileImg/badge/profile_badge_state_graduate.png';
+
+import firstGradeBadge from 'assets/img/profileImg/badge/profile_badge_grade_first.gif';
+import secondGradeBadge from 'assets/img/profileImg/badge/profile_badge_grade_second.gif';
+
+import graduateBadge from 'assets/img/profileImg/badge/profile_badge_state_graduate.gif';
 import quitBadge from 'assets/img/profileImg/badge/profile_badge_state_quit.png';
-import reqularBadge from 'assets/img/profileImg/badge/profile_badge_state_regular.png';
-import sleepBadge from 'assets/img/profileImg/badge/profile_badge_state_sleep.png';
+import reqularBadge from 'assets/img/profileImg/badge/profile_badge_state_regular.gif';
+import sleepBadge from 'assets/img/profileImg/badge/profile_badge_state_sleep.gif';
+
+import chairmanBadge from 'assets/img/profileImg/badge/profile_badge_role_chairman.gif';
+import clerkBadge from 'assets/img/profileImg/badge/profile_badge_role_clerk.gif';
+import externalManagerBadge from 'assets/img/profileImg/badge/profile_badge_role_external_manager.gif';
+import generalAffairsBadge from 'assets/img/profileImg/badge/profile_badge_role_general_affairs.gif';
+import ITManagerBadge from 'assets/img/profileImg/badge/profile_badge_role_it_manager.gif';
+import ITManagerBadge2 from 'assets/img/profileImg/badge/profile_badge_role_it_manager2.gif';
+import librarianBadge from 'assets/img/profileImg/badge/profile_badge_role_librarian.gif';
+import studyManagerBadge from 'assets/img/profileImg/badge/profile_badge_role_study_manager.gif';
+import viceChairmanBadge from 'assets/img/profileImg/badge/profile_badge_role_vice_chairman.gif';
+
 import defaultBadge from 'assets/img/profileImg/badge/profile_badge_default.png';
 
 const roles = {
-  ROLE_회장: { name: '회장', img: defaultBadge },
-  ROLE_부회장: { name: '부회장', img: defaultBadge },
-  ROLE_대외부장: { name: '대외부장', img: defaultBadge },
-  ROLE_학술부장: { name: '학술부장', img: defaultBadge },
-  ROLE_전산관리자: { name: '전산관리자', img: defaultBadge },
-  ROLE_서기: { name: '서기', img: defaultBadge },
-  ROLE_총무: { name: '총무', img: defaultBadge },
-  ROLE_사서: { name: '사서', img: defaultBadge },
+  ROLE_회원: { name: '회원', img: ITManagerBadge2 },
+  ROLE_회장: { name: '회장', img: chairmanBadge },
+  ROLE_부회장: { name: '부회장', img: viceChairmanBadge },
+  ROLE_대외부장: { name: '대외부장', img: externalManagerBadge },
+  ROLE_학술부장: { name: '학술부장', img: studyManagerBadge },
+  ROLE_전산관리자: { name: '전산관리자', img: ITManagerBadge },
+  ROLE_서기: { name: '서기', img: clerkBadge },
+  ROLE_총무: { name: '총무', img: generalAffairsBadge },
+  ROLE_사서: { name: '사서', img: librarianBadge },
 };
 const states = {
   정회원: { name: '정회원', img: reqularBadge },
@@ -28,15 +42,13 @@ const grades = {
   우수회원: { name: '우수회원', img: firstGradeBadge },
   일반회원: { name: '일반회원', img: secondGradeBadge },
 };
-const testGrups = {
-  ROLE_회원: { name: '회원', img: firstGradeBadge },
-  일반회원: { name: '일반회원', img: quitBadge },
-  비회원: { name: '비회원', img: reqularBadge },
-};
-const groups = { ...roles, ...states, ...grades, ...testGrups };
+const defaultGroup = { name: 'UnKnown', img: defaultBadge };
+const groups = { ...roles, ...states, ...grades };
 
 export default function Group(props) {
-  const group = groups[props.groupName];
+  const group = groups[props.groupName]
+    ? groups[props.groupName]
+    : defaultGroup;
   const [tooltip, setTooltip] = useState(false);
   return (
     <div>

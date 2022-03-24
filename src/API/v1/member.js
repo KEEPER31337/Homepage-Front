@@ -306,7 +306,7 @@ async function getUsersFollowCnt({ token }) {
   }
 }
 
-async function getOthersPosts({ token, memberId }) {
+async function getOthersPosts({ token, memberId, page, size }) {
   const options = {
     method: 'GET',
     url: `${API_URL}/v1/members/${memberId}/posts`,
