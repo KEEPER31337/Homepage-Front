@@ -36,7 +36,9 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
   const [myPage, setMyPage] = useState(null);
   const [items, setItems] = useState(new Array());
   const [page, setPage] = useState(0);
-  const size = 10;
+  const [canGoNext, setCanGoNext] = useState(false);
+  const [canGoPrev, setCanGoPrev] = useState(false);
+  const size = 2;
 
   const add0 = (num, maxDigits) => {
     let digits = 10;
@@ -64,8 +66,13 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
 
   const renderItemComponents = (item) => {
     const itemComponents = new Array();
+    itemComponents.push(
+      <td key={'num'} className="text-center">
+        {item.num + page * size}
+      </td>
+    );
     for (const key in item) {
-      if (key == 'onClick') continue;
+      if (key == 'onClick' || key == 'num') continue;
       itemComponents.push(
         <td key={key} className="text-center">
           {item[key]}
@@ -73,6 +80,25 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
       );
     }
     return itemComponents.map((component) => component);
+  };
+
+  const updatePage = (updatePage) => {
+    myPage?.api({ token, page: updatePage, size }).then((res) => {
+      if (res.success) {
+        setCanGoPrev(updatePage != 0);
+        setCanGoNext(res.list.length == size);
+        setItems(myPage.mapper(res.list));
+        setPage(updatePage);
+      }
+    });
+  };
+
+  const goNextPage = () => {
+    updatePage(page + 1);
+  };
+
+  const goPrevPage = () => {
+    updatePage(page - 1);
   };
 
   useEffect(() => {
@@ -143,11 +169,7 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
   }, [myPages]);
 
   useEffect(() => {
-    myPage?.api({ token, page, size }).then((res) => {
-      if (res.success) {
-        setItems(myPage.mapper(res.list));
-      }
-    });
+    updatePage(0);
   }, [myPage]);
 
   console.log(memberInfo);
@@ -300,7 +322,6 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
           <div className="sm:w-full md:w-1/2 lg:w-1/2 xl:w-7/12 m-2">
             <div className=" flex rounded p-1 bg-amber-300 border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
               <div className=" text-md text-mainBlack">
-                {' '}
                 {myPages?.map((item, index) => (
                   <Fragment key={index}>
                     <button
@@ -337,10 +358,31 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
                   </tbody>
                 </table>
               </div>
-
-              <button className="w-full text-sm font-semibold rounded-lg hover:bg-gray-100 hover:shadow-xs p-3 my-1 dark:bg-[#0c111f] dark:hover:bg-mainBlack">
-                다음으로
-              </button>
+              <div className="flex">
+                {canGoPrev ? (
+                  <button
+                    onClick={goPrevPage}
+                    className="self-start w-1/5 text-sm font-semibold rounded-lg hover:bg-gray-100 hover:shadow-xs p-3 my-1 dark:bg-[#0c111f] dark:hover:bg-mainBlack"
+                  >
+                    이전으로
+                  </button>
+                ) : (
+                  <div className="w-1/5" />
+                )}
+                <div className="mx-auto w-3/5 self-center text-sm text-center font-semibold rounded-lg p-3 my-1 dark:bg-[#0c111f]">
+                  {page + 1}
+                </div>
+                {canGoNext ? (
+                  <button
+                    onClick={goNextPage}
+                    className="self-end w-1/5 text-sm font-semibold rounded-lg hover:bg-gray-100 hover:shadow-xs p-3 my-1 dark:bg-[#0c111f] dark:hover:bg-mainBlack"
+                  >
+                    다음으로
+                  </button>
+                ) : (
+                  <div className="w-1/5" />
+                )}
+              </div>
             </div>
           </div>
         </div>
