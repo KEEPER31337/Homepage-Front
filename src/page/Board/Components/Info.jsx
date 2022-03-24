@@ -15,7 +15,6 @@ const Info = ({ isWrite, state }) => {
 
   useEffect(() => {}, [categoryId]);
 
-
   return (
     <div className="flex">
       <div className="dark:text-mainWhite w-full mx-3">
@@ -30,16 +29,13 @@ const Info = ({ isWrite, state }) => {
             {isWrite ? (
               ''
             ) : (
-              <div
-                name="right-sideBar"
-                className="m-5 w-[20vw] hidden md:inline-block"
-              >
+              <div name="right-sideBar" className="m-5 hidden md:inline-block">
                 <WriteButton />
               </div>
             )}
           </div>
         </div>
-        {props.isWrite ? (
+        {isWrite ? (
           ''
         ) : (
           <div

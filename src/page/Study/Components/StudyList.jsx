@@ -45,7 +45,7 @@ const StudyList = ({
   var link =
     'https://enormous-button-c5d.notion.site/2021-7a9e28c746934f22863f7077fec061da';
   return (
-    <>
+    <div className="">
       <div name="시즌 태그들" className="text-sm mt-5 md:text-xl">
         <button
           className={
@@ -92,7 +92,7 @@ const StudyList = ({
           겨울방학
         </button>
       </div>
-      <div className="border-2 min-h-[60vh] border-mainYellow rounded-b-lg rounded-tr-lg bg-gray-50 w-full px-5 md:w-[80vw] dark:bg-darkPoint">
+      <div className="border-2 max-w-[80rem] min-h-[60vh] border-mainYellow rounded-b-lg rounded-tr-lg bg-gray-50 w-full px-5 md:w-[80vw] dark:bg-darkPoint">
         {/*link ? (
             <p className="border-b border-x bg-mainWhite my-3 p-3 rounded-lg dark:border-gray-700 dark:bg-mainBlack">
               노션 링크 :
@@ -119,7 +119,7 @@ const StudyList = ({
           <div>현재 등록된 스터디가 없습니다.</div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 const mapStateToProps = (state, OwnProps) => {

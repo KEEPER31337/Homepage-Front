@@ -12,7 +12,7 @@ const YearList = ({ years, currentYear, setCurrentYear, setCurrentSeason }) => {
   return (
     <div
       name="좌측 사이드바"
-      className="border w-[20vw] min-w-[6em] rounded-lg p-3 py-5 bg-gray-50 hidden md:block dark:bg-darkPoint dark:border-gray-700"
+      className="border max-w-[15rem] w-[20vw] min-w-[6em] rounded-lg p-3 py-5 bg-gray-50 hidden md:block dark:bg-darkPoint dark:border-gray-700"
     >
       {/*<button
         type="button"

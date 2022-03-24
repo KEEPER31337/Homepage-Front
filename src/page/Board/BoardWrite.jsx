@@ -10,8 +10,8 @@ const BoardWrite = () => {
   const redirectData = useLocation();
   return (
     <AuthUser>
-      <div className="w-full flex justify-center">
-        <div className="flex justify-center max-w-[70rem] dark:bg-mainBlack">
+      <div className="w-full flex justify-center dark:bg-mainBlack">
+        <div className="flex justify-center max-w-[70rem]">
           <div className="m-5 w-[90vw]">
             <Info isWrite={true} />
             <div>
