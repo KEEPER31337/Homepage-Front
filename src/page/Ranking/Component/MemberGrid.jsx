@@ -40,9 +40,9 @@ const MemberGrid = ({ member }) => {
                 </Link>
               </div>
               <h3 className="mt-4 text-sm ">
-                {member.generation
-                  ? `Keeper ${member.generation}기`
-                  : member.loginId}
+                {`Keeper ${
+                  member.generation === null ? '?' : member.generation
+                }기`}
               </h3>
               <p className="mt-1 text-lg font-medium truncate">
                 {member.nickName}
