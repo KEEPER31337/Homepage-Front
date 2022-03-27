@@ -49,7 +49,7 @@ async function getMembers({ token }) {
 async function updateEmail({ emailAddress, authCode, token }) {
   const options = {
     method: 'PUT',
-    url: API_URL + '/v1/members/update/email',
+    url: API_URL + '/v1/members/email',
     headers: {
       Authorization: token,
     },
@@ -66,7 +66,7 @@ async function updateEmail({ emailAddress, authCode, token }) {
 async function updateProfile({ realName, nickName, studentId, token }) {
   const options = {
     method: 'PUT',
-    url: API_URL + '/v1/members/update/profile',
+    url: API_URL + '/v1/members/profile',
     headers: {
       Authorization: token,
     },
@@ -169,11 +169,10 @@ async function getUsersTempPosts({ token, page, size }) {
   }
 }
 
-async function follow({ token, loginId }) {
+async function follow({ token, id }) {
   const options = {
     method: 'POST',
-    url: API_URL + '/v1/members/follow',
-    data: { followeeLoginId: loginId },
+    url: API_URL + `/v1/members/follow/${id}`,
     headers: {
       Authorization: token,
     },
@@ -186,11 +185,10 @@ async function follow({ token, loginId }) {
   }
 }
 
-async function unfollow({ token, loginId }) {
+async function unfollow({ token, id }) {
   const options = {
     method: 'POST',
-    url: API_URL + '/v1/members/unfollow',
-    data: { followeeLoginId: loginId },
+    url: API_URL + `/v1/members/unfollow/${id}`,
     headers: {
       Authorization: token,
     },
@@ -310,6 +308,7 @@ async function getOthersPosts({ token, memberId, page, size }) {
   const options = {
     method: 'GET',
     url: `${API_URL}/v1/members/${memberId}/posts`,
+    params: { page: page, size: size },
     headers: {
       Authorization: token,
     },
