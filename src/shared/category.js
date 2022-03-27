@@ -11,12 +11,12 @@ const categoriesAll = [
         href: 'about',
         icon: ViewGridIcon,
       },
-      {
-        id: 8,
-        name: '이벤트',
-        href: 'event',
-        icon: ViewGridIcon,
-      },
+      // {
+      //   id: 8,
+      //   name: '이벤트',
+      //   href: 'event',
+      //   icon: ViewGridIcon,
+      // },
       {
         id: 9,
         name: '동아리 일정',
@@ -27,6 +27,12 @@ const categoriesAll = [
         id: null,
         name: '스터디',
         href: 'study',
+        icon: ViewGridIcon,
+      },
+      {
+        id: null,
+        name: 'CTF',
+        href: 'ctf',
         icon: ViewGridIcon,
       },
     ],
