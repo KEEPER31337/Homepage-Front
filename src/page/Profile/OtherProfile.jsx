@@ -34,16 +34,6 @@ const formatDate = ({ origin, separator }) => {
 };
 
 const heads = ['번호', '카테고리', '제목', '날짜', '조회수', '추천수'];
-const mapper = (list) => {
-  return list?.map((item, index) => ({
-    num: index + 1,
-    category: item.category,
-    title: item.title,
-    createdAt: formatDate({ origin: item.registerTime, separator: '.' }),
-    visitCount: item.visitCount,
-    likeCount: item.likeCount,
-  }));
-};
 
 const OtherProfile = ({ token, memberInfo, userId }) => {
   const navigate = useNavigate();
@@ -112,11 +102,10 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
       .getOthersPosts({ token, memberId: userId, page: updatePage, size })
       .then((res) => {
         if (res.success) {
-          console.log('res', res);
           setCanGoPrev(updatePage != 0);
-          setCanGoNext(res.list.length == size);
+          setCanGoNext(!res.data.isLast);
           setItems(
-            res.list?.map((item, index) => ({
+            res?.data?.content?.map((item, index) => ({
               num: index + 1,
               onClick: () => {
                 navigate(`/post/${item.category}/${item.id}`);

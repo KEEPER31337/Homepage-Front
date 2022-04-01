@@ -21,7 +21,7 @@ import viceChairmanBadge from 'assets/img/profileImg/badge/profile_badge_role_vi
 import defaultBadge from 'assets/img/profileImg/badge/profile_badge_default.png';
 
 const roles = {
-  ROLE_회원: { name: '회원', img: ITManagerBadge2, visible: false },
+  ROLE_회원: { name: '회원', img: defaultBadge, visible: false },
   ROLE_회장: { name: '회장', img: chairmanBadge, visible: true },
   ROLE_부회장: { name: '부회장', img: viceChairmanBadge, visible: true },
   ROLE_대외부장: { name: '대외부장', img: externalManagerBadge, visible: true },

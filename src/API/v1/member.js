@@ -197,6 +197,7 @@ async function unfollow({ token, id }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
+    console.log(error.response);
     return error.response.data;
   }
 }
@@ -259,7 +260,7 @@ async function giftPoint({ token, time, point, detail, presentedId }) {
 async function getUsersFollowee({ token }) {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/members/followee',
+    url: API_URL + '/v1/members/followees',
     headers: {
       Authorization: token,
     },
@@ -275,7 +276,7 @@ async function getUsersFollowee({ token }) {
 async function getUsersFollower({ token }) {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/members/follower',
+    url: API_URL + '/v1/members/followers',
     headers: {
       Authorization: token,
     },
