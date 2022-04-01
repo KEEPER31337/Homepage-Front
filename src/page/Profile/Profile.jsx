@@ -23,7 +23,6 @@ const Profile = ({ token, memberInfo, updateInfo }) => {
   const params = useParams();
   const navigate = useNavigate();
   const [btns, setBtns] = useState(new Array());
-  const [isMe, setIsMe] = useState(false);
   const [isFollowee, setIsFollowee] = useState(false);
   const [user, setUser] = useState(null);
   const [error, setError] = useState('');
@@ -81,15 +80,8 @@ const Profile = ({ token, memberInfo, updateInfo }) => {
     updateInfo({ memberInfo });
   }, [memberInfo]);
 
-  useEffect(() => {
-    if (params.userId == memberInfo.id) {
-      setIsMe(true);
-    } else {
-      setIsMe(false);
-    }
-  }, [params.userId, memberInfo.id]);
-
-  if (isMe) {
+  if (!params?.userId || !memberInfo?.id) return <></>;
+  else if (params.userId == memberInfo.id) {
     return (
       <MyProfile
         token={token}
