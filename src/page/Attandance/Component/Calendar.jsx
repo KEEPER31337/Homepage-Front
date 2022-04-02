@@ -80,28 +80,36 @@ const Calendar = ({ member }) => {
   const jsxCalendar = calendar.map((week, index) => {
     return (
       <tr key={(week, index)}>
-        {week.map((date, index) => (
-          <td key={(date, index)}>
-            {
-              <div className="w-full h-full">
-                <div className="flex items-center justify-center w-full rounded-full">
-                  <p
-                    className={`w-10 h-10 sm:w-14 sm:h-14 text-sm sm:text-lg flex items-center justify-center font-medium ${
-                      date.format(dateFormat) === now.format(dateFormat)
-                        ? 'bg-mainYellow text-white'
-                        : attendDateList.includes(date.format(dateFormat)) &&
-                          checkRange(date)
-                        ? 'bg-green-500 text-white'
-                        : ''
-                    } rounded-full`}
-                  >
-                    {checkRange(date) ? date.date() : ''}
-                  </p>
+        {week.map((date, index) => {
+          console.log(attendDateList);
+          console.log(date.format(dateFormat));
+          console.log(attendDateList.includes(date.format(dateFormat)));
+          return (
+            <td key={(date, index)}>
+              {
+                <div className="w-full h-full">
+                  <div className="flex items-center justify-center w-full rounded-full">
+                    <p
+                      className={`w-10 h-10 sm:w-14 sm:h-14 text-sm sm:text-lg flex items-center justify-center font-medium ${
+                        date.format(dateFormat) === now.format(dateFormat) &&
+                        checkRange(date)
+                          ? 'ring ring-mainYellow'
+                          : ''
+                      } ${
+                        attendDateList.includes(date.format(dateFormat)) &&
+                        checkRange(date)
+                          ? 'bg-green-500 text-white'
+                          : ''
+                      } rounded-full`}
+                    >
+                      {checkRange(date) ? date.date() : ''}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            }
-          </td>
-        ))}
+              }
+            </td>
+          );
+        })}
       </tr>
     );
   });
@@ -122,7 +130,7 @@ const Calendar = ({ member }) => {
           setAttendDateList(dateList);
         }
       });
-  }, [member]);
+  }, [member, firstDay, lastDay]);
 
   return (
     <>
