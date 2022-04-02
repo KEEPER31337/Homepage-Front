@@ -87,9 +87,10 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
         const other = getOtherResult.data;
         other.rank = other.memberRank;
         other.type = other.memberType;
-        other.jobs = [];
+        other.jobs = other.memberJobs;
         other.thumbnailId = other.thumbnailEntity;
         setUser(other);
+        console.log(other);
         setIsFollowee(other.checkFollowee);
       } else {
         setUser(null);
