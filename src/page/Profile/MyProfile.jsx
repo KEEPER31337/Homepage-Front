@@ -86,8 +86,8 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
     myPage?.api({ token, page: updatePage, size }).then((res) => {
       if (res.success) {
         setCanGoPrev(updatePage != 0);
-        setCanGoNext(res.list.length == size);
-        setItems(myPage.mapper(res.list));
+        setCanGoNext(!res.data.isLast);
+        setItems(myPage.mapper(res.data.content));
         setPage(updatePage);
       }
     });
@@ -387,8 +387,16 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
       </div>
 
       {/* modal창 */}
-      <FollowerModal modalState={followerModalState} />
-      <FolloweeModal modalState={followeeModalState} />
+      <FollowerModal
+        modalState={followerModalState}
+        token={token}
+        navigate={navigate}
+      />
+      <FolloweeModal
+        modalState={followeeModalState}
+        token={token}
+        navigate={navigate}
+      />
     </div>
   );
 };
