@@ -187,7 +187,7 @@ async function follow({ token, id }) {
 
 async function unfollow({ token, id }) {
   const options = {
-    method: 'POST',
+    method: 'DELETE',
     url: API_URL + `/v1/members/unfollow/${id}`,
     headers: {
       Authorization: token,
