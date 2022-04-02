@@ -65,6 +65,12 @@ const categoriesAll = [
         href: 'board/63908',
         auth: null,
       },
+      {
+        id: 11,
+        name: '졸업생게시판',
+        href: 'board/11',
+        auth: null,
+      },
     ],
   },
   {
