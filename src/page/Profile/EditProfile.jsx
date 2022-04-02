@@ -404,14 +404,14 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
                 <div className="w-1/2 flex flex-col justify-between m-1">
                   {/* 2-2-1 팔로우, 팔로워 */}
                   <div className="flex w-full justify-end">
-                    <div className="p-2 mr-2 flex flex-row hover:bg-backGray dark:hover:bg-mainBlack dark:hover:bg-opacity-50">
+                    <div className="p-2 mr-2 flex flex-row">
                       <div className="text-gray-500 mr-1">팔로워</div>
                       <div className="font-semibold">
                         {followCnt && followCnt.followerNumber}
                       </div>
                     </div>
 
-                    <div className="p-2 flex flex-row hover:bg-backGray dark:hover:bg-mainBlack dark:hover:bg-opacity-50">
+                    <div className="p-2 flex flex-row">
                       <div className=" text-gray-500 mr-1">팔로우</div>
                       <div className="font-semibold">
                         {followCnt && followCnt.followeeNumber}

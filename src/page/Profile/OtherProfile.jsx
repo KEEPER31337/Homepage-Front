@@ -34,16 +34,6 @@ const formatDate = ({ origin, separator }) => {
 };
 
 const heads = ['번호', '카테고리', '제목', '날짜', '조회수', '추천수'];
-const mapper = (list) => {
-  return list?.map((item, index) => ({
-    num: index + 1,
-    category: item.category,
-    title: item.title,
-    createdAt: formatDate({ origin: item.registerTime, separator: '.' }),
-    visitCount: item.visitCount,
-    likeCount: item.likeCount,
-  }));
-};
 
 const OtherProfile = ({ token, memberInfo, userId }) => {
   const navigate = useNavigate();
@@ -67,7 +57,7 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
     if (isFollowing) return;
     else {
       setIsFollowing(true);
-      memberAPI.follow({ token, loginId: user.loginId }).then((result) => {
+      memberAPI.follow({ token, id: user.memberId }).then((result) => {
         if (result.success) {
           getUser();
         } else {
@@ -81,7 +71,7 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
     if (isUnFollowing) return;
     else {
       setIsUnFollowing(true);
-      memberAPI.unfollow({ token, loginId: user.loginId }).then((result) => {
+      memberAPI.unfollow({ token, id: user.memberId }).then((result) => {
         if (result.success) {
           getUser();
         } else {
@@ -97,9 +87,10 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
         const other = getOtherResult.data;
         other.rank = other.memberRank;
         other.type = other.memberType;
-        other.jobs = [];
+        other.jobs = other.memberJobs;
         other.thumbnailId = other.thumbnailEntity;
         setUser(other);
+        console.log(other);
         setIsFollowee(other.checkFollowee);
       } else {
         setUser(null);
@@ -112,11 +103,10 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
       .getOthersPosts({ token, memberId: userId, page: updatePage, size })
       .then((res) => {
         if (res.success) {
-          console.log(res);
           setCanGoPrev(updatePage != 0);
-          setCanGoNext(res.list.length == size);
+          setCanGoNext(!res.data.isLast);
           setItems(
-            res.list?.map((item, index) => ({
+            res?.data?.content?.map((item, index) => ({
               num: index + 1,
               onClick: () => {
                 navigate(`/post/${item.category}/${item.id}`);
@@ -179,22 +169,10 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
                   <div className="css-font text-5xl m-1">{user?.nickName}</div>
                   {/*회원 뱃지*/}
                   <div className="flex">
-                    {user?.rank && (
-                      <div className="mr-2">
-                        <Group groupName={user.rank} />
-                      </div>
-                    )}
-                    {user?.type && (
-                      <div className="mr-2">
-                        <Group groupName={user.type} />
-                      </div>
-                    )}
+                    {user?.rank && <Group groupName={user.rank} />}
+                    {user?.type && <Group groupName={user.type} />}
                     {user?.jobs &&
-                      user.jobs.map((job, index) => (
-                        <div className="mr-2" key={index}>
-                          <Group groupName={job} />
-                        </div>
-                      ))}
+                      user.jobs.map((job) => <Group groupName={job} />)}
                   </div>
                 </div>
                 {/*구분선*/}
@@ -237,7 +215,7 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
                 <div className="items-center text-left border-2 shadow p-3 m-1  rounded-md">
                   <div className="flex py-1 ">
                     <div className="p-2  w-2/5 text-gray-500">기수</div>
-                    <div className="p-2 w-3/5 font-bold">{`Keeper ${memberInfo?.generation}기`}</div>
+                    <div className="p-2 w-3/5 font-bold">{`Keeper ${user?.generation}기`}</div>
                   </div>
                   <div className="flex py-1 ">
                     <div className="p-2  w-2/5  text-gray-500">이메일</div>
