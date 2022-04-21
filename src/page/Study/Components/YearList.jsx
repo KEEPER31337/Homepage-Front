@@ -79,8 +79,8 @@ const YearList = ({
             className={
               (currentYear == object.year
                 ? 'bg-mainYellow '
-                : 'bg-mainWhite hover:bg-yellow-200 dark:bg-mainBlack') +
-              ' col-span-1 border rounded-lg border-mainYellow w-full p-2  my-1'
+                : 'bg-mainWhite dark:bg-mainBlack hover:shadow') +
+              ' col-span-1 border rounded-lg border- w-full p-2  my-1'
             }
             onClick={() => {
               setCurrentYear(object.year);

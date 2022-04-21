@@ -1,3 +1,5 @@
+//NOTE 안쓰는 파일!!
+
 import { updateLocale } from 'moment';
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';

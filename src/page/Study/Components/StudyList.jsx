@@ -11,6 +11,7 @@ import {
 import SimpleCard from 'page/Study/Components/SimpleCard';
 import AboutCard from 'page/Study/Components/AboutCard';
 import studyAPI from 'API/v1/study';
+import StudyCard from './StudyCard';
 
 const StudyList = ({
   open,
@@ -40,12 +41,12 @@ const StudyList = ({
     //setOpen(false);
   }, [currentYear, currentSeason, open, changeFlag, token]);
 
-  var flag = true;
+  var flag = false;
   var link =
     'https://enormous-button-c5d.notion.site/2021-7a9e28c746934f22863f7077fec061da';
   return (
     <>
-      <div className="space-y-4">
+      <div className="space-y-5">
         {/*link ? (
             <p className="border-b border-x bg-mainWhite my-3 p-3 rounded-lg dark:border-gray-700 dark:bg-mainBlack">
               노션 링크 :
@@ -61,11 +62,7 @@ const StudyList = ({
         {studies ? (
           studies.map((study, index) => (
             <div key={index}>
-              {flag ? (
-                <AboutCard study={study} setCurrentStudy={setCurrentStudy} />
-              ) : (
-                <SimpleCard study={study} />
-              )}
+              <StudyCard study={study} setCurrentStudy={setCurrentStudy} />
             </div>
           ))
         ) : (
