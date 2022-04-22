@@ -30,7 +30,7 @@ const Table = ({
   };
 
   return (
-    <table className="w-full mb-5">
+    <table className="w-full">
       <thead>
         <tr className="bg-mainYellow ">
           <th className="border-x border-mainWhite p-1 rounded-tl-xl md:w-[3em] dark:border-mainBlack">
@@ -55,14 +55,14 @@ const Table = ({
           <tr
             key={board.id}
             className={
-              'bg-slate-100 dark:bg-gray-900 border-b-2 hover:bg-slate-200 hover:shadow-lg dark:hover:bg-darkComponent dark:border-darkComponent ' +
+              'bg-gray-100 dark:bg-gray-900 border-b-2 hover:bg-gray-200 hover:shadow-lg dark:hover:bg-darkComponent dark:border-darkComponent ' +
               getCurrentBoard(board.id, postId)
             }
           >
             <td className="border-r border-divisionGray text-center dark:border-darkComponent">
               공지
             </td>
-            <td className="p-2 dark:border-darkComponent">
+            <td className="p-2 max-w-0 dark:border-darkComponent">
               <Link
                 to={`/post/${categoryId}/${board.id}`}
                 onClick={(e) => {
@@ -74,39 +74,38 @@ const Table = ({
                 }}
               >
                 <div className=" w-full flex items-center">
-                  <div className=" max-w-[50vw] md:max-w-[40vw] sm:max-w-[20vw] inline-block">
-                    <p className="truncate text-md ">
-                      <strong
-                        className={board.isSecret ? 'text-slate-400' : ''}
-                      >
-                        {board.title}
+                  <p className="truncate text-md ">
+                    <strong className={board.isSecret ? 'text-slate-400' : ''}>
+                      {board.title}
+                    </strong>
+                  </p>
+
+                  <div className="flex-1">
+                    {board.thumbnail ? (
+                      <PhotographIcon className="inline-block h-5 w-5 m-1 text-slate-500 " />
+                    ) : (
+                      ''
+                    )}
+                    {board.files && board.files.length != 0 ? (
+                      <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
+                    ) : (
+                      ''
+                    )}
+                    {board.commentCount != 0 ? (
+                      <strong className="text-mainYellow">
+                        {'(' + board.commentCount + ')'}
                       </strong>
-                    </p>
+                    ) : (
+                      ''
+                    )}
+                    {isNewPost(board.registerTime) ? (
+                      <strong className="inline-block rounded-full w-5 h-5 align-middle text-center text-xs m-1 pb-1 bg-red-500 shadow-lg border-2 border-red-200 text-mainWhite dark:text-mainBlack">
+                        N
+                      </strong>
+                    ) : (
+                      ''
+                    )}
                   </div>
-                  {board.thumbnail ? (
-                    <PhotographIcon className="inline-block h-5 w-5 m-1 text-slate-500 " />
-                  ) : (
-                    ''
-                  )}
-                  {board.files.length != 0 ? (
-                    <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
-                  ) : (
-                    ''
-                  )}
-                  {board.commentCount != 0 ? (
-                    <strong className="text-mainYellow">
-                      {'(' + board.commentCount + ')'}
-                    </strong>
-                  ) : (
-                    ''
-                  )}
-                  {isNewPost(board.registerTime) ? (
-                    <strong className="inline-block rounded-full w-5 h-5 align-middle text-center text-xs m-1 pb-1 bg-red-500 shadow-lg border-2 border-red-200 text-mainWhite dark:text-mainBlack">
-                      N
-                    </strong>
-                  ) : (
-                    ''
-                  )}
                 </div>
                 <p className="mt-2 text-xs md:hidden">
                   글쓴이 : <strong>{board.writer} </strong>| 작성일시 :
@@ -136,7 +135,7 @@ const Table = ({
           <tr
             key={board.id}
             className={
-              ' border-b-2 hover:bg-slate-200 hover:shadow-lg dark:hover:bg-darkComponent dark:border-darkComponent ' +
+              ' border-b-2 hover:bg-gray-50 hover:shadow-lg dark:hover:bg-darkComponent dark:border-darkComponent ' +
               getCurrentBoard(board.id, postId)
             }
           >
@@ -144,7 +143,7 @@ const Table = ({
             <td className="w-[3em] border-r border-divisionGray text-center dark:border-darkComponent">
               {MAX_POSTS * (currentPage - 1) + index + 1}
             </td>
-            <td className="p-2 dark:border-darkComponent">
+            <td className="p-2 max-w-0 dark:border-darkComponent">
               <Link
                 to={`/post/${categoryId}/${board.id}`}
                 onClick={(e) => {
@@ -155,46 +154,43 @@ const Table = ({
                     linkHandler(e, board);
                 }}
               >
-                {' '}
                 <div className=" w-full flex items-center">
-                  <div className="max-w-[50vw] md:max-w-[30vw] md:w-content inline-block">
-                    <p className="truncate text-md ">
-                      {board.isSecret ? (
-                        <LockClosedIcon className="inline-block h-5 w-5 m-1 text-slate-400 " />
-                      ) : (
-                        ''
-                      )}
-                      <strong
-                        className={board.isSecret ? 'text-slate-400' : ''}
-                      >
-                        {board.title}
+                  <p className="truncate text-md ">
+                    {board.isSecret ? (
+                      <LockClosedIcon className="inline-block h-5 w-5 m-1 text-slate-400 " />
+                    ) : (
+                      ''
+                    )}
+                    <strong className={board.isSecret ? 'text-slate-400' : ''}>
+                      {board.title}
+                    </strong>
+                  </p>
+                  <div className="flex-1">
+                    {board.thumbnail ? (
+                      <PhotographIcon className="inline-block h-5 w-5 m-1 text-slate-500 " />
+                    ) : (
+                      ''
+                    )}
+                    {board.files && board.files.length != 0 ? (
+                      <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
+                    ) : (
+                      ''
+                    )}
+                    {board.commentCount != 0 ? (
+                      <strong className="text-mainYellow">
+                        {'(' + board.commentCount + ')'}
                       </strong>
-                    </p>
+                    ) : (
+                      ''
+                    )}
+                    {isNewPost(board.registerTime) ? (
+                      <strong className="inline-block rounded-full w-5 h-5 align-middle text-center text-xs m-1 pb-1 bg-red-500 shadow-lg border-2 border-red-200 text-mainWhite">
+                        N
+                      </strong>
+                    ) : (
+                      ''
+                    )}
                   </div>
-                  {board.thumbnail ? (
-                    <PhotographIcon className="inline-block h-5 w-5 m-1 text-slate-500 " />
-                  ) : (
-                    ''
-                  )}
-                  {board.files && board.files.length != 0 ? (
-                    <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
-                  ) : (
-                    ''
-                  )}
-                  {board.commentCount != 0 ? (
-                    <strong className="text-mainYellow">
-                      {'(' + board.commentCount + ')'}
-                    </strong>
-                  ) : (
-                    ''
-                  )}
-                  {isNewPost(board.registerTime) ? (
-                    <strong className="inline-block rounded-full w-5 h-5 align-middle text-center text-xs m-1 pb-1 bg-red-500 shadow-lg border-2 border-red-200 text-mainWhite">
-                      N
-                    </strong>
-                  ) : (
-                    ''
-                  )}
                 </div>
                 <p className="mt-2 text-xs md:hidden">
                   글쓴이 : <strong>{board.writer} </strong>| 작성일시 :

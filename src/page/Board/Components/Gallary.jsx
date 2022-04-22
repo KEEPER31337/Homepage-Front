@@ -23,10 +23,10 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
   const [thumbnails, setThumbnails] = [];
   useEffect(() => {}, []);
   return (
-    <div className=" max-w-[70vw] mx-auto py-8 px-4 sm:py-8 sm:px-6 lg:px-8">
+    <>
       {notices.length != 0 ? (
-        <div className="block mb-5 bg-gray-100 px-2 rounded-xl dark:bg-gray-800">
-          <div name="공지사항" className="relative my-3 mt-5 py-2">
+        <div className="border shadow-inner block mb-5 bg-gray-100 px-2 rounded-xl dark:bg-gray-800 dark:border-darkComponent">
+          <div name="공지사항" className="relative py-2">
             <div
               className="absolute inset-0 flex items-center"
               aria-hidden="true"
@@ -45,7 +45,7 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
                 <div
                   key={board.id}
                   className={
-                    'min-w-[200px] bg-yellow-100 dark:bg-yellow-600 border-l border-b border-r rounded-lg p-2 group shadow-lg dark:border-gray-600'
+                    'min-w-[80vw] md:min-w-[40vw] lg:min-w-[20vw] bg-yellow-100 dark:bg-yellow-600 border-l border-b border-r rounded-lg p-2 group shadow-lg dark:border-gray-600'
                   }
                 >
                   <Link
@@ -85,23 +85,23 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
                         ''
                       )}
 
-                      <div className="relative mt-4">
+                      <div className=" relative mt-4">
                         <div className="flex items-center">
-                          <div className="max-w-[70vw] inline-block">
-                            <h3 className="text-sm font-medium truncate bold text-gray-900 dark:text-mainWhite">
-                              {board.title}
-                            </h3>
-                          </div>
+                          <h3 className="text-sm font-medium truncate bold text-gray-900 dark:text-mainWhite">
+                            {board.title}
+                          </h3>
 
-                          {board.files.length != 0 ? (
-                            <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
-                          ) : (
-                            ''
-                          )}
-                          <strong className="text-mainYellow">
-                            <ChatAltIcon className="inline-block h-5 w-5" />
-                            {board.commentCount}
-                          </strong>
+                          <div className=" flex-1 min-w-fit">
+                            {board.files && board.files.length != 0 ? (
+                              <DocumentTextIcon className="inline-block flex-1 h-5 w-5 text-slate-500" />
+                            ) : (
+                              ''
+                            )}
+                            <strong className="text-mainYellow">
+                              <ChatAltIcon className="inline-block h-5 w-5" />
+                              {board.commentCount}
+                            </strong>
+                          </div>
                         </div>
                         <p className=" flex justify-between">
                           <span className="mt-1 text-sm text-gray-500">
@@ -142,7 +142,7 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
         ''
       )}
       {/*=====================================================================*/}
-      <div className=" mt-2 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
+      <div className="grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
         {boards?.map((board, index) => (
           <div
             key={board.id}
@@ -187,21 +187,21 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
                 )}
                 <div className="relative mt-4">
                   <div className="flex items-center">
-                    <div className="max-w-[75%] inline-block">
-                      <h3 className="text-sm font-medium truncate bold text-gray-900 dark:text-mainWhite">
-                        {board.title}
-                      </h3>
-                    </div>
-                    {board.files.length != 0 ? (
-                      <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
-                    ) : (
-                      ''
-                    )}
+                    <h3 className="text-sm font-medium truncate bold text-gray-900 dark:text-mainWhite">
+                      {board.title}
+                    </h3>
+                    <div className="flex-1 min-w-fit ">
+                      {board.files && board.files.length != 0 ? (
+                        <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
+                      ) : (
+                        ''
+                      )}
 
-                    <strong className="text-mainYellow">
-                      <ChatAltIcon className="inline-block h-5 w-5" />
-                      {board.commentCount}
-                    </strong>
+                      <strong className="text-mainYellow">
+                        <ChatAltIcon className="inline-block h-5 w-5" />
+                        {board.commentCount}
+                      </strong>
+                    </div>
                   </div>
                   <p className=" flex justify-between">
                     <span className="mt-1 text-sm text-gray-500">
@@ -227,7 +227,7 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 };
 const mapStateToProps = (state, OwnProps) => {
