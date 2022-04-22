@@ -148,20 +148,63 @@ const TextEditer = (props) => {
     });
   };
   return (
-    <div className="">
-      <div name="input" className="">
+    <div className="space-y-2">
+      <div name="input" className="space-y-2">
         <div name="제목과 썸네일" className="md:flex">
           <div
             name="title_box"
-            className=" inline-block mt-5 w-full md:w-content"
+            className="w-full inline-block flex-1 md:w-content"
           >
-            <p className="inline-block text-center p-1 px-3 bg-mainYellow rounded-r-full shadow-lg border-b-2 border-pointYellow">
+            <span className="inline-block text-center p-1 px-3 bg-mainYellow rounded-r-full shadow-lg border-b-2 border-pointYellow">
               제목
-            </p>
+            </span>
+            <div className="p-2 space-y-2">
+              <div
+                className={
+                  (title == '' ? '' : ' hidden') +
+                  ' rounded-md bg-red-50 p-4 dark:bg-red-300'
+                }
+              >
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <ExclamationIcon
+                      className="h-5 w-5 text-red-400"
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <div className="ml-3">
+                    <h3 className="text-sm font-medium text-red-800">
+                      제목은 필수로 입력해야 합니다.
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <input
+                type="text"
+                className="border-2 border-divisionGray p-1 w-full rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:bg-darkPoint dark:border-darkComponent dark:text-white"
+                value={text.title}
+                onChange={updateTitle}
+              ></input>
+            </div>
+          </div>
+
+          <div className=" inline-block md:px-0 w-full md:w-fit flex justify-center">
+            <FileUploadForm
+              setThumbnail={setThumbnail}
+              modifyFlag={modifyFlag}
+              board={board}
+            />
+          </div>
+        </div>
+        <div name="content_box" className="">
+          <span className="inline-block text-center p-1 px-3 bg-mainYellow rounded-r-full shadow-lg border-b-2 border-pointYellow">
+            내용
+          </span>
+          <div className="p-2 space-y-2">
             <div
               className={
-                (title == '' ? '' : ' hidden') +
-                ' rounded-md bg-red-50 mt-2 ml-2 p-4 dark:bg-red-300'
+                (content == '' ? '' : ' hidden') +
+                '  rounded-md bg-red-50  p-4 dark:bg-red-300'
               }
             >
               <div className="flex">
@@ -173,73 +216,36 @@ const TextEditer = (props) => {
                 </div>
                 <div className="ml-3">
                   <h3 className="text-sm font-medium text-red-800">
-                    제목은 필수로 입력해야 합니다.
+                    내용은 필수로 입력해야 합니다.
                   </h3>
                 </div>
               </div>
             </div>
-            <input
-              type="text"
-              className="border-2 border-divisionGray m-2 p-1 w-full rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:bg-darkPoint dark:border-darkComponent dark:text-white"
-              value={text.title}
-              onChange={updateTitle}
-            ></input>
+            <div className="w-full h-[50vh] min-h-[500px] inline-block">
+              <ResponsiveEditor
+                content={content}
+                isDark={isDark}
+                updateContent={updateContent}
+                editorRef={editorRef}
+              />
+            </div>
           </div>
-
-          <div className="inline-block md:ml-5 mt-5 w-full md:w-fit flex justify-center">
-            <FileUploadForm
-              setThumbnail={setThumbnail}
+        </div>
+        <div name="file_box">
+          <span className="hidden text-center p-1 px-3 bg-mainYellow rounded-r-full shadow-lg border-b-2 border-pointYellow sm:inline-block">
+            파일 첨부
+          </span>
+          <div className="p-2 space-y-2">
+            <FilesUploadForm
+              setFiles={setFiles}
               modifyFlag={modifyFlag}
               board={board}
             />
           </div>
         </div>
-        <div name="content_box" className="my-5">
-          <p className="inline-block text-center p-1 px-3 bg-mainYellow rounded-r-full shadow-lg border-b-2 border-pointYellow">
-            내용
-          </p>
-          <div
-            className={
-              (content == '' ? '' : ' hidden') +
-              ' rounded-md bg-red-50 mt-2 ml-2 p-4 dark:bg-red-300'
-            }
-          >
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <ExclamationIcon
-                  className="h-5 w-5 text-red-400"
-                  aria-hidden="true"
-                />
-              </div>
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-red-800">
-                  내용은 필수로 입력해야 합니다.
-                </h3>
-              </div>
-            </div>
-          </div>
-          <div className="m-2 w-full h-[50vh] min-h-[500px] inline-block">
-            <ResponsiveEditor
-              content={content}
-              isDark={isDark}
-              updateContent={updateContent}
-              editorRef={editorRef}
-            />
-          </div>
-        </div>
-        <div name="file_box" className="my-5">
-          <p className="hidden text-center p-1 px-3 bg-mainYellow rounded-r-full shadow-lg border-b-2 border-pointYellow sm:inline-block">
-            파일 첨부
-          </p>
-          <FilesUploadForm
-            setFiles={setFiles}
-            modifyFlag={modifyFlag}
-            board={board}
-          />
-        </div>
       </div>
-      <div className="justify-between sm:flex">
-        <div name="option" className="mb-10 dark:text-mainWhite">
+      <div className="justify-between space-y-4 sm:flex">
+        <div name="option" className=" px-4 dark:text-mainWhite">
           <input
             type="checkbox"
             value="댓글 허용"
@@ -284,11 +290,11 @@ const TextEditer = (props) => {
             ' '
           )}
         </div>
-        <div className="w-full sm:w-fit inline-block dark:text-mainWhite">
-          <div className="flex justify-between sm:justify-end">
+        <div className="sm:px-0 px-10 w-full sm:w-fit inline-block dark:text-mainWhite">
+          <div className="flex justify-between sm:justify-end space-x-2">
             {modifyFlag ? (
               <button
-                className="text-xl border-4 border-divisionGray rounded-xl m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none"
+                className="text-xl border-4 border-divisionGray rounded-xl shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none"
                 onClick={(e) => uploadModifyhandler(TEMP, e)}
               >
                 <InboxInIcon className="inline-block m-1 h-7 w-7  text-divisionGray" />
@@ -296,7 +302,7 @@ const TextEditer = (props) => {
               </button>
             ) : (
               <button
-                className="text-xl border-4 border-divisionGray rounded-xl m-2 shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none"
+                className="text-xl border-4 border-divisionGray rounded-xl shadow-lg p-2 active:mr-1 active:ml-3 active:shadow-none"
                 onClick={(e) => uploadPostinghandler(TEMP, e)}
               >
                 <InboxInIcon className="inline-block m-1 h-7 w-7  text-divisionGray" />
@@ -309,7 +315,7 @@ const TextEditer = (props) => {
                   (uploadAble
                     ? 'border-mainYellow text-mainYellow shadow-lg'
                     : 'border-divisionGray text-mainWhite bg-divisionGray dark:text-darkComponent dark:bg-darkPoint dark:border-darkComponent') +
-                  ' text-xl border-4  rounded-xl m-2 p-2 active:mr-1 active:ml-3 active:shadow-none'
+                  ' text-xl border-4  rounded-xl p-2 active:mr-1 active:ml-3 active:shadow-none'
                 }
                 onClick={(e) => uploadModifyhandler(NO_TEMP, e)}
                 disabled={!uploadAble}
@@ -323,7 +329,7 @@ const TextEditer = (props) => {
                   (uploadAble
                     ? 'border-mainYellow text-mainYellow shadow-lg'
                     : 'border-divisionGray text-mainWhite bg-divisionGray dark:text-darkComponent dark:bg-darkPoint dark:border-darkComponent') +
-                  ' text-xl border-4  rounded-xl m-2 p-2 active:mr-1 active:ml-3 active:shadow-none'
+                  ' text-xl border-4  rounded-xl  p-2 active:mr-1 active:ml-3 active:shadow-none'
                 }
                 onClick={(e) => uploadPostinghandler(NO_TEMP, e)}
                 disabled={!uploadAble}

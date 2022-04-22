@@ -176,7 +176,7 @@ const Table = ({
                   ) : (
                     ''
                   )}
-                  {board.files.length != 0 ? (
+                  {board.files && board.files.length != 0 ? (
                     <DocumentTextIcon className="inline-block h-5 w-5 text-slate-500" />
                   ) : (
                     ''

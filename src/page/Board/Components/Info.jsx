@@ -16,9 +16,9 @@ const Info = ({ isWrite, state }) => {
   useEffect(() => {}, [categoryId]);
 
   return (
-    <div className="flex">
-      <div className="dark:text-mainWhite w-full mx-3">
-        <p className="text-3xl border-b-2 dark:text-mainWhite py-2 dark:border-darkComponent">
+    <div className=" flex px-3">
+      <div className="dark:text-mainWhite w-full">
+        <p className="text-3xl border-b-2 dark:text-mainWhite dark:border-darkComponent">
           {categoryName}
         </p>
         <div className="flex justify-between">
@@ -29,7 +29,7 @@ const Info = ({ isWrite, state }) => {
             {isWrite ? (
               ''
             ) : (
-              <div name="right-sideBar" className="m-5 hidden md:inline-block">
+              <div name="right-sideBar" className="mt-2 hidden md:inline-block">
                 <WriteButton />
               </div>
             )}

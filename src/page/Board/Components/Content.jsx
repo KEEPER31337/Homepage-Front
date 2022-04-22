@@ -115,7 +115,7 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
   }, [state.member.token, board]);
 
   return (
-    <div className="my-5">
+    <div className="">
       <div className="justify-between bg-mainYellow rounded-t-2xl p-3 px-5 md:flex">
         <p className="break-all text-2xl">
           <strong>{board.title}</strong>
