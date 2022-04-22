@@ -31,13 +31,13 @@ const AboutCard = ({ study, setCurrentStudy, setFlag, state }) => {
                   <button
                     name="pc 수정버튼"
                     type="button"
-                    className="hidden sm:inline-flex shadow-inner ml-3 relative items-center px-4 py-2 border border-pointYellow shadow-sm text-sm font-bold rounded-md text-pointYellow hover:shadow-md focus:outline-none dark:bg-darkComponent dark:text-slate-100 dark:border-gray-600"
+                    className="hidden sm:inline-flex shadow-inner ml-3 relative items-center px-4 py-2 border border-pointYellow shadow-sm text-sm font-bold rounded-md text-pointYellow hover:shadow-md focus:outline-none"
                     onClick={(e) => {
                       setCurrentStudy(study);
                     }}
                   >
                     <CogIcon
-                      className="-ml-1 mr-2 h-5 w-5 dark:text-mainWhite"
+                      className="-ml-1 mr-2 h-5 w-5"
                       aria-hidden="true"
                     />
                     <span>수정하기</span>
