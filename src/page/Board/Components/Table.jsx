@@ -53,7 +53,7 @@ const Table = ({
       <tbody>
         {notices?.map((board, index) => (
           <tr
-            key={board.id}
+            key={index}
             className={
               'bg-gray-100 dark:bg-gray-900 border-b-2 hover:bg-gray-200 hover:shadow-lg dark:hover:bg-darkComponent dark:border-darkComponent ' +
               getCurrentBoard(board.id, postId)

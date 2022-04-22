@@ -43,7 +43,7 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
             <div className=" mt-2 flex gap-x-6">
               {notices.map((board, index) => (
                 <div
-                  key={board.id}
+                  key={index}
                   className={
                     'min-w-[80vw] md:min-w-[40vw] lg:min-w-[20vw] bg-yellow-100 dark:bg-yellow-600 border-l border-b border-r rounded-lg p-2 group shadow-lg dark:border-gray-600'
                   }

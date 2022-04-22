@@ -187,7 +187,7 @@ const Boards = ({ categoryId, commentChangeFlag, state, changeMode }) => {
             category: currentCategoryId,
           })
           .then((res) => {
-            if (res.success) setNoticeBoardContent(res?.list);
+            if (res.success) setNoticeBoardContent(res?.list.reverse());
           });
 
         postAPI //일반 글 가져오기
