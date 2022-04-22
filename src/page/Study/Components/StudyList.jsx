@@ -41,7 +41,6 @@ const StudyList = ({
     //setOpen(false);
   }, [currentYear, currentSeason, open, changeFlag, token]);
 
-  var flag = false;
   var link =
     'https://enormous-button-c5d.notion.site/2021-7a9e28c746934f22863f7077fec061da';
   return (
@@ -59,14 +58,20 @@ const StudyList = ({
             ''
           )*/}
 
-        {studies ? (
+        {studies && studies.length != 0 ? (
           studies.map((study, index) => (
             <div key={index}>
               <StudyCard study={study} setCurrentStudy={setCurrentStudy} />
             </div>
           ))
         ) : (
-          <div>현재 등록된 스터디가 없습니다.</div>
+          <div className="flex items-center h-[40vh]">
+            <p className="w-full text-gray-500 text-center">
+              현재 등록된 스터디가 없습니다.
+              <br />
+              '+스터디 추가하기'를 클릭하여 스터디를 추가하세요.
+            </p>
+          </div>
         )}
       </div>
     </>
