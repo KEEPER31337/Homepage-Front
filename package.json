@@ -52,12 +52,8 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "pro": "npm-run-all --parallel pro::**",
-    "pro:front": "react-app-rewired build && serve -s build",
-    "pro:chat": "nodemon src/chatServer/index.js",
-    "dev": "npm-run-all --parallel dev::**",
-    "dev:front": "react-app-rewired start",
-    "dev:chat": "nodemon src/chatServer/index.js",
+    "pro": "react-app-rewired build && serve -s build",
+    "dev": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
