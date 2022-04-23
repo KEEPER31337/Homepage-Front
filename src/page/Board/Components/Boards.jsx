@@ -187,7 +187,7 @@ const Boards = ({ categoryId, commentChangeFlag, state, changeMode }) => {
             category: currentCategoryId,
           })
           .then((res) => {
-            if (res.success) setNoticeBoardContent(res?.list);
+            if (res.success) setNoticeBoardContent(res?.list.reverse());
           });
 
         postAPI //일반 글 가져오기
@@ -218,7 +218,7 @@ const Boards = ({ categoryId, commentChangeFlag, state, changeMode }) => {
           <br />- It's an empty bulletin board. -
         </div>
       ) : (
-        <div>
+        <div className="space-y-4">
           <div
             name="전체 게시글 수 및 스타일 옵션"
             className="items-end flex justify-between"
@@ -282,7 +282,7 @@ const Boards = ({ categoryId, commentChangeFlag, state, changeMode }) => {
 
           <div
             name="페이지네이션"
-            className=" px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 dark:border-darkComponent"
+            className="px-4 pt-2 flex items-center justify-between border-t border-gray-200 sm:px-6 dark:border-darkComponent"
           >
             <div
               name="모바일 previous, next 버튼"
@@ -501,33 +501,32 @@ const Boards = ({ categoryId, commentChangeFlag, state, changeMode }) => {
               </div>
             </div>
           </div>
-          <div name="bottom" className="mb-10">
-            <div name="search" className="flex flex-col gap-y-2 sm:block">
-              <select
-                className="border mx-1 w-fit text-xs focus:ring-mainYellow focus:border-mainYellow dark:border-darkPoint dark:bg-darkComponent dark:text-mainWhite"
-                name="search rule"
-                onChange={(e) => SetSelectedSearchVal(e.target.value)}
+
+          <div name="search" className="flex flex-col gap-y-2 sm:block">
+            <select
+              className="border mx-1 w-fit text-xs focus:ring-mainYellow focus:border-mainYellow dark:border-darkPoint dark:bg-darkComponent dark:text-mainWhite"
+              name="search rule"
+              onChange={(e) => SetSelectedSearchVal(e.target.value)}
+            >
+              <option value="TC">제목+내용</option>
+              <option value="T">제목</option>
+              <option value="C">내용</option>
+              <option value="W">작성자</option>
+            </select>
+            <div className="inline-block">
+              <input
+                ref={postingSearchRef}
+                type="text"
+                className="border-2 border-divisionGray mx-1 mb-2 p-1 w-fit rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:border-darkComponent dark:text-white"
+                placeholder="검색어"
+              ></input>
+              <button
+                className="border-[3px] border-mainYellow mx-1 mb-2 px-2 pb-1 w-fit rounded-lg shadow-lg text-mainYellow active:mr-1 active:ml-3 active:shadow-none"
+                onClick={searchHandler}
               >
-                <option value="TC">제목+내용</option>
-                <option value="T">제목</option>
-                <option value="C">내용</option>
-                <option value="W">작성자</option>
-              </select>
-              <div className="inline-block">
-                <input
-                  ref={postingSearchRef}
-                  type="text"
-                  className="border-2 border-divisionGray mx-1 mb-2 p-1 w-fit rounded-md focus:ring-mainYellow focus:border-mainYellow dark:bg-darkComponent dark:border-darkComponent dark:text-white"
-                  placeholder="검색어"
-                ></input>
-                <button
-                  className="border-[3px] border-mainYellow mx-1 mb-2 px-2 pb-1 w-fit rounded-lg shadow-lg text-mainYellow active:mr-1 active:ml-3 active:shadow-none"
-                  onClick={searchHandler}
-                >
-                  <SearchIcon className="inline-block h-5 w-5" />
-                  검색
-                </button>
-              </div>
+                <SearchIcon className="inline-block h-5 w-5" />
+                검색
+              </button>
             </div>
           </div>
         </div>

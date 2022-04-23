@@ -452,12 +452,12 @@ const ModifyStudy = ({
         <div className="pt-3 pr-3">
           <div className="flex justify-end items-center">
             {!uploadable() ? (
-              <div className="text-red-500 mx-2 dark:text-red-600">
+              <div className="flex-1 flex text-red-500 mx-2 dark:text-red-600">
                 <ExclamationCircleIcon
-                  className="inline-block h-5 w-5 mr-2 -mt-[2px] mb-[2px] bg-mainWhite rounded-full text-red-400 group dark:text-red-700 dark:bg-gray-300"
+                  className="h-5 w-5 mr-2 -mt-[2px] mb-[2px] bg-mainWhite rounded-full text-red-400 group dark:text-red-700 dark:bg-gray-300"
                   aria-hidden="true"
                 />
-                작성되지 않은 내용이 있습니다.
+                <span className="flex-1">작성되지 않은 내용이 있습니다.</span>
               </div>
             ) : (
               ''

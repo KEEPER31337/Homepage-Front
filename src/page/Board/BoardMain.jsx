@@ -16,24 +16,16 @@ import AuthUser from 'shared/AuthUser';
 const Board = () => {
   const { categoryId } = useParams();
   return (
-    <>
+    <div className="font-basic dark:bg-mainBlack dark:text-mainWhite">
       <AuthUser>
-        <div className="w-full flex justify-center dark:bg-mainBlack">
-          <div className="flex justify-center min-h-screen max-w-[70rem]">
-            <div className="inline-block m-5 w-[90vw]">
-              <Info />
-              <Boards categoryId={categoryId} />
-            </div>
-          </div>
-          <div
-            name="mobile 글쓰기 버튼"
-            className="fixed right-0 bottom-10 m-5 inline-block md:hidden"
-          >
-            <WriteButtonMobile />
+        <div className="min-h-screen max-w-3xl mx-auto px-2 py-5 md:max-w-5xl sm:px-3 md:px-8 dark:bg-mainBlack">
+          <div className="w-full space-y-4">
+            <Info />
+            <Boards categoryId={categoryId} />
           </div>
         </div>
       </AuthUser>
-    </>
+    </div>
   );
 };
 

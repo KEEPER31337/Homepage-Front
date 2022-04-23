@@ -192,7 +192,7 @@ const Comments = ({
     return comments.filter((comment) => comment.parentId == id);
   };
   return (
-    <div className="dark:text-mainWhite">
+    <div className="dark:text-mainWhite space-y-5">
       <p className="text-2xl">
         <strong>
           <ChatAltIcon className="inline-block h-10 w-10 text-mainYellow" />
@@ -200,12 +200,12 @@ const Comments = ({
         </strong>
       </p>
 
-      <div name="댓글 리스트">
+      <div name="댓글 리스트" className="space-y-3">
         {filterParentComment(comments).map((comment) => (
           <div
             key={comment.id}
             name="댓글"
-            className=" border-b-2 flex border-b my-2 pb-2 dark:border-darkComponent"
+            className=" flex dark:border-darkComponent"
           >
             {/*console.log(comment)*/}
             <div className="border-4 w-[5em] h-[5em] mr-4 mt-2 rounded-full items-center shadow-lg flex-shrink-0 text-divisionGray hidden sm:flex dark:border-gray-500 dark:text-gray-500">
@@ -439,7 +439,7 @@ const Comments = ({
       {/*console.log(commentCount)}
       {console.log(comments.length)*/}
       {commentCount > comments.length ? (
-        <div name="댓글 더 불러오기" className="relative my-3 mt-5">
+        <div name="댓글 더 불러오기" className="relative">
           <div
             className="absolute inset-0 flex items-center"
             aria-hidden="true"
@@ -460,7 +460,7 @@ const Comments = ({
         ''
       )}
 
-      <div name="댓글 작성 창" className=" p-2">
+      <div name="댓글 작성 창" className="px-4">
         <div className="flex">
           <textarea
             value={content}

@@ -11,13 +11,13 @@ import {
 import SimpleCard from 'page/Study/Components/SimpleCard';
 import AboutCard from 'page/Study/Components/AboutCard';
 import studyAPI from 'API/v1/study';
+import StudyCard from './StudyCard';
 
 const StudyList = ({
   open,
   changeFlag,
   currentYear,
   currentSeason,
-  setCurrentSeason,
   setCurrentStudy,
   state,
 }) => {
@@ -41,58 +41,11 @@ const StudyList = ({
     //setOpen(false);
   }, [currentYear, currentSeason, open, changeFlag, token]);
 
-  var flag = true;
   var link =
     'https://enormous-button-c5d.notion.site/2021-7a9e28c746934f22863f7077fec061da';
   return (
-    <div className="">
-      <div name="시즌 태그들" className="text-sm mt-5 md:text-xl">
-        <button
-          className={
-            (currentSeason == 1
-              ? 'border-mainYellow bg-mainYellow'
-              : 'hover:bg-slate-100 dark:border-darkComponent dark:hover:bg-gray-800') +
-            ' border-x-2 border-t-2  inline-block w-[5.5em] p-1 px-2 rounded-t-2xl '
-          }
-          onClick={() => setCurrentSeason(1)}
-        >
-          1학기
-        </button>
-        <button
-          className={
-            (currentSeason == 2
-              ? 'border-mainYellow bg-mainYellow'
-              : 'hover:bg-slate-100 dark:border-darkComponent dark:hover:bg-gray-800') +
-            ' border-x-2 border-t-2  inline-block w-[5.5em] p-1 px-2 rounded-t-2xl '
-          }
-          onClick={() => setCurrentSeason(2)}
-        >
-          여름방학
-        </button>
-        <button
-          className={
-            (currentSeason == 3
-              ? 'border-mainYellow bg-mainYellow'
-              : 'hover:bg-slate-100 dark:border-darkComponent dark:hover:bg-gray-800') +
-            ' border-x-2 border-t-2  inline-block w-[5.5em] p-1 px-2 rounded-t-2xl '
-          }
-          onClick={() => setCurrentSeason(3)}
-        >
-          2학기
-        </button>
-        <button
-          className={
-            (currentSeason == 4
-              ? 'border-mainYellow bg-mainYellow'
-              : 'hover:bg-slate-100 dark:border-darkComponent dark:hover:bg-gray-800') +
-            ' border-x-2 border-t-2  inline-block w-[5.5em] p-1 px-2 rounded-t-2xl '
-          }
-          onClick={() => setCurrentSeason(4)}
-        >
-          겨울방학
-        </button>
-      </div>
-      <div className="border-2 max-w-[80rem] min-h-[60vh] border-mainYellow rounded-b-lg rounded-tr-lg bg-gray-50 w-full px-5 md:w-[80vw] dark:bg-darkPoint">
+    <>
+      <div className="space-y-5">
         {/*link ? (
             <p className="border-b border-x bg-mainWhite my-3 p-3 rounded-lg dark:border-gray-700 dark:bg-mainBlack">
               노션 링크 :
@@ -105,21 +58,23 @@ const StudyList = ({
             ''
           )*/}
 
-        {studies ? (
+        {studies && studies.length != 0 ? (
           studies.map((study, index) => (
             <div key={index}>
-              {flag ? (
-                <AboutCard study={study} setCurrentStudy={setCurrentStudy} />
-              ) : (
-                <SimpleCard study={study} />
-              )}
+              <StudyCard study={study} setCurrentStudy={setCurrentStudy} />
             </div>
           ))
         ) : (
-          <div>현재 등록된 스터디가 없습니다.</div>
+          <div className="flex items-center h-[40vh]">
+            <p className="w-full text-gray-500 text-center">
+              현재 등록된 스터디가 없습니다.
+              <br />
+              '+스터디 추가하기'를 클릭하여 스터디를 추가하세요.
+            </p>
+          </div>
         )}
       </div>
-    </div>
+    </>
   );
 };
 const mapStateToProps = (state, OwnProps) => {

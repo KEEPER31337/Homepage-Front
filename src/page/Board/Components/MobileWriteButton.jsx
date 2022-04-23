@@ -1,3 +1,5 @@
+//NOTE 안쓰는 파일
+
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PencilIcon, PlusSmIcon } from '@heroicons/react/outline';

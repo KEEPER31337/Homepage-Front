@@ -9,18 +9,16 @@ import AuthUser from 'shared/AuthUser';
 const BoardWrite = () => {
   const redirectData = useLocation();
   return (
-    <AuthUser>
-      <div className="w-full flex justify-center dark:bg-mainBlack">
-        <div className="flex justify-center max-w-[70rem]">
-          <div className="m-5 w-[90vw]">
+    <div className="font-basic dark:bg-mainBlack dark:text-mainWhite">
+      <AuthUser>
+        <div className="min-h-screen max-w-3xl mx-auto px-2 py-5 md:max-w-5xl sm:px-3 md:px-8 dark:bg-mainBlack">
+          <div className="space-y-4">
             <Info isWrite={true} />
-            <div>
-              <TextEditer redirectData={redirectData} />
-            </div>
+            <TextEditer redirectData={redirectData} />
           </div>
         </div>
-      </div>
-    </AuthUser>
+      </AuthUser>
+    </div>
   );
 };
 
