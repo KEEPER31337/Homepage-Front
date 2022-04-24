@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Draggable from 'react-draggable';
 import io from 'socket.io-client';
 import { connect } from 'react-redux';
@@ -12,6 +12,7 @@ import {
 import ChatLog from './ChatLog';
 import actionMember from 'redux/action/member';
 import { isMobile } from 'react-device-detect';
+import MemberModal from './MemberModal';
 
 const url = process.env.REACT_APP_CHAT_URL;
 const socket = io.connect(url);
@@ -25,9 +26,12 @@ const event = {
 };
 
 const ChatModal = ({ member, visible, handleClose }) => {
+  // TODO : use memo (채팅 입력할 때 다른 state 렌더링하지 않도록)
   const [msg, setMsg] = useState('');
   const [chatLogList, setChatLogList] = useState([]);
   const [activeMembers, setActiveMembers] = useState([]);
+
+  const memberModalRef = useRef({});
 
   const sendDone = (time) => {
     setChatLogList((prevChatLogList) => [
@@ -95,17 +99,21 @@ const ChatModal = ({ member, visible, handleClose }) => {
             visible ? 'visible' : 'hidden'
           } w-full sm:w-80 rounded-md cursor-grabbing text-center ring-amber-400 bg-orange-50 text-mainBlack dark:bg-darkComponent dark:text-mainWhite`}
         >
-          <div className="rounded-t-md h-10 pt-2 font-semibold bg-amber-400 w-full">
-            Keeper
-            <span className="px-1">
-              <UsersIcon className="inline-block h-6 w-6" />
-              {activeMembers.length}
+          <div className="rounded-t-md h-10 pt-2 font-semibold w-full bg-mainYellow dark:bg-darkPoint">
+            <span className="absolute left-1 top-2 px-1">
+              <UsersIcon
+                className="inline-block h-6 w-6 rounded-full text-mainYellow bg-white hover:bg-pointYellow "
+                onClick={() => {
+                  memberModalRef.current.open();
+                }}
+              />
             </span>
+            Keeper
             <button
-              className="absolute right-1 top-1 bg-mainYellow text-white hover:text-pointYellow"
+              className="absolute right-1 top-1 bg-mainYellow dark:bg-darkPoint text-white hover:text-pointYellow"
               onClick={handleClose}
             >
-              <XCircleIcon className="inline-block h-8 w-8" />
+              <XCircleIcon className="inline-block h-8 w-8 " />
             </button>
           </div>
           <div className="pb-2">
@@ -132,6 +140,7 @@ const ChatModal = ({ member, visible, handleClose }) => {
           </div>
         </div>
       </Draggable>
+      <MemberModal people={activeMembers} ref={memberModalRef} />
     </>
   );
 };
