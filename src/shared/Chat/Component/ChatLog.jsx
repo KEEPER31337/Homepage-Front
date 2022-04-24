@@ -40,7 +40,7 @@ const ChatLog = ({ chatLogList, member }) => {
               <div key={index} className="w-full flex space-x-3 p-3">
                 <div>
                   <img
-                    className="h-6 w-6 rounded-full"
+                    className="h-7 w-7 rounded-full bg-white"
                     src={
                       chatLog.member.thumbnailPath
                         ? chatLog.member.thumbnailPath

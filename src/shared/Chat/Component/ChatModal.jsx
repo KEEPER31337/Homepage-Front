@@ -17,16 +17,17 @@ const url = process.env.REACT_APP_CHAT_URL;
 const socket = io.connect(url);
 
 const event = {
+  auth: 'auth',
   connection: 'connection',
-  disconnect: 'disconnect',
   joinRoom: 'join_room',
+  leaveRoom: 'leave_room',
   msg: 'msg',
 };
 
 const ChatModal = ({ member, visible, handleClose }) => {
   const [msg, setMsg] = useState('');
   const [chatLogList, setChatLogList] = useState([]);
-  const [peopleCount, setPeopleCount] = useState(1);
+  const [activeMembers, setActiveMembers] = useState([]);
 
   const sendDone = (time) => {
     setChatLogList((prevChatLogList) => [
@@ -40,10 +41,6 @@ const ChatModal = ({ member, visible, handleClose }) => {
     setMsg('');
   };
 
-  const joinDone = ({ peopleCount }) => {
-    setPeopleCount((prevPeopleCount) => peopleCount);
-  };
-
   const handleSend = () => {
     if (msg) {
       socket.emit(
@@ -54,27 +51,39 @@ const ChatModal = ({ member, visible, handleClose }) => {
     }
   };
 
+  const joinDone = ({ activeMembers }) => {
+    setActiveMembers((prev) => activeMembers);
+  };
+  const authDone = () => {
+    socket.emit(
+      event.joinRoom,
+      { token: member.token, roomName: 'global' },
+      joinDone
+    );
+  };
+
   const handleReceive = (chatLog) => {
     setChatLogList((prevChatLogList) => [...prevChatLogList, chatLog]);
   };
-  const handleReceiveJoin = ({ peopleCount }) => {
-    setPeopleCount((prevPeopleCount) => peopleCount);
+  const handleReceiveJoin = ({ newMember }) => {
+    setActiveMembers((prev) => [...prev, newMember]);
   };
-  const handleReceiveLeave = ({ peopleCount }) => {
-    setPeopleCount((prevPeopleCount) => peopleCount);
+  const handleReceiveLeave = ({ leaveMember }) => {
+    setActiveMembers((prev) =>
+      prev.filter((member) => member.id !== leaveMember.id)
+    );
   };
 
   useEffect(() => {
     if (member.token) {
-      socket.emit(
-        event.joinRoom,
-        { token: member.token, roomName: 'global' },
-        joinDone
-      );
+      socket.emit(event.auth, { token: member.token }, authDone);
       socket.on(event.msg, handleReceive);
       socket.on(event.joinRoom, handleReceiveJoin);
-      socket.on(event.disconnect, handleReceiveLeave);
-      return () => socket.off(event.msg, handleReceive);
+      socket.on(event.leaveRoom, handleReceiveLeave);
+      return () => {
+        socket.off(event.msg, handleReceive);
+        socket.off(event.joinRoom, handleReceiveJoin);
+      };
     }
   }, [member]);
 
@@ -90,7 +99,7 @@ const ChatModal = ({ member, visible, handleClose }) => {
             Keeper
             <span className="px-1">
               <UsersIcon className="inline-block h-6 w-6" />
-              {peopleCount}
+              {activeMembers.length}
             </span>
             <button
               className="absolute right-1 top-1 bg-mainYellow text-white hover:text-pointYellow"
