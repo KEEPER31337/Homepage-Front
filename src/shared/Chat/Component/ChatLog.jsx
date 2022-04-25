@@ -4,15 +4,16 @@ import { Fragment, useEffect } from 'react';
 import imgMemberCircle from 'assets/img/memberCircle.svg';
 import { connect } from 'react-redux';
 
-const ChatLog = ({ chatLogList, member }) => {
+const ChatLog = ({ chatLogList, member, visible }) => {
   const handleErrorImg = (e) => {
     e.target.src = imgMemberCircle;
   };
+  console.log(chatLogList);
 
   useEffect(() => {
     const divChat = document.getElementById('chatlog');
     divChat.scrollTop = divChat.scrollHeight;
-  }, [chatLogList]);
+  }, [chatLogList, visible]);
 
   return (
     <div

@@ -55,8 +55,9 @@ const ChatModal = ({ member, visible, handleClose }) => {
     }
   };
 
-  const joinDone = ({ activeMembers }) => {
+  const joinDone = ({ activeMembers, chatLogs }) => {
     setActiveMembers((prev) => activeMembers);
+    setChatLogList((prev) => chatLogs);
   };
   const authDone = () => {
     socket.emit(
@@ -117,7 +118,7 @@ const ChatModal = ({ member, visible, handleClose }) => {
             </button>
           </div>
           <div className="pb-2">
-            <ChatLog chatLogList={chatLogList} />
+            <ChatLog chatLogList={chatLogList} visible={visible} />
           </div>
           <div className="py-2 px-5">
             <form
