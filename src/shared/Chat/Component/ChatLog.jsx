@@ -4,15 +4,16 @@ import { Fragment, useEffect } from 'react';
 import imgMemberCircle from 'assets/img/memberCircle.svg';
 import { connect } from 'react-redux';
 
-const ChatLog = ({ chatLogList, member }) => {
+const ChatLog = ({ chatLogList, member, visible }) => {
   const handleErrorImg = (e) => {
     e.target.src = imgMemberCircle;
   };
+  console.log(chatLogList);
 
   useEffect(() => {
     const divChat = document.getElementById('chatlog');
     divChat.scrollTop = divChat.scrollHeight;
-  }, [chatLogList]);
+  }, [chatLogList, visible]);
 
   return (
     <div
@@ -40,7 +41,7 @@ const ChatLog = ({ chatLogList, member }) => {
               <div key={index} className="w-full flex space-x-3 p-3">
                 <div>
                   <img
-                    className="h-6 w-6 rounded-full"
+                    className="h-7 w-7 rounded-full bg-white"
                     src={
                       chatLog.member.thumbnailPath
                         ? chatLog.member.thumbnailPath

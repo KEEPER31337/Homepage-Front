@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Draggable from 'react-draggable';
 import io from 'socket.io-client';
 import { connect } from 'react-redux';
@@ -12,21 +12,26 @@ import {
 import ChatLog from './ChatLog';
 import actionMember from 'redux/action/member';
 import { isMobile } from 'react-device-detect';
+import MemberModal from './MemberModal';
 
 const url = process.env.REACT_APP_CHAT_URL;
 const socket = io.connect(url);
 
 const event = {
+  auth: 'auth',
   connection: 'connection',
-  disconnect: 'disconnect',
   joinRoom: 'join_room',
+  leaveRoom: 'leave_room',
   msg: 'msg',
 };
 
 const ChatModal = ({ member, visible, handleClose }) => {
+  // TODO : use memo (채팅 입력할 때 다른 state 렌더링하지 않도록)
   const [msg, setMsg] = useState('');
   const [chatLogList, setChatLogList] = useState([]);
-  const [peopleCount, setPeopleCount] = useState(1);
+  const [activeMembers, setActiveMembers] = useState([]);
+
+  const memberModalRef = useRef({});
 
   const sendDone = (time) => {
     setChatLogList((prevChatLogList) => [
@@ -40,10 +45,6 @@ const ChatModal = ({ member, visible, handleClose }) => {
     setMsg('');
   };
 
-  const joinDone = ({ peopleCount }) => {
-    setPeopleCount((prevPeopleCount) => peopleCount);
-  };
-
   const handleSend = () => {
     if (msg) {
       socket.emit(
@@ -54,27 +55,40 @@ const ChatModal = ({ member, visible, handleClose }) => {
     }
   };
 
+  const joinDone = ({ activeMembers, chatLogs }) => {
+    setActiveMembers((prev) => activeMembers);
+    setChatLogList((prev) => chatLogs);
+  };
+  const authDone = () => {
+    socket.emit(
+      event.joinRoom,
+      { token: member.token, roomName: 'global' },
+      joinDone
+    );
+  };
+
   const handleReceive = (chatLog) => {
     setChatLogList((prevChatLogList) => [...prevChatLogList, chatLog]);
   };
-  const handleReceiveJoin = ({ peopleCount }) => {
-    setPeopleCount((prevPeopleCount) => peopleCount);
+  const handleReceiveJoin = ({ newMember }) => {
+    setActiveMembers((prev) => [...prev, newMember]);
   };
-  const handleReceiveLeave = ({ peopleCount }) => {
-    setPeopleCount((prevPeopleCount) => peopleCount);
+  const handleReceiveLeave = ({ leaveMember }) => {
+    setActiveMembers((prev) =>
+      prev.filter((member) => member.id !== leaveMember.id)
+    );
   };
 
   useEffect(() => {
     if (member.token) {
-      socket.emit(
-        event.joinRoom,
-        { token: member.token, roomName: 'global' },
-        joinDone
-      );
+      socket.emit(event.auth, { token: member.token }, authDone);
       socket.on(event.msg, handleReceive);
       socket.on(event.joinRoom, handleReceiveJoin);
-      socket.on(event.disconnect, handleReceiveLeave);
-      return () => socket.off(event.msg, handleReceive);
+      socket.on(event.leaveRoom, handleReceiveLeave);
+      return () => {
+        socket.off(event.msg, handleReceive);
+        socket.off(event.joinRoom, handleReceiveJoin);
+      };
     }
   }, [member]);
 
@@ -86,21 +100,25 @@ const ChatModal = ({ member, visible, handleClose }) => {
             visible ? 'visible' : 'hidden'
           } w-full sm:w-80 rounded-md cursor-grabbing text-center ring-amber-400 bg-orange-50 text-mainBlack dark:bg-darkComponent dark:text-mainWhite`}
         >
-          <div className="rounded-t-md h-10 pt-2 font-semibold bg-amber-400 w-full">
-            Keeper
-            <span className="px-1">
-              <UsersIcon className="inline-block h-6 w-6" />
-              {peopleCount}
+          <div className="rounded-t-md h-10 pt-2 font-semibold w-full bg-mainYellow dark:bg-darkPoint">
+            <span className="absolute left-1 top-2 px-1">
+              <UsersIcon
+                className="inline-block h-6 w-6 rounded-full text-mainYellow bg-white hover:bg-pointYellow "
+                onClick={() => {
+                  memberModalRef.current.open();
+                }}
+              />
             </span>
+            Keeper
             <button
-              className="absolute right-1 top-1 bg-mainYellow text-white hover:text-pointYellow"
+              className="absolute right-1 top-1 bg-mainYellow dark:bg-darkPoint text-white hover:text-pointYellow"
               onClick={handleClose}
             >
-              <XCircleIcon className="inline-block h-8 w-8" />
+              <XCircleIcon className="inline-block h-8 w-8 " />
             </button>
           </div>
           <div className="pb-2">
-            <ChatLog chatLogList={chatLogList} />
+            <ChatLog chatLogList={chatLogList} visible={visible} />
           </div>
           <div className="py-2 px-5">
             <form
@@ -123,6 +141,7 @@ const ChatModal = ({ member, visible, handleClose }) => {
           </div>
         </div>
       </Draggable>
+      <MemberModal people={activeMembers} ref={memberModalRef} />
     </>
   );
 };
