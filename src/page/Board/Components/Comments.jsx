@@ -142,10 +142,16 @@ const Comments = ({
 
   const displayInput = (id) => {
     //대댓글 버튼 클릭시 대댓글 입력 창이 보였다가 안 보였다가 할 수 있도록
+    setFocusedComment(id);
     if (focusedComment != id) setIsView(true);
     else setIsView(!isView);
-    setFocusedComment(id);
-    setSubContent('');
+    if (isView) {
+      //TODO 대댓글 버튼 눌렀을 때 자동으로 입력창이 포커싱되게 하기(왜인지 잘 안됨)
+      document.getElementById(focusedComment).firstElementChild.focus();
+      setSubContent('');
+    }
+    //console.log(document.getElementById(focusedComment)?.firstElementChild);
+
     //console.log(isView);
   };
   const clickLikeHandler = (id) => {
@@ -313,13 +319,13 @@ const Comments = ({
                     {comment.dislikeCount}
 
                     <button
-                      className="mx-1 text-mainYellow text-xs sm:text-base hover:text-pointYellow"
+                      className="mx-1 text-mainYellow text-xs sm:text-sm hover:text-pointYellow"
                       onClick={() => displayInput(comment.id)}
                     >
                       <span className="inline-block">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          class="h-4 w-4 sm:h-5 sm:w-5"
+                          class="h-4 w-4 mt-1 -mb-1"
                           viewBox="0 0 20 20"
                           fill="currentColor"
                         >
@@ -332,12 +338,12 @@ const Comments = ({
                   {myId == comment.writerId ? (
                     <button
                       onClick={() => deleteCommentHandler(comment.id)}
-                      className="mr-1 text-red-400 text-xs sm:text-base hover:text-red-600"
+                      className="mr-1 text-red-400 text-xs sm:text-sm hover:text-red-600"
                     >
                       <span className="inline-block">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          class="h-4 w-4 sm:h-5 sm:w-5"
+                          class="h-4 w-4 mt-1 -mb-1"
                           viewBox="0 0 20 20"
                           fill="currentColor"
                         >
@@ -361,9 +367,9 @@ const Comments = ({
                 <div
                   key={childCom.id}
                   name="대댓글"
-                  className="border-b border-slate-200 p-2 flex w-full bg-slate-50 rounded-lg dark:bg-gray-700 dark:border-darkComponent"
+                  className="border-b border-slate-200 px-2 py-1 flex w-full bg-slate-50 rounded-lg dark:bg-darkComponent dark:border-darkComponent"
                 >
-                  <div className="border-4 w-[3em] h-[3em] mr-4 mt-2 rounded-full items-center shadow-lg flex-shrink-0 text-divisionGray hidden sm:flex dark:border-gray-500 dark:text-gray-500">
+                  <div className="border-4 w-[3em] h-[3em] mr-2 rounded-full items-center shadow-lg flex-shrink-0 text-divisionGray hidden sm:flex dark:border-gray-500 dark:text-gray-500">
                     {comment.writerThumbnailId ? (
                       <img
                         src={comment.writerThumbnailPath}
@@ -375,18 +381,18 @@ const Comments = ({
                   </div>
                   <div className="w-full">
                     <div className=" flex justify-between">
-                      <h4 className="inline-block text-xs font-bold rounded-lg">
+                      <h4 className="inline-block text-sm font-bold rounded-lg">
                         {childCom.writer}
                       </h4>
                       {myId === childCom.writerId ? (
                         <button
                           onClick={() => deleteCommentHandler(childCom.id)}
-                          className="mx-1 text-red-400 text-xs sm:text-base hover:text-red-600"
+                          className="mx-1 text-red-400 text-xs sm:text-sm hover:text-red-600"
                         >
                           <span className="inline-block">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
-                              class="h-4 w-4 sm:h-5 sm:w-5"
+                              class="h-4 w-4 mt-1 -mb-1"
                               viewBox="0 0 20 20"
                               fill="currentColor"
                             >
@@ -403,13 +409,12 @@ const Comments = ({
                         ''
                       )}
                     </div>
-                    <p className="mt-1 px-3 text-slate-500 text-xs">
-                      {childCom.content}
-                    </p>
+                    <p className="px-3">{childCom.content}</p>
                   </div>
                 </div>
               ))}
               <div
+                id={comment.id}
                 name="대댓글 작성창"
                 className={
                   (isView && focusedComment == comment.id ? '' : 'hidden') +

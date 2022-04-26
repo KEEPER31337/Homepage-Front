@@ -11,7 +11,7 @@ const AboutCard = ({ study, setCurrentStudy, setFlag, state }) => {
     <>
       <div
         name="상세보기"
-        className="bg-[rgb(255,209,90)] shadow-md overflow-hidden sm:rounded-lg dark:text-mainWhite"
+        className="bg-[rgb(255,209,90)] shadow-md overflow-hidden sm:rounded-lg dark:text-mainWhite dark:ring-1 dark:ring-gray-800"
       >
         <div className="bg-transparent px-3 py-2 sm:rounded-t-lg sm:px-6">
           <div
