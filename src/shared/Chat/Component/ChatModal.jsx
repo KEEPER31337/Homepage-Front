@@ -22,37 +22,20 @@ const event = {
   connection: 'connection',
   joinRoom: 'join_room',
   leaveRoom: 'leave_room',
-  msg: 'msg',
+  message: 'message',
 };
 
 const ChatModal = ({ member, visible, handleClose }) => {
   // TODO : use memo (채팅 입력할 때 다른 state 렌더링하지 않도록)
-  const [msg, setMsg] = useState('');
+  const [message, setMessage] = useState('');
   const [chatLogList, setChatLogList] = useState([]);
   const [activeMembers, setActiveMembers] = useState([]);
 
   const memberModalRef = useRef({});
 
-  const sendDone = (time) => {
-    setChatLogList((prevChatLogList) => [
-      ...prevChatLogList,
-      {
-        member: member.memberInfo,
-        msg,
-        time,
-      },
-    ]);
-    setMsg('');
-  };
-
-  const handleSend = () => {
-    if (msg) {
-      socket.emit(
-        event.msg,
-        { roomName: 'global', token: member.token, msg },
-        sendDone
-      );
-    }
+  const sendDone = (chatLog) => {
+    setChatLogList((prevChatLogList) => [...prevChatLogList, chatLog]);
+    setMessage('');
   };
 
   const joinDone = ({ activeMembers, chatLogs }) => {
@@ -60,11 +43,7 @@ const ChatModal = ({ member, visible, handleClose }) => {
     setChatLogList((prev) => chatLogs);
   };
   const authDone = () => {
-    socket.emit(
-      event.joinRoom,
-      { token: member.token, roomName: 'global' },
-      joinDone
-    );
+    socket.emit(event.joinRoom, { room_id: 'global' }, joinDone);
   };
 
   const handleReceive = (chatLog) => {
@@ -73,24 +52,33 @@ const ChatModal = ({ member, visible, handleClose }) => {
   const handleReceiveJoin = ({ newMember }) => {
     setActiveMembers((prev) => [...prev, newMember]);
   };
-  const handleReceiveLeave = ({ leaveMember }) => {
+  const handleReceiveLeave = ({ member_id }) => {
+    console.log(member_id);
     setActiveMembers((prev) =>
-      prev.filter((member) => member.id !== leaveMember.id)
+      prev.filter((member) => member.id !== member_id)
     );
+  };
+
+  const handleSend = () => {
+    if (message) {
+      socket.emit(event.message, { room_id: 'global', message }, sendDone);
+    }
   };
 
   useEffect(() => {
     if (member.token) {
       socket.emit(event.auth, { token: member.token }, authDone);
-      socket.on(event.msg, handleReceive);
+      socket.on(event.message, handleReceive);
       socket.on(event.joinRoom, handleReceiveJoin);
       socket.on(event.leaveRoom, handleReceiveLeave);
       return () => {
-        socket.off(event.msg, handleReceive);
+        socket.off(event.message, handleReceive);
         socket.off(event.joinRoom, handleReceiveJoin);
       };
     }
   }, [member]);
+
+  console.log('activeMember', activeMembers);
 
   return (
     <>
@@ -128,8 +116,8 @@ const ChatModal = ({ member, visible, handleClose }) => {
             >
               <input
                 className="w-4/5 p-2 rounded-md text-black"
-                value={msg}
-                onChange={(e) => setMsg(e.target.value)}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
               />
               <button
                 className="mx-1 p-1 font-bold border-2 border-amber-400 rounded-md text-white bg-mainYellow hover:bg-pointYellow"
