@@ -11,6 +11,7 @@ import {
 // local
 import ChatLog from './ChatLog';
 import actionMember from 'redux/action/member';
+import actionChat from 'redux/action/chat';
 import { isMobile } from 'react-device-detect';
 import MemberModal from './MemberModal';
 
@@ -25,35 +26,42 @@ const event = {
   message: 'message',
 };
 
-const ChatModal = ({ member, visible, handleClose }) => {
+const ChatModal = ({
+  member,
+  visible,
+  handleClose,
+  chat,
+  loadChatList,
+  addChat,
+}) => {
   // TODO : use memo (채팅 입력할 때 다른 state 렌더링하지 않도록)
   const [message, setMessage] = useState('');
-  const [chatLogList, setChatLogList] = useState([]);
   const [activeMembers, setActiveMembers] = useState([]);
 
   const memberModalRef = useRef({});
 
   const sendDone = (chatLog) => {
-    setChatLogList((prevChatLogList) => [...prevChatLogList, chatLog]);
+    addChat(chatLog);
     setMessage('');
   };
 
-  const joinDone = ({ activeMembers, chatLogs }) => {
+  const joinDone = ({ activeMembers, chatLogList, timeSince }) => {
     setActiveMembers((prev) => activeMembers);
-    setChatLogList((prev) => chatLogs);
+    loadChatList({ chatLogList, timeSince });
   };
+
   const authDone = () => {
-    socket.emit(event.joinRoom, { room_id: 'global' }, joinDone);
+    const savedId = chat.savedId;
+    socket.emit(event.joinRoom, { room_id: 'global', savedId }, joinDone);
   };
 
   const handleReceive = (chatLog) => {
-    setChatLogList((prevChatLogList) => [...prevChatLogList, chatLog]);
+    addChat(chatLog);
   };
   const handleReceiveJoin = ({ newMember }) => {
     setActiveMembers((prev) => [...prev, newMember]);
   };
   const handleReceiveLeave = ({ member_id }) => {
-    console.log(member_id);
     setActiveMembers((prev) =>
       prev.filter((member) => member.id !== member_id)
     );
@@ -77,8 +85,6 @@ const ChatModal = ({ member, visible, handleClose }) => {
       };
     }
   }, [member]);
-
-  console.log('activeMember', activeMembers);
 
   return (
     <>
@@ -106,7 +112,7 @@ const ChatModal = ({ member, visible, handleClose }) => {
             </button>
           </div>
           <div className="pb-2">
-            <ChatLog chatLogList={chatLogList} visible={visible} />
+            <ChatLog chatLogList={chat.chatList} visible={visible} />
           </div>
           <div className="py-2 px-5">
             <form
@@ -135,13 +141,19 @@ const ChatModal = ({ member, visible, handleClose }) => {
 };
 
 const mapStateToProps = (state) => {
-  return { member: state.member };
+  return { member: state.member, chat: state.chat };
 };
 
 const mapDispatchToProps = (dispatch, OwnProps) => {
   return {
     signOut: () => {
       dispatch(actionMember.signOut());
+    },
+    loadChatList: (payload) => {
+      dispatch(actionChat.loadChatList(payload));
+    },
+    addChat: (chat) => {
+      dispatch(actionChat.addChat(chat));
     },
   };
 };
