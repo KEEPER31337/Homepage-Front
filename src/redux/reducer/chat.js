@@ -10,7 +10,7 @@ const reducerMember = (state = initialState, action) => {
         (chat) => chat.time > timeSince
       );
       const updateChatLogList = filteredChatList.concat(chatLogList);
-      if (updateChatLogList.length <= 0) {
+      if (updateChatLogList.length <= 0 || timeSince === null) {
         return state;
       }
       return {
