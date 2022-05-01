@@ -25,7 +25,7 @@ jobs:
       - name: Create ENV File
         run: |
           touch .env
-          echo "${{ secrets.DEV_ENV }}" >> .env
+          echo "${{ secrets.PROD_ENV }}" >> .env
 
       - uses: actions/setup-node@v3
         with:
