@@ -122,7 +122,7 @@ const FilesUploadForm = (props) => {
       <div
         className={
           (files.length === 0 ? 'h-[200px]' : 'h-[400px]') +
-          ' mt-2 ml-2 flex-column w-full border-4 border-dashed rounded-xl hidden sm:block dark:border-slate-500'
+          ' flex-column w-full border-4 border-dashed rounded-xl hidden sm:block dark:border-slate-500'
         }
       >
         <div
@@ -180,35 +180,34 @@ const FilesUploadForm = (props) => {
           )}
         </div>
       </div>
-      <div>
-        <div className="ml-2 block sm:hidden">
-          <button
-            {...getRootProps()}
-            className="border-[2px]  border-divisionGray my-3 p-1 pr-2 shadow-md rounded-lg text-pointYellow flex items-center dark:bg-darkPoint"
-          >
-            <input {...InputProps} />
-            <DocumentAddIcon
-              className=" h-7 w-7 inline-block "
-              aria-hidden="true"
-            />
-            파일 추가
-          </button>
-          {files.length !== 0 ? (
-            <table className="w-full dark:text-mainWhite">
-              {/*console.log(files.length)*/}
-              <thead className="bg-mainYellow bg-opacity-100 ">
-                <tr className="">
-                  <th className="rounded-tl-lg">파일명</th>
-                  <th className="min-w-[5em] w-1/5">파일 크기</th>
-                  <th className="min-w-[4em] w-1/5 rounded-tr-lg">삭제</th>
-                </tr>
-              </thead>
-              <tbody>{files.map((file) => getFileInfo(file))}</tbody>
-            </table>
-          ) : (
-            ''
-          )}
-        </div>
+
+      <div className="block sm:hidden space-y-2">
+        <button
+          {...getRootProps()}
+          className="border-[2px]  border-divisionGray p-1 pr-2 shadow-md rounded-lg text-pointYellow flex items-center dark:bg-darkPoint"
+        >
+          <input {...InputProps} />
+          <DocumentAddIcon
+            className=" h-7 w-7 inline-block "
+            aria-hidden="true"
+          />
+          파일 추가
+        </button>
+        {files.length !== 0 ? (
+          <table className="w-full dark:text-mainWhite">
+            {/*console.log(files.length)*/}
+            <thead className="bg-mainYellow bg-opacity-100 ">
+              <tr className="">
+                <th className="rounded-tl-lg">파일명</th>
+                <th className="min-w-[5em] w-1/5">파일 크기</th>
+                <th className="min-w-[4em] w-1/5 rounded-tr-lg">삭제</th>
+              </tr>
+            </thead>
+            <tbody>{files.map((file) => getFileInfo(file))}</tbody>
+          </table>
+        ) : (
+          ''
+        )}
       </div>
     </>
   );
