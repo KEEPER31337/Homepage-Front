@@ -21,9 +21,10 @@ const MemberModal = forwardRef(({ people }, ref) => {
       setOpen(true);
     },
   }));
+  console.log(people);
 
   const filteredPeople = people.filter((person) => {
-    return person?.nickName?.toLowerCase()?.includes(query.toLowerCase());
+    return person?.nick_name?.toLowerCase()?.includes(query.toLowerCase());
   });
 
   return (
@@ -107,13 +108,12 @@ const MemberModal = forwardRef(({ people }, ref) => {
                               {({ active }) => (
                                 <>
                                   <img
-                                    src={person.thumbnailPath}
+                                    src={person.image_path}
                                     alt=""
                                     className="h-6 w-6 flex-none rounded-full"
                                   />
-                                  {person.id}
                                   <span className="ml-3 flex-auto truncate">
-                                    {person.nickName}
+                                    {person.nick_name}
                                   </span>
                                   {active && (
                                     <ChevronRightIcon
@@ -133,12 +133,12 @@ const MemberModal = forwardRef(({ people }, ref) => {
                       <div className="hidden h-96 w-1/2 flex-none flex-col divide-y divide-gray-100 overflow-y-auto sm:flex">
                         <div className="flex-none p-6 text-center">
                           <img
-                            src={activeOption.thumbnailPath}
+                            src={activeOption.image_path}
                             alt=""
                             className="mx-auto h-16 w-16 rounded-full"
                           />
                           <h2 className="mt-3 font-semibold text-gray-900">
-                            {activeOption.nickName}
+                            {activeOption.nick_name}
                           </h2>
                           <p className="text-sm leading-6 text-gray-500">
                             Keeper {activeOption.generation}기
@@ -149,7 +149,7 @@ const MemberModal = forwardRef(({ people }, ref) => {
                             <dt className="col-end-1 font-semibold text-gray-900">
                               이름
                             </dt>
-                            <dd>{activeOption.nickName}</dd>
+                            <dd>{activeOption.nick_name}</dd>
                             <dt className="col-end-1 font-semibold text-gray-900">
                               활동
                             </dt>

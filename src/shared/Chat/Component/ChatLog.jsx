@@ -32,6 +32,7 @@ const ChatLog = ({ chatLogList, member, visible }) => {
                     {chatLog.message}
                   </div>
                   <div className="text-right text-xs text-gray-400">
+                    {/* TODO : local 시간에 맞게 */}
                     {chatLog.time}
                   </div>
                 </div>
@@ -56,6 +57,7 @@ const ChatLog = ({ chatLogList, member, visible }) => {
                     {chatLog.message}
                   </div>
                   <div className="text-right text-xs text-gray-400">
+                    {/* TODO : local 시간에 맞게 */}
                     {chatLog.time}
                   </div>
                 </div>
