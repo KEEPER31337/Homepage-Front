@@ -3,6 +3,9 @@ import actionChat from 'redux/action/chat';
 
 const initialState = { chatList: [], savedId: 0 };
 const reducerMember = (state = initialState, action) => {
+  if (!Array.isArray(state.chatList)) {
+    return initialState;
+  }
   switch (action.type) {
     case actionChat.loadChatList.type:
       const { chatLogList, timeSince } = action.payload;

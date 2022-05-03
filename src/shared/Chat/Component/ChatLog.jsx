@@ -20,7 +20,7 @@ const ChatLog = ({ chatLogList, member, visible }) => {
       className="h-[60vh] sm:h-96 w-full max-h-full overflow-y-scroll"
     >
       <ul role="list" className="">
-        {chatLogList.map((chatLog, index) => (
+        {chatLogList?.map((chatLog, index) => (
           <Fragment key={index}>
             {member.memberInfo.id === chatLog.member_id ? (
               <div
