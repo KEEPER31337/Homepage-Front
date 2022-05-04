@@ -146,7 +146,7 @@ const SignUp = ({ member }) => {
   //이메일 체크
   const handleEmailAddress = () => {
     const emailAddressRegex =
-      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+      /^([0-9a-zA-Z_]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
 
     if (!emailAddressRegex.test(emailAddress)) {
       setEmailAddressMessage('이메일 형식이 틀렸습니다');
