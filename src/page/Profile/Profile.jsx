@@ -1,31 +1,16 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import ProfileFrame from './Components/Frames/ProfileFrame';
-import InfoBox from './Components/InfoBox';
 import { connect } from 'react-redux';
-import memberAPI from 'API/v1/member';
 import actionMember from 'redux/action/member';
 
 //NOTE 프로필 UI
 import './fonts.css';
-import {
-  AcademicCapIcon,
-  GiftIcon,
-  SparklesIcon,
-  MailIcon,
-  PencilAltIcon,
-} from '@heroicons/react/solid';
-import MessageModal from 'shared/MessageModal';
 import MyProfile from './MyProfile';
 import OtherProfile from './OtherProfile';
 
 const Profile = ({ token, memberInfo, updateInfo }) => {
   const params = useParams();
   const navigate = useNavigate();
-  const [btns, setBtns] = useState(new Array());
-  const [isFollowee, setIsFollowee] = useState(false);
-  const [user, setUser] = useState(null);
-  const [error, setError] = useState('');
 
   const [followTrigger, setFollowTrigger] = useState(false);
   const [unFollowTrigger, setUnFollowTrigger] = useState(false);

@@ -7,8 +7,6 @@ import './fonts.css';
 import Group from './Components/Group';
 import { useNavigate } from 'react-router-dom';
 
-const googy = 'https://avatars.githubusercontent.com/u/81643702?v=4';
-
 const add0 = (num, maxDigits) => {
   let digits = 10;
   let result = num.toString();

@@ -1,29 +1,14 @@
-import React, { useEffect, useState, useRef, Fragment } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import ProfileFrame from './Components/Frames/ProfileFrame';
-import InfoBox from './Components/InfoBox';
-import { connect } from 'react-redux';
 import memberAPI from 'API/v1/member';
-import actionMember from 'redux/action/member';
 
 //NOTE 프로필 UI
 import './fonts.css';
-import {
-  AcademicCapIcon,
-  GiftIcon,
-  SparklesIcon,
-  MailIcon,
-  PencilAltIcon,
-} from '@heroicons/react/solid';
-import MessageModal from 'shared/MessageModal';
 import FolloweeModal from './Components/Modal/FolloweeModal';
 import FollowerModal from './Components/Modal/FollowerModal';
 import Group from './Components/Group';
 
-const googy = 'https://avatars.githubusercontent.com/u/81643702?v=4';
-
-const MyProfile = ({ token, memberInfo, updateInfo }) => {
-  const params = useParams();
+const MyProfile = ({ token, memberInfo }) => {
   const navigate = useNavigate();
 
   const followeeModalState = useState(false);

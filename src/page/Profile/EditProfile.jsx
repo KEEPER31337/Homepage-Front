@@ -12,8 +12,6 @@ import { MailIcon, PencilAltIcon } from '@heroicons/react/solid';
 import Group from './Components/Group';
 import DeleteUserModal from './Components/Modal/DeleteUserModal';
 
-const googy = 'https://avatars.githubusercontent.com/u/81643702?v=4';
-
 const msgTextColor = {
   default: { nonDark: 'mainBlack', dark: 'mainWhite' },
   error: { nonDark: 'red-500', dark: 'red-500' },
