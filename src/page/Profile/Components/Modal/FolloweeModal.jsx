@@ -6,7 +6,6 @@ const FolloweeModal = ({ modalState, token, navigate }) => {
   const [data, setData] = useState(new Array());
   useEffect(() => {
     memberAPI.getUsersFollowee({ token }).then((res) => {
-      console.log('res', res);
       if (res.success) {
         setData(res.list);
       }

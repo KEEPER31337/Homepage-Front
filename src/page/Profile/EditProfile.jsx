@@ -12,6 +12,9 @@ import { MailIcon, PencilAltIcon } from '@heroicons/react/solid';
 import Group from './Components/Group';
 import DeleteUserModal from './Components/Modal/DeleteUserModal';
 
+//날짜 포멧
+import { formatDate } from './Utils/DateFormater';
+
 const msgTextColor = {
   default: { nonDark: 'mainBlack', dark: 'mainWhite' },
   error: { nonDark: 'red-500', dark: 'red-500' },
@@ -22,35 +25,11 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
 
   const [followCnt, setFollowCnt] = useState(null);
 
-  //날짜 포멧
-  const add0 = (num, maxDigits) => {
-    let digits = 10;
-    let result = num.toString();
-    for (let i = 1; i < maxDigits; i++) {
-      if (parseInt(num / digits) == 0) result = '0' + result;
-      digits *= 10;
-    }
-    return result;
-  };
-  const stringfyDate = (dateClass) => {
-    return {
-      year: add0(dateClass.getFullYear(), 4),
-      month: add0(dateClass.getMonth() + 1, 2),
-      date: add0(dateClass.getDate(), 2),
-    };
-  };
-  const formatDate = ({ origin, separator }) => {
-    if (!origin) return;
-    const { year, month, date } = stringfyDate(new Date(origin));
-    return [year, month, date].join(separator);
-  };
-
   //탈퇴 모달
   const deleteUserModalState = useState(false);
   const [deleteUserModal, setDeleteUserModal] = deleteUserModalState;
 
   //프로필 이미지 변경
-  const [img, setImg] = useState(null);
   const onProfileImg = () => {
     const imgInput = document.getElementById('ImgUpload');
     imgInput.click();
@@ -217,7 +196,7 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
               color: msgTextColor.default.nonDark,
               dark: msgTextColor.default.dark,
             });
-            memberInfo.email = email;
+            memberInfo.emailAddress = email;
             updateInfo({ memberInfo });
             setEmail('');
             setCode('');
