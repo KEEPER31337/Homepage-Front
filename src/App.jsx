@@ -27,6 +27,8 @@ const BookAdd = lazy(() => import('./page/Library/BookAdd'));
 const BookManage = lazy(() => import('./page/Library/BookManage'));
 const Ranking = lazy(() => import('page/Ranking/Ranking'));
 const Study = lazy(() => import('page/Study/Study'));
+const ChallengeWrite = lazy(() => import('page/CTF/admin/ChallengeWrite'));
+const ChallengeAdmin = lazy(() => import('page/CTF/admin/ChallengeAdmin'));
 
 const App = ({ member, darkMode, signOut }) => {
   useEffect(() => {
@@ -62,6 +64,8 @@ const App = ({ member, darkMode, signOut }) => {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/ranking" element={<Ranking />} />
             <Route path="/study" element={<Study />} />
+            <Route path="/ctf/admin/challengeWrite" element={<ChallengeWrite />} />
+            <Route path="/ctf/admin/challengeAdmin" element={<ChallengeAdmin />} />
           </Routes>
         </Suspense>
         <Chatting />
