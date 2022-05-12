@@ -81,9 +81,6 @@ const Calendar = ({ member }) => {
     return (
       <tr key={(week, index)}>
         {week.map((date, index) => {
-          console.log(attendDateList);
-          console.log(date.format(dateFormat));
-          console.log(attendDateList.includes(date.format(dateFormat)));
           return (
             <td key={(date, index)}>
               {

@@ -197,7 +197,6 @@ async function unfollow({ token, id }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    console.log(error.response);
     return error.response.data;
   }
 }
