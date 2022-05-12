@@ -22,18 +22,18 @@ const ChatLog = ({ chatLogList, member, visible }) => {
       <ul role="list" className="">
         {chatLogList?.map((chatLog, index) => (
           <Fragment key={index}>
-            {member.memberInfo.id === chatLog.member_id ? (
+            {member.memberInfo.id === chatLog?.member_id ? (
               <div
                 key={index}
                 className="w-full flex justify-items-center space-x-3 p-3"
               >
                 <div className="w-full flex flex-col">
                   <div className="max-w-full self-end w-fit rounded-md text-sm py-1 px-2 break-all bg-green-300 dark:bg-green-400 text-black">
-                    {chatLog.message}
+                    {chatLog?.message}
                   </div>
                   <div className="text-right text-xs text-gray-400">
                     {/* TODO : local 시간에 맞게 */}
-                    {chatLog.time}
+                    {chatLog?.time}
                   </div>
                 </div>
               </div>
@@ -43,22 +43,24 @@ const ChatLog = ({ chatLogList, member, visible }) => {
                   <img
                     className="h-7 w-7 rounded-full bg-white"
                     src={
-                      chatLog.member_image
-                        ? chatLog.member_image
+                      chatLog?.member_image
+                        ? chatLog?.member_image
                         : imgMemberCircle
                     }
                     alt=""
                     onError={handleErrorImg}
                   />
-                  <div className="w-15 truncate ...">{chatLog.member_name}</div>
+                  <div className="w-15 truncate ...">
+                    {chatLog?.member_name}
+                  </div>
                 </div>
                 <div className="w-full">
                   <div className="max-w-full w-fit rounded-md text-sm py-1 px-2 break-all bg-amber-300 dark:bg-mainYellow text-black">
-                    {chatLog.message}
+                    {chatLog?.message}
                   </div>
                   <div className="text-right text-xs text-gray-400">
                     {/* TODO : local 시간에 맞게 */}
-                    {chatLog.time}
+                    {chatLog?.time}
                   </div>
                 </div>
               </div>
