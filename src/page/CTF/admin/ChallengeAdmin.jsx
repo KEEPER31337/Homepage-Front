@@ -11,11 +11,94 @@ import actionMember from 'redux/action/member';
 const ChallengeAdmin = ({ member, memberSignIn }) => {
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 dark:text-mainWhite dark:bg-mainBlack">
-      ctf문제 관리 페이지임당~~~~
+    <div className="">
+    <div className="sm:w-full md:w-full lg:w-10/12 xl:w-8/12 container mx-auto m-4 p-5 justify-center items-center">
+      {/* 1. 커스텀 색상 팔레트 */}
+     
+
+      <div className="md:flex p-1 bg-backGray border-2 shadow-sm">
+        {/* NOTE 프로필 */}
+        <div className="w-full m-2 ">
+          <div className="p-1 bg-white">
+            {/* 1.  닉네임 + 회원 뱃지 */}
+            <div className="flex justify-between m-1">
+              {/*닉네임*/}
+              <div className="font-extrabold text-4xl m-1">Challenges-Admin</div>
+              {/*회원 뱃지*/}
+
+              <div className='flex m-1'>
+                <div className="mr-1 flex rounded p-1 bg-amber-300 border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
+                  <div className=" text-md ">
+                    <button className="hover:bg-amber-500  m-1 hover:text-mainWhite rounded font-bold">
+                      문제 추가
+                    </button>
+                  </div>
+                </div>
+                <div className=" flex rounded p-1 bg-amber-300 border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
+                  <div className=" text-md ">
+                    <button className="hover:bg-amber-500  m-1 hover:text-mainWhite rounded font-bold">
+                      문제 삭제
+                    </button>
+                  </div>
+                </div>
+              </div>
+                
+            </div>
+            {/*구분선*/}
+            <div className="p-[2px] mb-2 bg-gradient-to-r from-amber-500 via-amber-200 to-yellow-300  "></div>
+            {/* 2.  프로필 이미지 + 팔로우 + 포인트 */}
+
+            
+            
+            <div className="w-full h-full inline-block rounded overflow-hidden text-center border">
+              <table className="w-full border-2 shadow  rounded-md">
+                <thead>
+                  <tr className="h-10 bg-gray-100  border-b-2">
+                    <th>ID</th>
+                    <th>title</th>
+                    <th>category</th>
+                    <th>score</th>
+                    <th>writer</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
+                    <td>1</td>
+                    <td>어려운 문제</td>
+                    <td>포렌식</td>
+                    <td>100</td>
+                    <td>김은지</td>
+                  </tr>
+                  <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
+                    <td>2</td>
+                    <td>너무 어려운 문제</td>
+                    <td>웹</td>
+                    <td>500</td>
+                    <td>김은지</td>
+                  </tr>
+                  <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
+                    <td>3</td>
+                    <td>짱짱 어려운 문제</td>
+                    <td>웹</td>
+                    <td>1000</td>
+                    <td>기믄지</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+         
+          </div>
+        </div>
+        {/* NOTE 마이페이지 */}
+        {/* 1. 마이페이지(작성글) 컴포넌트*/}
+       
+      </div>
     </div>
-  );
+
+  </div>
+);
 };
+ 
 
 const mapStateToProps = (state, OwnProps) => {
   return { member: state.member };
