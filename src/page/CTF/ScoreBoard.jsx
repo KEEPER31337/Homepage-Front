@@ -1,21 +1,25 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import {
     GiftIcon,
     StarIcon
   } from '@heroicons/react/outline'
-// local
-import authAPI from 'API/v1/auth';
-import actionMember from 'redux/action/member';
+import NavigationLayout from './Components/NavigationLayout'
 
 
 const ScoreBoard = ({ member, memberSignIn }) => {
 
   return (
-    <div className="">
-    <div className=" sm:w-full md:w-full lg:w-10/12 xl:w-8/12 container mx-auto m-4 p-5 justify-center items-center">
+    <div className='bg-mainWhite dark:bg-mainBlack'>
+      
+      {/* 기존 홈페이지 헤더에 맞추기 위해,  */}
+      <div className='max-w-7xl h-screen mx-auto flex flex-row' >
+        {/*사이드바*/}
+        <NavigationLayout/>
+        <div className="md:w-4/5 flex flex-col flex-1 bg-gray-100 p-3">
+          {/* 이제 여기서 추가할 컴포넌트 가져오면 됨!!! */}
+          
+          {/* <ScoreBoard/> */}
+          <div className=" w-full container mx-auto justify-center items-center">
       {/* 1. 커스텀 색상 팔레트 */}
      
 
@@ -79,9 +83,12 @@ const ScoreBoard = ({ member, memberSignIn }) => {
         {/* 1. 마이페이지(작성글) 컴포넌트*/}
        
       </div>
+          </div>
+        </div>
+      </div>
     </div>
+  
 
-  </div>
 );
 };
  
