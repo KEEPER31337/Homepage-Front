@@ -29,7 +29,7 @@ const Ranking = lazy(() => import('page/Ranking/Ranking'));
 const Study = lazy(() => import('page/Study/Study'));
 const ChallengeWrite = lazy(() => import('page/CTF/admin/ChallengeWrite'));
 const ChallengeAdmin = lazy(() => import('page/CTF/admin/ChallengeAdmin'));
-const Ctf = lazy(() => import('page/CTF/Ctf'));
+const Ctf = lazy(() => import('page/CTF/CTF'));
 const ScoreBoard = lazy(() => import('page/CTF/ScoreBoard'));
 
 
