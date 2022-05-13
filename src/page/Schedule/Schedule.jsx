@@ -1,7 +1,13 @@
 import React from 'react';
 
+import Calendar from './Component/Calendar';
+
 const Schedule = () => {
-  return <div className="text-center">Schedule</div>;
+  return (
+    <div>
+      <Calendar />
+    </div>
+  );
 };
 
 export default Schedule;
