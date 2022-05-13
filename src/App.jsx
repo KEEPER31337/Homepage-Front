@@ -29,9 +29,11 @@ const Ranking = lazy(() => import('page/Ranking/Ranking'));
 const Study = lazy(() => import('page/Study/Study'));
 const ChallengeWrite = lazy(() => import('page/CTF/admin/ChallengeWrite'));
 const ChallengeAdmin = lazy(() => import('page/CTF/admin/ChallengeAdmin'));
-const Ctf = lazy(() => import('page/CTF/CTF'));
+const Ctf = lazy(() => import('page/CTF/Ctf'));
 const ScoreBoard = lazy(() => import('page/CTF/ScoreBoard'));
-
+const Team = lazy(() => import('page/CTF/Team'));
+const Chairman = lazy(() => import('page/CTF/admin/Chairman'));
+const Submissions = lazy(() => import('page/CTF/admin/Submissions'));
 
 const App = ({ member, darkMode, signOut }) => {
   useEffect(() => {
@@ -69,8 +71,11 @@ const App = ({ member, darkMode, signOut }) => {
             <Route path="/study" element={<Study />} />
             <Route path="/ctf" element={<Ctf />} />
             <Route path="/ctf/scoreboard" element={<ScoreBoard />} />
+            <Route path="/ctf/team" element={<Team />} />
             <Route path="/ctf/admin/challengeWrite" element={<ChallengeWrite />} />
             <Route path="/ctf/admin/challengeAdmin" element={<ChallengeAdmin />} />
+            <Route path="/ctf/admin/chairman" element={<Chairman />} />
+            <Route path="/ctf/admin/submissions" element={<Submissions />} />
           </Routes>
         </Suspense>
         <Chatting />

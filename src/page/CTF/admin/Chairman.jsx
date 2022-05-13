@@ -1,10 +1,9 @@
 
 
-import ScoreBoard from './ScoreBoard'
-import NavigationLayout from './Components/NavigationLayout'
+import NavigationLayout from '../Components/NavigationLayout'
 
 
-export default function Ctf() {
+export default function Chairman() {
   
   return (
     <div className='bg-mainWhite dark:bg-mainBlack'>
@@ -15,8 +14,9 @@ export default function Ctf() {
         <NavigationLayout/>
         <div className="md:w-4/5 flex flex-col flex-1 bg-amber-100 p-3">
           {/* 이제 여기서 추가할 컴포넌트 가져오면 됨!!! */}
-          {/* <ScoreBoard/> */}
-          챌린지컴포넌트당
+            회장 전용이요
+        
+
         </div>
       </div>
     </div>

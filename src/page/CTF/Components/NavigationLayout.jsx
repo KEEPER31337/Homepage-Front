@@ -18,7 +18,8 @@ const navigation = [
   { name: 'TEAM', href: '/ctf/team', icon: UsersIcon },
   { name: 'ADMIN 문제관리', href: '/ctf/admin/challengeAdmin', icon: FolderIcon },
   { name: 'ADMIN 문제출제', href: '/ctf/admin/challengeWrite', icon: InboxIcon},
-  { name: 'ADMIN 회장전용', href: '#', icon: XIcon },
+  { name: 'ADMIN 제출로그', href: '/ctf/admin/submissions', icon: FolderIcon},
+  { name: 'ADMIN 회장전용', href: '/ctf/admin/chairman', icon: XIcon },
 ]
 
 
