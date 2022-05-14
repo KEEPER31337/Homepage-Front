@@ -6,10 +6,10 @@ import NavigationLayout from '../Components/NavigationLayout'
 export default function Submissions() {
   
   return (
-    <div className='bg-mainWhite dark:bg-mainBlack'>
+    <div className='bg-mainWhite dark:bg-mainBlack min-h-screen'>
       
       {/* 기존 홈페이지 헤더에 맞추기 위해,  */}
-      <div className='max-w-7xl h-screen mx-auto flex flex-row' >
+      <div className='max-w-7xl mx-auto flex flex-row' >
         {/*사이드바*/}
         <NavigationLayout/>
         <div className="md:w-4/5 flex flex-col flex-1 bg-gray-100 p-3">
