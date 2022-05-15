@@ -1,29 +1,17 @@
-import React, { useEffect, useState, useRef, Fragment } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import ProfileFrame from './Components/Frames/ProfileFrame';
-import InfoBox from './Components/InfoBox';
-import { connect } from 'react-redux';
 import memberAPI from 'API/v1/member';
-import actionMember from 'redux/action/member';
 
 //NOTE 프로필 UI
 import './fonts.css';
-import {
-  AcademicCapIcon,
-  GiftIcon,
-  SparklesIcon,
-  MailIcon,
-  PencilAltIcon,
-} from '@heroicons/react/solid';
-import MessageModal from 'shared/MessageModal';
 import FolloweeModal from './Components/Modal/FolloweeModal';
 import FollowerModal from './Components/Modal/FollowerModal';
 import Group from './Components/Group';
 
-const googy = 'https://avatars.githubusercontent.com/u/81643702?v=4';
+//날짜 포멧
+import { formatDate } from './Utils/DateFormater';
 
-const MyProfile = ({ token, memberInfo, updateInfo }) => {
-  const params = useParams();
+const MyProfile = ({ token, memberInfo }) => {
   const navigate = useNavigate();
 
   const followeeModalState = useState(false);
@@ -39,30 +27,6 @@ const MyProfile = ({ token, memberInfo, updateInfo }) => {
   const [canGoNext, setCanGoNext] = useState(false);
   const [canGoPrev, setCanGoPrev] = useState(false);
   const size = 10;
-
-  const add0 = (num, maxDigits) => {
-    let digits = 10;
-    let result = num.toString();
-    for (let i = 1; i < maxDigits; i++) {
-      if (parseInt(num / digits) == 0) result = '0' + result;
-      digits *= 10;
-    }
-    return result;
-  };
-
-  const stringfyDate = (dateClass) => {
-    return {
-      year: add0(dateClass.getFullYear(), 4),
-      month: add0(dateClass.getMonth() + 1, 2),
-      date: add0(dateClass.getDate(), 2),
-    };
-  };
-
-  const formatDate = ({ origin, separator }) => {
-    if (!origin) return;
-    const { year, month, date } = stringfyDate(new Date(origin));
-    return [year, month, date].join(separator);
-  };
 
   const renderItemComponents = (item) => {
     const itemComponents = new Array();

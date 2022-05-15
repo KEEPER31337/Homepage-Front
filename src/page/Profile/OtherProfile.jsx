@@ -7,31 +7,8 @@ import './fonts.css';
 import Group from './Components/Group';
 import { useNavigate } from 'react-router-dom';
 
-const googy = 'https://avatars.githubusercontent.com/u/81643702?v=4';
-
-const add0 = (num, maxDigits) => {
-  let digits = 10;
-  let result = num.toString();
-  for (let i = 1; i < maxDigits; i++) {
-    if (parseInt(num / digits) == 0) result = '0' + result;
-    digits *= 10;
-  }
-  return result;
-};
-
-const stringfyDate = (dateClass) => {
-  return {
-    year: add0(dateClass.getFullYear(), 4),
-    month: add0(dateClass.getMonth() + 1, 2),
-    date: add0(dateClass.getDate(), 2),
-  };
-};
-
-const formatDate = ({ origin, separator }) => {
-  if (!origin) return;
-  const { year, month, date } = stringfyDate(new Date(origin));
-  return [year, month, date].join(separator);
-};
+//날짜 포멧
+import { formatDate } from './Utils/DateFormater';
 
 const heads = ['번호', '카테고리', '제목', '날짜', '조회수', '추천수'];
 
