@@ -8,13 +8,11 @@ const add0 = (num, maxDigits) => {
   return result;
 };
 
-const stringfyDate = (dateClass) => {
-  return {
-    year: add0(dateClass.getFullYear(), 4),
-    month: add0(dateClass.getMonth() + 1, 2),
-    date: add0(dateClass.getDate(), 2),
-  };
-};
+const stringfyDate = (dateClass) => ({
+  year: add0(dateClass.getFullYear(), 4),
+  month: add0(dateClass.getMonth() + 1, 2),
+  date: add0(dateClass.getDate(), 2),
+});
 
 export const formatDate = ({ origin, separator }) => {
   if (!origin) return;
