@@ -22,14 +22,14 @@ const MyProfile = ({ token, memberInfo }) => {
   const [followCnt, setFollowCnt] = useState(null);
   const [myPages, setMyPages] = useState([]);
   const [myPage, setMyPage] = useState(null);
-  const [items, setItems] = useState(new Array());
+  const [items, setItems] = useState([]);
   const [page, setPage] = useState(0);
   const [canGoNext, setCanGoNext] = useState(false);
   const [canGoPrev, setCanGoPrev] = useState(false);
   const size = 10;
 
   const renderItemComponents = (item) => {
-    const itemComponents = new Array();
+    const itemComponents = [];
     itemComponents.push(
       <td key={'num'} className="text-center">
         {item.num + page * size}
