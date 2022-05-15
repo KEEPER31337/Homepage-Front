@@ -24,7 +24,7 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
   const giftPointModalState = useState(false);
   const [giftPointModal, setGiftPointModal] = giftPointModalState;
 
-  const [items, setItems] = useState(new Array());
+  const [items, setItems] = useState([]);
   const [page, setPage] = useState(0);
   const [canGoNext, setCanGoNext] = useState(false);
   const [canGoPrev, setCanGoPrev] = useState(false);
@@ -112,7 +112,7 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
   };
 
   const renderItemComponents = (item) => {
-    const itemComponents = new Array();
+    const itemComponents = [];
     for (const key in item) {
       if (key == 'onClick') continue;
       itemComponents.push(

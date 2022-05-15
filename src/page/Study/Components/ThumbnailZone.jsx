@@ -12,7 +12,7 @@ const validateName = (fname) => {
   if (fparts.length > 1) fext = fparts[fparts.length - 1];
   let validated = false;
   if (fext != '') {
-    extensions.forEach(function (ext) {
+    extensions.forEach((ext) => {
       if (ext == fext) validated = true;
     });
   }

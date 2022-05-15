@@ -10,16 +10,17 @@
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
+    "plugins": ["react"],
     "rules": {
         "prefer-arrow-callback":"error",
         "arrow-spacing":"error",
-        "arrow-body-style":"error",
         "arrow-parens":"error",
-        "no-confusing-arrow":"error",
-        "implicit-arrow-linebreak":"error",
+        // "arrow-body-style":"error",
+        // "no-confusing-arrow":"error",
+        // "implicit-arrow-linebreak":"error",
         "no-array-constructor":"error",
-        // "react/jsx-filename-extension" : "error"
-        // "react/jsx-pascal-case": "error",
+        "react/jsx-filename-extension" : "error",
+        "react/jsx-pascal-case": "error",
         "jsx-quotes":"error"
     }
 }
