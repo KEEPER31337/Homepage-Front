@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import memberAPI from 'API/v1/member';
 import authAPI from 'API/v1/auth';
 import ipAPI from 'API/v1/ip';
@@ -20,7 +20,18 @@ const msgTextColor = {
   error: { nonDark: 'red-500', dark: 'red-500' },
 };
 
-const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
+const EditProfile = () => {
+  const token = useSelector((store) => store.member.token);
+  const memberInfo = useSelector((store) => store.member.memberInfo);
+
+  const dispatch = useDispatch();
+  const updateInfo = ({ memberInfo }) => {
+    dispatch(actionMember.updateInfo({ memberInfo }));
+  };
+  const signOut = () => {
+    dispatch(actionMember.signOut());
+  };
+
   const navigate = useNavigate();
 
   const [followCnt, setFollowCnt] = useState(null);
@@ -704,21 +715,4 @@ const EditProfile = ({ token, memberInfo, signOut, updateInfo }) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    token: state.member.token,
-    memberInfo: state.member.memberInfo,
-  };
-};
-const mapDispatchToProps = (dispatch, OwnProps) => {
-  return {
-    updateInfo: ({ memberInfo }) => {
-      dispatch(actionMember.updateInfo({ memberInfo }));
-    },
-    signOut: () => {
-      dispatch(actionMember.signOut());
-    },
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditProfile);
+export default EditProfile;
