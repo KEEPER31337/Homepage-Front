@@ -21,7 +21,6 @@ const MemberModal = forwardRef(({ people }, ref) => {
       setOpen(true);
     },
   }));
-  console.log(people);
 
   const filteredPeople = people.filter((person) => {
     return person?.nick_name?.toLowerCase()?.includes(query.toLowerCase());

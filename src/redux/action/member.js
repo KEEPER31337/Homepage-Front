@@ -5,8 +5,6 @@ const actionMember = {
   signIn: createAction('member/signIn'),
   signOut: createAction('member/signOut'),
   updateInfo: createAction('member/updateInfo'),
-  updateEmail: createAction('member/updateEmail'),
-  updateImage: createAction('member/updateImage'),
 };
 
 export default actionMember;
