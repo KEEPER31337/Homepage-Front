@@ -18,13 +18,13 @@ const Library = () => {
     total: '',
     enable: '',
     registerDate: '',
-    thumbnailId: 81,
+    thumbnailId: null,
   });
   const API_URL = process.env.REACT_APP_API_URL;
   const getRecentBookList = async () => {
     try {
       const { data } = await axios.get(
-        `${API_URL}/v1/recentbooks?page=${page}`
+        `${API_URL}/v1/recentbooks?page=${page}&size=8`
       );
       setBookList(data);
     } catch (err) {}
@@ -51,56 +51,46 @@ const Library = () => {
   });
   return (
     <AuthUser>
-      <div
-        className="text-center"
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          flexDirection: 'column',
-          overflow: 'scroll',
-          background: 'linear-gradient(#A2D2FF 60%, #ffffff 40%)',
-        }}
-      >
-        <RecommendBook
-          mainBook={mainBook}
-          setBookList={setBookList}
-        ></RecommendBook>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-          }}
-        >
-          {listData}
-        </div>
-        <nav
-          className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6"
-          aria-label="Pagination"
-        >
-          <div className="hidden sm:block"></div>
-          <div className="flex-1 flex justify-between sm:justify-end">
-            <button
-              onClick={() => {
-                if (page > 0) page -= 1;
-                getRecentBookList();
-              }}
-              className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-            >
-              이전
-            </button>
-            <button
-              onClick={() => {
-                page += 1;
-                getRecentBookList();
-              }}
-              className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-            >
-              다음
-            </button>
+      <div className="flex flex-col max-h-screen dark:bg-mainBlack">
+        <div className="flex max-w-7xl  mx-auto w-full">
+          <div className="flex  flex-col w-full md:flex-row">
+            <div className="flex md:w-4/12 bg-amber-300 p-2 ">
+              <RecommendBook
+                mainBook={mainBook}
+                setBookList={setBookList}
+              ></RecommendBook>
+            </div>
+            {/* 책 좌라락  */}
+            <div className="flex  md:w-7/12 ">
+              <div className="p-4 grid grid-cols-4 grid-rows-2 bg-amber-200 ">
+                {listData}
+              </div>
+            </div>
+            {/* 네비 */}
+            <div className=" flex md:w-1/12 dark:bg-mainBlack">
+              <div className="flex flex-col w-full">
+                <button
+                  onClick={() => {
+                    if (page > 0) page -= 1;
+                    getRecentBookList();
+                  }}
+                  className="flex w-1/2 bg-red-300 p-2 hover:bg-red-400 shadow-[0_5px_5px_1px_[#bada55]]"
+                >
+                  이전
+                </button>
+                <button
+                  onClick={() => {
+                    page += 1;
+                    getRecentBookList();
+                  }}
+                  className="mt-4 flex w-1/2 bg-amber-300 hover:bg-amber-400 p-2 shadow"
+                >
+                  다음
+                </button>
+              </div>
+            </div>
           </div>
-        </nav>
+        </div>
       </div>
     </AuthUser>
   );
