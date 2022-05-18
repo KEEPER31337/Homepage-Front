@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { testText } from 'page/Board/testText';
 import '@toast-ui/editor/dist/toastui-editor.css'; //마크다운 편집기 뷰어 에디터
+import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
 import { Viewer } from '@toast-ui/react-editor';
 import { connect } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';

@@ -125,7 +125,7 @@ const Activity = ({ member }) => {
       if (data.success) {
         data.list.map((title) => {
           // Subtitle display order 순서로 정렬
-          title.subtitleImageResults.sort(function (a, b) {
+          title.subtitleImageResults.sort((a, b) => {
             if (a.displayOrder > b.displayOrder) {
               return 1;
             }
@@ -136,7 +136,7 @@ const Activity = ({ member }) => {
           });
           title.subtitleImageResults.map((content) => {
             // Content display order 순서로 정렬
-            content.staticWriteContentResults.sort(function (a, b) {
+            content.staticWriteContentResults.sort((a, b) => {
               if (a.displayOrder > b.displayOrder) {
                 return 1;
               }
