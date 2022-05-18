@@ -6,24 +6,20 @@ import { Link } from 'react-router-dom';
 // local
 import authAPI from 'API/v1/auth';
 import actionMember from 'redux/action/member';
-import NavigationLayout from '../Components/NavigationLayout'
-
+import NavigationLayout from '../Components/NavigationLayout';
 
 const ChallengeAdmin = ({ member, memberSignIn }) => {
-
   return (
-    <div className='bg-mainWhite dark:bg-mainBlack'>
-      
+    <div className="bg-mainWhite dark:bg-mainBlack">
       {/* 기존 홈페이지 헤더에 맞추기 위해,  */}
-      <div className='max-w-7xl h-screen mx-auto flex flex-row' >
+      <div className="max-w-7xl h-screen mx-auto flex flex-row">
         {/*사이드바*/}
-        <NavigationLayout/>
+        <NavigationLayout />
         <div className="md:w-4/5 flex flex-col flex-1 bg-gray-100 p-3">
           {/* 이제 여기서 추가할 컴포넌트 가져오면 됨!!! */}
           <div className="">
             <div className=" w-full container mx-auto justify-center items-center">
               {/* 1. 커스텀 색상 팔레트 */}
-            
 
               <div className="md:flex p-1 bg-backGray border-2 shadow-sm">
                 {/* NOTE 프로필 */}
@@ -32,16 +28,18 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
                     {/* 1.  닉네임 + 회원 뱃지 */}
                     <div className="flex justify-between m-1">
                       {/*닉네임*/}
-                      <div className="font-extrabold text-4xl m-1">Challenges-Admin</div>
+                      <div className="font-extrabold text-4xl m-1">
+                        Challenges-Admin
+                      </div>
                       {/*회원 뱃지*/}
 
-                      <div className='flex m-1'>
+                      <div className="flex m-1">
                         <div className="mr-1 flex rounded p-1 bg-amber-300 border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
                           <div className=" text-md ">
                             <button className="hover:bg-amber-500  m-1 hover:text-mainWhite rounded font-bold">
-                            <Link to='/ctf/admin/challengeWrite'>
-                                문제추가    
-                            </Link>
+                              <Link to="/ctf/admin/challengeWrite">
+                                문제추가
+                              </Link>
                             </button>
                           </div>
                         </div>
@@ -53,14 +51,11 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
                           </div>
                         </div>
                       </div>
-                        
                     </div>
                     {/*구분선*/}
                     <div className="p-[2px] mb-2 bg-gradient-to-r from-amber-500 via-amber-200 to-yellow-300  "></div>
                     {/* 2.  프로필 이미지 + 팔로우 + 포인트 */}
 
-                    
-                    
                     <div className="w-full h-full inline-block rounded overflow-hidden text-center border">
                       <table className="w-full border-2 shadow  rounded-md">
                         <thead>
@@ -97,24 +92,18 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
                         </tbody>
                       </table>
                     </div>
-                
                   </div>
                 </div>
                 {/* NOTE 마이페이지 */}
                 {/* 1. 마이페이지(작성글) 컴포넌트*/}
-              
               </div>
             </div>
-
           </div>
         </div>
       </div>
     </div>
-
-
-);
+  );
 };
- 
 
 const mapStateToProps = (state, OwnProps) => {
   return { member: state.member };

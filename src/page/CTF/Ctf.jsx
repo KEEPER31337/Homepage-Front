@@ -1,18 +1,13 @@
-
-
-import ScoreBoard from './ScoreBoard'
-import NavigationLayout from './Components/NavigationLayout'
-
+import ScoreBoard from './ScoreBoard';
+import NavigationLayout from './Components/NavigationLayout';
 
 export default function Ctf() {
-  
   return (
-    <div className='bg-mainWhite dark:bg-mainBlack'>
-      
+    <div className="bg-mainWhite dark:bg-mainBlack">
       {/* 기존 홈페이지 헤더에 맞추기 위해,  */}
-      <div className='max-w-7xl h-screen mx-auto flex flex-row' >
+      <div className="max-w-7xl h-screen mx-auto flex flex-row">
         {/*사이드바*/}
-        <NavigationLayout/>
+        <NavigationLayout />
         <div className="md:w-4/5 flex flex-col flex-1 bg-amber-100 p-3">
           {/* 이제 여기서 추가할 컴포넌트 가져오면 됨!!! */}
           {/* <ScoreBoard/> */}
@@ -20,5 +15,5 @@ export default function Ctf() {
         </div>
       </div>
     </div>
-  )
+  );
 }
