@@ -25,12 +25,12 @@ const ChallengeWrite = (props) => {
   // <-세연's
 
   return (
-    <div className="bg-mainWhite dark:bg-mainBlack">
+    <div className="bg-mainWhite dark:bg-mainBlack min-h-screen">
       {/* 기존 홈페이지 헤더에 맞추기 위해,  */}
-      <div className="max-w-7xl h-full mx-auto flex flex-row">
+      <div className="max-w-7xl mx-auto flex flex-row">
         {/*사이드바*/}
         <NavigationLayout />
-        <div className="w-full flex flex-col flex-1 p-3 bg-backGray">
+        <div className="w-full flex flex-col flex-1 p-3">
           <div className="mt-10 sm:mt-0">
             <div className="md:grid md:grid-cols-3 md:gap-6">
               <div className="mt-5 md:mt-0 md:col-span-3">

@@ -4,17 +4,17 @@ import NavigationLayout from './Components/NavigationLayout';
 
 const ScoreBoard = ({ member, memberSignIn }) => {
   return (
-    <div className="bg-mainWhite dark:bg-mainBlack">
+    <div className="bg-mainWhite dark:bg-mainBlack min-h-screen">
       {/* 기존 홈페이지 헤더에 맞추기 위해,  */}
-      <div className="max-w-7xl h-screen mx-auto flex flex-row">
+      <div className="max-w-7xl mx-auto flex flex-row">
         {/*사이드바*/}
         <NavigationLayout />
-        <div className="md:w-4/5 flex flex-col flex-1 bg-gray-100 p-3">
+        <div className="md:w-4/5 flex flex-col flex-1 p-3">
           {/* 이제 여기서 추가할 컴포넌트 가져오면 됨!!! */}
 
           {/* <ScoreBoard/> */}
           <div className=" w-full container mx-auto justify-center items-center">
-            <div className="md:flex p-1 bg-backGray border-2 shadow-sm">
+            <div className="md:flex p-1 border-2 shadow-sm">
               {/* NOTE 프로필 */}
               <div className="w-full m-2 ">
                 <div className="p-1 bg-white">
@@ -47,6 +47,102 @@ const ScoreBoard = ({ member, memberSignIn }) => {
                           <td>
                             <StarIcon className="inline-block h-6 w-6 m-1 text-amber-400 dark:text-purple-300" />
                             100
+                          </td>
+                        </tr>
+                        <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
+                          <td>2</td>
+                          <td>기믄지</td>
+                          <td>
+                            <StarIcon className="inline-block h-6 w-6 m-1 text-amber-400 dark:text-purple-300" />
+                            500
+                          </td>
+                        </tr>
+                        <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
+                          <td>2</td>
+                          <td>기믄지</td>
+                          <td>
+                            <StarIcon className="inline-block h-6 w-6 m-1 text-amber-400 dark:text-purple-300" />
+                            500
+                          </td>
+                        </tr>
+                        <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
+                          <td>2</td>
+                          <td>기믄지</td>
+                          <td>
+                            <StarIcon className="inline-block h-6 w-6 m-1 text-amber-400 dark:text-purple-300" />
+                            500
+                          </td>
+                        </tr>
+                        <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
+                          <td>2</td>
+                          <td>기믄지</td>
+                          <td>
+                            <StarIcon className="inline-block h-6 w-6 m-1 text-amber-400 dark:text-purple-300" />
+                            500
+                          </td>
+                        </tr>
+                        <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
+                          <td>2</td>
+                          <td>기믄지</td>
+                          <td>
+                            <StarIcon className="inline-block h-6 w-6 m-1 text-amber-400 dark:text-purple-300" />
+                            500
+                          </td>
+                        </tr>
+                        <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
+                          <td>2</td>
+                          <td>기믄지</td>
+                          <td>
+                            <StarIcon className="inline-block h-6 w-6 m-1 text-amber-400 dark:text-purple-300" />
+                            500
+                          </td>
+                        </tr>
+                        <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
+                          <td>2</td>
+                          <td>기믄지</td>
+                          <td>
+                            <StarIcon className="inline-block h-6 w-6 m-1 text-amber-400 dark:text-purple-300" />
+                            500
+                          </td>
+                        </tr>
+                        <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
+                          <td>2</td>
+                          <td>기믄지</td>
+                          <td>
+                            <StarIcon className="inline-block h-6 w-6 m-1 text-amber-400 dark:text-purple-300" />
+                            500
+                          </td>
+                        </tr>
+                        <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
+                          <td>2</td>
+                          <td>기믄지</td>
+                          <td>
+                            <StarIcon className="inline-block h-6 w-6 m-1 text-amber-400 dark:text-purple-300" />
+                            500
+                          </td>
+                        </tr>
+                        <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
+                          <td>2</td>
+                          <td>기믄지</td>
+                          <td>
+                            <StarIcon className="inline-block h-6 w-6 m-1 text-amber-400 dark:text-purple-300" />
+                            500
+                          </td>
+                        </tr>
+                        <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
+                          <td>2</td>
+                          <td>기믄지</td>
+                          <td>
+                            <StarIcon className="inline-block h-6 w-6 m-1 text-amber-400 dark:text-purple-300" />
+                            500
+                          </td>
+                        </tr>
+                        <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
+                          <td>2</td>
+                          <td>기믄지</td>
+                          <td>
+                            <StarIcon className="inline-block h-6 w-6 m-1 text-amber-400 dark:text-purple-300" />
+                            500
                           </td>
                         </tr>
                         <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">

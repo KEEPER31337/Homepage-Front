@@ -10,18 +10,18 @@ import NavigationLayout from '../Components/NavigationLayout';
 
 const ChallengeAdmin = ({ member, memberSignIn }) => {
   return (
-    <div className="bg-mainWhite dark:bg-mainBlack">
+    <div className="bg-mainWhite dark:bg-mainBlack min-h-screen">
       {/* 기존 홈페이지 헤더에 맞추기 위해,  */}
-      <div className="max-w-7xl h-screen mx-auto flex flex-row">
+      <div className="max-w-7xl mx-auto flex flex-row">
         {/*사이드바*/}
         <NavigationLayout />
-        <div className="md:w-4/5 flex flex-col flex-1 bg-gray-100 p-3">
+        <div className="md:w-4/5 flex flex-col flex-1 p-3">
           {/* 이제 여기서 추가할 컴포넌트 가져오면 됨!!! */}
           <div className="">
             <div className=" w-full container mx-auto justify-center items-center">
               {/* 1. 커스텀 색상 팔레트 */}
 
-              <div className="md:flex p-1 bg-backGray border-2 shadow-sm">
+              <div className="md:flex p-1 border-2 shadow-sm">
                 {/* NOTE 프로필 */}
                 <div className="w-full m-2 ">
                   <div className="p-1 bg-white">
@@ -43,7 +43,7 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
                             </button>
                           </div>
                         </div>
-                        <div className=" flex rounded p-1 bg-amber-300 border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
+                        <div className="flex rounded p-1 bg-amber-300 border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
                           <div className=" text-md ">
                             <button className="hover:bg-amber-500  m-1 hover:text-mainWhite rounded font-bold">
                               문제 삭제
