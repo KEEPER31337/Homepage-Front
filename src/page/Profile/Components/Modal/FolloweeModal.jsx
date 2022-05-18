@@ -3,10 +3,9 @@ import Modal from './Modal';
 import memberAPI from 'API/v1/member';
 
 const FolloweeModal = ({ modalState, token, navigate }) => {
-  const [data, setData] = useState(new Array());
+  const [data, setData] = useState([]);
   useEffect(() => {
     memberAPI.getUsersFollowee({ token }).then((res) => {
-      console.log('res', res);
       if (res.success) {
         setData(res.list);
       }

@@ -49,10 +49,10 @@ const Roulette = ({ gameInfo, member, updateInfo }) => {
   const [ani, setAni] = useState('animate-none');
   const spinAndStop = (points, pointIdx) => {
     setAni('animate-[spin_0.3s_linear_infinite]');
-    setTimeout(function () {
+    setTimeout(() => {
       const rotateDegree = (0 + 45 * (points.length - pointIdx)) % 360;
       setAni(`animate-none rotate-[${rotateDegree}deg]`);
-      setTimeout(function () {
+      setTimeout(() => {
         alert('획득 포인트 : ' + points[pointIdx]);
         memberAPI.getMember({ token: member.token }).then((data) => {
           // 포인트 정보 업데이트
