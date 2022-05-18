@@ -32,7 +32,7 @@ const ChallengeAdmin = lazy(() => import('page/CTF/admin/ChallengeAdmin'));
 const Ctf = lazy(() => import('page/CTF/Ctf'));
 const ScoreBoard = lazy(() => import('page/CTF/ScoreBoard'));
 const Team = lazy(() => import('page/CTF/Team'));
-const Chairman = lazy(() => import('page/CTF/admin/Chairman'));
+const Operation = lazy(() => import('page/CTF/admin/Operation'));
 const Submissions = lazy(() => import('page/CTF/admin/Submissions'));
 
 const App = ({ member, darkMode, signOut }) => {
@@ -72,9 +72,15 @@ const App = ({ member, darkMode, signOut }) => {
             <Route path="/ctf" element={<Ctf />} />
             <Route path="/ctf/scoreboard" element={<ScoreBoard />} />
             <Route path="/ctf/team" element={<Team />} />
-            <Route path="/ctf/admin/challengeWrite" element={<ChallengeWrite />} />
-            <Route path="/ctf/admin/challengeAdmin" element={<ChallengeAdmin />} />
-            <Route path="/ctf/admin/chairman" element={<Chairman />} />
+            <Route
+              path="/ctf/admin/challengeWrite"
+              element={<ChallengeWrite />}
+            />
+            <Route
+              path="/ctf/admin/challengeAdmin"
+              element={<ChallengeAdmin />}
+            />
+            <Route path="/ctf/admin/operation" element={<Operation />} />
             <Route path="/ctf/admin/submissions" element={<Submissions />} />
           </Routes>
         </Suspense>

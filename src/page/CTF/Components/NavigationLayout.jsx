@@ -26,7 +26,7 @@ const navigation = [
     icon: InboxIcon,
   },
   { name: 'ADMIN 제출로그', href: '/ctf/admin/submissions', icon: FolderIcon },
-  { name: 'ADMIN 회장전용', href: '/ctf/admin/chairman', icon: XIcon },
+  { name: 'ADMIN 대회운영', href: '/ctf/admin/Operation', icon: XIcon },
 ];
 
 const NavigationLayout = (props) => {
