@@ -7,7 +7,7 @@ const Category = (props) => {
   return (
     <div className="m-5">
       <div className="mb-3">
-        <div className="text-2xl">{category}</div>
+        <div className="text-2xl dark:text-yellow-100">{category}</div>
       </div>
       <div className="flex">
         {categoryList.map((challenge, challengeIdx) => (
