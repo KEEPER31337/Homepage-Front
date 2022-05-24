@@ -111,7 +111,7 @@ export default function Team() {
           <div className="text-4xl lg:text-5xl m-2 font-extrabold">
             {nameOfTeam}
           </div>
-          <div className="lg:text-2xl">{team.score} points</div>
+          <div className="lg:text-2xl">{team[0].score} points</div>
         </div>
         <div className="h-1 bg-gradient-to-r from-black via-red-800 to-amber-400 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-300"></div>
       </>

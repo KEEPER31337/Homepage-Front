@@ -32,6 +32,7 @@ const ChallengeAdmin = lazy(() => import('page/CTF/admin/ChallengeAdmin'));
 const Ctf = lazy(() => import('page/CTF/Ctf'));
 const ScoreBoard = lazy(() => import('page/CTF/ScoreBoard'));
 const Team = lazy(() => import('page/CTF/Team'));
+const TeamJoin = lazy(() => import('page/CTF/TeamJoin'));
 const Operation = lazy(() => import('page/CTF/admin/Operation'));
 const Submissions = lazy(() => import('page/CTF/admin/Submissions'));
 
@@ -72,6 +73,7 @@ const App = ({ member, darkMode, signOut }) => {
             <Route path="/ctf" element={<Ctf />} />
             <Route path="/ctf/scoreboard" element={<ScoreBoard />} />
             <Route path="/ctf/team" element={<Team />} />
+            <Route path="/ctf/teamjoin" element={<TeamJoin />} />
             <Route
               path="/ctf/admin/challengeWrite"
               element={<ChallengeWrite />}

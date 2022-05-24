@@ -2,6 +2,7 @@ import { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Dialog, Transition } from '@headlessui/react';
 import {
+  FolderAddIcon,
   ChartBarIcon,
   FolderIcon,
   HomeIcon,
@@ -12,6 +13,7 @@ import {
 } from '@heroicons/react/outline';
 
 const navigation = [
+  { name: 'TEAM JOIN', href: '/ctf/teamjoin', icon: FolderAddIcon },
   { name: 'CHALLENGES', href: '/ctf', icon: HomeIcon },
   { name: 'SCOREBOARD', href: '/ctf/scoreboard', icon: ChartBarIcon },
   { name: 'TEAM', href: '/ctf/team', icon: UsersIcon },
