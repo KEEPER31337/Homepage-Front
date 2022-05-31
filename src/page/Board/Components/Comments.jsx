@@ -10,7 +10,6 @@ import {
 } from '@heroicons/react/solid';
 
 //local
-import ipAPI from 'API/v1/ip';
 import commentAPI from 'API/v1/comment';
 import { getDiffTimeWithFormat2 } from '../BoardUtil';
 
@@ -75,23 +74,20 @@ const Comments = ({
       //console.log('alert!');
       alert('댓글에 내용을 입력해주세요.');
     } else {
-      ipAPI.getIp().then((ipAddress) => {
-        commentAPI
-          .create({
-            boardId: boardId,
-            content: content,
-            ipAddress: ipAddress,
-            token: token,
-          })
-          .then((res) => {
-            if (res.success) {
-              setCommentChangeFlag(!commentChangeFlag);
-              setContent('');
-            } else {
-              alert('댓글 달기 실패! 전산관리자에게 문의하세요~');
-            }
-          });
-      });
+      commentAPI
+        .create({
+          boardId: boardId,
+          content: content,
+          token: token,
+        })
+        .then((res) => {
+          if (res.success) {
+            setCommentChangeFlag(!commentChangeFlag);
+            setContent('');
+          } else {
+            alert('댓글 달기 실패! 전산관리자에게 문의하세요~');
+          }
+        });
     }
   };
   const addSubCommentHandler = (parentId = 0) => {
@@ -101,24 +97,21 @@ const Comments = ({
       //console.log('alert!');
       alert('대댓글에 내용을 입력해주세요.');
     } else {
-      ipAPI.getIp().then((ipAddress) => {
-        commentAPI
-          .create({
-            boardId: boardId,
-            content: subContent,
-            ipAddress: ipAddress,
-            parentId: parentId,
-            token: token,
-          })
-          .then((res) => {
-            if (res.success) {
-              setCommentChangeFlag(!commentChangeFlag);
-              setSubContent('');
-            } else {
-              alert('댓글 달기 실패! 전산관리자에게 문의하세요~');
-            }
-          });
-      });
+      commentAPI
+        .create({
+          boardId: boardId,
+          content: subContent,
+          parentId: parentId,
+          token: token,
+        })
+        .then((res) => {
+          if (res.success) {
+            setCommentChangeFlag(!commentChangeFlag);
+            setSubContent('');
+          } else {
+            alert('댓글 달기 실패! 전산관리자에게 문의하세요~');
+          }
+        });
     }
   };
   const deleteCommentHandler = (id) => {
