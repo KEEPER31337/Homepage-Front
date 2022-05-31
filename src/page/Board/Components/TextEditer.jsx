@@ -9,9 +9,9 @@ import {
   InboxInIcon,
   ExclamationIcon,
 } from '@heroicons/react/solid';
+
 //local
 import postAPI from 'API/v1/post';
-import ipAPI from 'API/v1/ip';
 import ResponsiveEditor from './ResponsiveEditor';
 
 const NO_TEMP = 0;
@@ -92,60 +92,54 @@ const TextEditer = (props) => {
     setUploadAble(false);
     console.log(thumbnailBase64);
     console.log(thumbnail);
-    ipAPI.getIp().then((ipAddress) => {
-      postAPI
-        .create({
-          title: text.title,
-          content: text.content,
-          categoryId: categoryId,
-          ipAddress: ipAddress,
-          allowComment: +allowComment,
-          isNotice: +isNotice,
-          isSecret: +isSecret,
-          isTemp: +isTemp,
-          password: password,
-          token: token,
-          files: files,
-          thumbnailFile: thumbnail,
-        })
-        .then((res) => {
-          setUploadAble(true);
-          if (res.success) {
-            navigate(`/board/${categoryId}`);
-          } else {
-            alert('게시물 생성 실패! 전산관리자에게 문의하세요~');
-          }
-        });
-    });
+    postAPI
+      .create({
+        title: text.title,
+        content: text.content,
+        categoryId: categoryId,
+        allowComment: +allowComment,
+        isNotice: +isNotice,
+        isSecret: +isSecret,
+        isTemp: +isTemp,
+        password: password,
+        token: token,
+        files: files,
+        thumbnailFile: thumbnail,
+      })
+      .then((res) => {
+        setUploadAble(true);
+        if (res.success) {
+          navigate(`/board/${categoryId}`);
+        } else {
+          alert('게시물 생성 실패! 전산관리자에게 문의하세요~');
+        }
+      });
   };
   const uploadModifyhandler = (isTemp) => {
     setUploadAble(false);
-    ipAPI.getIp().then((ipAddress) => {
-      postAPI
-        .modify({
-          boardId: board.id,
-          title: text.title,
-          content: text.content,
-          categoryId: categoryId,
-          ipAddress: ipAddress,
-          allowComment: +allowComment,
-          isNotice: +isNotice,
-          isSecret: +isSecret,
-          isTemp: +isTemp,
-          password: password,
-          token: token,
-          files: files,
-          thumbnailFile: thumbnail,
-        })
-        .then((res) => {
-          setUploadAble(true);
-          if (res.success) {
-            navigate(`/post/${categoryId}/${board.id}`);
-          } else {
-            alert('게시물 수정 실패! 전산관리자에게 문의하세요~');
-          }
-        });
-    });
+    postAPI
+      .modify({
+        boardId: board.id,
+        title: text.title,
+        content: text.content,
+        categoryId: categoryId,
+        allowComment: +allowComment,
+        isNotice: +isNotice,
+        isSecret: +isSecret,
+        isTemp: +isTemp,
+        password: password,
+        token: token,
+        files: files,
+        thumbnailFile: thumbnail,
+      })
+      .then((res) => {
+        setUploadAble(true);
+        if (res.success) {
+          navigate(`/post/${categoryId}/${board.id}`);
+        } else {
+          alert('게시물 수정 실패! 전산관리자에게 문의하세요~');
+        }
+      });
   };
   return (
     <div className="space-y-2">

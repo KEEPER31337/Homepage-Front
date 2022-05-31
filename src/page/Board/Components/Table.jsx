@@ -154,7 +154,7 @@ const Table = ({
                     linkHandler(e, board);
                 }}
               >
-                <div className=" w-full flex items-center">
+                <div className="flex items-center">
                   <p className="truncate text-md ">
                     {board.isSecret ? (
                       <LockClosedIcon className="inline-block h-5 w-5 m-1 text-slate-400 " />
@@ -165,7 +165,7 @@ const Table = ({
                       {board.title}
                     </strong>
                   </p>
-                  <div className="flex-1">
+                  <div className="flex-none">
                     {board.thumbnail ? (
                       <PhotographIcon className="inline-block h-5 w-5 m-1 text-slate-500 " />
                     ) : (
