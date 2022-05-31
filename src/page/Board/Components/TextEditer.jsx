@@ -33,6 +33,8 @@ const TextEditer = (props) => {
   const [thumbnailBase64, setThumbnailBase64] = useState(null); // 파일 base64
   const [thumbnail, setThumbnail] = useState(null);
   const [files, setFiles] = useState([]);
+  const [originFiles, setOriginFiles] = useState([]);
+  const [deleteFileIdList, setDeleteFileIdList] = useState([]); //삭제할 파일 목록
 
   const checkAllowCommentHandler = ({ target }) => {
     setAllowComment(target.checked);
@@ -65,6 +67,7 @@ const TextEditer = (props) => {
       setIsNotice(!!board.isNotice);
       setIsSecret(!!board.isSecret);
       setUploadAble(true);
+      setOriginFiles(board.files);
     }
   }, []);
 
@@ -117,6 +120,17 @@ const TextEditer = (props) => {
   };
   const uploadModifyhandler = (isTemp) => {
     setUploadAble(false);
+    console.log(deleteFileIdList);
+    postAPI
+      .deleteFiles({
+        fileIdList: deleteFileIdList,
+        token: token,
+      })
+      .then((res) => {
+        console.log(res);
+      });
+
+    
     postAPI
       .modify({
         boardId: board.id,
@@ -231,9 +245,13 @@ const TextEditer = (props) => {
           </span>
           <div className="p-2 space-y-2">
             <FilesUploadForm
+              files={files}
               setFiles={setFiles}
               modifyFlag={modifyFlag}
-              board={board}
+              deleteFileIdList={deleteFileIdList}
+              setDeleteFileIdList={setDeleteFileIdList}
+              originFiles={originFiles}
+              setOriginFile={setOriginFiles}
             />
           </div>
         </div>
