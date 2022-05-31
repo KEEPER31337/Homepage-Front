@@ -33,6 +33,8 @@ const TextEditer = (props) => {
   const [thumbnailBase64, setThumbnailBase64] = useState(null); // 파일 base64
   const [thumbnail, setThumbnail] = useState(null);
   const [files, setFiles] = useState([]);
+  const [originFiles, setOriginFiles] = useState([]);
+  const [deleteFileIdList, setDeleteFileIdList] = useState([]); //삭제할 파일 목록
 
   const checkAllowCommentHandler = ({ target }) => {
     setAllowComment(target.checked);
@@ -65,6 +67,7 @@ const TextEditer = (props) => {
       setIsNotice(!!board.isNotice);
       setIsSecret(!!board.isSecret);
       setUploadAble(true);
+      setOriginFiles(board.files);
     }
   }, []);
 
@@ -120,6 +123,16 @@ const TextEditer = (props) => {
   };
   const uploadModifyhandler = (isTemp) => {
     setUploadAble(false);
+    console.log(deleteFileIdList);
+    postAPI
+      .deleteFiles({
+        fileIdList: deleteFileIdList,
+        token: token,
+      })
+      .then((res) => {
+        console.log(res);
+      });
+
     ipAPI.getIp().then((ipAddress) => {
       postAPI
         .modify({
@@ -139,7 +152,7 @@ const TextEditer = (props) => {
         })
         .then((res) => {
           setUploadAble(true);
-          if (res.success) {
+          if (res?.success) {
             navigate(`/post/${categoryId}/${board.id}`);
           } else {
             alert('게시물 수정 실패! 전산관리자에게 문의하세요~');
@@ -237,9 +250,13 @@ const TextEditer = (props) => {
           </span>
           <div className="p-2 space-y-2">
             <FilesUploadForm
+              files={files}
               setFiles={setFiles}
               modifyFlag={modifyFlag}
-              board={board}
+              deleteFileIdList={deleteFileIdList}
+              setDeleteFileIdList={setDeleteFileIdList}
+              originFiles={originFiles}
+              setOriginFile={setOriginFiles}
             />
           </div>
         </div>
