@@ -24,7 +24,7 @@ const ModifyModal = ({
         <div className="rounded-t-lg relative p-3 pr-8 bg-mainWhite font-bold dark:bg-darkPoint dark:text-gray-200">
           스터디 수정하기
           <button
-            className="text-2xl absolute top-0 right-[15px] w-5 font-bold text-center text-gray-400 bg-transparent"
+            className="text-2xl absolute top-2 right-[15px] w-5 font-bold text-center text-gray-400 bg-transparent"
             onClick={() => {
               setCurrentStudy(null);
             }}
@@ -32,7 +32,7 @@ const ModifyModal = ({
             &times;
           </button>
         </div>
-        <div className="rounded-b-lg border-mainBlack w-[90vw] sm:w-[70vw] h-[80vh] overflow-y-scroll">
+        <div className="max-w-3xl w-[90vw] h-[80vh] overflow-y-scroll">
           <ModifyStudy
             study={currentStudy}
             setCurrentStudy={setCurrentStudy}

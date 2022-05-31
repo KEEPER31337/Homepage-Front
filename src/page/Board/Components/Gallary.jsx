@@ -27,8 +27,8 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
         key={index}
         className={
           isN
-            ? ' min-w-[80vw] md:min-w-[40vw] lg:min-w-[20vw] bg-mainWhite dark:bg-yellow-600 border-l border-b border-r rounded-lg p-2 group shadow-lg dark:border-gray-600'
-            : ' border-l border-b border-r rounded-lg p-2 group shadow-lg dark:border-gray-600'
+            ? ' min-w-[80vw] sm:min-w-[40vw] lg:min-w-[17vw] bg-mainWhite dark:bg-mainBlack border-[3px] border-mainYellow rounded-t-2xl rounded-b-md p-2 group shadow-md mb-5 dark:border-gray-600 hover:shadow-xl'
+            : ' border-l border-b border-r rounded-t-2xl rounded-b-md p-2 group shadow-md dark:border-gray-600 hover:shadow-xl'
         }
       >
         <Link
@@ -44,8 +44,8 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
           <div className={' relative'}>
             <div
               className={
-                (isN ? 'overflow-hidden' : '') +
-                ' relative w-full h-72 border border-gray-300 rounded-lg flex items-center dark:border-gray-700'
+                (isN ? 'overflow-hidden bg-mainYellow' : 'bg-gray-300') +
+                ' relative w-full h-72 p-[2px] rounded-lg flex items-center dark:bg-gray-700'
               }
             >
               {board.isSecret ? (
@@ -136,7 +136,7 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
               {notices.map((board, index) => card(board, index, true))}
             </div>
           </Horizontable>
-          <div name="공지사항" className="relative my-3 mt-5">
+          <div name="공지사항" className="relative my-2">
             <div
               className="absolute inset-0 flex items-center"
               aria-hidden="true"
