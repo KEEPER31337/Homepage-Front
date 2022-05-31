@@ -145,8 +145,10 @@ const Table = ({
         </tr>
       </thead>
       <tbody>
+
         {notices?.map((board, index) => row(board, index, true))}
         {boards?.map((board, index) => row(board, index, false))}
+
       </tbody>
     </table>
   );
