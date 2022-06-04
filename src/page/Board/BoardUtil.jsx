@@ -4,15 +4,21 @@ function getDateWithFormat(boardDate) {
 function getDiffTimeWithFormat(boardDate) {
   //24시간 이내에 등록된 경우
   let now = new Date();
+  const utc = now.getTime() + now.getTimezoneOffset() * 60 * 1000; //현재 시간의 UTC 시간
+  const KR_TIME_DIFF = 9 * 60 * 60 * 1000; //UTC 시간과 KST 시간 차(밀리초)
+  const korNow = new Date(utc + KR_TIME_DIFF); //항상 현재 시간이 한국 시간 기준으로 측정되도록
+  //console.log(korNow);
   let board = new Date(boardDate.substring(0, 16).split('T'));
-  var sec = (now.getTime() - board.getTime()) / 1000;
+  var sec = (korNow.getTime() - board.getTime()) / 1000;
   if (sec < 60 * 60 * 24) {
+    if (sec < 60) {
+      return parseInt(sec) + '초 전';
+    }
     var min = parseInt(sec / 60);
-    var hour = parseInt(min / 60);
-
     if (min < 60) {
       return min + '분 전';
     }
+    var hour = parseInt(min / 60);
     return hour + '시간 전';
   }
   return boardDate.substring(2, 16).split('T')[0];
