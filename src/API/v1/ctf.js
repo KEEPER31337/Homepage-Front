@@ -61,6 +61,25 @@ async function addAuthor({ memberId, token }) {
   }
 }
 
+// CTF 문제 목록 조회
+async function getProbList({ token, cid }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/ctf/prob',
+    params: { cid },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+// CTF 문제 오픈
 async function openProb({ pid, token }) {
   const options = {
     method: 'PATCH',
@@ -84,4 +103,5 @@ export default {
   createProb,
   addAuthor,
   openProb,
+  getProbList,
 };
