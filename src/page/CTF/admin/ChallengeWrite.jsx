@@ -1,19 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 // local
-import authAPI from 'API/v1/auth';
-import actionMember from 'redux/action/member';
 import ResponsiveEditor from 'page/Board/Components/ResponsiveEditor';
 import FilesUploadForm from 'page/Board/Components/FilesUploadForm';
 import NavigationLayout from '../Components/NavigationLayout';
 
+// API
+import ctfAPI from 'API/v1/ctf';
+
 //TODO 반응형
 
-const ChallengeWrite = (props) => {
-  const [loginInfo, setLoginInfo] = useState({ loginId: '', password: '' });
+const ChallengeWrite = ({ member }) => {
   // 세연's->
   const content = '';
   const isDark = false; //Dark모드 여부
@@ -23,6 +22,38 @@ const ChallengeWrite = (props) => {
   const modifyFlag = false;
   const board = false;
   // <-세연's
+
+  const onClick = () => {
+    ctfAPI
+      .createProb({
+        title: 'C',
+        content: 'test',
+        contestId: 2,
+        category: {
+          id: 3,
+        },
+        type: {
+          id: 1,
+        },
+        isSolvable: true,
+        score: '1000',
+        dynamicInfo: {
+          maxScore: 1000,
+          minScore: 100,
+        },
+        flag: 'KEEPER{jamitda_gaebal33}',
+        token: member.token,
+      })
+      .then((data) => {
+        if (data.success) {
+          console.log(data);
+          navigate(`/ctf/admin/challengeAdmin`); //TODO 각 문제 생성된 형태 페이지로 이동되도록 수정
+        } else {
+          console.log(data);
+          alert('문제 생성 중 오류가 발생하였습니다.');
+        }
+      });
+  };
 
   return (
     <div className="bg-mainWhite dark:bg-mainBlack min-h-screen">
@@ -149,15 +180,23 @@ const ChallengeWrite = (props) => {
                       </div>
                     </div>
                     <div className="px-4 py-3 text-right sm:px-6">
-                      <button
+                      {/* <button
                         type="submit"
+                        onClick={onClick}
                         className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-amber-500 hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-60"
                       >
                         출제
-                      </button>
+                      </button> */}
                     </div>
                   </div>
                 </form>
+                <button
+                  type="submit"
+                  onClick={onClick}
+                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-amber-500 hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-60"
+                >
+                  출제
+                </button>
               </div>
             </div>
           </div>
