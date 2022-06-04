@@ -45,6 +45,27 @@ async function createProb({
   }
 }
 
+// CTF 출제자 지정
+async function addAuthor({ memberId, token }) {
+  const options = {
+    method: 'POST',
+    url: API_URL + '/v1/admin/ctf/prob',
+    data: {
+      memberId,
+    },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 export default {
   createProb,
+  addAuthor,
 };
