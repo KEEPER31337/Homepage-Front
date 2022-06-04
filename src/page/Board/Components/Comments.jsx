@@ -207,8 +207,8 @@ const Comments = ({
             className=" flex dark:border-darkComponent"
           >
             {/*console.log(comment)*/}
-            <div className="border-4 w-[5em] h-[5em] mr-4 mt-2 rounded-full items-center shadow-lg flex-shrink-0 text-divisionGray hidden sm:flex dark:border-gray-500 dark:text-gray-500">
-              {comment.writerThumbnailId ? (
+            <div className="border w-[5em] h-[5em] mr-4 my-1 mt-2 rounded-full items-center shadow-md flex-shrink-0 text-divisionGray hidden sm:flex dark:border-gray-500 dark:text-gray-500">
+              {comment.writerThumbnailPath ? (
                 <img
                   src={comment.writerThumbnailPath}
                   className="rounded-full"
@@ -362,11 +362,11 @@ const Comments = ({
                   name="대댓글"
                   className="border-b border-slate-200 px-2 py-1 flex w-full bg-slate-50 rounded-lg dark:bg-darkComponent dark:border-darkComponent"
                 >
-                  <div className="border-4 w-[3em] h-[3em] mr-2 rounded-full items-center shadow-lg flex-shrink-0 text-divisionGray hidden sm:flex dark:border-gray-500 dark:text-gray-500">
-                    {comment.writerThumbnailId ? (
+                  <div className="border w-[3em] h-[3em] mr-2 rounded-full items-center shadow-md flex-shrink-0 text-divisionGray hidden sm:flex dark:border-gray-500 dark:text-gray-500">
+                    {comment.writerThumbnailPath ? (
                       <img
                         src={comment.writerThumbnailPath}
-                        className="round-full"
+                        className="rounded-full"
                       />
                     ) : (
                       <UserCircleIcon className="inline-block" />

@@ -8,6 +8,7 @@ import Header from 'shared/Header.jsx';
 import attendanceAPI from 'API/v1/attendance';
 import actionMember from 'redux/action/member';
 // pages
+import Loading from 'shared/Loading';
 const Home = lazy(() => import('page/Home/Home'));
 const About = lazy(() => import('page/About/About'));
 const Attandance = lazy(() => import('page/Attandance/Attandance'));
@@ -41,7 +42,7 @@ const App = ({ member, darkMode, signOut }) => {
     <div className={darkMode ? 'dark' : 'light'}>
       <>
         <Header />
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<Loading />}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
