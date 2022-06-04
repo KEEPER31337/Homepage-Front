@@ -40,7 +40,7 @@ const ChallengeWrite = (props) => {
                       <div className="grid grid-cols-5 gap-6">
                         <div className="col-span-5 sm:col-span-3">
                           <label
-                            for="challenge-name"
+                            htmlFor="challenge-name"
                             className="block text-sm font-medium text-gray-700"
                           >
                             문제명
@@ -49,14 +49,13 @@ const ChallengeWrite = (props) => {
                             type="text"
                             name="challenge-name"
                             id="challenge-name"
-                            autocomplete="given-name"
                             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                           />
                         </div>
 
                         <div className="col-span-5 sm:col-span-1">
                           <label
-                            for="category"
+                            htmlFor="category"
                             className="block text-sm font-medium text-gray-700"
                           >
                             유형
@@ -64,7 +63,6 @@ const ChallengeWrite = (props) => {
                           <select
                             id="category"
                             name="category"
-                            autocomplete="category-name"
                             className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                           >
                             <option>WEB</option>
@@ -80,7 +78,7 @@ const ChallengeWrite = (props) => {
 
                         <div className="col-span-5 sm:col-span-5">
                           <label
-                            for="content"
+                            htmlFor="content"
                             className="block text-sm font-medium text-gray-700"
                           >
                             문제 설명
@@ -97,7 +95,7 @@ const ChallengeWrite = (props) => {
 
                         <div className="col-span-5 sm:col-span-3">
                           <label
-                            for="flag"
+                            htmlFor="flag"
                             className="block text-sm font-medium text-gray-700"
                           >
                             플래그
@@ -106,7 +104,6 @@ const ChallengeWrite = (props) => {
                             type="text"
                             name="flag"
                             id="flag"
-                            autocomplete="given-name"
                             placeholder="KEEPER{...}"
                             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                           />
@@ -117,7 +114,7 @@ const ChallengeWrite = (props) => {
 
                         <div className="col-span-5 sm:col-span-3">
                           <label
-                            for="region"
+                            htmlFor="region"
                             className="block text-sm font-medium text-gray-700"
                           >
                             배점
@@ -126,7 +123,6 @@ const ChallengeWrite = (props) => {
                             type="text"
                             name="region"
                             id="region"
-                            autocomplete="address-level1"
                             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                           />
                         </div>
@@ -137,7 +133,7 @@ const ChallengeWrite = (props) => {
 
                         <div className="col-span-5 sm:col-span-5">
                           <label
-                            for="postal-code"
+                            htmlFor="postal-code"
                             className="block text-sm font-medium text-gray-700"
                           >
                             문제 파일
