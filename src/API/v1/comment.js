@@ -2,11 +2,10 @@ import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-async function create({ boardId, content, ipAddress, parentId, token }) {
+async function create({ boardId, content, parentId, token }) {
   const url = API_URL + '/v1/comment/' + boardId;
   const data = {
     content,
-    ipAddress,
     parentId,
   };
   const options = {
