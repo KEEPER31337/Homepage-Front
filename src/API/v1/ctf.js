@@ -370,17 +370,17 @@ async function seeTeamDetail({ teamId, token }) {
 // 내가 속한 팀 세부 정보 열람
 async function seeMyTeam({ ctfId, token }) {
   const options = {
-      method: 'GET',
-      url: API_URL + '/v1/ctf/team/'+ctfId+'/my-team',
-      headers: {
+    method: 'GET',
+    url: API_URL + '/v1/ctf/team/' + ctfId + '/my-team',
+    headers: {
       Authorization: token,
-      },
+    },
   };
   try {
-      const response = await axios(options);
-      return response.data;
+    const response = await axios(options);
+    return response.data;
   } catch (error) {
-      return error.response.data;
+    return error.response.data;
   }
 }
 
@@ -397,7 +397,6 @@ export default {
   getCategoryList,
   getTypeList,
   openProb,
-  seeContests,
   createTeam,
   reviseTeam,
   joinTeam,
