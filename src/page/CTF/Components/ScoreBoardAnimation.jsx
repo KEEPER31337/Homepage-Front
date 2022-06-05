@@ -30,7 +30,7 @@ const ScoreBoardAnimation = ({ member }) => {
   return (
     <div className="h-full w-full  lg:w-2/5 flex flex-col    dark:bg-darkPoint content-end items-end justify-end justify-items-center">
       {/* 그래프 애니메이션 */}
-      <div className="flex flex-row border-4  border-amber-400 dark:border-darkPoint w-full h-full  content-end items-end justify-center justify-items-center">
+      <div className="flex flex-row  border-4 border-amber-400 dark:border-darkPoint w-full h-full  content-end items-end justify-center justify-items-center">
         <div className="flex  pl-12  w-4/12 flex-col place-content-center items-center">
           <motion.div
             initial="hidden"
