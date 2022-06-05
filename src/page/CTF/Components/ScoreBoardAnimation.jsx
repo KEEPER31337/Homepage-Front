@@ -28,7 +28,7 @@ const ScoreBoardAnimation = ({ member }) => {
   }, []);
 
   return (
-    <div className="h-full w-full  lg:w-2/5 flex flex-col    dark:bg-darkPoint content-end items-end justify-end justify-items-center">
+    <div className="h-auto md:h-[375px] w-full  lg:w-2/5 flex flex-col    dark:bg-darkPoint content-end items-end justify-end justify-items-center">
       {/* 그래프 애니메이션 */}
       <div className="flex flex-row  border-4 border-amber-400 dark:border-darkPoint w-full h-full  content-end items-end justify-center justify-items-center">
         <div className="flex  pl-12  w-4/12 flex-col place-content-center items-center">
@@ -88,7 +88,6 @@ const ScoreBoardAnimation = ({ member }) => {
             <div className="bg-amber-500 dark:bg-purple-400 flex w-2/12"></div>
           </motion.div>
         </div>
-
         <div className="flex pt-8 px-5 w-4/12 flex-col place-content-center items-center">
           <motion.div
             initial="hidden"
@@ -204,7 +203,6 @@ const ScoreBoardAnimation = ({ member }) => {
             <div className="bg-amber-500 dark:bg-purple-400 flex w-2/12"></div>
           </motion.div>
         </div>
-        {/* 2등 */}
       </div>
     </div>
   );

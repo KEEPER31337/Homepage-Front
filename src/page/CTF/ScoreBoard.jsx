@@ -9,23 +9,35 @@ import ctfAPI from 'API/v1/ctf';
 
 const ScoreBoard = ({ member }) => {
   const [rankList, setRankList] = useState([]);
+  const [page, setPage] = useState(0);
+  const [canGoNext, setCanGoNext] = useState(false);
+  const [canGoPrev, setCanGoPrev] = useState(false);
+
+  const goNextPage = () => {
+    setPage(page + 1);
+  };
+
+  const goPrevPage = () => {
+    setPage(page - 1);
+  };
 
   useEffect(() => {
     ctfAPI
       .getRanking({
         token: member.token,
-        page: 0,
-        size: 10,
+        page: page,
+        size: 7,
         ctfId: 2,
       })
       .then((data) => {
         if (data.success) {
-          // console.log
-          console.log(data.page.content);
+          console.log(data.page.last);
+          setCanGoPrev(data.page.first);
+          setCanGoNext(data.page.last);
           setRankList(data.page.content);
         }
       });
-  }, []);
+  }, [page]);
 
   return (
     <div className="bg-mainWhite dark:bg-mainBlack min-h-screen">
@@ -46,17 +58,33 @@ const ScoreBoard = ({ member }) => {
                 </div>
                 {/*네비게이션*/}
                 <div className="flex items-center">
-                  <ChevronLeftIcon className="inline-block  dark:hover:bg-indigo-400 mr-1 rounded h-10 w-10 text-white bg-amber-400 dark:bg-indigo-300" />
+                  {canGoPrev ? (
+                    <button disabled className="cursor-not-allowed">
+                      <ChevronLeftIcon className="inline-block mr-1 rounded h-10 w-10 text-white bg-slate-300" />
+                    </button>
+                  ) : (
+                    <button onClick={goPrevPage}>
+                      <ChevronLeftIcon className="inline-block  dark:hover:bg-indigo-500 hover:bg-amber-500 mr-1 rounded h-10 w-10 text-white bg-amber-400 dark:bg-indigo-300" />
+                    </button>
+                  )}
 
-                  <ChevronRightIcon className="inline-block dark:hover:bg-indigo-400 rounded h-10 w-10 text-white bg-amber-400 dark:bg-indigo-300" />
+                  {canGoNext ? (
+                    <button disabled className="cursor-not-allowed">
+                      <ChevronRightIcon className="inline-block mr-1 rounded h-10 w-10 text-white bg-slate-300" />
+                    </button>
+                  ) : (
+                    <button onClick={goNextPage}>
+                      <ChevronRightIcon className="inline-block  dark:hover:bg-indigo-500 hover:bg-amber-500 mr-1 rounded h-10 w-10 text-white bg-amber-400 dark:bg-indigo-300" />
+                    </button>
+                  )}
                 </div>
               </div>
               {/*구분선*/}
               <div className="p-[2px] mb-2 dark:from-purple-500 dark:via-purple-200 dark:to-amner-200 bg-gradient-to-r from-amber-500 via-amber-200 to-yellow-300  "></div>
 
-              <div className="flex  h-full md:flex-row flex-col items-end justify-between w-full text-center ">
+              <div className="flex h-auto md:flex-row flex-col items-start justify-between w-full text-center dark:bg-darkPoint">
                 <ScoreBoardAnimation />
-                <ScoreBoardRank />
+                <ScoreBoardRank rankList={rankList} />
               </div>
             </div>
           </div>
