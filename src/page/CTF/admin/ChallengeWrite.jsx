@@ -1,19 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 // local
-import authAPI from 'API/v1/auth';
-import actionMember from 'redux/action/member';
 import ResponsiveEditor from 'page/Board/Components/ResponsiveEditor';
 import FilesUploadForm from 'page/Board/Components/FilesUploadForm';
 import NavigationLayout from '../Components/NavigationLayout';
 
+// API
+import ctfAPI from 'API/v1/ctf';
+
 //TODO 반응형
 
-const ChallengeWrite = (props) => {
-  const [loginInfo, setLoginInfo] = useState({ loginId: '', password: '' });
+const ChallengeWrite = ({ member }) => {
   // 세연's->
   const content = '';
   const isDark = false; //Dark모드 여부
@@ -23,6 +22,38 @@ const ChallengeWrite = (props) => {
   const modifyFlag = false;
   const board = false;
   // <-세연's
+
+  const onClick = () => {
+    ctfAPI
+      .createProb({
+        title: 'C',
+        content: 'test',
+        contestId: 2,
+        category: {
+          id: 3,
+        },
+        type: {
+          id: 1,
+        },
+        isSolvable: true,
+        score: '1000',
+        dynamicInfo: {
+          maxScore: 1000,
+          minScore: 100,
+        },
+        flag: 'KEEPER{jamitda_gaebal33}',
+        token: member.token,
+      })
+      .then((data) => {
+        if (data.success) {
+          console.log(data);
+          navigate(`/ctf/admin/challengeAdmin`); //TODO 각 문제 생성된 형태 페이지로 이동되도록 수정
+        } else {
+          console.log(data);
+          alert('문제 생성 중 오류가 발생하였습니다.');
+        }
+      });
+  };
 
   return (
     <div className="bg-mainWhite dark:bg-mainBlack min-h-screen">
@@ -40,7 +71,7 @@ const ChallengeWrite = (props) => {
                       <div className="grid grid-cols-5 gap-6">
                         <div className="col-span-5 sm:col-span-3">
                           <label
-                            for="challenge-name"
+                            htmlFor="challenge-name"
                             className="block text-sm font-medium text-gray-700"
                           >
                             문제명
@@ -49,14 +80,13 @@ const ChallengeWrite = (props) => {
                             type="text"
                             name="challenge-name"
                             id="challenge-name"
-                            autocomplete="given-name"
                             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                           />
                         </div>
 
                         <div className="col-span-5 sm:col-span-1">
                           <label
-                            for="category"
+                            htmlFor="category"
                             className="block text-sm font-medium text-gray-700"
                           >
                             유형
@@ -64,7 +94,6 @@ const ChallengeWrite = (props) => {
                           <select
                             id="category"
                             name="category"
-                            autocomplete="category-name"
                             className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                           >
                             <option>WEB</option>
@@ -80,7 +109,7 @@ const ChallengeWrite = (props) => {
 
                         <div className="col-span-5 sm:col-span-5">
                           <label
-                            for="content"
+                            htmlFor="content"
                             className="block text-sm font-medium text-gray-700"
                           >
                             문제 설명
@@ -97,7 +126,7 @@ const ChallengeWrite = (props) => {
 
                         <div className="col-span-5 sm:col-span-3">
                           <label
-                            for="flag"
+                            htmlFor="flag"
                             className="block text-sm font-medium text-gray-700"
                           >
                             플래그
@@ -106,7 +135,6 @@ const ChallengeWrite = (props) => {
                             type="text"
                             name="flag"
                             id="flag"
-                            autocomplete="given-name"
                             placeholder="KEEPER{...}"
                             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                           />
@@ -117,7 +145,7 @@ const ChallengeWrite = (props) => {
 
                         <div className="col-span-5 sm:col-span-3">
                           <label
-                            for="region"
+                            htmlFor="region"
                             className="block text-sm font-medium text-gray-700"
                           >
                             배점
@@ -126,7 +154,6 @@ const ChallengeWrite = (props) => {
                             type="text"
                             name="region"
                             id="region"
-                            autocomplete="address-level1"
                             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                           />
                         </div>
@@ -137,7 +164,7 @@ const ChallengeWrite = (props) => {
 
                         <div className="col-span-5 sm:col-span-5">
                           <label
-                            for="postal-code"
+                            htmlFor="postal-code"
                             className="block text-sm font-medium text-gray-700"
                           >
                             문제 파일
@@ -153,15 +180,23 @@ const ChallengeWrite = (props) => {
                       </div>
                     </div>
                     <div className="px-4 py-3 text-right sm:px-6">
-                      <button
+                      {/* <button
                         type="submit"
+                        onClick={onClick}
                         className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-amber-500 hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-60"
                       >
                         출제
-                      </button>
+                      </button> */}
                     </div>
                   </div>
                 </form>
+                <button
+                  type="submit"
+                  onClick={onClick}
+                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-amber-500 hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-60"
+                >
+                  출제
+                </button>
               </div>
             </div>
           </div>
