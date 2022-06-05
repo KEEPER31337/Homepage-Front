@@ -99,7 +99,7 @@ const ModifyStudy = ({
     console.log(thumbnail);
   };
 
-  const createHandler = () => {
+  const modifyHandler = () => {
     print();
     setClickable(false);
     ipAPI.getIp().then((ipAddress) => {
@@ -472,7 +472,7 @@ const ModifyStudy = ({
             <button
               type="button"
               className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-mainYellow hover:bg-pointYellow focus:outline-none"
-              onClick={() => createHandler()}
+              onClick={() => modifyHandler()}
               disabled={!clickable || !uploadable()}
             >
               수정하기
