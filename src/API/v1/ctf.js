@@ -19,6 +19,100 @@ async function getRanking({ token, page, size, ctfId }) {
   }
 }
 
+// CTF 대회 생성
+async function createContest({ token, name, description }) {
+  const options = {
+    method: 'POST',
+    url: API_URL + '/v1/admin/ctf/contest',
+    data: {
+      name,
+      description,
+    },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+// CTF 개최
+async function openContest({ cid, token }) {
+  const options = {
+    method: 'PATCH',
+    url: API_URL + '/v1/admin/ctf/contest/' + cid + '/open',
+    data: {
+      cid,
+    },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+// CTF 끝내기
+async function closeContest({ cid, token }) {
+  const options = {
+    method: 'PATCH',
+    url: API_URL + '/v1/admin/ctf/contest/' + cid + '/close',
+    data: {
+      cid,
+    },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+// CTF 대회 목록 보기
+async function getContestList({ token }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/admin/ctf/contests',
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+// 참가 가능한 CTF Contest 목록 조회
+async function getJoinableContestList({ token }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/ctf/extra/data/contests',
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
 
 // CTF 문제 생성
 async function createProb({
@@ -152,125 +246,125 @@ async function openProb({ pid, token }) {
 
 // 팀 생성
 async function createTeam({ name, description, contestId, token }) {
-    const options = {
-        method: 'POST',
-        url: API_URL + '/v1/ctf/team',
-        data: {
-        name,
-        description,
-        contestId,
-        },
-        headers: {
-        Authorization: token,
-        },
-    };
-    try {
-        const response = await axios(options);
-        return response.data;
-    } catch (error) {
-        return error.response.data;
-    }
+  const options = {
+    method: 'POST',
+    url: API_URL + '/v1/ctf/team',
+    data: {
+      name,
+      description,
+      contestId,
+    },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
 }
 
 // 팀 정보 수정
 async function reviseTeam({ name, description, contestId, token }) {
-    const options = {
-        method: 'POST',
-        url: API_URL + '/v1/ctf/team/288',
-        data: {
-        name,
-        description,
-        contestId,
-        },
-        headers: {
-        Authorization: token,
-        },
-    };
-    try {
-        const response = await axios(options);
-        return response.data;
-    } catch (error) {
-        return error.response.data;
-    }
+  const options = {
+    method: 'POST',
+    url: API_URL + '/v1/ctf/team/288',
+    data: {
+      name,
+      description,
+      contestId,
+    },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
 }
 
 // 팀 가입
 async function joinTeam({ name, token }) {
-    const options = {
-        method: 'POST',
-        url: API_URL + '/v1/ctf/team',
-        data: {
-        name,
-        },
-        headers: {
-        Authorization: token,
-        },
-    };
-    try {
-        const response = await axios(options);
-        return response.data;
-    } catch (error) {
-        return error.response.data;
-    }
+  const options = {
+    method: 'POST',
+    url: API_URL + '/v1/ctf/team',
+    data: {
+      name,
+    },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
 }
 
 // 팀 탈퇴
 async function resignTeam({ ctfId, token }) {
-    const options = {
-        method: 'DELETE',
-        url: API_URL + '/v1/ctf/team/member',
-        data: {
-            ctfId,
-        },
-        headers: {
-        Authorization: token,
-        },
-    };
-    try {
-        const response = await axios(options);
-        return response.data;
-    } catch (error) {
-        return error.response.data;
-    }
+  const options = {
+    method: 'DELETE',
+    url: API_URL + '/v1/ctf/team/member',
+    data: {
+      ctfId,
+    },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
 }
 
 // 팀 목록 열람
 async function seeTeamList({ page, size, ctfId, token }) {
-    const options = {
-        method: 'GET',
-        url: API_URL + '/v1/ctf/team',
-        params: {
-            page:page,
-            size:size,
-            ctfId: ctfId,
-        },
-        headers: {
-        Authorization: token,
-        },
-    };
-    try {
-        const response = await axios(options);
-        return response.data;
-    } catch (error) {
-        return error.response.data;
-    }
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/ctf/team',
+    params: {
+      page: page,
+      size: size,
+      ctfId: ctfId,
+    },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
 }
 
 // 팀 세부 정보 열람
 async function seeTeamDetail({ teamId, token }) {
-    const options = {
-        method: 'GET',
-        url: API_URL + '/v1/ctf/team/' + teamId,
-        headers: {
-        Authorization: token,
-        },
-    };
-    try {
-        const response = await axios(options);
-        return response.data;
-    } catch (error) {
-        return error.response.data;
-    }
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/ctf/team/' + teamId,
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
 }
 
 // 내가 속한 팀 세부 정보 열람
@@ -291,18 +385,24 @@ async function seeMyTeam({ ctfId, token }) {
 }
 
 export default {
-    createProb,
-    getRanking,
-    addAuthor,
-    getProbList,
-    getCategoryList,
-    getTypeList,
-    openProb,
-    createTeam,
-    reviseTeam,
-    joinTeam,
-    resignTeam,
-    seeTeamList,
-    seeTeamDetail,
-    seeMyTeam,
+  createContest,
+  openContest,
+  closeContest,
+  getContestList,
+  getJoinableContestList,
+  createProb,
+  getRanking,
+  addAuthor,
+  getProbList,
+  getCategoryList,
+  getTypeList,
+  openProb,
+  seeContests,
+  createTeam,
+  reviseTeam,
+  joinTeam,
+  resignTeam,
+  seeTeamList,
+  seeTeamDetail,
+  seeMyTeam,
 };
