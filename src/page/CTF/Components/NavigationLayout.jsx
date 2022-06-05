@@ -114,7 +114,7 @@ const NavigationLayout = (props) => {
       </Transition.Root>
 
       {/* 화면 꽉 찼을때, 기본 슬라이드바 부모의 1/5 */}
-      <div className="hidden md:flex md:w-1/5 md:flex-col md:inset-y-0 ">
+      <div className="hidden lg:flex lg:w-1/5 lg:flex-col lg:inset-y-0 ">
         {/* Sidebar component, swap this element with another sidebar if you like */}
         <div className="flex flex-col flex-grow pt-2  overflow-y-auto">
           <div className=" flex-1 h-0 overflow-y-auto">
@@ -138,7 +138,7 @@ const NavigationLayout = (props) => {
       <div className="fixed flex z-10 ">
         <button
           type="button"
-          className="p-1 rounded-r-lg border-gray-200 text-gray-500 bg-mainYellow md:hidden"
+          className="p-1 rounded-r-lg border-gray-200 text-gray-500 bg-mainYellow lg:hidden"
           onClick={() => setSidebarOpen(true)}
         >
           <span className="sr-only">Open sidebar</span>
