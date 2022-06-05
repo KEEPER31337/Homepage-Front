@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import actionMember from 'redux/action/member';
 import NavigationLayout from './Components/NavigationLayout';
 import Category from './Components/Category';
+
+// API
+import ctfAPI from 'API/v1/ctf';
 
 const testData = [
   {
@@ -32,25 +37,49 @@ const testData = [
     isSolved: true,
   },
 ];
+const Ctf = ({ member }) => {
+  const [probList, setProbList] = useState([
+    {
+      challengeId: null,
+      title: null,
+      score: null,
+      category: {
+        id: null,
+        name: null,
+      },
+      contestId: null,
+    },
+  ]);
 
-export default function Ctf() {
-  const webList = testData.filter((challenge) => challenge.category == 'Web');
-  const systemList = testData.filter(
-    (challenge) => challenge.category == 'System'
+  useEffect(() => {
+    ctfAPI
+      .getProbList({
+        cid: 2,
+        token: member.token,
+      })
+      .then((data) => {
+        // TODO cid 받아와서 넣기
+        if (data.success) {
+          console.log(data);
+          setProbList(data.list);
+        } else {
+          console.log(data);
+          alert('문제 목록을 받아오는 중 오류가 발생하였습니다.');
+        }
+      });
+  }, []);
+  // NOTE 각각 카테고리별 변수 두지 않고 한 번에 처리하도록 수정해보자
+  const webList = probList.filter((challenge) => challenge.category.id == 0);
+  const systemList = probList.filter((challenge) => challenge.category.id == 1);
+  const reversingList = probList.filter(
+    (challenge) => challenge.category.id == 2
   );
-  const reversingList = testData.filter(
-    (challenge) => challenge.category == 'Reversing'
+  const cryptoList = probList.filter((challenge) => challenge.category.id == 3);
+  const forensicList = probList.filter(
+    (challenge) => challenge.category.id == 4
   );
-  const cryptoList = testData.filter(
-    (challenge) => challenge.category == 'Crypto'
-  );
-  const forensicList = testData.filter(
-    (challenge) => challenge.category == 'Forensic'
-  );
-  const miscList = testData.filter((challenge) => challenge.category == 'Misc');
-  const osintList = testData.filter(
-    (challenge) => challenge.category == 'Osint'
-  );
+  const miscList = probList.filter((challenge) => challenge.category.id == 5);
+  const osintList = probList.filter((challenge) => challenge.category.id == 6);
 
   let Web, System, Rev, Crypto, Forensic, Misc, Osint;
 
@@ -97,4 +126,18 @@ export default function Ctf() {
       </div>
     </div>
   );
-}
+};
+
+const mapStateToProps = (state, OwnProps) => {
+  return { member: state.member };
+};
+
+const mapDispatchToProps = (dispatch, OwnProps) => {
+  return {
+    updateInfo: ({ token, memberInfo }) => {
+      dispatch(actionMember.updateInfo({ token, memberInfo }));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Ctf);

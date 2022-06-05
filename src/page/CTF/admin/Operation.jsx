@@ -1,7 +1,52 @@
-import { Fragment } from 'react';
+import { useState, useEffect } from 'react';
 import NavigationLayout from '../Components/NavigationLayout';
+import { connect } from 'react-redux';
+import actionMember from 'redux/action/member';
+import {
+  PlusSmIcon,
+  PaperClipIcon,
+  XIcon,
+  PlusIcon,
+  ExclamationCircleIcon,
+} from '@heroicons/react/solid';
 
-export default function Operation() {
+import memberAPI from 'API/v1/member';
+import ctfAPI from 'API/v1/ctf';
+
+const Operation = ({ member }) => {
+  const [memberList, setMemberList] = useState([]); //멤버 오브젝트 리스트
+  const [memberIdList, setMemberIdList] = useState([]); //멤버 아이디 리스트
+  const [viewMemberList2, setViewMemberList2] = useState(false);
+  const [allMemberList, setAllMemberList] = useState([]); //멤버 추가 시 보여줄 동아리 회원의 전체 리스트
+  const [headMember, setHeadMember] = useState([]); //멤버 오브젝트
+
+  useEffect(() => {
+    memberAPI.getAllMembers().then((data) => {
+      setAllMemberList(data.list);
+    });
+  }, []);
+
+  const addMember = (author) => {
+    ctfAPI
+      .addAuthor({
+        memberId: author.id,
+        token: member.token,
+      })
+      .then((data) => {
+        if (data.success) {
+          console.log(data);
+        } else {
+          console.log(data);
+          alert('출제자 지정 중 오류가 발생하였습니다.');
+        }
+      });
+    if (memberList.findIndex((cmember) => cmember.id == author.id) == -1) {
+      setMemberList([...memberList, author]);
+      setMemberIdList([...memberIdList, author.id]);
+      console.log(memberList);
+    }
+  };
+
   return (
     <div className="bg-mainWhite dark:bg-mainBlack min-h-screen">
       {/* 기존 홈페이지 헤더에 맞추기 위해,  */}
@@ -61,6 +106,70 @@ export default function Operation() {
                         </tbody>
                       </table>
                     </div>
+                    <div className="flex justify-end">
+                      <button
+                        className={
+                          (viewMemberList2
+                            ? 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500'
+                            : 'bg-white hover:bg-gray-100 dark:bg-darkComponent dark:hover:bg-gray-700') +
+                          ' mx-2 inline-flex items-center shadow-sm py-1 px-2 my-1 border border-gray-300 text-gray-700 text-sm leading-5 font-medium rounded-lg  focus:outline-none dark:text-gray-300 dark:border-mainBlack'
+                        }
+                        onClick={() => setViewMemberList2(!viewMemberList2)}
+                      >
+                        {viewMemberList2 ? (
+                          <XIcon
+                            className="text-gray-400 dark:text-mainBlack -ml-1.5 h-4 w-4 "
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <PlusIcon
+                            className="text-gray-400 -ml-1.5 h-4 w-4 "
+                            aria-hidden="true"
+                          />
+                        )}
+                        출제자 추가
+                      </button>
+                    </div>
+                    <div className="flex justify-end">
+                      {viewMemberList2 ? (
+                        <div className="w-1/3 border h-[15em] overflow-y-scroll bg-mainWhite dark:bg-mainBlack dark:border-darkComponent">
+                          <ul className="">
+                            {allMemberList.map((memb, membIdx) => (
+                              <li
+                                className="border p-1 flex justify-between items-center group hover:bg-slate-100 dark:hover:bg-gray-800 dark:border-darkComponent"
+                                onClick={() => addMember(memb)}
+                                key={membIdx}
+                              >
+                                <div className="flex items-center">
+                                  <div>
+                                    {memb.thumbnailPath ? (
+                                      <img
+                                        className="border inline-block h-9 w-9 rounded-full dark:border-gray-600"
+                                        src={memb.thumbnailPath}
+                                        alt=""
+                                      />
+                                    ) : (
+                                      <div className="inline-block h-9 w-9 rounded-full"></div>
+                                    )}
+                                  </div>
+                                  <div className="ml-3">
+                                    <div className="text-sm font-medium">
+                                      {memb.nickName}
+                                    </div>
+                                  </div>
+                                </div>
+                                <PlusIcon
+                                  className="text-gray-400 -ml-1.5 h-5 w-5 "
+                                  aria-hidden="true"
+                                />
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ) : (
+                        ''
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -70,4 +179,18 @@ export default function Operation() {
       </div>
     </div>
   );
-}
+};
+
+const mapStateToProps = (state, OwnProps) => {
+  return { member: state.member };
+};
+
+const mapDispatchToProps = (dispatch, OwnProps) => {
+  return {
+    updateInfo: ({ token, memberInfo }) => {
+      dispatch(actionMember.updateInfo({ token, memberInfo }));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Operation);

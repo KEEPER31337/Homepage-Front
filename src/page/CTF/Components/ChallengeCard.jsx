@@ -6,13 +6,12 @@ const ChallengeCard = (props) => {
 
   const challengeModalRef = useRef({});
 
-
   return (
     <>
       <button
         onClick={() => challengeModalRef.current.open()}
         className={
-          'w-60 h-40 truncate mr-8 rounded-md shadow-md dark:shadow-slate-500 ' +
+          'w-52 h-28 truncate mx-3 mb-6 rounded-md shadow-md dark:shadow-slate-500 ' +
           (isSolved
             ? 'bg-green-300 dark:bg-teal-500'
             : 'bg-slate-300 dark:bg-slate-600')
