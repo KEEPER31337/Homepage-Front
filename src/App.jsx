@@ -36,6 +36,7 @@ const Team = lazy(() => import('page/CTF/Team'));
 const TeamJoin = lazy(() => import('page/CTF/TeamJoin'));
 const Operation = lazy(() => import('page/CTF/admin/Operation'));
 const Submissions = lazy(() => import('page/CTF/admin/Submissions'));
+const Challenge = lazy(() => import('page/CTF/Challenge'));
 
 const App = ({ member, darkMode, signOut }) => {
   useEffect(() => {
@@ -85,6 +86,7 @@ const App = ({ member, darkMode, signOut }) => {
             />
             <Route path="/ctf/admin/operation" element={<Operation />} />
             <Route path="/ctf/admin/submissions" element={<Submissions />} />
+            <Route path="/ctf/challenge" element={<Challenge />} />
           </Routes>
         </Suspense>
         <Chatting />

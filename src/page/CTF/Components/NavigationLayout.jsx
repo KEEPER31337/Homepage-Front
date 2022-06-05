@@ -10,11 +10,13 @@ import {
   ChevronRightIcon,
   UsersIcon,
   XIcon,
+  CollectionIcon,
 } from '@heroicons/react/outline';
 
 const navigation = [
+  { name: 'CTF', href: '/ctf', icon: HomeIcon },
   { name: 'TEAM JOIN', href: '/ctf/teamjoin', icon: FolderAddIcon },
-  { name: 'CHALLENGES', href: '/ctf', icon: HomeIcon },
+  { name: 'CHALLENGES', href: '/ctf/challenge', icon: CollectionIcon },
   { name: 'SCOREBOARD', href: '/ctf/scoreboard', icon: ChartBarIcon },
   { name: 'TEAM', href: '/ctf/team', icon: UsersIcon },
   {
