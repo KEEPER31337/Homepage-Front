@@ -111,7 +111,7 @@ export default function Team() {
           <div className="text-4xl lg:text-5xl m-2 font-extrabold">
             {nameOfTeam}
           </div>
-          <div className="lg:text-2xl">{team.score} points</div>
+          <div className="lg:text-2xl">{team[0].score} points</div>
         </div>
         <div className="h-1 bg-gradient-to-r from-black via-red-800 to-amber-400 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-300"></div>
       </>
@@ -172,7 +172,7 @@ export default function Team() {
 
     return (
       <>
-        <strong className="w-full text-4xl ml-2 mt-3">Solves</strong>
+        <strong className="w-full text-4xl ml-2 mt-3 dark:text-white">Solves</strong>
         <div className="flex justify-center">
           <div className="flex flex-col justify-center w-11/12 rounded overflow-hidden border dark:border-gray-700 m-4 p-2">
             <table classNem="justify-center dark:text-white w-11/12 border-2 shadow  rounded-md dark:bg-darkPoint">
@@ -208,7 +208,7 @@ export default function Team() {
   return (
     <div className="bg-mainWhite dark:bg-mainBlack">
       {/* 기존 홈페이지 헤더에 맞추기 위해,  */}
-      <div className="max-w-7xl h-screen mx-auto flex flex-row">
+      <div className="max-w-7xl h-full mx-auto flex flex-row">
         {/*사이드바*/}
         <NavigationLayout />
         <div className="md:w-4/5 flex flex-col flex-1 pt-0 p-3">

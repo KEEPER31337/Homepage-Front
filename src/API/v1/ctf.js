@@ -19,6 +19,7 @@ async function getRanking({ token, page, size, ctfId }) {
   }
 }
 
+
 // CTF 문제 생성
 async function createProb({
   title,
