@@ -150,23 +150,7 @@ async function openProb({ pid, token }) {
   }
 }
 
-// Team
-async function seeContests({ token }) {
-  const options = {
-    method: 'GET',
-    url: API_URL + '/v1/game/dice/info',
-    headers: {
-      Authorization: token,
-    },
-  };
-  try {
-    const response = await axios(options);
-    return response.data;
-  } catch (error) {
-    return error.response.data;
-  }
-}
-
+// 팀 생성
 async function createTeam({ name, description, contestId, token }) {
     const options = {
         method: 'POST',
@@ -188,6 +172,7 @@ async function createTeam({ name, description, contestId, token }) {
     }
 }
 
+// 팀 정보 수정
 async function reviseTeam({ name, description, contestId, token }) {
     const options = {
         method: 'POST',
@@ -209,6 +194,7 @@ async function reviseTeam({ name, description, contestId, token }) {
     }
 }
 
+// 팀 가입
 async function joinTeam({ name, token }) {
     const options = {
         method: 'POST',
@@ -228,6 +214,7 @@ async function joinTeam({ name, token }) {
     }
 }
 
+// 팀 탈퇴
 async function resignTeam({ ctfId, token }) {
     const options = {
         method: 'DELETE',
@@ -247,6 +234,7 @@ async function resignTeam({ ctfId, token }) {
     }
 }
 
+// 팀 목록 열람
 async function seeTeamList({ page, size, ctfId, token }) {
     const options = {
         method: 'GET',
@@ -268,6 +256,7 @@ async function seeTeamList({ page, size, ctfId, token }) {
     }
 }
 
+// 팀 세부 정보 열람
 async function seeTeamDetail({ teamId, token }) {
     const options = {
         method: 'GET',
@@ -284,6 +273,23 @@ async function seeTeamDetail({ teamId, token }) {
     }
 }
 
+// 내가 속한 팀 세부 정보 열람
+async function seeMyTeam({ ctfId, token }) {
+  const options = {
+      method: 'GET',
+      url: API_URL + '/v1/ctf/team/'+ctfId+'/my-team',
+      headers: {
+      Authorization: token,
+      },
+  };
+  try {
+      const response = await axios(options);
+      return response.data;
+  } catch (error) {
+      return error.response.data;
+  }
+}
+
 export default {
     createProb,
     getRanking,
@@ -292,11 +298,11 @@ export default {
     getCategoryList,
     getTypeList,
     openProb,
-    seeContests,
     createTeam,
     reviseTeam,
     joinTeam,
     resignTeam,
     seeTeamList,
     seeTeamDetail,
+    seeMyTeam,
 };
