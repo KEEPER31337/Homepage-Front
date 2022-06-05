@@ -97,6 +97,23 @@ async function getContestList({ token }) {
   }
 }
 
+// 참가 가능한 CTF Contest 목록 조회
+async function getJoinableContestList({ token }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/ctf/extra/data/contests',
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 // CTF 문제 생성
 async function createProb({
   title,
@@ -366,6 +383,7 @@ export default {
   openContest,
   closeContest,
   getContestList,
+  getJoinableContestList,
   createProb,
   getRanking,
   addAuthor,
