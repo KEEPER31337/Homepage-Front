@@ -59,117 +59,115 @@ const Operation = ({ member }) => {
             <div className=" w-full container mx-auto justify-center items-center">
               {/* 1. 커스텀 색상 팔레트 */}
 
-              <div className="md:flex p-1 border-2 shadow-sm">
-                <div className="w-full m-2 ">
-                  <div className="p-1 bg-white">
-                    <div className="flex justify-between m-1">
-                      <div className="font-extrabold text-4xl m-1">
-                        CTF-Operation
-                      </div>
-                      <div className="flex m-1">
-                        <div className=" flex rounded p-1 bg-amber-300 border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
-                          <div className=" text-md ">
-                            <button className="hover:bg-amber-500  m-1 hover:text-mainWhite rounded font-bold">
-                              대회 추가
-                            </button>
-                          </div>
+              <div className="h-full w-full  justify-center items-center">
+                <div className="p-1 bg-white">
+                  <div className="flex justify-between m-1">
+                    <div className="font-extrabold text-4xl m-1">
+                      CTF-Operation
+                    </div>
+                    <div className="flex m-1">
+                      <div className=" flex rounded p-1 bg-amber-300 border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
+                        <div className=" text-md ">
+                          <button className="hover:bg-amber-500  m-1 hover:text-mainWhite rounded font-bold">
+                            대회 추가
+                          </button>
                         </div>
                       </div>
                     </div>
-                    {/*구분선*/}
-                    <div className="p-[2px] mb-2 bg-gradient-to-r from-amber-500 via-amber-200 to-yellow-300  "></div>
-                    {/* 2.  프로필 이미지 + 팔로우 + 포인트 */}
+                  </div>
+                  {/*구분선*/}
+                  <div className="p-[2px] mb-2 bg-gradient-to-r from-amber-500 via-amber-200 to-yellow-300  "></div>
+                  {/* 2.  프로필 이미지 + 팔로우 + 포인트 */}
 
-                    <div className="w-full h-full inline-block rounded overflow-hidden text-center border">
-                      <table className="w-full border-2 shadow  rounded-md">
-                        <thead>
-                          <tr className="h-10 bg-gray-100  border-b-2">
-                            <th>번호</th>
-                            <th>대회명</th>
-                            <th>설명</th>
-                            <th>개최자</th>
-                            <th>개최여부</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
-                            <td>1</td>
-                            <td>2022_1 KEEPER CTF</td>
-                            <td>없움</td>
-                            <td>현모정</td>
-                            <td>
-                              <button className="bg-amber-500  m-1 hover:text-mainWhite rounded font-bold">
-                                안개최
-                              </button>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    <div className="flex justify-end">
-                      <button
-                        className={
-                          (viewMemberList2
-                            ? 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500'
-                            : 'bg-white hover:bg-gray-100 dark:bg-darkComponent dark:hover:bg-gray-700') +
-                          ' mx-2 inline-flex items-center shadow-sm py-1 px-2 my-1 border border-gray-300 text-gray-700 text-sm leading-5 font-medium rounded-lg  focus:outline-none dark:text-gray-300 dark:border-mainBlack'
-                        }
-                        onClick={() => setViewMemberList2(!viewMemberList2)}
-                      >
-                        {viewMemberList2 ? (
-                          <XIcon
-                            className="text-gray-400 dark:text-mainBlack -ml-1.5 h-4 w-4 "
-                            aria-hidden="true"
-                          />
-                        ) : (
-                          <PlusIcon
-                            className="text-gray-400 -ml-1.5 h-4 w-4 "
-                            aria-hidden="true"
-                          />
-                        )}
-                        출제자 추가
-                      </button>
-                    </div>
-                    <div className="flex justify-end">
+                  <table className="w-full  h-full border-4 text-center rounded-md">
+                    {' '}
+                    <thead>
+                      <tr className="h-10 bg-gray-100  border-b-2">
+                        <th>번호</th>
+                        <th>대회명</th>
+                        <th>설명</th>
+                        <th>개최자</th>
+                        <th>개최여부</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
+                        <td>1</td>
+                        <td>2022_1 KEEPER CTF</td>
+                        <td>없움</td>
+                        <td>현모정</td>
+                        <td>
+                          <button className="bg-amber-500  m-1 hover:text-mainWhite rounded font-bold">
+                            안개최
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <div className="flex justify-end">
+                    <button
+                      className={
+                        (viewMemberList2
+                          ? 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500'
+                          : 'bg-white hover:bg-gray-100 dark:bg-darkComponent dark:hover:bg-gray-700') +
+                        ' mx-2 inline-flex items-center shadow-sm py-1 px-2 my-1 border border-gray-300 text-gray-700 text-sm leading-5 font-medium rounded-lg  focus:outline-none dark:text-gray-300 dark:border-mainBlack'
+                      }
+                      onClick={() => setViewMemberList2(!viewMemberList2)}
+                    >
                       {viewMemberList2 ? (
-                        <div className="w-1/3 border h-[15em] overflow-y-scroll bg-mainWhite dark:bg-mainBlack dark:border-darkComponent">
-                          <ul className="">
-                            {allMemberList.map((memb, membIdx) => (
-                              <li
-                                className="border p-1 flex justify-between items-center group hover:bg-slate-100 dark:hover:bg-gray-800 dark:border-darkComponent"
-                                onClick={() => addMember(memb)}
-                                key={membIdx}
-                              >
-                                <div className="flex items-center">
-                                  <div>
-                                    {memb.thumbnailPath ? (
-                                      <img
-                                        className="border inline-block h-9 w-9 rounded-full dark:border-gray-600"
-                                        src={memb.thumbnailPath}
-                                        alt=""
-                                      />
-                                    ) : (
-                                      <div className="inline-block h-9 w-9 rounded-full"></div>
-                                    )}
-                                  </div>
-                                  <div className="ml-3">
-                                    <div className="text-sm font-medium">
-                                      {memb.nickName}
-                                    </div>
+                        <XIcon
+                          className="text-gray-400 dark:text-mainBlack -ml-1.5 h-4 w-4 "
+                          aria-hidden="true"
+                        />
+                      ) : (
+                        <PlusIcon
+                          className="text-gray-400 -ml-1.5 h-4 w-4 "
+                          aria-hidden="true"
+                        />
+                      )}
+                      출제자 추가
+                    </button>
+                  </div>
+                  <div className="flex justify-end">
+                    {viewMemberList2 ? (
+                      <div className="w-1/3 border h-[15em] overflow-y-scroll bg-mainWhite dark:bg-mainBlack dark:border-darkComponent">
+                        <ul className="">
+                          {allMemberList.map((memb, membIdx) => (
+                            <li
+                              className="border p-1 flex justify-between items-center group hover:bg-slate-100 dark:hover:bg-gray-800 dark:border-darkComponent"
+                              onClick={() => addMember(memb)}
+                              key={membIdx}
+                            >
+                              <div className="flex items-center">
+                                <div>
+                                  {memb.thumbnailPath ? (
+                                    <img
+                                      className="border inline-block h-9 w-9 rounded-full dark:border-gray-600"
+                                      src={memb.thumbnailPath}
+                                      alt=""
+                                    />
+                                  ) : (
+                                    <div className="inline-block h-9 w-9 rounded-full"></div>
+                                  )}
+                                </div>
+                                <div className="ml-3">
+                                  <div className="text-sm font-medium">
+                                    {memb.nickName}
                                   </div>
                                 </div>
-                                <PlusIcon
-                                  className="text-gray-400 -ml-1.5 h-5 w-5 "
-                                  aria-hidden="true"
-                                />
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ) : (
-                        ''
-                      )}
-                    </div>
+                              </div>
+                              <PlusIcon
+                                className="text-gray-400 -ml-1.5 h-5 w-5 "
+                                aria-hidden="true"
+                              />
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : (
+                      ''
+                    )}
                   </div>
                 </div>
               </div>
