@@ -79,6 +79,23 @@ async function getProbList({ token, cid }) {
   }
 }
 
+// CTF 문제 타입 조회
+async function getCategoryList({ token }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/ctf/extra/data/challenge-type',
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 // CTF 문제 오픈
 async function openProb({ pid, token }) {
   const options = {
@@ -102,6 +119,7 @@ async function openProb({ pid, token }) {
 export default {
   createProb,
   addAuthor,
-  openProb,
   getProbList,
+  getCategoryList,
+  openProb,
 };
