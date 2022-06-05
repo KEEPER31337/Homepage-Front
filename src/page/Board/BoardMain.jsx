@@ -7,6 +7,7 @@ import Boards from 'page/Board/Components/Boards';
 import WriteButton from 'page/Board/Components/WriteButton';
 import WriteButtonMobile from 'page/Board/Components/MobileWriteButton';
 import AuthUser from 'shared/AuthUser';
+
 /*
 <img
           src={require('assets/img/icons/b_gallary.png')}
