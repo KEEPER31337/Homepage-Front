@@ -85,7 +85,6 @@ const ChallengeModal = forwardRef((challengeId, ref) => {
       .then((data) => {
         if (data.success) {
           console.log(data);
-          setDetailProbList(data.data);
         } else {
           console.log(data);
           alert('flag 제출중 오류가 발생하였습니다.');
