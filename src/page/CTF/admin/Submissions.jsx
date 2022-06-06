@@ -1,45 +1,39 @@
 import NavigationLayout from '../Components/NavigationLayout';
 import { connect } from 'react-redux';
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import Table from '../Components/Table';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
 
 import ctfAPI from 'API/v1/ctf';
 const Submissions = ({ member, memberSignIn }) => {
+  const [page, setPage] = useState(0);
+  const [canGoNext, setCanGoNext] = useState(false);
+  const [canGoPrev, setCanGoPrev] = useState(false);
+  const [rankList, setRankList] = useState([]);
+
+  const goNextPage = () => {
+    setPage(page + 1);
+  };
+
+  const goPrevPage = () => {
+    setPage(page - 1);
+  };
   useEffect(() => {
     ctfAPI
       .getSubmitLog({
         token: member.token,
-        page: 0,
-        size: 7,
+        page: page,
+        size: 10,
       })
       .then((data) => {
         if (data.success) {
           console.log(data);
+          setCanGoPrev(data.page.first);
+          setCanGoNext(data.page.last);
+          setRankList(data.page.content);
         }
       });
-  }, []);
-  const tableHead = [
-    '번호',
-    '문제이름',
-    '팀',
-    '제출자',
-    '제출한 flag',
-    '제출 시간',
-    '성공여부',
-  ];
-  const [tableBody, setTableBody] = useState([
-    [
-      '1',
-      '포렌식-냠냠문제',
-      '장서윤 바보팀',
-      '장서윤',
-      '[flag지롱지롱]',
-      '2022-2-7',
-      '성공',
-    ],
-  ]);
+  }, [page]);
+
   return (
     <div className="bg-mainWhite dark:bg-mainBlack min-h-screen">
       {/* 기존 홈페이지 헤더에 맞추기 위해,  */}
@@ -60,17 +54,74 @@ const Submissions = ({ member, memberSignIn }) => {
                       <div className="font-extrabold text-4xl m-1">
                         Submission-log
                       </div>
+                      <div className="flex items-center">
+                        {canGoPrev ? (
+                          <button disabled className="cursor-not-allowed">
+                            <ChevronLeftIcon className="inline-block  rounded h-10 w-10 text-white bg-slate-300" />
+                          </button>
+                        ) : (
+                          <button onClick={goPrevPage}>
+                            <ChevronLeftIcon className="inline-block  dark:hover:bg-indigo-500 hover:bg-amber-500  rounded h-10 w-10 text-white bg-amber-400 dark:bg-indigo-300" />
+                          </button>
+                        )}
+                        <div className="h-10 w-10 text-center text-3xl p-3 mx-1 rounded flex items-center dark:bg-indigo-300 bg-amber-400 text-white font-bold">
+                          {page + 1}
+                        </div>
+                        {canGoNext ? (
+                          <button disabled className="cursor-not-allowed">
+                            <ChevronRightIcon className="inline-block  rounded h-10 w-10 text-white bg-slate-300" />
+                          </button>
+                        ) : (
+                          <button onClick={goNextPage}>
+                            <ChevronRightIcon className="inline-block  dark:hover:bg-indigo-500 hover:bg-amber-500    rounded h-10 w-10 text-white bg-amber-400 dark:bg-indigo-300" />
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                   {/*구분선*/}
                   <div className="p-[2px] mb-2 bg-gradient-to-r from-amber-500 via-amber-200 to-yellow-300  "></div>
                   {/* 2.  프로필 이미지 + 팔로우 + 포인트 */}
 
-                  <div className="w-full">
-                    <Table
-                      headList={tableHead}
-                      bodyList={[...tableBody].reverse()}
-                    ></Table>
+                  <div className="w-full h-1/12 flex rounded overflow-auto">
+                    <table className="text-center h-full w-full bg-white dark:text-white dark:bg-darkPoint">
+                      <thead>
+                        <tr className=" h-10 w-full bg-gradient-to-r from-amber-400 via-red-800 to-black dark:from-pink-300 dark:via-purple-400 dark:to-indigo-400  text-lg text-white font-extrabold text-center ">
+                          <th className="w-2/12">문제</th>
+                          <th className="w-3/12">플래그</th>
+                          <th className="w-1/12">정답</th>
+                          <th className="w-1/12">팀</th>
+                          <th className="w-1/12">제출자</th>
+
+                          <th className="w-4/12">제출시간</th>
+                        </tr>
+                      </thead>
+                      <tbody className="">
+                        {rankList.map((info) => (
+                          <tr key={info.id} className="h-10 w-full  ">
+                            {/* shadow shadow-purple-300 */}
+                            <td>{info.challengeName}</td>
+                            <td>{info.flagSubmitted}</td>
+                            <td>
+                              {' '}
+                              {info.isCorrect === true ? (
+                                <div className="bg-green-200 w-full rounded-md mx-1 dark:text-black">
+                                  정답
+                                </div>
+                              ) : (
+                                <div className="bg-amber-200 w-full rounded-md mx-1 dark:text-black">
+                                  오답
+                                </div>
+                              )}
+                            </td>
+
+                            <td>{info.teamName}</td>
+                            <td>{info.submitterRealname}</td>
+                            <td>{info.submitTime}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
