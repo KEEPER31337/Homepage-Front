@@ -481,6 +481,25 @@ async function deleteProb({ pid, token }) {
     return error.response.data;
   }
 }
+
+// 제출 로그
+async function getSubmitLog({ page, size, token }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/admin/ctf/submit-log',
+    params: { page: page, size: size },
+
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
 export default {
   createContest,
   openContest,
@@ -506,4 +525,5 @@ export default {
   submitFlag,
   closeProb,
   deleteProb,
+  getSubmitLog,
 };
