@@ -305,45 +305,45 @@ async function createTeam({ name, description, contestId, token }) {
 
 // 팀 정보 수정
 async function reviseTeam({ teamId, name, description, contestId, token }) {
-    const options = {
-        method: 'PUT',
-        url: API_URL + '/v1/ctf/team/' + teamId,
-        headers: {
-        Authorization: token,
-        },
-        data: {
-          name,
-          description,
-          contestId,
-        },
-    };
-    try {
-      const response = await axios(options);
-      return response.data;
-    } catch (error) {
-      return error.response.data;
-    }
+  const options = {
+    method: 'PUT',
+    url: API_URL + '/v1/ctf/team/' + teamId,
+    headers: {
+      Authorization: token,
+    },
+    data: {
+      name,
+      description,
+      contestId,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
 }
 
 // 팀 가입
 async function joinTeam({ teamName, contestId, token }) {
-    const options = {
-        method: 'POST',
-        url: API_URL + '/v1/ctf/team/member',
-        data: {
-          teamName,
-        contestId,
-        },
-        headers: {
-        Authorization: token,
-        },
-    };
-    try {
-        const response = await axios(options);
-        return response.data;
-    } catch (error) {
-        return error.response.data;
-    }
+  const options = {
+    method: 'POST',
+    url: API_URL + '/v1/ctf/team/member',
+    data: {
+      teamName,
+      contestId,
+    },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
 }
 
 // 팀 탈퇴
@@ -442,6 +442,45 @@ async function submitFlag({ token, pid, contest }) {
   }
 }
 
+// CTF 문제 닫기
+async function closeProb({ pid, token }) {
+  const options = {
+    method: 'PATCH',
+    url: API_URL + '/v1/admin/ctf/prob/' + pid + '/close',
+    data: {
+      pid,
+    },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+// 문제 삭제
+async function deleteProb({ pid, token }) {
+  const options = {
+    method: 'DELETE',
+    url: API_URL + '/v1/admin/ctf/prob',
+    data: {
+      pid,
+    },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
 export default {
   createContest,
   openContest,
@@ -465,4 +504,6 @@ export default {
   seeMyTeam,
   getAdminProbList,
   submitFlag,
+  closeProb,
+  deleteProb,
 };

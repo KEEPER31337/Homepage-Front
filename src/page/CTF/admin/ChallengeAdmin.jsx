@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
+import { ChevronLeftIcon, TrashIcon } from '@heroicons/react/outline';
 import ctfAPI from 'API/v1/ctf';
 import moment from 'moment';
 import 'moment/locale/ko';
@@ -14,11 +14,34 @@ import Table from '../Components/Table';
 
 const ChallengeAdmin = ({ member, memberSignIn }) => {
   const [rankList, setRankList] = useState([]);
-  const [page, setPage] = useState(0);
-  const [canGoNext, setCanGoNext] = useState(false);
-  const [canGoPrev, setCanGoPrev] = useState(false);
+
+  //문제 닫기
+  // const closeProb = (e) => {
+  //   ctfAPI
+  //     .openProb({
+  //       pid: 2,
+  //       token: member.token,
+  //     })
+  //     .then((data) => {
+  //       // TODO cid 받아와서 넣기
+  //       if (data.success) {
+  //         console.log(data);
+  //       }
+  //     });
+  // };
 
   useEffect(() => {
+    // ctfAPI
+    //   .deleteProb({
+    //     pid: 3,
+    //     token: member.token,
+    //   })
+    //   .then((data) => {
+    //     // TODO cid 받아와서 넣기
+    //     if (data.success) {
+    //       console.log(data);
+    //     }
+    //   });
     ctfAPI
       .getAdminProbList({
         ctfId: 2,
@@ -27,7 +50,8 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
       .then((data) => {
         // TODO cid 받아와서 넣기
         if (data.success) {
-          console.log(data.list[0].isSolvable);
+          console.log(data.list[1].challengeId);
+          console.log(data.list[1].creatorName);
 
           setRankList(data.list);
         }
@@ -55,14 +79,14 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
                     <div className="mr-1 flex rounded p-1 bg-amber-300 border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
                       <div className=" text-md ">
                         <button className="hover:bg-amber-500  m-1 hover:text-mainWhite rounded font-bold">
-                          <Link to="/ctf/admin/challengeWrite">문제추가</Link>
+                          <Link to="/ctf/admin/challengeWrite">추가</Link>
                         </button>
                       </div>
                     </div>
                     <div className="flex rounded p-1 bg-amber-300 border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
                       <div className=" text-md ">
                         <button className="hover:bg-amber-500  m-1 hover:text-mainWhite rounded font-bold">
-                          문제 관리
+                          삭제
                         </button>
                       </div>
                     </div>
@@ -76,10 +100,9 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
                 <table className="text-center h-full w-full bg-white dark:text-white dark:bg-darkPoint">
                   <thead>
                     <tr className=" h-10 w-full bg-gradient-to-r from-amber-400 via-red-800 to-black dark:from-pink-300 dark:via-purple-400 dark:to-indigo-400  text-lg text-white font-extrabold text-center ">
-                      <th className="w-1/12">번호</th>
                       <th className="w-2/12">문제</th>
                       <th className="w-2/12">카테고리</th>
-                      <th className="w-3/12">플래그</th>
+                      <th className="w-4/12">플래그</th>
 
                       <th className="w-1/12">출제자</th>
                       <th className="w-1/12">점수</th>
@@ -89,11 +112,9 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
                   </thead>
                   <tbody className="">
                     {rankList.map((info) => (
-                      <tr key={info.id} className="h-10 w-full  ">
+                      <tr key={info.challengeId} className="h-10 w-full  ">
                         {/* shadow shadow-purple-300 */}
-                        <td>1</td>
-                        <td>제목이 긴 문제당</td>
-                        {/* <td>{info.title}</td> */}
+                        <td>{info.title}</td>
                         <td>{info.category.name}</td>
                         <td>{info.flag}</td>
                         <td>{info.creatorName}</td>
@@ -101,24 +122,26 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
 
                         <td className="dark:text-black">
                           {info.isSolvable === true ? (
-                            <div className="bg-green-300 rounded-md mx-1 hover:bg-green-400">
+                            <button
+                              // onClick={closeProb}
+                              className="bg-green-300 w-full rounded-md mx-1 hover:bg-green-400"
+                            >
                               공개
-                            </div>
+                            </button>
                           ) : (
-                            <div className="bg-amber-300 rounded-md mx-1 hover:bg-amber-400">
+                            <button className="bg-amber-300 w-full rounded-md mx-1 hover:bg-amber-400">
                               비공개
-                            </div>
+                            </button>
                           )}{' '}
                         </td>
                         <td>
-                          {' '}
-                          <input
-                            class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                            type="checkbox"
-                            value=""
-                            id="flexCheckChecked"
-                            checked
-                          />
+                          <div>
+                            <input
+                              type="checkbox"
+                              className="w-6 h-6 checked:bg-amber-300 duration-200 border border-gray-300  align-top bg-no-repeat bg-center bg-contain focus:outline-none transition appearance-none"
+                              id="checkbox1"
+                            />
+                          </div>
                         </td>
                       </tr>
                     ))}
