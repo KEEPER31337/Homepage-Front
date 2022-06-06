@@ -173,13 +173,13 @@ const FilesUploadForm = (props) => {
           <input {...InputProps} />
 
           {isDragActive ? (
-            <p className="text-slate-500 flex items-center text-center dark:text-slate-300">
+            <div className="text-slate-500 flex items-center text-center dark:text-slate-300">
               파일을
               <br />
               놓으세요
-            </p>
+            </div>
           ) : (
-            <p className="text-slate-500 flex items-center dark:text-slate-300">
+            <div className="text-slate-500 flex items-center dark:text-slate-300">
               <DocumentAddIcon
                 className=" h-10 w-10 inline-block "
                 aria-hidden="true"
@@ -189,7 +189,7 @@ const FilesUploadForm = (props) => {
                 <br />
                 파일을 첨부하세요
               </div>
-            </p>
+            </div>
           )}
         </div>
       </div>
