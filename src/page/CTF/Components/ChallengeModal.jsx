@@ -7,36 +7,12 @@ import {
   useImperativeHandle,
 } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { DownloadIcon } from '@heroicons/react/outline';
+import { DownloadIcon, XIcon } from '@heroicons/react/outline';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import actionMember from 'redux/action/member';
 
 // API
 import ctfAPI from 'API/v1/ctf';
-
-const testData = {
-  data: {
-    challengeId: 15,
-    title: 'name_436115754228',
-    score: 1000,
-    category: {
-      id: 4,
-      name: 'Forensic',
-    },
-    contestId: 21,
-    creatorName: '탈퇴회원',
-    solvedTeamCount: 1,
-    content: 'desc_436115754228',
-    file: {
-      id: 617,
-      fileName: '658a9d6396.jpg',
-      filePath: 'keeper_files/test/658a9d6396.jpg',
-      fileSize: 0,
-      uploadTime: '2022-05-22T00:14:31.371648654',
-      ipAddress: '111.111.111.111',
-    },
-  },
-};
 
 const ChallengeModal = forwardRef((challengeId, ref) => {
   const [open, setOpen] = useState(false);
@@ -55,8 +31,6 @@ const ChallengeModal = forwardRef((challengeId, ref) => {
     isSolved: null,
     file: null,
   });
-
-  const cancelButtonRef = useRef(null);
 
   //redux 연결
   const token = useSelector((store) => store.member.token);
@@ -91,6 +65,35 @@ const ChallengeModal = forwardRef((challengeId, ref) => {
     },
   }));
 
+  const [flag, setFlag] = useState('');
+  const onChange = (e) => {
+    setFlag(e.target.value);
+  };
+
+  const onClick = () => {
+    setOpen(false);
+  };
+
+  const submitFlagHandler = () => {
+    console.log(flag);
+    ctfAPI
+      .submitFlag({
+        pid: challengeId.challengeId,
+        content: flag,
+        token: token,
+      })
+      .then((data) => {
+        if (data.success) {
+          console.log(data);
+        } else {
+          console.log(data);
+          alert('flag 제출중 오류가 발생하였습니다.');
+        }
+      });
+  };
+
+  const cancelButtonRef = useRef(null);
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setOpen}>
@@ -122,9 +125,15 @@ const ChallengeModal = forwardRef((challengeId, ref) => {
               <Dialog.Panel className="relative inline-block bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
                 <div className="bg-white px-4 pt-5 sm:pb-2 sm:p-6">
                   <div className="mt-3 sm:mt-0 sm:ml-4">
-                    <div className="text-blue-600">
-                      {detailProbList.solvedTeamCount} Solves
+                    <div className="flex justify-between">
+                      <div className="text-blue-600">
+                        {detailProbList.solvedTeamCount} Solves
+                      </div>
+                      <button onClick={onClick}>
+                        <XIcon className="w-5 h-5 mr-2 hover:bg-indigo-300 rounded" />
+                      </button>
                     </div>
+
                     <Dialog.Title className="text-center text-xl font-medium text-gray-900 leading-loose m-8">
                       {detailProbList.title}
                       <br />
@@ -140,19 +149,22 @@ const ChallengeModal = forwardRef((challengeId, ref) => {
                           className="h-4 w-4 mr-2"
                           aria-hidden="true"
                         />
-                        {detailProbList.file}{' '}
+                        {detailProbList.file}
                         {/* TODO 파일 이름으로 받아오고 싶은데 일단 모르겠음 */}
                       </button>
-                      <div className="flex shadow-sm sm:text-sm my-5">
+                      <div className="flex flex-wrap sm:flex-nowrap shadow-sm sm:text-sm my-5">
                         <input
+                          name="flag"
                           type="text"
                           placeholder="KEEPER{...}"
+                          defaultValue={flag}
+                          onChange={onChange}
                           className="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:w-4/5 border-gray-300 rounded-md"
                         />
                         <button
                           type="button"
                           className="w-full justify-center rounded-md border border-transparent px-4 bg-indigo-500 hover:bg-indigo-400 font-medium text-white sm:ml-3 sm:w-1/5"
-                          onClick={() => setOpen(false)}
+                          onClick={submitFlagHandler}
                         >
                           제출
                         </button>
