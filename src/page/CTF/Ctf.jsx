@@ -51,7 +51,6 @@ const Ctf = ({ member }) => {
       });
   }, []);
 
-  console.log(tableBody);
   return (
     <div className="bg-mainWhite dark:bg-mainBlack min-h-screen">
       {/* 기존 홈페이지 헤더에 맞추기 위해,  */}
@@ -71,7 +70,7 @@ const Ctf = ({ member }) => {
               <div className="w-full">
                 <Table
                   headList={tableHead}
-                  bodyList={tableBody.reverse()}
+                  bodyList={[...tableBody].reverse()}
                 ></Table>
               </div>
             </div>
