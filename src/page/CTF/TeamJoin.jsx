@@ -19,6 +19,8 @@ const TeamJoin = ({ member }) => {
 
   const alertTeamNameModalRef = useRef({});
   const alertTeamDescModalRef = useRef({});
+  const alertTeamJoinComplete = useRef({});
+  const alertTeamCreateComplete = useRef({});
 
   useEffect(() => {
     teamAPI
@@ -37,10 +39,10 @@ const TeamJoin = ({ member }) => {
 
   const Header = () => {
     const tmp1 =
-      'bg-mainYellow w-20 py-2 rounded-tl-md rounded-tr-md text-center text-lg text-white mr-2';
+      'bg-mainYellow w-20 py-2 rounded-tl-md rounded-tr-md text-center text-lg text-white mr-2 mt-2';
 
     const tmp2 =
-      'border-x-2 border-t-2 border-mainYellow w-20 py-2 rounded-tl-md rounded-tr-md text-center text-lg text-mainYellow mr-2';
+      'border-x-2 border-t-2 border-mainYellow w-20 py-2 rounded-tl-md rounded-tr-md text-center text-lg text-mainYellow mr-2 mt-2';
 
     return (
       <div className="flex mt-2 ml-2">
@@ -71,8 +73,6 @@ const TeamJoin = ({ member }) => {
     };
 
     const teamCreateBtn = () => {
-      console.log('akjdfkladjsfkljaslkd');
-
       if (teamName == '') {
         alertTeamNameModalRef.current.open();
         return;
@@ -91,14 +91,31 @@ const TeamJoin = ({ member }) => {
         })
         .then((data) => {
           if (data.success) {
+            alertTeamCreateComplete.current.open();
           } else {
-            console.log(data.msg);
+            console.log('fail to createTeam', data);
           }
         });
     };
 
     const teamJoinBtn = () => {
-      console.log('눌렸당~!');
+      if (teamName == '') {
+        alertTeamNameModalRef.current.open();
+        return;
+      }
+      teamAPI
+        .joinTeam({
+          teamName: teamName,
+          contestId: 2,
+          token: member.token,
+        })
+        .then((data) => {
+          if (data.success) {
+            alertTeamJoinComplete.current.open();
+          } else {
+            console.log('fail to joinTeam', data);
+          }
+        });
     };
 
     return (
@@ -183,6 +200,12 @@ const TeamJoin = ({ member }) => {
       </MessageModal>
       <MessageModal ref={alertTeamDescModalRef}>
         팀 설명을 입력해주세요~!
+      </MessageModal>
+      <MessageModal ref={alertTeamCreateComplete}>
+        팀이 생성 되었습니다!
+      </MessageModal>
+      <MessageModal ref={alertTeamJoinComplete}>
+        팀에 성공적으로 가입되었습니다!
       </MessageModal>
     </div>
   );

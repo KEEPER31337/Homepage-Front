@@ -46,7 +46,9 @@ const ScoreBoardAnimation = ({ member }) => {
               hidden: { opacity: 0 },
             }}
           >
-            <div className="dark:text-white mb-2">{SecondRank.name}</div>
+            <div className="dark:text-white mb-2">
+              {SecondRank.name === null ? '' : SecondRank.name}
+            </div>
           </motion.div>
           <motion.div
             initial="hidden"
@@ -103,7 +105,9 @@ const ScoreBoardAnimation = ({ member }) => {
               hidden: { opacity: 0 },
             }}
           >
-            <div className="dark:text-white mb-2">{FirstRank.name}</div>
+            <div className="dark:text-white mb-2">
+              {FirstRank.name === null ? '' : FirstRank.name}
+            </div>
           </motion.div>
           <motion.div
             initial="hidden"
@@ -161,7 +165,9 @@ const ScoreBoardAnimation = ({ member }) => {
               hidden: { opacity: 0 },
             }}
           >
-            <div className="dark:text-white mb-2">{ThirdRank.name}</div>
+            <div className="dark:text-white mb-2">
+              {ThirdRank.name === null ? '' : ThirdRank.name}
+            </div>
           </motion.div>
           <motion.div
             initial="hidden"
