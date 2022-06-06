@@ -17,10 +17,12 @@ const TeamJoin = ({ member }) => {
   const [openPage, setOpenPage] = useState(true);
   const [teamList, setTeamList] = useState([]);
 
-  const alertTeamNameModalRef = useRef({});
-  const alertTeamDescModalRef = useRef({});
-  const alertTeamJoinComplete = useRef({});
-  const alertTeamCreateComplete = useRef({});
+  const alertTeamNameModalRef = useRef({}); // 팀명을 입력해달라는 알림
+  const alertTeamDescModalRef = useRef({}); // 팀 설명을 입력해달라는 알림
+  const alertTeamJoinComplete = useRef({}); // 팀에 가입되었다는 알림
+  const alertTeamCreateComplete = useRef({}); // 팀이 생성되었다는 알림
+  const alertTeamDuplicated = useRef({}); // 팀명이 중복될 때 뜨는 알림
+  const alertNotExistTeam = useRef({}); // 존재하지 않는 팀 알림
 
   useEffect(() => {
     teamAPI
@@ -92,8 +94,8 @@ const TeamJoin = ({ member }) => {
         .then((data) => {
           if (data.success) {
             alertTeamCreateComplete.current.open();
-          } else {
-            console.log('fail to createTeam', data);
+          } else if (data.msg.indexOf('is_duplicated')) {
+            alertTeamDuplicated.current.open();
           }
         });
     };
@@ -112,8 +114,8 @@ const TeamJoin = ({ member }) => {
         .then((data) => {
           if (data.success) {
             alertTeamJoinComplete.current.open();
-          } else {
-            console.log('fail to joinTeam', data);
+          } else if (data.code === -13004) {
+            alertNotExistTeam.current.open();
           }
         });
     };
@@ -206,6 +208,14 @@ const TeamJoin = ({ member }) => {
       </MessageModal>
       <MessageModal ref={alertTeamJoinComplete}>
         팀에 성공적으로 가입되었습니다!
+      </MessageModal>
+      <MessageModal ref={alertTeamDuplicated}>
+        동일한 팀명이 있습니다.. <br />한 발 늦었구만유~ ㅋ
+      </MessageModal>
+      <MessageModal ref={alertNotExistTeam}>
+        존재하지 않는 팀입니다~!
+        <br />
+        다시 확인해주십쇼!
       </MessageModal>
     </div>
   );
