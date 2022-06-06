@@ -383,7 +383,23 @@ async function seeMyTeam({ ctfId, token }) {
     return error.response.data;
   }
 }
-
+//제출 로그 api
+async function getSubmitLog({ token, page, size }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/admin/ctf/submit-log',
+    params: { page: page, size: size },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
 export default {
   createContest,
   openContest,
@@ -404,4 +420,5 @@ export default {
   seeTeamList,
   seeTeamDetail,
   seeMyTeam,
+  getSubmitLog,
 };

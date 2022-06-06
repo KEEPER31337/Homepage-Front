@@ -1,6 +1,45 @@
 import NavigationLayout from '../Components/NavigationLayout';
+import { connect } from 'react-redux';
+import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import Table from '../Components/Table';
 
-export default function Submissions() {
+import ctfAPI from 'API/v1/ctf';
+const Submissions = ({ member, memberSignIn }) => {
+  useEffect(() => {
+    ctfAPI
+      .getSubmitLog({
+        token: member.token,
+        page: 0,
+        size: 7,
+      })
+      .then((data) => {
+        if (data.success) {
+          console.log(data);
+        }
+      });
+  }, []);
+  const tableHead = [
+    '번호',
+    '문제이름',
+    '팀',
+    '제출자',
+    '제출한 flag',
+    '제출 시간',
+    '성공여부',
+  ];
+  const [tableBody, setTableBody] = useState([
+    [
+      '1',
+      '포렌식-냠냠문제',
+      '장서윤 바보팀',
+      '장서윤',
+      '[flag지롱지롱]',
+      '2022-2-7',
+      '성공',
+    ],
+  ]);
   return (
     <div className="bg-mainWhite dark:bg-mainBlack min-h-screen">
       {/* 기존 홈페이지 헤더에 맞추기 위해,  */}
@@ -14,58 +53,25 @@ export default function Submissions() {
             <div className=" w-full container mx-auto justify-center items-center">
               {/* 1. 커스텀 색상 팔레트 */}
 
-              <div className="h-full w-full  justify-center items-center">
-                <div className="p-1 bg-white">
-                  {/* 1.  닉네임 + 회원 뱃지 */}
-                  <div className="flex justify-between m-1">
-                    {/*닉네임*/}
-                    <div className="font-extrabold text-4xl m-1">
-                      Submission Log
+              <div className="md:flex p-1 mt-2">
+                <div className="w-full m-2 ">
+                  <div className="p-1 bg-white">
+                    <div className="flex justify-between m-1">
+                      <div className="font-extrabold text-4xl m-1">
+                        Submission-log
+                      </div>
                     </div>
-                    {/*회원 뱃지*/}
                   </div>
                   {/*구분선*/}
                   <div className="p-[2px] mb-2 bg-gradient-to-r from-amber-500 via-amber-200 to-yellow-300  "></div>
                   {/* 2.  프로필 이미지 + 팔로우 + 포인트 */}
 
-                  <table className="w-full  h-full border-4 text-center rounded-md">
-                    <thead>
-                      <tr className="h-10 bg-gray-100  border-b-2">
-                        <th>ID</th>
-                        <th>title</th>
-                        <th>성공여부</th>
-                        <th>team</th>
-                        <th>제출</th>
-                        <th>날짜</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
-                        <td>1</td>
-                        <td>어려운 문제</td>
-                        <td>성공</td>
-                        <td>키퍼팀</td>
-                        <td>flagaaaa</td>
-                        <td>2022.2.2</td>
-                      </tr>
-                      <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
-                        <td>2</td>
-                        <td>너무 어려운 문제</td>
-                        <td>실패</td>
-                        <td>냥냥팀</td>
-                        <td>flagAAA</td>
-                        <td>2022.2.2</td>
-                      </tr>
-                      <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
-                        <td>3</td>
-                        <td>짱짱 어려운 문제</td>
-                        <td>성공</td>
-                        <td>뇽뇽팀</td>
-                        <td>flagBBB</td>
-                        <td>2022.2.4</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <div className="w-full">
+                    <Table
+                      headList={tableHead}
+                      bodyList={[...tableBody].reverse()}
+                    ></Table>
+                  </div>
                 </div>
               </div>
               {/* NOTE 마이페이지 */}
@@ -76,4 +82,9 @@ export default function Submissions() {
       </div>
     </div>
   );
-}
+};
+const mapStateToProps = (state, OwnProps) => {
+  return { member: state.member };
+};
+
+export default connect(mapStateToProps)(Submissions);
