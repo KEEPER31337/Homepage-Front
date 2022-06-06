@@ -12,6 +12,8 @@ import { CogIcon, BanIcon } from '@heroicons/react/outline';
 const Team = ({ member }) => {
   const alertTeamModifyModalRef = useRef({});
   const alertTeamresignModalRef = useRef({});
+  const alertNoTeam = useRef({}); // 팀에 가입하지 않았을 때 뜨는 알림
+  const alertTeamDuplicated = useRef({}); // 팀명이 중복될 때 뜨는 알림
 
   // 정보 수정 눌렸을 시 뜨는 모달과 관련된 state
   const [settingStatus, setSettingState] = useState(false);
@@ -57,12 +59,10 @@ const Team = ({ member }) => {
               if (data.success) {
                 setTeamMember(data.data.teamMembers);
                 setTeamProb(data.data.solvedChallengeList);
-              } else {
-                console.log('fail to seeTeamDetail', data);
               }
             });
-        } else {
-          console.log('fail to seeMyTeam : ', data);
+        } else if (data.code == -13004) {
+          alertNoTeam.current.open();
         }
       });
   }, []);
@@ -90,8 +90,8 @@ const Team = ({ member }) => {
           setTeamDes(data.data.description);
           setTeamId(data.data.id);
           alertTeamModifyModalRef.current.open();
-        } else {
-          console.log('fail to 수정', data);
+        } else if (data.msg.indexOf('is_duplicated')) {
+          alertTeamDuplicated.current.open();
         }
       });
   };
@@ -113,8 +113,6 @@ const Team = ({ member }) => {
       .then((data) => {
         if (data.success) {
           alertTeamresignModalRef.current.open();
-        } else {
-          console.log('fail to 탈퇴', data);
         }
       });
   };
@@ -208,7 +206,7 @@ const Team = ({ member }) => {
   return (
     <div className="bg-mainWhite dark:bg-mainBlack">
       {/* 기존 홈페이지 헤더에 맞추기 위해,  */}
-      <div className="max-w-7xl h-full mx-auto flex flex-row">
+      <div className="max-w-7xl min-h-screen mx-auto flex flex-row">
         {/*사이드바*/}
         <NavigationLayout />
         <div className="md:w-4/5 flex flex-col flex-1 pt-0 p-3">
@@ -307,6 +305,13 @@ const Team = ({ member }) => {
       </MessageModal>
       <MessageModal ref={alertTeamresignModalRef}>
         팀 탈퇴가 성공적으로 이루어졌습니다ㅜ
+      </MessageModal>
+      <MessageModal ref={alertNoTeam}>
+        가입한 팀을 찾을 수 없습니다!
+        <br />팀 가입 부탁드립니다!
+      </MessageModal>
+      <MessageModal ref={alertTeamDuplicated}>
+        동일한 팀명이 있습니다.. <br />한 발 늦었구만유~ ㅋ
       </MessageModal>
     </div>
   );

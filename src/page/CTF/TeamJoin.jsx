@@ -24,21 +24,6 @@ const TeamJoin = ({ member }) => {
   const alertTeamDuplicated = useRef({}); // 팀명이 중복될 때 뜨는 알림
   const alertNotExistTeam = useRef({}); // 존재하지 않는 팀 알림
 
-  useEffect(() => {
-    teamAPI
-      .seeTeamList({
-        page: 0,
-        size: 10,
-        ctfId: 2,
-        token: member.token,
-      })
-      .then((data) => {
-        if (data.success) {
-          setTeamList(data.page.content);
-        }
-      });
-  }, []);
-
   const Header = () => {
     const tmp1 =
       'bg-mainYellow w-20 py-2 rounded-tl-md rounded-tr-md text-center text-lg text-white mr-2 mt-2';
@@ -188,7 +173,7 @@ const TeamJoin = ({ member }) => {
   return (
     <div className="bg-mainWhite dark:bg-mainBlack">
       {/* 기존 홈페이지 헤더에 맞추기 위해,  */}
-      <div className="max-w-7xl h-screen mx-auto flex flex-row">
+      <div className="max-w-7xl min-h-screen mx-auto flex flex-row">
         {/*사이드바*/}
         <NavigationLayout />
         <div className="md:w-4/5 flex flex-col flex-1 pt-0 p-3">
