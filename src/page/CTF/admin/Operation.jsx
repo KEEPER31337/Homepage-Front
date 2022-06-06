@@ -26,7 +26,6 @@ const Operation = ({ member }) => {
 
   const [contestName, setcontestName] = useState('');
   const [description, descriptionName] = useState('');
-  const [creator, creatorName] = useState('');
 
   const contestNameHandler = (e) => {
     setcontestName(e.target.value);
@@ -69,6 +68,7 @@ const Operation = ({ member }) => {
         if (data.success) {
           console.log(data);
           data.list.map((contest, contestIdx) => {
+            // FIXME contest 돌면서 둘 다 받아오는 게 아니라 하나만 받아옴
             const joinable = contest.joinable ? '열림' : '닫힘';
             console.log(tableBody);
             setTableBody(
@@ -76,7 +76,7 @@ const Operation = ({ member }) => {
                 [
                   contest.name,
                   contest.description,
-                  contest.creatorId,
+                  contest.creator.nickName,
                   joinable,
                 ],
               ])
@@ -131,7 +131,6 @@ const Operation = ({ member }) => {
   const onReset = () => {
     setcontestName('');
     descriptionName('');
-    creatorName('');
   };
 
   return (
