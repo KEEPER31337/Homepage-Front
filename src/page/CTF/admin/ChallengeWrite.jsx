@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 // local
-import ResponsiveEditor from 'page/Board/Components/ResponsiveEditor';
-import FilesUploadForm from 'page/Board/Components/FilesUploadForm';
+import ChallengeResponsiveEditor from '../Components/ChallengeResponsiveEditor';
+import ChallengeFilesUploadForm from '../Components/ChallengeFilesUploadForm';
 import NavigationLayout from '../Components/NavigationLayout';
 
 // API
@@ -23,36 +23,54 @@ const ChallengeWrite = ({ member }) => {
   const board = false;
   // <-세연's
 
+  const [inputs, setInputs] = useState({
+    challengeName: '',
+    category: 0,
+    flag: '',
+    type: 0,
+    score: '',
+  });
+  const { challengeName, category, flag, type, score } = inputs;
+
+  const onChange = (e) => {
+    const { value, name } = e.target;
+    setInputs({ ...inputs, [name]: value });
+  };
   const onClick = () => {
     ctfAPI
       .createProb({
-        title: 'C',
-        content: 'test',
+        title: inputs.challengeName,
+        content: null, // TODO
         contestId: 2,
         category: {
-          id: 3,
+          id: Number(inputs.category),
         },
         type: {
-          id: 1,
+          id: Number(inputs.type),
         },
-        isSolvable: true,
-        score: '1000',
+        isSolvable: true, // TODO check box 만들기
+        score: Number(inputs.score),
         dynamicInfo: {
           maxScore: 1000,
           minScore: 100,
         },
-        flag: 'KEEPER{jamitda_gaebal33}',
+        flag: inputs.flag,
         token: member.token,
       })
       .then((data) => {
         if (data.success) {
           console.log(data);
           navigate(`/ctf/admin/challengeAdmin`); //TODO 각 문제 생성된 형태 페이지로 이동되도록 수정
+          onReset();
         } else {
           console.log(data);
           alert('문제 생성 중 오류가 발생하였습니다.');
         }
       });
+  };
+  const onReset = () => {
+    //TODO 리셋적용 안 됨
+    setInputs({ challengeName: '', category: 0, flag: '', type: 0, score: '' });
   };
 
   return (
@@ -66,20 +84,21 @@ const ChallengeWrite = ({ member }) => {
             <div className="md:grid md:grid-cols-3 md:gap-6">
               <div className="mt-5 md:mt-0 md:col-span-3">
                 <form action="#" method="POST">
-                  <div className="shadow overflow-hidden sm:rounded-md md:p-10 bg-white">
+                  <div className="overflow-hidden sm:rounded-md md:p-10 bg-white">
                     <div className="px-4 py-5 sm:p-6">
                       <div className="grid grid-cols-5 gap-6">
                         <div className="col-span-5 sm:col-span-3">
                           <label
-                            htmlFor="challenge-name"
+                            htmlFor="challengeName"
                             className="block text-sm font-medium text-gray-700"
                           >
                             문제명
                           </label>
                           <input
                             type="text"
-                            name="challenge-name"
-                            id="challenge-name"
+                            name="challengeName"
+                            onChange={onChange}
+                            defaultValue={challengeName}
                             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                           />
                         </div>
@@ -92,18 +111,20 @@ const ChallengeWrite = ({ member }) => {
                             유형
                           </label>
                           <select
-                            id="category"
                             name="category"
+                            onChange={onChange}
+                            defaultValue={category}
                             className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                           >
-                            <option>WEB</option>
-                            <option>SYSTEM</option>
-                            <option>REVERSING</option>
-                            <option>CRYPTO</option>
-                            <option>FORENSICS</option>
-                            <option>MISC</option>
-                            <option>OSINT</option>
-                            <option>직접 입력.. (유형 추가할 때 어카지)</option>
+                            {/* TODO map 사용하는 걸로 수정하자! */}
+                            <option value={0}>선택</option>
+                            <option value={5}>WEB</option>
+                            <option value={2}>SYSTEM</option>
+                            <option value={3}>REVERSING</option>
+                            <option value={6}>CRYPTO</option>
+                            <option value={4}>FORENSICS</option>
+                            <option value={1}>MISC</option>
+                            <option value={7}>OSINT</option>
                           </select>
                         </div>
 
@@ -115,7 +136,7 @@ const ChallengeWrite = ({ member }) => {
                             문제 설명
                           </label>
                           <div className="w-full h-[50vh] min-h-[500px] inline-block mt-1 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm sm:text-sm border-gray-300 rounded-md">
-                            <ResponsiveEditor
+                            <ChallengeResponsiveEditor
                               content={content}
                               isDark={isDark}
                               updateContent={updateContent}
@@ -134,32 +155,77 @@ const ChallengeWrite = ({ member }) => {
                           <input
                             type="text"
                             name="flag"
-                            id="flag"
                             placeholder="KEEPER{...}"
+                            defaultValue={flag}
+                            onChange={onChange}
                             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                           />
                         </div>
-                        <div className="col-span-5 sm:col-span-3">
+                        <div className="col-span-5 sm:col-span-2">
                           {/* 빈공간 주고 싶을때 어떻게 하는 지 찾아보기 귀찮아서 내용없는 빈 거 임시로 가져다놓음 */}
                         </div>
 
-                        <div className="col-span-5 sm:col-span-3">
+                        <div className="col-span-5 sm:col-span-1">
                           <label
-                            htmlFor="region"
+                            htmlFor="type"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            타입
+                          </label>
+                          <select
+                            name="type"
+                            defaultValue={type}
+                            onChange={onChange}
+                            className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          >
+                            <option value={0}>선택</option>
+                            <option value={1}>STANDARD</option>
+                            <option value={2}>DYNAMIC</option>
+                          </select>
+                        </div>
+                        {/* TODO 타입 선택 후 거기 해당하는 거 나오도록 */}
+                        <div className="col-span-5 sm:col-span-1">
+                          <label
+                            htmlFor="score"
                             className="block text-sm font-medium text-gray-700"
                           >
                             배점
                           </label>
                           <input
                             type="text"
-                            name="region"
-                            id="region"
+                            name="score"
+                            defaultValue={score}
+                            onChange={onChange}
                             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                           />
                         </div>
-
-                        <div className="col-span-5 sm:col-span-3">
-                          {/* 빈공간 주고 싶을때 어떻게 하는 지 찾아보기 귀찮아서 내용없는 빈 거 임시로 가져다놓음 */}
+                        <div className="col-span-5 sm:col-span-1">
+                          <label
+                            htmlFor="max score"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            최고 점수
+                          </label>
+                          <input
+                            type="text"
+                            name="max score"
+                            onChange={onChange}
+                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          />
+                        </div>
+                        <div className="col-span-5 sm:col-span-1">
+                          <label
+                            htmlFor="min score"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            최저 점수
+                          </label>
+                          <input
+                            type="text"
+                            name="min score"
+                            onChange={onChange}
+                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          />
                         </div>
 
                         <div className="col-span-5 sm:col-span-5">
@@ -170,7 +236,7 @@ const ChallengeWrite = ({ member }) => {
                             문제 파일
                           </label>
                           <div className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                            <FilesUploadForm
+                            <ChallengeFilesUploadForm
                               setFiles={setFiles}
                               modifyFlag={modifyFlag}
                               board={board}

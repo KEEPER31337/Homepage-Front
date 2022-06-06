@@ -11,12 +11,13 @@ const ContestOverview = (props) => {
           'w-52 h-40 truncate mx-3 mb-6 rounded-md shadow-md bg-orange-100'
         }
       >
-        <div className="my-3">
-          <div className="text-xl m-4">{name}</div>
-          <div>{description}</div>
-          <div>{creator}</div>
-        </div>
-        <Link to="/ctf/challenge"></Link>
+        <Link to="/ctf/teamJoin">
+          <div className="my-3">
+            <div className="text-xl m-4">{name}</div>
+            <div>{description}</div>
+            <div>{creator}</div>
+          </div>
+        </Link>
       </button>
     </>
   );

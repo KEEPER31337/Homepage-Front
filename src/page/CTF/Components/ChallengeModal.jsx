@@ -2,13 +2,17 @@ import {
   Fragment,
   useRef,
   useState,
+  useEffect,
   forwardRef,
   useImperativeHandle,
 } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { DownloadIcon } from '@heroicons/react/outline';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import actionMember from 'redux/action/member';
 
-//TODO 문제 id 받아와야 함
+// API
+import ctfAPI from 'API/v1/ctf';
 
 const testData = {
   data: {
@@ -34,14 +38,56 @@ const testData = {
   },
 };
 
-const ChallengeModal = forwardRef((props, ref) => {
+const ChallengeModal = forwardRef((challengeId, ref) => {
   const [open, setOpen] = useState(false);
+  const [detailProbList, setDetailProbList] = useState({
+    challengeId: null,
+    title: null,
+    content: null,
+    category: {
+      id: null,
+      name: null,
+    },
+    score: null,
+    creatorName: null,
+    contestId: null,
+    solvedTeamCount: null,
+    isSolved: null,
+    file: null,
+  });
 
   const cancelButtonRef = useRef(null);
+
+  //redux 연결
+  const token = useSelector((store) => store.member.token);
+  const memberInfo = useSelector((store) => store.member.memberInfo);
+  //dispatch 예시
+  const dispatch = useDispatch();
+  const updateInfo = ({ memberInfo }) => {
+    dispatch(actionMember.updateInfo({ memberInfo }));
+  };
+
+  useEffect(() => {
+    updateInfo({ memberInfo });
+  }, [memberInfo]);
 
   useImperativeHandle(ref, () => ({
     open: () => {
       setOpen(true);
+      ctfAPI
+        .getDetailProbList({
+          pid: challengeId.challengeId,
+          token: token,
+        })
+        .then((data) => {
+          if (data.success) {
+            console.log(data);
+            setDetailProbList(data.data);
+          } else {
+            console.log(data);
+            alert('문제 세부 목록을 받아오는 중 오류가 발생하였습니다.');
+          }
+        });
     },
   }));
 
@@ -77,24 +123,25 @@ const ChallengeModal = forwardRef((props, ref) => {
                 <div className="bg-white px-4 pt-5 sm:pb-2 sm:p-6">
                   <div className="mt-3 sm:mt-0 sm:ml-4">
                     <div className="text-blue-600">
-                      {testData.data.solvedTeamCount} Solves
+                      {detailProbList.solvedTeamCount} Solves
                     </div>
                     <Dialog.Title className="text-center text-xl font-medium text-gray-900 leading-loose m-8">
-                      {testData.data.title}
+                      {detailProbList.title}
                       <br />
-                      {testData.data.score}
+                      {detailProbList.score}
                     </Dialog.Title>
 
                     <div className="m-5">
                       <div className="text-base text-gray-500">
-                        {testData.data.content}
+                        {detailProbList.content}
                       </div>
                       <button className="mt-14 p-3 bg-slate-500 flex rounded-md text-white text-xs">
                         <DownloadIcon
                           className="h-4 w-4 mr-2"
                           aria-hidden="true"
                         />
-                        {testData.data.file.fileName}
+                        {detailProbList.file}{' '}
+                        {/* TODO 파일 이름으로 받아오고 싶은데 일단 모르겠음 */}
                       </button>
                       <div className="flex shadow-sm sm:text-sm my-5">
                         <input
@@ -115,7 +162,7 @@ const ChallengeModal = forwardRef((props, ref) => {
                 </div>
                 <div className="bg-gray-50 px-4 py-2 sm:px-6 sm:flex sm:flex-row-reverse">
                   <div className="text-sm text-right text-gray-500 italic">
-                    Author : {testData.data.creatorName}
+                    Author : {detailProbList.creatorName}
                   </div>
                 </div>
               </Dialog.Panel>

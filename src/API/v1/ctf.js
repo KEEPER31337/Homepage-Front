@@ -190,6 +190,43 @@ async function getProbList({ token, cid }) {
     return error.response.data;
   }
 }
+
+// CTF 문제 세부 목록 조회
+async function getDetailProbList({ token, pid }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/ctf/prob/' + pid,
+    params: { pid },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+// CTF 문제 목록 조회(ADMIN)
+async function getAdminProbList({ token, ctfId }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/admin/ctf/prob',
+    params: { ctfId },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 // CTF 문제 카테고리 조회
 async function getCategoryList({ token }) {
   const options = {
@@ -267,17 +304,17 @@ async function createTeam({ name, description, contestId, token }) {
 }
 
 // 팀 정보 수정
-async function reviseTeam({ name, description, contestId, token }) {
+async function reviseTeam({ teamId, name, description, contestId, token }) {
   const options = {
-    method: 'POST',
-    url: API_URL + '/v1/ctf/team/288',
+    method: 'PUT',
+    url: API_URL + '/v1/ctf/team/' + teamId,
+    headers: {
+      Authorization: token,
+    },
     data: {
       name,
       description,
       contestId,
-    },
-    headers: {
-      Authorization: token,
     },
   };
   try {
@@ -289,12 +326,13 @@ async function reviseTeam({ name, description, contestId, token }) {
 }
 
 // 팀 가입
-async function joinTeam({ name, token }) {
+async function joinTeam({ teamName, contestId, token }) {
   const options = {
     method: 'POST',
-    url: API_URL + '/v1/ctf/team',
+    url: API_URL + '/v1/ctf/team/member',
     data: {
-      name,
+      teamName,
+      contestId,
     },
     headers: {
       Authorization: token,
@@ -383,12 +421,55 @@ async function seeMyTeam({ ctfId, token }) {
     return error.response.data;
   }
 }
-//제출 로그 api
-async function getSubmitLog({ token, page, size }) {
+
+// 문제 Flag 제출
+async function submitFlag({ token, pid, contest }) {
   const options = {
-    method: 'GET',
-    url: API_URL + '/v1/admin/ctf/submit-log',
-    params: { page: page, size: size },
+    method: 'POST',
+    url: API_URL + '/v1/ctf/prob/' + pid + '/submit/flag',
+    data: {
+      contest,
+    },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+// CTF 문제 닫기
+async function closeProb({ pid, token }) {
+  const options = {
+    method: 'PATCH',
+    url: API_URL + '/v1/admin/ctf/prob/' + pid + '/close',
+    data: {
+      pid,
+    },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+// 문제 삭제
+async function deleteProb({ pid, token }) {
+  const options = {
+    method: 'DELETE',
+    url: API_URL + '/v1/admin/ctf/prob',
+    data: {
+      pid,
+    },
     headers: {
       Authorization: token,
     },
@@ -410,6 +491,7 @@ export default {
   getRanking,
   addAuthor,
   getProbList,
+  getDetailProbList,
   getCategoryList,
   getTypeList,
   openProb,
@@ -420,5 +502,8 @@ export default {
   seeTeamList,
   seeTeamDetail,
   seeMyTeam,
-  getSubmitLog,
+  getAdminProbList,
+  submitFlag,
+  closeProb,
+  deleteProb,
 };

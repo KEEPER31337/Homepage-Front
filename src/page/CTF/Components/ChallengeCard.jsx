@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import ChallengeModal from './ChallengeModal';
 
 const ChallengeCard = (props) => {
-  const { name, score, isSolved } = props;
+  const { id, title, score, isSolved } = props;
 
   const challengeModalRef = useRef({});
 
@@ -18,12 +18,12 @@ const ChallengeCard = (props) => {
         }
       >
         <div className="my-3">
-          <div className="text-xl m-4">{name}</div>
+          <div className="text-xl m-3 font-semibold">{title}</div>
           <div>{score}</div>
         </div>
       </button>
 
-      <ChallengeModal ref={challengeModalRef} />
+      <ChallengeModal challengeId={id} ref={challengeModalRef} />
     </>
   );
 };
