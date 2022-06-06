@@ -24,16 +24,35 @@ const Operation = ({ member }) => {
   const [allMemberList, setAllMemberList] = useState([]); //멤버 추가 시 보여줄 동아리 회원의 전체 리스트
   const [headMember, setHeadMember] = useState([]); //멤버 오브젝트
 
+  const [contestName, setcontestName] = useState('');
+  const [description, descriptionName] = useState('');
+  const [creator, creatorName] = useState('');
+
+  const contestNameHandler = (e) => {
+    setcontestName(e.target.value);
+  };
+  const descriptionHandler = (e) => {
+    descriptionName(e.target.value);
+  };
+
   const tableHead = ['대회명', '설명', '개최자', '개최여부'];
+
   const [tableBody, setTableBody] = useState([
     [
-      <input type="text" placeholder="추가 대회 이름" className="w-2/3 h-8" />,
-      <input type="text" placeholder="추가 대회 설명" className="w-2/3 h-8" />,
       <input
-        type="text"
-        placeholder="추가 대회 개최자"
-        className="w-2/3 h-8"
+        onChange={contestNameHandler}
+        defaultValue={contestName}
+        placeholder="추가 대회 이름"
+        className="w-2/3 h-8 text-center rounded-md border-2"
       />,
+      <input
+        name="description"
+        onChange={descriptionHandler}
+        defaultValue={description}
+        placeholder="추가 대회 설명"
+        className="w-2/3 h-8 text-center rounded-md border-2"
+      />,
+      member.memberInfo.nickName,
       '닫힘',
     ],
   ]);
@@ -51,6 +70,7 @@ const Operation = ({ member }) => {
           console.log(data);
           data.list.map((contest, contestIdx) => {
             const joinable = contest.joinable ? '열림' : '닫힘';
+            console.log(tableBody);
             setTableBody(
               tableBody.concat([
                 [
@@ -91,13 +111,29 @@ const Operation = ({ member }) => {
   };
 
   const createContestHandler = () => {
-    console.log('추가추가');
-    /* ctfAPI.createContest({
-  token: member.token, name, description
-}) */
+    onReset();
+    ctfAPI
+      .createContest({
+        token: member.token,
+        name: contestName,
+        description: description,
+      })
+      .then((data) => {
+        if (data.success) {
+          console.log(data);
+        } else {
+          console.log(data);
+          alert('대회 생성 중 오류가 발생하였습니다.');
+        }
+      });
   };
-  console.log(tableBody);
-  console.log([...tableBody].reverse());
+
+  const onReset = () => {
+    setcontestName('');
+    descriptionName('');
+    creatorName('');
+  };
+
   return (
     <div className="bg-mainWhite dark:bg-mainBlack min-h-screen">
       {/* 기존 홈페이지 헤더에 맞추기 위해,  */}
