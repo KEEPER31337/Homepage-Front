@@ -128,8 +128,14 @@ const Team = ({ member }) => {
           <div>{teamScore} points</div>
         </div>
         <div className="flex justify-center m-2">
-          <CogIcon className="h-7 w-7 m-1" onClick={openSettingModal} />
-          <BanIcon className="h-6 w-6 m-1.5" onClick={openBanModal} />
+          <CogIcon
+            className="h-7 w-7 m-1 dark:text-purple-300"
+            onClick={openSettingModal}
+          />
+          <BanIcon
+            className="h-6 w-6 m-1.5 dark:text-purple-300"
+            onClick={openBanModal}
+          />
         </div>
         <div className="h-1 bg-gradient-to-r from-black via-red-800 to-amber-400 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-300"></div>
       </>
@@ -173,7 +179,7 @@ const Team = ({ member }) => {
         <div className="flex flex-col items-center rounded overflow-hidden m-4 p-2">
           <table className="justify-center dark:text-white w-11/12 border-2 shadow  rounded-md dark:bg-darkPoint">
             <thead>
-              <tr className="rounded w-10/12 h-10 bg-gray-100 text-lg">
+              <tr className="rounded w-10/12 h-10 bg-gray-100 text-lg text-black">
                 <th>Type</th>
                 <th>Title</th>
                 <th>Score</th>
