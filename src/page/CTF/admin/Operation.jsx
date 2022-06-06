@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import NavigationLayout from '../Components/NavigationLayout';
 import { connect } from 'react-redux';
 import actionMember from 'redux/action/member';
 import {
@@ -10,6 +9,11 @@ import {
   ExclamationCircleIcon,
 } from '@heroicons/react/solid';
 
+// local
+import NavigationLayout from '../Components/NavigationLayout';
+import Table from '../Components/Table';
+
+//api
 import memberAPI from 'API/v1/member';
 import ctfAPI from 'API/v1/ctf';
 
@@ -20,10 +24,49 @@ const Operation = ({ member }) => {
   const [allMemberList, setAllMemberList] = useState([]); //멤버 추가 시 보여줄 동아리 회원의 전체 리스트
   const [headMember, setHeadMember] = useState([]); //멤버 오브젝트
 
+  const tableHead = ['대회명', '설명', '개최자', '개최여부'];
+  const [tableBody, setTableBody] = useState([
+    [
+      <input type="text" placeholder="추가 대회 이름" className="w-2/3 h-8" />,
+      <input type="text" placeholder="추가 대회 설명" className="w-2/3 h-8" />,
+      <input
+        type="text"
+        placeholder="추가 대회 개최자"
+        className="w-2/3 h-8"
+      />,
+      '닫힘',
+    ],
+  ]);
+
   useEffect(() => {
     memberAPI.getAllMembers().then((data) => {
       setAllMemberList(data.list);
     });
+    ctfAPI
+      .getContestList({
+        token: member.token,
+      })
+      .then((data) => {
+        if (data.success) {
+          console.log(data);
+          data.list.map((contest, contestIdx) => {
+            const joinable = contest.joinable ? '열림' : '닫힘';
+            setTableBody(
+              tableBody.concat([
+                [
+                  contest.name,
+                  contest.description,
+                  contest.creatorId,
+                  joinable,
+                ],
+              ])
+            );
+          });
+        } else {
+          console.log(data);
+          alert('대회 목록 불러오는 중 오류가 발생하였습니다.');
+        }
+      });
   }, []);
 
   const addMember = (author) => {
@@ -47,6 +90,14 @@ const Operation = ({ member }) => {
     }
   };
 
+  const createContestHandler = () => {
+    console.log('추가추가');
+    /* ctfAPI.createContest({
+  token: member.token, name, description
+}) */
+  };
+  console.log(tableBody);
+  console.log([...tableBody].reverse());
   return (
     <div className="bg-mainWhite dark:bg-mainBlack min-h-screen">
       {/* 기존 홈페이지 헤더에 맞추기 위해,  */}
@@ -59,18 +110,23 @@ const Operation = ({ member }) => {
             <div className=" w-full container mx-auto justify-center items-center">
               {/* 1. 커스텀 색상 팔레트 */}
 
-              <div className="h-full w-full  justify-center items-center">
-                <div className="p-1 bg-white">
-                  <div className="flex justify-between m-1">
-                    <div className="font-extrabold text-4xl m-1">
-                      CTF-Operation
-                    </div>
-                    <div className="flex m-1">
-                      <div className=" flex rounded p-1 bg-amber-300 border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
-                        <div className=" text-md ">
-                          <button className="hover:bg-amber-500  m-1 hover:text-mainWhite rounded font-bold">
-                            대회 추가
-                          </button>
+              <div className="md:flex p-1 mt-2">
+                <div className="w-full m-2 ">
+                  <div className="p-1 bg-white">
+                    <div className="flex justify-between m-1">
+                      <div className="font-extrabold text-4xl m-1">
+                        CTF-Operation
+                      </div>
+                      <div className="flex m-1">
+                        <div className=" flex rounded p-1 bg-amber-300 border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
+                          <div className=" text-md ">
+                            <button
+                              className="hover:bg-amber-500  m-1 hover:text-mainWhite rounded font-bold"
+                              onClick={createContestHandler}
+                            >
+                              대회 추가
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -79,32 +135,12 @@ const Operation = ({ member }) => {
                   <div className="p-[2px] mb-2 bg-gradient-to-r from-amber-500 via-amber-200 to-yellow-300  "></div>
                   {/* 2.  프로필 이미지 + 팔로우 + 포인트 */}
 
-                  <table className="w-full  h-full border-4 text-center rounded-md">
-                    {' '}
-                    <thead>
-                      <tr className="h-10 bg-gray-100  border-b-2">
-                        <th>번호</th>
-                        <th>대회명</th>
-                        <th>설명</th>
-                        <th>개최자</th>
-                        <th>개최여부</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]">
-                        <td>1</td>
-                        <td>2022_1 KEEPER CTF</td>
-                        <td>없움</td>
-                        <td>현모정</td>
-                        <td>
-                          <button className="bg-amber-500  m-1 hover:text-mainWhite rounded font-bold">
-                            안개최
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-
+                  <div className="w-full">
+                    <Table
+                      headList={tableHead}
+                      bodyList={[...tableBody].reverse()}
+                    ></Table>
+                  </div>
                   <div className="flex justify-end">
                     <button
                       className={
