@@ -190,6 +190,23 @@ async function getProbList({ token, cid }) {
     return error.response.data;
   }
 }
+// CTF 문제 목록 조회(ADMIN)
+async function getAdminProbList({ token, ctfId }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/admin/ctf/prob',
+    params: { ctfId },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
 // CTF 문제 카테고리 조회
 async function getCategoryList({ token }) {
   const options = {
@@ -404,4 +421,5 @@ export default {
   seeTeamList,
   seeTeamDetail,
   seeMyTeam,
+  getAdminProbList,
 };
