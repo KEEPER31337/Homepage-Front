@@ -423,12 +423,12 @@ async function seeMyTeam({ ctfId, token }) {
 }
 
 // 문제 Flag 제출
-async function submitFlag({ token, pid, contest }) {
+async function submitFlag({ token, pid, content }) {
   const options = {
     method: 'POST',
     url: API_URL + '/v1/ctf/prob/' + pid + '/submit/flag',
     data: {
-      contest,
+      content,
     },
     headers: {
       Authorization: token,
