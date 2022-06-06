@@ -421,6 +421,26 @@ async function seeMyTeam({ ctfId, token }) {
   }
 }
 
+// 문제 Flag 제출
+async function submitFlag({ token, pid, contest }) {
+  const options = {
+    method: 'POST',
+    url: API_URL + '/v1/ctf/prob/' + pid + '/submit/flag',
+    data: {
+      contest,
+    },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 export default {
   createContest,
   openContest,
@@ -443,4 +463,5 @@ export default {
   seeTeamDetail,
   seeMyTeam,
   getAdminProbList,
+  submitFlag,
 };
