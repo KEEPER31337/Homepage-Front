@@ -34,6 +34,7 @@ const Team = ({ member }) => {
   const [teamScore, setTeamScore] = useState(0);
   const [teamId, setTeamId] = useState(-1);
   const [teamMember, setTeamMember] = useState([]);
+  const [teamProb, setTeamProb] = useState([]);
 
   useEffect(() => {
     teamAPI
@@ -55,7 +56,7 @@ const Team = ({ member }) => {
             .then((data) => {
               if (data.success) {
                 setTeamMember(data.data.teamMembers);
-                console.log('teamMember', data.data.teamMembers);
+                setTeamProb(data.data.solvedChallengeList);
               } else {
                 console.log('fail to seeTeamDetail', data);
               }
@@ -137,79 +138,62 @@ const Team = ({ member }) => {
 
   const Members = () => {
     return (
-      <div className="flex justify-center">
-        <div className="flex flex-col justify-center w-11/12 rounded overflow-hidden border dark:border-gray-700 m-4 p-2">
-          <table classNem="justify-center dark:text-white w-11/12 border-2 shadow  rounded-md dark:bg-darkPoint">
-            <thead>
-              <tr className="rounded w-11/12 h-10 bg-gradient-to-r from-amber-400 via-red-800 to-black dark:from-pink-300 dark:via-purple-400 dark:to-indigo-400 text-lg text-white font-extrabold text-center">
-                <th>Id</th>
-                <th>User Name</th>
-              </tr>
-            </thead>
-            <tbody className="dark:text-white">
-              {teamMember.map((info, idx) => {
-                return (
-                  <tr className="w-11/12 h-10 text-center hover:bg-gray-100 dark:hover:bg-[#0b1523]">
-                    <td>{idx + 1}</td>
-                    <td>{info.nickName}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+      <div className="flex flex-col items-center rounded overflow-hidden m-4 p-2">
+        <table className="justify-center dark:text-white w-11/12 border-2 shadow  rounded-md dark:bg-darkPoint">
+          <thead>
+            <tr className="rounded w-11/12 h-10 bg-gradient-to-r from-amber-400 via-red-800 to-black dark:from-pink-300 dark:via-purple-400 dark:to-indigo-400 text-lg text-white font-extrabold text-center">
+              <th>Id</th>
+              <th>User Name</th>
+            </tr>
+          </thead>
+          <tbody className="dark:text-white">
+            {teamMember.map((info, idx) => {
+              return (
+                <tr
+                  key={idx}
+                  className="w-11/12 h-10 text-center hover:bg-gray-100 dark:hover:bg-[#0b1523]"
+                >
+                  <td>{idx + 1}</td>
+                  <td>{info.nickName}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     );
   };
 
   const Solves = () => {
-    const team = informationOfTeam.filter((info) => nameOfTeam === info.team);
-    const members = team[0].members;
-    const solves = [];
-    members.map((info) => {
-      informationOfPerson.map((person) => {
-        if (info == person.name) {
-          person.solves.map((quest) => {
-            const tmp = quest;
-            tmp.push(person.name);
-            solves.push(tmp);
-          });
-        }
-      });
-    });
-
     return (
       <>
         <strong className="w-full text-4xl ml-2 mt-3 dark:text-white">
           Solves
         </strong>
-        <div className="flex justify-center">
-          <div className="flex flex-col justify-center w-11/12 rounded overflow-hidden border dark:border-gray-700 m-4 p-2">
-            <table classNem="justify-center dark:text-white w-11/12 border-2 shadow  rounded-md dark:bg-darkPoint">
-              <thead>
-                <tr className="rounded w-10/12 h-10 bg-gray-100 text-lg">
-                  <th>Type</th>
-                  <th>Challenge</th>
-                  <th>Value</th>
-                  <th>User</th>
-                  <th>Time</th>
-                </tr>
-              </thead>
-              <tbody className="dark:text-white">
-                {solves.map((info) => {
-                  return (
-                    <tr className="w-11/12 h-10 text-center hover:bg-gray-100 dark:hover:bg-[#0b1523]">
-                      <td>{info[0]}</td>
-                      <td>{info[1]}</td>
-                      <td>100</td>
-                      <td>{info[3]}</td>
-                      <td>{info[2]}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+        <div className="flex flex-col items-center rounded overflow-hidden m-4 p-2">
+          <table className="justify-center dark:text-white w-11/12 border-2 shadow  rounded-md dark:bg-darkPoint">
+            <thead>
+              <tr className="rounded w-10/12 h-10 bg-gray-100 text-lg">
+                <th>Type</th>
+                <th>Title</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+            <tbody className="dark:text-white">
+              {teamProb.map((info, idx) => {
+                return (
+                  <tr
+                    key={idx}
+                    className="w-11/12 h-10 text-center hover:bg-gray-100 dark:hover:bg-[#0b1523]"
+                  >
+                    <td>{info.category.name}</td>
+                    <td>{info.title}</td>
+                    <td>{info.score}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       </>
     );
@@ -226,7 +210,7 @@ const Team = ({ member }) => {
           {/* <ScoreBoard/> */}
           <TopSection />
           <Members />
-          {/* <Solves /> */}
+          <Solves />
         </div>
       </div>
       <Modal // 팀 정보 수정 클릭 시 뜨는 창
