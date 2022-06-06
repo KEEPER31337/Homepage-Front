@@ -9,10 +9,11 @@ const Category = (props) => {
       <div className="justify-center flex sm:justify-start mb-6">
         <div className="text-2xl dark:text-yellow-100">{category}</div>
       </div>
-      <div className="justify-center flex flex-wrap sm:justify-between">
+      <div className="justify-center flex flex-wrap sm:justify-start">
         {categoryList.map((challenge, challengeIdx) => (
           <ChallengeCard
             key={challengeIdx}
+            id={challenge.challengeId}
             title={challenge.title}
             score={challenge.score}
             isSolved={challenge.isSolved}

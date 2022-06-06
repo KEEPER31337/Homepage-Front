@@ -42,11 +42,12 @@ const Challenge = ({ member }) => {
     {
       challengeId: null,
       title: null,
-      score: null,
       category: {
         id: null,
         name: null,
       },
+      score: null,
+      isSolved: null,
       contestId: null,
     },
   ]);
