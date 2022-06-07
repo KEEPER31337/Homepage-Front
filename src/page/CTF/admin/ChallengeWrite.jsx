@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 // local
 import ChallengeResponsiveEditor from '../Components/ChallengeResponsiveEditor';
-import ChallengeFilesUploadForm from '../Components/ChallengeFilesUploadForm';
+import FilesUploadForm from '../Components/ChallengeFilesUploadForm';
 import NavigationLayout from '../Components/NavigationLayout';
 
 // API
@@ -19,8 +19,6 @@ const ChallengeWrite = ({ member }) => {
   const updateContent = '';
   const editorRef = useRef();
   const [files, setFiles] = useState([]);
-  const modifyFlag = false;
-  const board = false;
   // <-세연's
 
   const [inputs, setInputs] = useState({
@@ -40,7 +38,7 @@ const ChallengeWrite = ({ member }) => {
     ctfAPI
       .createProb({
         title: inputs.challengeName,
-        content: null, // TODO
+        content: 'aaaaa', // TODO
         contestId: 2,
         category: {
           id: Number(inputs.category),
@@ -60,8 +58,22 @@ const ChallengeWrite = ({ member }) => {
       .then((data) => {
         if (data.success) {
           console.log(data);
-          navigate(`/ctf/admin/challengeAdmin`); //TODO 각 문제 생성된 형태 페이지로 이동되도록 수정
-          onReset();
+          console.log('files : ', files);
+          ctfAPI
+            .addProbFile({
+              challengeId: data.data.challengeId,
+              files: files,
+              token: member.token,
+            })
+            .then((data) => {
+              if (data.success) {
+                console.log('good', data);
+              } else {
+                console.log('fail', data);
+              }
+            });
+          // navigate(`/ctf/admin/challengeAdmin`); //TODO 각 문제 생성된 형태 페이지로 이동되도록 수정
+          // onReset();
         } else {
           console.log(data);
           alert('문제 생성 중 오류가 발생하였습니다.');
@@ -236,10 +248,9 @@ const ChallengeWrite = ({ member }) => {
                             문제 파일
                           </label>
                           <div className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                            <ChallengeFilesUploadForm
+                            <FilesUploadForm
+                              files={files}
                               setFiles={setFiles}
-                              modifyFlag={modifyFlag}
-                              board={board}
                             />
                           </div>
                         </div>

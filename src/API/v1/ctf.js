@@ -153,6 +153,30 @@ async function createProb({
   }
 }
 
+// CTF 문제에 파일 등록
+async function addProbFile({ challengeId, files, token }) {
+  const formData = new FormData();
+  formData.append('challengeId', challengeId);
+  files.forEach((file) => formData.append('file', file));
+  const config = {
+    headers: {
+      'content-type': 'multipart/form-data',
+      Authorization: token,
+    },
+  };
+
+  try {
+    const response = await axios.post(
+      API_URL + '/v1/admin/ctf/prob/file',
+      formData,
+      config
+    );
+    return response.data;
+  } catch (error) {
+    return error.response?.data;
+  }
+}
+
 // CTF 출제자 지정
 async function addAuthor({ memberId, token }) {
   const options = {
@@ -526,4 +550,5 @@ export default {
   closeProb,
   deleteProb,
   getSubmitLog,
+  addProbFile,
 };
