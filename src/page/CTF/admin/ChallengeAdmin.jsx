@@ -15,7 +15,18 @@ import OpenCloseBtn from '../Components/OpenCloseBtn';
 
 const ChallengeAdmin = ({ member, memberSignIn }) => {
   const [rankList, setRankList] = useState([]);
-
+  const onClick = () => {
+    setRankList(rankList.filter((rankList) => rankList.challengeId !== 13));
+    // setRankList(rankList.filter((rankList) => rankList.challengeId !== 13));
+    console.log(
+      // const Solvable = rankList.filter((rankList) => rankList.challengeId === 14)[0].isSolvable;
+      (rankList.filter(
+        (rankList) => rankList.challengeId === 14
+      )[0].isSolvable = !rankList.filter(
+        (rankList) => rankList.challengeId === 14
+      )[0].isSolvable)
+    );
+  };
   //문제 닫기
   // const closeProb = (e) => {
   //   ctfAPI
@@ -86,7 +97,10 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
                     </div>
                     <div className="flex rounded p-1 bg-amber-300 border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
                       <div className=" text-md ">
-                        <button className="hover:bg-amber-500  m-1 hover:text-mainWhite rounded font-bold">
+                        <button
+                          onClick={onClick}
+                          className="hover:bg-amber-500  m-1 hover:text-mainWhite rounded font-bold"
+                        >
                           삭제
                         </button>
                       </div>
@@ -131,7 +145,7 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
                           <div>
                             <input
                               type="checkbox"
-                              class="w-6 h-6 checked:bg-amber-300 text-yellow-400 bg-gray-100 rounded-md border-gray-300 focus:ring-amber-500 dark:focus:ring-amber-500 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                              className="w-6 h-6 checked:bg-amber-300 text-yellow-400 bg-gray-100 rounded-md border-gray-300 focus:ring-amber-500 dark:focus:ring-amber-500 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                             />
                           </div>
                         </td>

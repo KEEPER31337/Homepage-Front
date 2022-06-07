@@ -6,6 +6,9 @@ import { connect } from 'react-redux';
 const OpenCloseBtn = ({ member, isSolvable, challengeId }) => {
   // 탈퇴 눌렀을때 뜨는 모달
   useEffect(() => {}, []);
+  //새로 api(list)받지않고, 버튼 색깔 바꾸기 위해
+  const [state, setState] = useState(isSolvable);
+
   const [modalStatus, setModalState] = useState(false);
   const openModal = (id) => {
     setModalState(true);
@@ -22,6 +25,7 @@ const OpenCloseBtn = ({ member, isSolvable, challengeId }) => {
       .then((data) => {
         if (data.success) {
           console.log(data);
+          setState(false);
         }
       });
   };
@@ -34,12 +38,13 @@ const OpenCloseBtn = ({ member, isSolvable, challengeId }) => {
       .then((data) => {
         if (data.success) {
           console.log(data);
+          setState(true);
         }
       });
   };
   return (
     <>
-      {isSolvable === true ? (
+      {state === true ? (
         <div className="flex rounded bg-green-300 border-2 border-green-400 shadow-[inset_0_2px_0_1px_#ffffff]">
           <button
             onClick={openModal}
@@ -66,7 +71,7 @@ const OpenCloseBtn = ({ member, isSolvable, challengeId }) => {
         onClickAway={() => closeModal()}
       >
         <div className="m-5 p-3 flex flex-col items-center text-center">
-          {isSolvable === true ? '비공개' : '공개'}로 전환하시겠습니까?
+          {state === true ? '비공개' : '공개'}로 전환하시겠습니까?
           <div className="flex m-8">
             <button
               className="bg-white mx-1 hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
@@ -82,7 +87,7 @@ const OpenCloseBtn = ({ member, isSolvable, challengeId }) => {
                 closeModal();
 
                 {
-                  isSolvable === true ? closeProb() : openProb();
+                  state === true ? closeProb() : openProb();
                 }
               }}
             >
