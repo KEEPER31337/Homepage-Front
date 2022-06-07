@@ -490,10 +490,7 @@ async function closeProb({ pid, token }) {
 async function deleteProb({ pid, token }) {
   const options = {
     method: 'DELETE',
-    url: API_URL + '/v1/admin/ctf/prob',
-    data: {
-      pid,
-    },
+    url: API_URL + '/v1/admin/ctf/prob/' + pid,
     headers: {
       Authorization: token,
     },
