@@ -12,36 +12,42 @@ import authAPI from 'API/v1/auth';
 import actionMember from 'redux/action/member';
 import NavigationLayout from '../Components/NavigationLayout';
 import OpenCloseBtn from '../Components/OpenCloseBtn';
+import DeleteBtn from '../Components/DeleteBtn';
 
 const ChallengeAdmin = ({ member, memberSignIn }) => {
   const [rankList, setRankList] = useState([]);
   const onClick = () => {
-    setRankList(rankList.filter((rankList) => rankList.challengeId !== 13));
-    // setRankList(rankList.filter((rankList) => rankList.challengeId !== 13));
-    console.log(
-      // const Solvable = rankList.filter((rankList) => rankList.challengeId === 14)[0].isSolvable;
-      (rankList.filter(
-        (rankList) => rankList.challengeId === 14
-      )[0].isSolvable = !rankList.filter(
-        (rankList) => rankList.challengeId === 14
-      )[0].isSolvable)
-    );
+    for (let item of checkedItems) {
+      console.log(item);
+      ctfAPI
+        .deleteProb({
+          pid: item,
+          token: member.token,
+        })
+        .then((data) => {
+          // TODO cid 받아와서 넣기
+          if (data.success) {
+            console.log(data);
+          }
+        });
+      // rankList = rankList.filter((rankList) => rankList.challengeId !== item);
+    }
   };
-  //문제 닫기
-  // const closeProb = (e) => {
-  //   ctfAPI
-  //     .openProb({
-  //       pid: 2,
-  //       token: member.token,
-  //     })
-  //     .then((data) => {
-  //       // TODO cid 받아와서 넣기
-  //       if (data.success) {
-  //         console.log(data);
-  //       }
-  //     });
-  // };
+  const [checkedItems, setCheckedItems] = useState(new Set());
+  const checkedItemHandler = (challengeId, isChecked) => {
+    if (isChecked) {
+      console.log(challengeId, 'a');
+      checkedItems.add(challengeId);
+      setCheckedItems(checkedItems);
+      console.log(checkedItems);
+    } else if (!isChecked && checkedItems.has(challengeId)) {
+      console.log(challengeId, 'b');
 
+      checkedItems.delete(challengeId);
+      setCheckedItems(checkedItems);
+      console.log(checkedItems);
+    }
+  };
   useEffect(() => {
     // ctfAPI
     //   .deleteProb({
@@ -142,12 +148,10 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
                           />
                         </td>
                         <td>
-                          <div>
-                            <input
-                              type="checkbox"
-                              className="w-6 h-6 checked:bg-amber-300 text-yellow-400 bg-gray-100 rounded-md border-gray-300 focus:ring-amber-500 dark:focus:ring-amber-500 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                            />
-                          </div>
+                          <DeleteBtn
+                            challengeId={info.challengeId}
+                            checkedItemHandler={checkedItemHandler}
+                          />
                         </td>
                       </tr>
                     ))}
