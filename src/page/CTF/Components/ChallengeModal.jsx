@@ -66,6 +66,7 @@ const ChallengeModal = forwardRef((challengeId, ref) => {
   }));
 
   const [flag, setFlag] = useState('');
+  const [flagCheckMsg, setFlagCheckMsg] = useState();
   const onChange = (e) => {
     setFlag(e.target.value);
   };
@@ -76,20 +77,41 @@ const ChallengeModal = forwardRef((challengeId, ref) => {
 
   const submitFlagHandler = () => {
     console.log(flag);
-    ctfAPI
-      .submitFlag({
-        pid: challengeId.challengeId,
-        content: flag,
-        token: token,
-      })
-      .then((data) => {
-        if (data.success) {
-          console.log(data);
-        } else {
-          console.log(data);
-          alert('flag 제출중 오류가 발생하였습니다.');
-        }
-      });
+    if (detailProbList.isSolved) {
+      setFlagCheckMsg(
+        <div className="border-2 border-gray-300 bg-gray-200 w-full p-1 rounded-md text-center text-gray-800">
+          You already solved this
+        </div>
+      );
+    } else {
+      ctfAPI
+        .submitFlag({
+          pid: challengeId.challengeId,
+          content: flag,
+          token: token,
+        })
+        .then((data) => {
+          if (data.success) {
+            console.log(data);
+            if (data.data.isCorrect) {
+              setFlagCheckMsg(
+                <div className="border-2 border-green-300 bg-green-200 w-full p-1 rounded-md text-center text-green-800">
+                  Correct
+                </div>
+              );
+            } else {
+              setFlagCheckMsg(
+                <div className="border-2 border-red-300 bg-red-200 w-full p-1 rounded-md text-center text-red-800">
+                  Incorrect
+                </div>
+              );
+            }
+          } else {
+            console.log(data);
+            alert('flag 제출중 오류가 발생하였습니다.');
+          }
+        });
+    }
   };
 
   const cancelButtonRef = useRef(null);
@@ -152,7 +174,7 @@ const ChallengeModal = forwardRef((challengeId, ref) => {
                         {detailProbList.file}
                         {/* TODO 파일 이름으로 받아오고 싶은데 일단 모르겠음 */}
                       </button>
-                      <div className="flex flex-wrap sm:flex-nowrap shadow-sm sm:text-sm my-5">
+                      <div className="flex flex-wrap sm:flex-nowrap shadow-sm sm:text-sm mt-5 mb-2">
                         <input
                           name="flag"
                           type="text"
@@ -169,6 +191,7 @@ const ChallengeModal = forwardRef((challengeId, ref) => {
                           제출
                         </button>
                       </div>
+                      {flagCheckMsg}
                     </div>
                   </div>
                 </div>

@@ -7,36 +7,6 @@ import Category from './Components/Category';
 // API
 import ctfAPI from 'API/v1/ctf';
 
-const testData = [
-  {
-    id: 1,
-    category: 'Web',
-    name: 'A',
-    score: 10,
-    isSolved: true,
-  },
-  {
-    id: 2,
-    category: 'Forensic',
-    name: 'B',
-    score: 20,
-    isSolved: true,
-  },
-  {
-    id: 3,
-    category: 'Crypto',
-    name: 'D',
-    score: 40,
-    isSolved: false,
-  },
-  {
-    id: 4,
-    category: 'Forensic',
-    name: 'E',
-    score: 50,
-    isSolved: true,
-  },
-];
 const Challenge = ({ member }) => {
   const [probList, setProbList] = useState([
     {
@@ -113,16 +83,6 @@ const Challenge = ({ member }) => {
           {Forensic}
           {Misc}
           {Osint}
-
-          {/* NOTE 카테코리 추가 될 경우 나중에 시간나면 처리해주기 */}
-          {/* NOTE 여기서 문제 유형 list api에서 받아와서 map으로 돌릴지는 생각 중*/}
-          {/* <Category category={'WEB'} categoryList={webList} />
-          <Category category={'SYSTEM'} categoryList={systemList} />
-          <Category category={'REVERSING'} categoryList={reversingList} />
-          <Category category={'CRYPTO'} categoryList={cryptoList} />
-          <Category category={'FORENSICS'} categoryList={forensicList} />
-          <Category category={'MISC'} categoryList={miscList} />
-          <Category category={'OSINT'} categoryList={osintList} /> */}
         </div>
       </div>
     </div>
