@@ -5,12 +5,13 @@ import { Link } from 'react-router-dom';
 import { ChevronLeftIcon, TrashIcon } from '@heroicons/react/outline';
 import ctfAPI from 'API/v1/ctf';
 import moment from 'moment';
+import Modal from 'react-awesome-modal';
 import 'moment/locale/ko';
 // local
 import authAPI from 'API/v1/auth';
 import actionMember from 'redux/action/member';
 import NavigationLayout from '../Components/NavigationLayout';
-import Table from '../Components/Table';
+import OpenCloseBtn from '../Components/OpenCloseBtn';
 
 const ChallengeAdmin = ({ member, memberSignIn }) => {
   const [rankList, setRankList] = useState([]);
@@ -121,25 +122,16 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
                         <td>{info.score}</td>
 
                         <td className="dark:text-black">
-                          {info.isSolvable === true ? (
-                            <button
-                              // onClick={closeProb}
-                              className="bg-green-300 w-full rounded-md mx-1 hover:bg-green-400"
-                            >
-                              공개
-                            </button>
-                          ) : (
-                            <button className="bg-amber-300 w-full rounded-md mx-1 hover:bg-amber-400">
-                              비공개
-                            </button>
-                          )}{' '}
+                          <OpenCloseBtn
+                            isSolvable={info.isSolvable}
+                            challengeId={info.challengeId}
+                          />
                         </td>
                         <td>
                           <div>
                             <input
                               type="checkbox"
-                              className="w-6 h-6 checked:bg-amber-300 duration-200 border border-gray-300  align-top bg-no-repeat bg-center bg-contain focus:outline-none transition appearance-none"
-                              id="checkbox1"
+                              class="w-6 h-6 checked:bg-amber-300 text-yellow-400 bg-gray-100 rounded-md border-gray-300 focus:ring-amber-500 dark:focus:ring-amber-500 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                             />
                           </div>
                         </td>
