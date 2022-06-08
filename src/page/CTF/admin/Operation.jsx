@@ -11,7 +11,6 @@ import {
 
 // local
 import NavigationLayout from '../Components/NavigationLayout';
-import Table from '../Components/Table';
 
 //api
 import memberAPI from 'API/v1/member';
@@ -24,6 +23,7 @@ const Operation = ({ member }) => {
   const [allMemberList, setAllMemberList] = useState([]); //멤버 추가 시 보여줄 동아리 회원의 전체 리스트
   const [headMember, setHeadMember] = useState([]); //멤버 오브젝트
 
+  const [contestList, setContestList] = useState([]);
   const [contestName, setcontestName] = useState('');
   const [description, descriptionName] = useState('');
 
@@ -36,7 +36,7 @@ const Operation = ({ member }) => {
 
   const tableHead = ['대회명', '설명', '개최자', '개최여부'];
 
-  const [tableBody, setTableBody] = useState([
+  const [addContestInput, setTableBody] = useState([
     [
       <input
         onChange={contestNameHandler}
@@ -55,11 +55,15 @@ const Operation = ({ member }) => {
       '닫힘',
     ],
   ]);
-
   useEffect(() => {
     memberAPI.getAllMembers().then((data) => {
       setAllMemberList(data.list);
     });
+  });
+
+  const [create, setCreate] = useState(false);
+
+  useEffect(() => {
     ctfAPI
       .getContestList({
         token: member.token,
@@ -67,27 +71,14 @@ const Operation = ({ member }) => {
       .then((data) => {
         if (data.success) {
           console.log(data);
-          data.list.map((contest, contestIdx) => {
-            // FIXME contest 돌면서 둘 다 받아오는 게 아니라 하나만 받아옴
-            const joinable = contest.joinable ? '열림' : '닫힘';
-            console.log(tableBody);
-            setTableBody(
-              tableBody.concat([
-                [
-                  contest.name,
-                  contest.description,
-                  contest.creator.nickName,
-                  joinable,
-                ],
-              ])
-            );
-          });
+          setContestList(data.list);
+          console.log(tableBody);
         } else {
           console.log(data);
           alert('대회 목록 불러오는 중 오류가 발생하였습니다.');
         }
       });
-  }, []);
+  }, [create]);
 
   const addMember = (author) => {
     ctfAPI
@@ -121,6 +112,7 @@ const Operation = ({ member }) => {
       .then((data) => {
         if (data.success) {
           console.log(data);
+          setCreate(!create);
         } else {
           console.log(data);
           alert('대회 생성 중 오류가 발생하였습니다.');
@@ -171,10 +163,51 @@ const Operation = ({ member }) => {
                   {/* 2.  프로필 이미지 + 팔로우 + 포인트 */}
 
                   <div className="w-full">
-                    <Table
-                      headList={tableHead}
-                      bodyList={[...tableBody].reverse()}
-                    ></Table>
+                    <div className="w-full h-full inline-block rounded overflow-hidden text-center">
+                      <table className="w-full shadow bg-white">
+                        <thead>
+                          <tr className="h-10 w-full bg-gradient-to-r from-amber-400 via-red-800 to-black dark:from-pink-300 dark:via-purple-400 dark:to-indigo-400  text-lg text-white font-extrabold text-center ">
+                            {tableHead.map((head, headIdx) => (
+                              <th key={headIdx}>{head}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {contestList.map((contest, contestIdx) => (
+                            <tr
+                              key={contestIdx}
+                              className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]"
+                            >
+                              <td>{contest.name}</td>
+                              <td>{contest.description}</td>
+                              <td>{contest.creator.nickName}</td>
+                              <td>{contest.joinable ? '열림' : '닫힘'}</td>
+                            </tr>
+                          ))}
+                          <tr>
+                            <td>
+                              <input
+                                onChange={contestNameHandler}
+                                defaultValue={contestName}
+                                placeholder="추가 대회 이름"
+                                className="w-2/3 h-8 text-center rounded-md border-2"
+                              />
+                            </td>
+                            <td>
+                              <input
+                                name="description"
+                                onChange={descriptionHandler}
+                                defaultValue={description}
+                                placeholder="추가 대회 설명"
+                                className="w-2/3 h-8 text-center rounded-md border-2"
+                              />
+                            </td>
+                            <td>{member.memberInfo.nickName}</td>
+                            <td>닫힘</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                   <div className="flex justify-end">
                     <button
