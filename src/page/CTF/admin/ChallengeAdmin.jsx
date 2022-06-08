@@ -1,10 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { ChevronLeftIcon, TrashIcon } from '@heroicons/react/outline';
 import ctfAPI from 'API/v1/ctf';
-import moment from 'moment';
 import Modal from 'react-awesome-modal';
 import 'moment/locale/ko';
 // local
@@ -16,50 +13,43 @@ import DeleteBtn from '../Components/DeleteBtn';
 
 const ChallengeAdmin = ({ member, memberSignIn }) => {
   const [rankList, setRankList] = useState([]);
-  const onClick = () => {
+  const onClick = useCallback(() => {
     for (let item of checkedItems) {
-      console.log(item);
       ctfAPI
         .deleteProb({
           pid: item,
           token: member.token,
         })
         .then((data) => {
-          // TODO cid 받아와서 넣기
           if (data.success) {
-            console.log(data);
+            setRankList((rankList) =>
+              rankList.filter((rankList) => rankList.challengeId !== item)
+            );
+            checkedItems.delete(item); //set안에 다 지우기
           }
         });
-      // rankList = rankList.filter((rankList) => rankList.challengeId !== item);
     }
-  };
+    closeModal();
+  });
   const [checkedItems, setCheckedItems] = useState(new Set());
   const checkedItemHandler = (challengeId, isChecked) => {
     if (isChecked) {
-      console.log(challengeId, 'a');
       checkedItems.add(challengeId);
       setCheckedItems(checkedItems);
-      console.log(checkedItems);
     } else if (!isChecked && checkedItems.has(challengeId)) {
-      console.log(challengeId, 'b');
-
       checkedItems.delete(challengeId);
       setCheckedItems(checkedItems);
-      console.log(checkedItems);
     }
   };
+  const [modalStatus, setModalState] = useState(false);
+  const openModal = () => {
+    setModalState(true);
+  };
+  const closeModal = () => {
+    setModalState(false);
+  };
+
   useEffect(() => {
-    // ctfAPI
-    //   .deleteProb({
-    //     pid: 3,
-    //     token: member.token,
-    //   })
-    //   .then((data) => {
-    //     // TODO cid 받아와서 넣기
-    //     if (data.success) {
-    //       console.log(data);
-    //     }
-    //   });
     ctfAPI
       .getAdminProbList({
         ctfId: 2,
@@ -68,9 +58,6 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
       .then((data) => {
         // TODO cid 받아와서 넣기
         if (data.success) {
-          console.log(data.list[1].challengeId);
-          console.log(data.list[1].creatorName);
-
           setRankList(data.list);
         }
       });
@@ -104,11 +91,40 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
                     <div className="flex rounded p-1 bg-amber-300 border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
                       <div className=" text-md ">
                         <button
-                          onClick={onClick}
+                          onClick={openModal}
                           className="hover:bg-amber-500  m-1 hover:text-mainWhite rounded font-bold"
                         >
                           삭제
                         </button>
+                        <Modal // 팀 정보 수정 클릭 시 뜨는 창
+                          visible={modalStatus}
+                          width="300"
+                          height="140"
+                          effect="fadeInDown"
+                          onClickAway={() => closeModal()}
+                        >
+                          <div className="m-5 p-3 flex flex-col items-center text-center">
+                            삭제하시겠습니까?
+                            <div className="flex m-8">
+                              <button
+                                className="bg-white mx-1 hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+                                onClick={() => {
+                                  closeModal();
+                                }}
+                              >
+                                취소
+                              </button>
+                              <button
+                                className="bg-white   mx-1 hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+                                onClick={() => {
+                                  onClick();
+                                }}
+                              >
+                                확인
+                              </button>
+                            </div>
+                          </div>
+                        </Modal>
                       </div>
                     </div>
                   </div>
@@ -151,14 +167,13 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
                           <DeleteBtn
                             challengeId={info.challengeId}
                             checkedItemHandler={checkedItemHandler}
-                          />
+                          />{' '}
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-              {/*네비게이션*/}
             </div>
           </div>
         </div>
