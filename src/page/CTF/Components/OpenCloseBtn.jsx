@@ -24,7 +24,6 @@ const OpenCloseBtn = ({ member, isSolvable, challengeId }) => {
       })
       .then((data) => {
         if (data.success) {
-          console.log(data);
           setState(false);
         }
       });
@@ -37,7 +36,6 @@ const OpenCloseBtn = ({ member, isSolvable, challengeId }) => {
       })
       .then((data) => {
         if (data.success) {
-          console.log(data);
           setState(true);
         }
       });
