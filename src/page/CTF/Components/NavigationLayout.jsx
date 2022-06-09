@@ -42,23 +42,11 @@ const NavigationLayout = ({ member, ctfId }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (member.token) {
-      ctfAPI
-        .seeMyTeam({
-          ctfId: 2,
-          token: member.token,
-        })
-        .then((data) => {
-          //  console.log(data);
-          if (!data.code) {
-            setCategories(categoriesAll);
-          } else {
-            setCategories(categoriesHidden);
-          }
-        });
-      console.log('[redux]  ctfid 는 ', ctfId.ctfId);
-    }
-  }, [member]);
+    if (ctfId.ctfId === null) setCategories(categoriesHidden);
+    else setCategories(categoriesAll);
+
+    console.log('[redux]  ctfid 는 ', ctfId.ctfId);
+  }, [ctfId]);
   return (
     <>
       {/* 모바일 슬라이드 열었을때!! */}
