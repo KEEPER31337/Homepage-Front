@@ -8,6 +8,7 @@ import {
   PlusIcon,
   ExclamationCircleIcon,
 } from '@heroicons/react/solid';
+import Modal from 'react-awesome-modal';
 
 // local
 import ContestOpenCloseBtn from '../Components/ContestOpenCloseBtn';
@@ -102,7 +103,14 @@ const Operation = ({ member }) => {
   };
 
   const createContestHandler = () => {
-    onReset();
+    if (contestName === '' || description === '') {
+      openModal(); //다시 입력하라는 모달
+    } else {
+      openModal2(); //대회를 추가하겠냐는 모달
+    }
+  };
+  const createContest = () => {
+    //대회 추가하겠냐는 모달 후, 확인누르면, 실제로 api 동작하는 함수
     ctfAPI
       .createContest({
         token: member.token,
@@ -118,13 +126,30 @@ const Operation = ({ member }) => {
           alert('대회 생성 중 오류가 발생하였습니다.');
         }
       });
+
+    onReset();
   };
 
   const onReset = () => {
     setcontestName('');
     descriptionName('');
   };
+  //모달 관련
+  const [modalStatus, setModalState] = useState(false); //대회명과 설명을 입력해주세요
+  const [modalStatus2, setModalState2] = useState(false); //대회를 추가하시겠습니까?
+  const openModal = () => {
+    setModalState(true);
+  };
+  const closeModal = () => {
+    setModalState(false);
+  };
 
+  const openModal2 = () => {
+    setModalState2(true);
+  };
+  const closeModal2 = () => {
+    setModalState2(false);
+  };
   return (
     <div className="md:w-4/5 flex flex-col flex-1 p-3">
       <div className="">
@@ -191,17 +216,19 @@ const Operation = ({ member }) => {
                       <tr>
                         <td>
                           <input
+                            value={contestName}
                             onChange={contestNameHandler}
-                            defaultValue={contestName}
+                            // defaultValue={contestName}
                             placeholder="추가 대회 이름"
                             className="w-2/3 h-8 text-center rounded-md border-2"
                           />
                         </td>
                         <td>
                           <input
+                            value={description}
                             name="description"
                             onChange={descriptionHandler}
-                            defaultValue={description}
+                            // defaultValue={description}
                             placeholder="추가 대회 설명"
                             className="w-2/3 h-8 text-center rounded-md border-2"
                           />
@@ -281,6 +308,58 @@ const Operation = ({ member }) => {
           </div>
         </div>
       </div>
+      <Modal // 아무것도 체크안했을때 뜨는 모달
+        visible={modalStatus}
+        width="300"
+        height="140"
+        effect="fadeInDown"
+        onClickAway={() => closeModal()}
+      >
+        <div className="m-5 p-3 flex flex-col items-center text-center">
+          대회명과 설명을 입력해주세요
+          <div className="flex m-8">
+            <button
+              className="bg-white mx-1 hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+              onClick={() => {
+                closeModal();
+              }}
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal // 아무것도 체크안했을때 뜨는 모달
+        visible={modalStatus2}
+        width="300"
+        height="140"
+        effect="fadeInDown"
+        onClickAway={() => closeModal2()}
+      >
+        <div className="m-5 p-3 flex flex-col items-center text-center">
+          대회를 추가하시겠습니까?
+          <div className="flex m-8">
+            <button
+              className="bg-white mx-1 hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+              onClick={() => {
+                closeModal2();
+              }}
+            >
+              취소
+            </button>
+            <button
+              className="bg-white   mx-1 hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+              onClick={() => {
+                createContest();
+                closeModal2();
+              }}
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
