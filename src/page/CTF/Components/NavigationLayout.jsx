@@ -1,6 +1,8 @@
-import { Fragment, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Fragment, useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Dialog, Transition } from '@headlessui/react';
+import ctfAPI from 'API/v1/ctf';
+import { connect } from 'react-redux';
 import {
   FolderAddIcon,
   ChartBarIcon,
@@ -13,7 +15,8 @@ import {
   CollectionIcon,
 } from '@heroicons/react/outline';
 
-const navigation = [
+const categoriesHidden = [{ name: 'CTF', href: '/ctf', icon: HomeIcon }];
+const categoriesAll = [
   { name: 'CTF', href: '/ctf', icon: HomeIcon },
   { name: 'TEAM JOIN', href: '/ctf/teamjoin', icon: FolderAddIcon },
   { name: 'CHALLENGES', href: '/ctf/challenge', icon: CollectionIcon },
@@ -33,9 +36,28 @@ const navigation = [
   { name: 'ADMIN 대회운영', href: '/ctf/admin/operation', icon: XIcon },
 ];
 
-const NavigationLayout = (props) => {
+const NavigationLayout = ({ member }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    if (member.token) {
+      ctfAPI
+        .seeMyTeam({
+          ctfId: 2,
+          token: member.token,
+        })
+        .then((data) => {
+          //  console.log(data);
+          if (!data.code) {
+            setCategories(categoriesAll);
+          } else {
+            setCategories(categoriesHidden);
+          }
+        });
+    }
+  }, [member]);
   return (
     <>
       {/* 모바일 슬라이드 열었을때!! */}
@@ -93,7 +115,7 @@ const NavigationLayout = (props) => {
 
                 <div className="mt-8 flex-1 h-0 overflow-y-auto">
                   <nav className="px-2 space-y-1">
-                    {navigation.map((item) => (
+                    {categories.map((item) => (
                       <Link to={item.href} key={item.name}>
                         <div className="group flex items-center my-3 px-3 py-3 text-mainYellow font-bold rounded-md hover:text-mainWhite hover:bg-mainYellow">
                           <item.icon
@@ -121,7 +143,7 @@ const NavigationLayout = (props) => {
         <div className="flex flex-col flex-grow pt-2  overflow-y-auto">
           <div className=" flex-1 h-0 overflow-y-auto">
             <nav className="px-2 space-y-1">
-              {navigation.map((item) => (
+              {categories.map((item) => (
                 <Link to={item.href} key={item.name}>
                   <div className="group flex items-center my-3 px-3 py-3 text-mainYellow font-bold rounded-md hover:text-mainWhite hover:bg-mainYellow">
                     <item.icon
@@ -153,5 +175,7 @@ const NavigationLayout = (props) => {
     </>
   );
 };
-
-export default NavigationLayout;
+const mapStateToProps = (state) => {
+  return { member: state.member };
+};
+export default connect(mapStateToProps)(NavigationLayout);
