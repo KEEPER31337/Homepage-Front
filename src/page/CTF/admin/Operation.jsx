@@ -11,6 +11,7 @@ import {
 
 // local
 import NavigationLayout from '../Components/NavigationLayout';
+import ContestOpenCloseBtn from '../Components/ContestOpenCloseBtn';
 
 //api
 import memberAPI from 'API/v1/member';
@@ -24,6 +25,7 @@ const Operation = ({ member }) => {
   const [headMember, setHeadMember] = useState([]); //멤버 오브젝트
 
   const [contestList, setContestList] = useState([]);
+
   const [contestName, setcontestName] = useState('');
   const [description, descriptionName] = useState('');
 
@@ -72,7 +74,6 @@ const Operation = ({ member }) => {
         if (data.success) {
           console.log(data);
           setContestList(data.list);
-          console.log(tableBody);
         } else {
           console.log(data);
           alert('대회 목록 불러오는 중 오류가 발생하였습니다.');
@@ -181,7 +182,17 @@ const Operation = ({ member }) => {
                               <td>{contest.name}</td>
                               <td>{contest.description}</td>
                               <td>{contest.creator.nickName}</td>
-                              <td>{contest.joinable ? '열림' : '닫힘'}</td>
+                              <td className="flex justify-center pt-1.5">
+                                {/* <button
+                                  className={contest.joinable ? '열림' : '닫힘'}
+                                >
+                                  {contest.joinable ? '열림' : '닫힘'} */}
+                                <ContestOpenCloseBtn
+                                  isJoinable={contest.joinable}
+                                  ctfId={contest.ctfId}
+                                />
+                                {/* </button> */}
+                              </td>
                             </tr>
                           ))}
                           <tr>
