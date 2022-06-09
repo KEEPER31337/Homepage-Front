@@ -14,6 +14,8 @@ import actionMember from 'redux/action/member';
 // API
 import ctfAPI from 'API/v1/ctf';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 const ChallengeModal = forwardRef((challengeId, ref) => {
   const [open, setOpen] = useState(false);
   const [detailProbList, setDetailProbList] = useState({
@@ -166,14 +168,25 @@ const ChallengeModal = forwardRef((challengeId, ref) => {
                       <div className="text-base text-gray-500">
                         {detailProbList.content}
                       </div>
-                      <button className="mt-14 p-3 bg-slate-500 flex rounded-md text-white text-xs">
-                        <DownloadIcon
-                          className="h-4 w-4 mr-2"
-                          aria-hidden="true"
-                        />
-                        {detailProbList.file}
-                        {/* TODO 파일 이름으로 받아오고 싶은데 일단 모르겠음 */}
-                      </button>
+                      {detailProbList.file != null ? (
+                        <a
+                          href={
+                            API_URL +
+                            '/v1/post/download/' +
+                            detailProbList.file?.id
+                          }
+                          className=" w-full inline-block "
+                          download={detailProbList.file?.fileName}
+                        >
+                          <button className="mt-14 p-3 bg-slate-500 flex text-ellipsis rounded-md text-white text-xs">
+                            <DownloadIcon
+                              className="h-4 w-4 mr-2"
+                              aria-hidden="true"
+                            />
+                            {detailProbList.file?.fileName}
+                          </button>
+                        </a>
+                      ) : null}
                       <div className="flex flex-wrap sm:flex-nowrap shadow-sm sm:text-sm mt-5 mb-2">
                         <input
                           name="flag"
