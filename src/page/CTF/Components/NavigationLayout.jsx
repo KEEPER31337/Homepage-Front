@@ -36,28 +36,17 @@ const categoriesAll = [
   { name: 'ADMIN 대회운영', href: '/ctf/admin/operation', icon: XIcon },
 ];
 
-const NavigationLayout = ({ member }) => {
+const NavigationLayout = ({ member, ctfId }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (member.token) {
-      ctfAPI
-        .seeMyTeam({
-          ctfId: 2,
-          token: member.token,
-        })
-        .then((data) => {
-          //  console.log(data);
-          if (!data.code) {
-            setCategories(categoriesAll);
-          } else {
-            setCategories(categoriesHidden);
-          }
-        });
-    }
-  }, [member]);
+    if (ctfId.ctfId === null) setCategories(categoriesHidden);
+    else setCategories(categoriesAll);
+
+    console.log('[redux]  ctfid 는 ', ctfId.ctfId);
+  }, [ctfId]);
   return (
     <>
       {/* 모바일 슬라이드 열었을때!! */}
@@ -176,6 +165,6 @@ const NavigationLayout = ({ member }) => {
   );
 };
 const mapStateToProps = (state) => {
-  return { member: state.member };
+  return { member: state.member, ctfId: state.ctfId };
 };
 export default connect(mapStateToProps)(NavigationLayout);
