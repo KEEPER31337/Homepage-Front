@@ -1,10 +1,6 @@
 import { connect } from 'react-redux';
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-import NavigationLayout from './Components/NavigationLayout';
 import Logo from 'assets/img/keeper_logo.png';
-import { GiftIcon, StarIcon } from '@heroicons/react/outline';
 
 // API
 import memberAPI from 'API/v1/member';
@@ -171,17 +167,11 @@ const TeamJoin = ({ member }) => {
   };
 
   return (
-    <div className="bg-mainWhite dark:bg-mainBlack">
-      {/* 기존 홈페이지 헤더에 맞추기 위해,  */}
-      <div className="max-w-7xl min-h-screen mx-auto flex flex-row">
-        {/*사이드바*/}
-        <NavigationLayout />
-        <div className="md:w-4/5 flex flex-col flex-1 pt-0 p-3">
-          {/* 이제 여기서 추가할 컴포넌트 가져오면 됨!!! */}
-          <Header />
-          <Content />
-        </div>
-      </div>
+    <div className="md:w-4/5 flex flex-col flex-1 pt-0 p-3">
+      {/* 이제 여기서 추가할 컴포넌트 가져오면 됨!!! */}
+      <Header />
+      <Content />
+
       <MessageModal ref={alertTeamNameModalRef}>
         팀 명을 입력해주세요~!
       </MessageModal>
