@@ -153,6 +153,30 @@ async function createProb({
   }
 }
 
+// CTF 문제에 파일 등록
+async function addProbFile({ challengeId, files, token }) {
+  const formData = new FormData();
+  formData.append('challengeId', challengeId);
+  files.forEach((file) => formData.append('file', file));
+  const config = {
+    headers: {
+      'content-type': 'multipart/form-data',
+      Authorization: token,
+    },
+  };
+
+  try {
+    const response = await axios.post(
+      API_URL + '/v1/admin/ctf/prob/file',
+      formData,
+      config
+    );
+    return response.data;
+  } catch (error) {
+    return error.response?.data;
+  }
+}
+
 // CTF 출제자 지정
 async function addAuthor({ memberId, token }) {
   const options = {
@@ -466,10 +490,26 @@ async function closeProb({ pid, token }) {
 async function deleteProb({ pid, token }) {
   const options = {
     method: 'DELETE',
-    url: API_URL + '/v1/admin/ctf/prob',
-    data: {
-      pid,
+    url: API_URL + '/v1/admin/ctf/prob/' + pid,
+    headers: {
+      Authorization: token,
     },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+// 제출 로그
+async function getSubmitLog({ page, size, token }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/admin/ctf/submit-log',
+    params: { page: page, size: size },
+
     headers: {
       Authorization: token,
     },
@@ -506,4 +546,6 @@ export default {
   submitFlag,
   closeProb,
   deleteProb,
+  getSubmitLog,
+  addProbFile,
 };

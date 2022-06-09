@@ -12,6 +12,8 @@ import { CogIcon, BanIcon } from '@heroicons/react/outline';
 const Team = ({ member }) => {
   const alertTeamModifyModalRef = useRef({});
   const alertTeamresignModalRef = useRef({});
+  const alertNoTeam = useRef({}); // 팀에 가입하지 않았을 때 뜨는 알림
+  const alertTeamDuplicated = useRef({}); // 팀명이 중복될 때 뜨는 알림
 
   // 정보 수정 눌렸을 시 뜨는 모달과 관련된 state
   const [settingStatus, setSettingState] = useState(false);
@@ -34,6 +36,7 @@ const Team = ({ member }) => {
   const [teamScore, setTeamScore] = useState(0);
   const [teamId, setTeamId] = useState(-1);
   const [teamMember, setTeamMember] = useState([]);
+  const [teamProb, setTeamProb] = useState([]);
 
   useEffect(() => {
     teamAPI
@@ -55,13 +58,11 @@ const Team = ({ member }) => {
             .then((data) => {
               if (data.success) {
                 setTeamMember(data.data.teamMembers);
-                console.log('teamMember', data.data.teamMembers);
-              } else {
-                console.log('fail to seeTeamDetail', data);
+                setTeamProb(data.data.solvedChallengeList);
               }
             });
-        } else {
-          console.log('fail to seeMyTeam : ', data);
+        } else if (data.code == -13004) {
+          alertNoTeam.current.open();
         }
       });
   }, []);
@@ -89,8 +90,8 @@ const Team = ({ member }) => {
           setTeamDes(data.data.description);
           setTeamId(data.data.id);
           alertTeamModifyModalRef.current.open();
-        } else {
-          console.log('fail to 수정', data);
+        } else if (data.msg.indexOf('is_duplicated')) {
+          alertTeamDuplicated.current.open();
         }
       });
   };
@@ -112,8 +113,6 @@ const Team = ({ member }) => {
       .then((data) => {
         if (data.success) {
           alertTeamresignModalRef.current.open();
-        } else {
-          console.log('fail to 탈퇴', data);
         }
       });
   };
@@ -127,8 +126,14 @@ const Team = ({ member }) => {
           <div>{teamScore} points</div>
         </div>
         <div className="flex justify-center m-2">
-          <CogIcon className="h-7 w-7 m-1" onClick={openSettingModal} />
-          <BanIcon className="h-6 w-6 m-1.5" onClick={openBanModal} />
+          <CogIcon
+            className="h-7 w-7 m-1 dark:text-purple-300"
+            onClick={openSettingModal}
+          />
+          <BanIcon
+            className="h-6 w-6 m-1.5 dark:text-purple-300"
+            onClick={openBanModal}
+          />
         </div>
         <div className="h-1 bg-gradient-to-r from-black via-red-800 to-amber-400 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-300"></div>
       </>
@@ -137,98 +142,72 @@ const Team = ({ member }) => {
 
   const Members = () => {
     return (
-      <div className="flex justify-center">
-        <div className="flex flex-col justify-center w-11/12 rounded overflow-hidden border dark:border-gray-700 m-4 p-2">
-          <table classNem="justify-center dark:text-white w-11/12 border-2 shadow  rounded-md dark:bg-darkPoint">
+      <div className="flex flex-col items-center rounded overflow-hidden m-4 p-2">
+        <table className="justify-center dark:text-white w-11/12 border-2 shadow  rounded-md dark:bg-darkPoint">
+          <thead>
+            <tr className="rounded w-11/12 h-10 bg-gradient-to-r from-amber-400 via-red-800 to-black dark:from-pink-300 dark:via-purple-400 dark:to-indigo-400 text-lg text-white font-extrabold text-center">
+              <th>Id</th>
+              <th>User Name</th>
+            </tr>
+          </thead>
+          <tbody className="dark:text-white">
+            {teamMember.map((info, idx) => {
+              return (
+                <tr
+                  key={idx}
+                  className="w-11/12 h-10 text-center hover:bg-gray-100 dark:hover:bg-[#0b1523]"
+                >
+                  <td>{idx + 1}</td>
+                  <td>{info.nickName}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
+  const Solves = () => {
+    return (
+      <>
+        <strong className="w-full text-4xl ml-2 mt-3 dark:text-white">
+          Solves
+        </strong>
+        <div className="flex flex-col items-center rounded overflow-hidden m-4 p-2">
+          <table className="justify-center dark:text-white w-11/12 border-2 shadow  rounded-md dark:bg-darkPoint">
             <thead>
-              <tr className="rounded w-11/12 h-10 bg-gradient-to-r from-amber-400 via-red-800 to-black dark:from-pink-300 dark:via-purple-400 dark:to-indigo-400 text-lg text-white font-extrabold text-center">
-                <th>Id</th>
-                <th>User Name</th>
+              <tr className="rounded w-10/12 h-10 bg-gray-100 text-lg text-black">
+                <th>Type</th>
+                <th>Title</th>
+                <th>Score</th>
               </tr>
             </thead>
             <tbody className="dark:text-white">
-              {teamMember.map((info, idx) => {
+              {teamProb.map((info, idx) => {
                 return (
-                  <tr className="w-11/12 h-10 text-center hover:bg-gray-100 dark:hover:bg-[#0b1523]">
-                    <td>{idx + 1}</td>
-                    <td>{info.nickName}</td>
+                  <tr
+                    key={idx}
+                    className="w-11/12 h-10 text-center hover:bg-gray-100 dark:hover:bg-[#0b1523]"
+                  >
+                    <td>{info.category.name}</td>
+                    <td>{info.title}</td>
+                    <td>{info.score}</td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
         </div>
-      </div>
-    );
-  };
-
-  const Solves = () => {
-    const team = informationOfTeam.filter((info) => nameOfTeam === info.team);
-    const members = team[0].members;
-    const solves = [];
-    members.map((info) => {
-      informationOfPerson.map((person) => {
-        if (info == person.name) {
-          person.solves.map((quest) => {
-            const tmp = quest;
-            tmp.push(person.name);
-            solves.push(tmp);
-          });
-        }
-      });
-    });
-
-    return (
-      <>
-        <strong className="w-full text-4xl ml-2 mt-3 dark:text-white">
-          Solves
-        </strong>
-        <div className="flex justify-center">
-          <div className="flex flex-col justify-center w-11/12 rounded overflow-hidden border dark:border-gray-700 m-4 p-2">
-            <table classNem="justify-center dark:text-white w-11/12 border-2 shadow  rounded-md dark:bg-darkPoint">
-              <thead>
-                <tr className="rounded w-10/12 h-10 bg-gray-100 text-lg">
-                  <th>Type</th>
-                  <th>Challenge</th>
-                  <th>Value</th>
-                  <th>User</th>
-                  <th>Time</th>
-                </tr>
-              </thead>
-              <tbody className="dark:text-white">
-                {solves.map((info) => {
-                  return (
-                    <tr className="w-11/12 h-10 text-center hover:bg-gray-100 dark:hover:bg-[#0b1523]">
-                      <td>{info[0]}</td>
-                      <td>{info[1]}</td>
-                      <td>100</td>
-                      <td>{info[3]}</td>
-                      <td>{info[2]}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
       </>
     );
   };
 
   return (
-    <div className="bg-mainWhite dark:bg-mainBlack">
-      {/* 기존 홈페이지 헤더에 맞추기 위해,  */}
-      <div className="max-w-7xl h-full mx-auto flex flex-row">
-        {/*사이드바*/}
-        <NavigationLayout />
-        <div className="md:w-4/5 flex flex-col flex-1 pt-0 p-3">
-          {/* 이제 여기서 추가할 컴포넌트 가져오면 됨!!! */}
-          {/* <ScoreBoard/> */}
-          <TopSection />
-          <Members />
-          {/* <Solves /> */}
-        </div>
-      </div>
+    <div className="md:w-4/5 flex flex-col flex-1 pt-0 p-3">
+      <TopSection />
+      <Members />
+      <Solves />
       <Modal // 팀 정보 수정 클릭 시 뜨는 창
         visible={settingStatus}
         width="500"
@@ -317,6 +296,13 @@ const Team = ({ member }) => {
       </MessageModal>
       <MessageModal ref={alertTeamresignModalRef}>
         팀 탈퇴가 성공적으로 이루어졌습니다ㅜ
+      </MessageModal>
+      <MessageModal ref={alertNoTeam}>
+        가입한 팀을 찾을 수 없습니다!
+        <br />팀 가입 부탁드립니다!
+      </MessageModal>
+      <MessageModal ref={alertTeamDuplicated}>
+        동일한 팀명이 있습니다.. <br />한 발 늦었구만유~ ㅋ
       </MessageModal>
     </div>
   );

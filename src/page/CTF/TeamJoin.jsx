@@ -1,10 +1,6 @@
 import { connect } from 'react-redux';
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-import NavigationLayout from './Components/NavigationLayout';
 import Logo from 'assets/img/keeper_logo.png';
-import { GiftIcon, StarIcon } from '@heroicons/react/outline';
 
 // API
 import memberAPI from 'API/v1/member';
@@ -17,25 +13,12 @@ const TeamJoin = ({ member }) => {
   const [openPage, setOpenPage] = useState(true);
   const [teamList, setTeamList] = useState([]);
 
-  const alertTeamNameModalRef = useRef({});
-  const alertTeamDescModalRef = useRef({});
-  const alertTeamJoinComplete = useRef({});
-  const alertTeamCreateComplete = useRef({});
-
-  useEffect(() => {
-    teamAPI
-      .seeTeamList({
-        page: 0,
-        size: 10,
-        ctfId: 2,
-        token: member.token,
-      })
-      .then((data) => {
-        if (data.success) {
-          setTeamList(data.page.content);
-        }
-      });
-  }, []);
+  const alertTeamNameModalRef = useRef({}); // 팀명을 입력해달라는 알림
+  const alertTeamDescModalRef = useRef({}); // 팀 설명을 입력해달라는 알림
+  const alertTeamJoinComplete = useRef({}); // 팀에 가입되었다는 알림
+  const alertTeamCreateComplete = useRef({}); // 팀이 생성되었다는 알림
+  const alertTeamDuplicated = useRef({}); // 팀명이 중복될 때 뜨는 알림
+  const alertNotExistTeam = useRef({}); // 존재하지 않는 팀 알림
 
   const Header = () => {
     const tmp1 =
@@ -92,8 +75,8 @@ const TeamJoin = ({ member }) => {
         .then((data) => {
           if (data.success) {
             alertTeamCreateComplete.current.open();
-          } else {
-            console.log('fail to createTeam', data);
+          } else if (data.msg.indexOf('is_duplicated')) {
+            alertTeamDuplicated.current.open();
           }
         });
     };
@@ -112,8 +95,8 @@ const TeamJoin = ({ member }) => {
         .then((data) => {
           if (data.success) {
             alertTeamJoinComplete.current.open();
-          } else {
-            console.log('fail to joinTeam', data);
+          } else if (data.code === -13004) {
+            alertNotExistTeam.current.open();
           }
         });
     };
@@ -184,17 +167,11 @@ const TeamJoin = ({ member }) => {
   };
 
   return (
-    <div className="bg-mainWhite dark:bg-mainBlack">
-      {/* 기존 홈페이지 헤더에 맞추기 위해,  */}
-      <div className="max-w-7xl h-screen mx-auto flex flex-row">
-        {/*사이드바*/}
-        <NavigationLayout />
-        <div className="md:w-4/5 flex flex-col flex-1 pt-0 p-3">
-          {/* 이제 여기서 추가할 컴포넌트 가져오면 됨!!! */}
-          <Header />
-          <Content />
-        </div>
-      </div>
+    <div className="md:w-4/5 flex flex-col flex-1 pt-0 p-3">
+      {/* 이제 여기서 추가할 컴포넌트 가져오면 됨!!! */}
+      <Header />
+      <Content />
+
       <MessageModal ref={alertTeamNameModalRef}>
         팀 명을 입력해주세요~!
       </MessageModal>
@@ -206,6 +183,14 @@ const TeamJoin = ({ member }) => {
       </MessageModal>
       <MessageModal ref={alertTeamJoinComplete}>
         팀에 성공적으로 가입되었습니다!
+      </MessageModal>
+      <MessageModal ref={alertTeamDuplicated}>
+        동일한 팀명이 있습니다.. <br />한 발 늦었구만유~ ㅋ
+      </MessageModal>
+      <MessageModal ref={alertNotExistTeam}>
+        존재하지 않는 팀입니다~!
+        <br />
+        다시 확인해주십쇼!
       </MessageModal>
     </div>
   );

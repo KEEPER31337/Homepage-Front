@@ -7,6 +7,8 @@ import Chatting from 'shared/Chat/Chatting';
 import Header from 'shared/Header.jsx';
 import attendanceAPI from 'API/v1/attendance';
 import actionMember from 'redux/action/member';
+import CTFApp from 'page/CTF/CTFApp.jsx';
+
 // pages
 import Loading from 'shared/Loading';
 const Home = lazy(() => import('page/Home/Home'));
@@ -28,15 +30,6 @@ const BookAdd = lazy(() => import('./page/Library/BookAdd'));
 const BookManage = lazy(() => import('./page/Library/BookManage'));
 const Ranking = lazy(() => import('page/Ranking/Ranking'));
 const Study = lazy(() => import('page/Study/Study'));
-const ChallengeWrite = lazy(() => import('page/CTF/admin/ChallengeWrite'));
-const ChallengeAdmin = lazy(() => import('page/CTF/admin/ChallengeAdmin'));
-const Ctf = lazy(() => import('page/CTF/Ctf'));
-const ScoreBoard = lazy(() => import('page/CTF/ScoreBoard'));
-const Team = lazy(() => import('page/CTF/Team'));
-const TeamJoin = lazy(() => import('page/CTF/TeamJoin'));
-const Operation = lazy(() => import('page/CTF/admin/Operation'));
-const Submissions = lazy(() => import('page/CTF/admin/Submissions'));
-const Challenge = lazy(() => import('page/CTF/Challenge'));
 
 const App = ({ member, darkMode, signOut }) => {
   useEffect(() => {
@@ -72,21 +65,7 @@ const App = ({ member, darkMode, signOut }) => {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/ranking" element={<Ranking />} />
             <Route path="/study" element={<Study />} />
-            <Route path="/ctf" element={<Ctf />} />
-            <Route path="/ctf/scoreboard" element={<ScoreBoard />} />
-            <Route path="/ctf/team" element={<Team />} />
-            <Route path="/ctf/teamjoin" element={<TeamJoin />} />
-            <Route
-              path="/ctf/admin/challengeWrite"
-              element={<ChallengeWrite />}
-            />
-            <Route
-              path="/ctf/admin/challengeAdmin"
-              element={<ChallengeAdmin />}
-            />
-            <Route path="/ctf/admin/operation" element={<Operation />} />
-            <Route path="/ctf/admin/submissions" element={<Submissions />} />
-            <Route path="/ctf/challenge" element={<Challenge />} />
+            <Route path="/ctf/*" element={<CTFApp />} />
           </Routes>
         </Suspense>
         <Chatting />
