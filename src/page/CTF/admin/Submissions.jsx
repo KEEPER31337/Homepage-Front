@@ -41,7 +41,7 @@ const Submissions = ({ member, memberSignIn }) => {
 
           <div className="md:flex p-1 mt-2">
             <div className="w-full m-2 ">
-              <div className="p-1 bg-white">
+              <div className="p-1 bg-white dark:bg-mainBlack dark:text-mainWhite">
                 <div className="flex justify-between m-1">
                   <div className="font-extrabold text-4xl m-1">
                     Submission-log
@@ -72,7 +72,7 @@ const Submissions = ({ member, memberSignIn }) => {
                 </div>
               </div>
               {/*구분선*/}
-              <div className="p-[2px] mb-2 bg-gradient-to-r from-amber-500 via-amber-200 to-yellow-300  "></div>
+              <div className="p-[2px] mb-2 dark:from-purple-500 dark:via-purple-200 dark:to-amner-200 bg-gradient-to-r from-amber-500 via-amber-200 to-yellow-300  "></div>
               {/* 2.  프로필 이미지 + 팔로우 + 포인트 */}
 
               <div className="w-full h-1/12 flex rounded overflow-auto">

@@ -72,23 +72,23 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
     <div className="md:w-4/5 flex flex-col flex-1 p-3">
       <div className="md:flex p-1 mt-2">
         <div className="w-full m-2 ">
-          <div className="p-1 bg-white">
+          <div className="p-1 bg-white dark:bg-mainBlack dark:text-mainWhite">
             <div className="flex justify-between m-1">
               <div className="font-extrabold text-4xl m-1">문제관리페이지</div>
 
               <div className="flex m-1">
-                <div className="mr-1 flex rounded p-1 bg-amber-300 border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
+                <div className="mr-1 flex rounded p-1 bg-amber-300 dark:bg-indigo-400 dark:border-indigo-500 border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
                   <div className=" text-md ">
-                    <button className="hover:bg-amber-500  m-1 hover:text-mainWhite rounded font-bold">
+                    <button className="hover:bg-amber-500  m-1 hover:text-mainWhite rounded font-bold  dark:hover:bg-indigo-500">
                       <Link to="/ctf/admin/challengeWrite">추가</Link>
                     </button>
                   </div>
                 </div>
-                <div className="flex rounded p-1 bg-amber-300 border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
+                <div className="flex rounded p-1 bg-amber-300 dark:bg-indigo-400 dark:border-indigo-500  border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
                   <div className=" text-md ">
                     <button
                       onClick={openModal}
-                      className="hover:bg-amber-500  m-1 hover:text-mainWhite rounded font-bold"
+                      className="hover:bg-amber-500 dark:hover:bg-indigo-500 m-1 hover:text-mainWhite rounded font-bold"
                     >
                       삭제
                     </button>
@@ -99,7 +99,7 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
                       effect="fadeInDown"
                       onClickAway={() => closeModal()}
                     >
-                      <div className="m-5 p-3 flex flex-col items-center text-center">
+                      <div className="m-5 p-3 flex flex-col items-center text-center dark:text-mainBlack">
                         {checkedItems.size}개의 문제를 삭제하시겠습니까?
                         <div className="flex m-8">
                           <button
@@ -129,7 +129,7 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
                       effect="fadeInDown"
                       onClickAway={() => closeModal2()}
                     >
-                      <div className="m-5 p-3 flex flex-col items-center text-center">
+                      <div className="m-5 p-3 flex flex-col items-center text-center dark:text-mainBlack">
                         삭제할 항목을 체크해주세요!
                         <div className="flex m-8">
                           <button
@@ -149,7 +149,7 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
             </div>
             {/*구분선*/}
           </div>
-          <div className="p-[2px] mb-2 bg-gradient-to-r from-amber-500 via-amber-200 to-yellow-300  "></div>
+          <div className="p-[2px] mb-2 dark:from-purple-500 dark:via-purple-200 dark:to-amner-200 bg-gradient-to-r from-amber-500 via-amber-200 to-yellow-300  "></div>
 
           <div className="w-full max-h-screen h-1/12 flex rounded overflow-scroll">
             <table className="text-center h-full w-full bg-white dark:text-white dark:bg-darkPoint">

@@ -158,16 +158,16 @@ const Operation = ({ member }) => {
 
           <div className="md:flex p-1 mt-2">
             <div className="w-full m-2 ">
-              <div className="p-1 bg-white">
+              <div className="p-1 bg-white dark:bg-mainBlack dark:text-mainWhite">
                 <div className="flex justify-between m-1">
                   <div className="font-extrabold text-4xl m-1">
                     CTF-Operation
                   </div>
                   <div className="flex m-1">
-                    <div className=" flex rounded p-1 bg-amber-300 border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
+                    <div className="flex rounded p-1 bg-amber-300 dark:bg-indigo-400 dark:border-indigo-500  border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
                       <div className=" text-md ">
                         <button
-                          className="hover:bg-amber-500  m-1 hover:text-mainWhite rounded font-bold"
+                          className="hover:bg-amber-500 dark:hover:bg-indigo-500 m-1 hover:text-mainWhite rounded font-bold"
                           onClick={createContestHandler}
                         >
                           대회 추가
@@ -178,12 +178,12 @@ const Operation = ({ member }) => {
                 </div>
               </div>
               {/*구분선*/}
-              <div className="p-[2px] mb-2 bg-gradient-to-r from-amber-500 via-amber-200 to-yellow-300  "></div>
+              <div className="p-[2px] mb-2 dark:from-purple-500 dark:via-purple-200 dark:to-amner-200 bg-gradient-to-r from-amber-500 via-amber-200 to-yellow-300  "></div>
               {/* 2.  프로필 이미지 + 팔로우 + 포인트 */}
 
               <div className="w-full">
                 <div className="w-full h-full inline-block rounded overflow-hidden text-center">
-                  <table className="w-full shadow bg-white">
+                  <table className="text-center h-full w-full bg-white dark:text-white dark:bg-darkPoint">
                     <thead>
                       <tr className="h-10 w-full bg-gradient-to-r from-amber-400 via-red-800 to-black dark:from-pink-300 dark:via-purple-400 dark:to-indigo-400  text-lg text-white font-extrabold text-center ">
                         {tableHead.map((head, headIdx) => (
@@ -200,7 +200,7 @@ const Operation = ({ member }) => {
                           <td>{contest.name}</td>
                           <td>{contest.description}</td>
                           <td>{contest.creator.nickName}</td>
-                          <td className="flex justify-center pt-1.5">
+                          <td className="flex justify-center pt-1.5 dark:text-black">
                             {/* <button
                                   className={contest.joinable ? '열림' : '닫힘'}
                                 >
