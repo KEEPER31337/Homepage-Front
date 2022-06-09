@@ -3,11 +3,11 @@ import Modal from 'react-awesome-modal';
 import ctfAPI from 'API/v1/ctf';
 import { connect } from 'react-redux';
 
-const OpenCloseBtn = ({ member, isSolvable, challengeId }) => {
+const ContestOpenCloseBtn = ({ member, isJoinable, ctfId }) => {
   // 탈퇴 눌렀을때 뜨는 모달
   useEffect(() => {}, []);
   //새로 api(list)받지않고, 버튼 색깔 바꾸기 위해
-  const [state, setState] = useState(isSolvable);
+  const [state, setState] = useState(isJoinable);
 
   const [modalStatus, setModalState] = useState(false);
   const openModal = (id) => {
@@ -16,39 +16,49 @@ const OpenCloseBtn = ({ member, isSolvable, challengeId }) => {
   const closeModal = () => {
     setModalState(false);
   };
-  const closeProb = () => {
+  const closeContest = () => {
     ctfAPI
-      .closeProb({
-        pid: challengeId,
+      .closeContest({
+        cid: ctfId,
         token: member.token,
       })
       .then((data) => {
         if (data.success) {
+          console.log(data);
           setState(false);
+        } else {
+          console.log(data);
+          alert('대회 닫기 중 오류가 발생하였습니다.');
         }
       });
   };
-  const openProb = () => {
+
+  const openContest = () => {
     ctfAPI
-      .openProb({
-        pid: challengeId,
+      .openContest({
+        cid: ctfId,
         token: member.token,
       })
       .then((data) => {
         if (data.success) {
+          console.log(data);
           setState(true);
+        } else {
+          console.log(data);
+          alert('대회 열기 중 오류가 발생하였습니다.');
         }
       });
   };
+
   return (
-    <>
+    <div className="w-2/3">
       {state === true ? (
         <div className="flex rounded bg-green-300 border-2 border-green-400 shadow-[inset_0_2px_0_1px_#ffffff]">
           <button
             onClick={openModal}
             className="hover:bg-green-400  w-full hover:text-mainWhite rounded"
           >
-            공개
+            열림
           </button>
         </div>
       ) : (
@@ -57,11 +67,11 @@ const OpenCloseBtn = ({ member, isSolvable, challengeId }) => {
             onClick={openModal}
             className="hover:bg-amber-400  w-full hover:text-mainWhite rounded"
           >
-            비공개
+            닫힘
           </button>
         </div>
       )}
-      <Modal // 팀 정보 수정 클릭 시 뜨는 창
+      <Modal
         visible={modalStatus}
         width="300"
         height="140"
@@ -69,7 +79,7 @@ const OpenCloseBtn = ({ member, isSolvable, challengeId }) => {
         onClickAway={() => closeModal()}
       >
         <div className="m-5 p-3 flex flex-col items-center text-center">
-          {state === true ? '비공개' : '공개'}로 전환하시겠습니까?
+          {state === true ? '닫힘' : '열림'}으로 전환하시겠습니까?
           <div className="flex m-8">
             <button
               className="bg-white mx-1 hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
@@ -85,7 +95,7 @@ const OpenCloseBtn = ({ member, isSolvable, challengeId }) => {
                 closeModal();
 
                 {
-                  state === true ? closeProb() : openProb();
+                  state === true ? closeContest() : openContest();
                 }
               }}
             >
@@ -94,11 +104,11 @@ const OpenCloseBtn = ({ member, isSolvable, challengeId }) => {
           </div>
         </div>
       </Modal>
-    </>
+    </div>
   );
 };
 const mapStateToProps = (state, OwnProps) => {
   return { member: state.member };
 };
 
-export default connect(mapStateToProps)(OpenCloseBtn);
+export default connect(mapStateToProps)(ContestOpenCloseBtn);

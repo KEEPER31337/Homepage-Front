@@ -7,7 +7,7 @@ import 'moment/locale/ko';
 // local
 import authAPI from 'API/v1/auth';
 import actionMember from 'redux/action/member';
-import OpenCloseBtn from '../Components/OpenCloseBtn';
+import ProbOpenCloseBtn from '../Components/ProbOpenCloseBtn';
 import DeleteBtn from '../Components/DeleteBtn';
 
 const ChallengeAdmin = ({ member, memberSignIn }) => {
@@ -148,7 +148,7 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
                     <td>{info.score}</td>
 
                     <td className="dark:text-black">
-                      <OpenCloseBtn
+                      <ProbOpenCloseBtn
                         isSolvable={info.isSolvable}
                         challengeId={info.challengeId}
                       />
