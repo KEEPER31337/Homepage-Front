@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import actionMember from 'redux/action/member';
 
 // local
-import NavigationLayout from './Components/NavigationLayout';
 import ContestOverview from './Components/ContestOverview';
 import Table from './Components/Table';
 
@@ -16,6 +15,7 @@ const Ctf = ({ member }) => {
   const [overview, setOverview] = useState([]);
 
   useEffect(() => {
+    console.log(member);
     ctfAPI
       .getJoinableContestList({
         token: member.token,
@@ -52,28 +52,21 @@ const Ctf = ({ member }) => {
   }, []);
 
   return (
-    <div className="bg-mainWhite dark:bg-mainBlack min-h-screen">
-      {/* 기존 홈페이지 헤더에 맞추기 위해,  */}
-      <div className="max-w-7xl mx-auto flex flex-row">
-        {/*사이드바*/}
-        <NavigationLayout />
-        <div className="md:w-4/5 flex flex-col flex-1 p-3">
-          <div className="mr-20">
-            <div className="my-10 text-center text-lg font-basic dark:text-amber-200 ">
-              참여할 대회를 선택해주세요!
-            </div>
-            <div className="my-10 mx-20 flex flex-wrap justify-between">
-              <div className="mb-20">
-                <div className="m-5">OverView</div>
-                <div>{overview.map((ov) => ov)}</div>
-              </div>
-              <div className="w-full">
-                <Table
-                  headList={tableHead}
-                  bodyList={[...tableBody].reverse()}
-                ></Table>
-              </div>
-            </div>
+    <div className="md:w-4/5 flex flex-col flex-1 p-3">
+      <div className="mr-20">
+        <div className="my-10 text-center text-lg font-basic dark:text-amber-200 ">
+          참여할 대회를 선택해주세요!
+        </div>
+        <div className="my-10 mx-20 flex flex-wrap justify-between">
+          <div className="mb-20">
+            <div className="m-5">OverView</div>
+            <div>{overview.map((ov) => ov)}</div>
+          </div>
+          <div className="w-full">
+            <Table
+              headList={tableHead}
+              bodyList={[...tableBody].reverse()}
+            ></Table>
           </div>
         </div>
       </div>

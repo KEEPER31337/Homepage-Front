@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 // local
 import Chatting from 'shared/Chat/Chatting';
 import Header from 'shared/Header.jsx';
+import CTFHeader from 'page/CTF/Components/NavigationLayout';
 import attendanceAPI from 'API/v1/attendance';
 import actionMember from 'redux/action/member';
 // pages
@@ -72,22 +73,32 @@ const App = ({ member, darkMode, signOut }) => {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/ranking" element={<Ranking />} />
             <Route path="/study" element={<Study />} />
-            <Route path="/ctf" element={<Ctf />} />
-            <Route path="/ctf/scoreboard" element={<ScoreBoard />} />
-            <Route path="/ctf/team" element={<Team />} />
-            <Route path="/ctf/teamjoin" element={<TeamJoin />} />
-            <Route
-              path="/ctf/admin/challengeWrite"
-              element={<ChallengeWrite />}
-            />
-            <Route
-              path="/ctf/admin/challengeAdmin"
-              element={<ChallengeAdmin />}
-            />
-            <Route path="/ctf/admin/operation" element={<Operation />} />
-            <Route path="/ctf/admin/submissions" element={<Submissions />} />
-            <Route path="/ctf/challenge" element={<Challenge />} />
           </Routes>
+          <div className="bg-mainWhite dark:bg-mainBlack min-h-screen">
+            <div className="max-w-7xl mx-auto flex flex-row">
+              <CTFHeader />
+              <Routes>
+                <Route path="/ctf" element={<Ctf />} />
+                <Route path="/ctf/scoreboard" element={<ScoreBoard />} />
+                <Route path="/ctf/team" element={<Team />} />
+                <Route path="/ctf/teamjoin" element={<TeamJoin />} />
+                <Route
+                  path="/ctf/admin/challengeWrite"
+                  element={<ChallengeWrite />}
+                />
+                <Route
+                  path="/ctf/admin/challengeAdmin"
+                  element={<ChallengeAdmin />}
+                />
+                <Route path="/ctf/admin/operation" element={<Operation />} />
+                <Route
+                  path="/ctf/admin/submissions"
+                  element={<Submissions />}
+                />
+                <Route path="/ctf/challenge" element={<Challenge />} />
+              </Routes>
+            </div>
+          </div>
         </Suspense>
         <Chatting />
       </>
