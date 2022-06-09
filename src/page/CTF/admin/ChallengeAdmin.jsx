@@ -41,11 +41,17 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
     }
   };
   const [modalStatus, setModalState] = useState(false);
+  const [modalStatus2, setModalState2] = useState(false);
   const openModal = () => {
-    setModalState(true);
+    if (checkedItems.size === 0) {
+      setModalState2(true);
+    } else setModalState(true);
   };
   const closeModal = () => {
     setModalState(false);
+  };
+  const closeModal2 = () => {
+    setModalState2(false);
   };
 
   useEffect(() => {
@@ -86,7 +92,7 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
                     >
                       삭제
                     </button>
-                    <Modal // 팀 정보 수정 클릭 시 뜨는 창
+                    <Modal // 1개 이상 체크했을때 뜨는 모달
                       visible={modalStatus}
                       width="300"
                       height="140"
@@ -94,7 +100,7 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
                       onClickAway={() => closeModal()}
                     >
                       <div className="m-5 p-3 flex flex-col items-center text-center">
-                        삭제하시겠습니까?
+                        {checkedItems.size}개의 문제를 삭제하시겠습니까?
                         <div className="flex m-8">
                           <button
                             className="bg-white mx-1 hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
@@ -115,6 +121,28 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
                         </div>
                       </div>
                     </Modal>
+
+                    <Modal // 아무것도 체크안했을때 뜨는 모달
+                      visible={modalStatus2}
+                      width="300"
+                      height="140"
+                      effect="fadeInDown"
+                      onClickAway={() => closeModal2()}
+                    >
+                      <div className="m-5 p-3 flex flex-col items-center text-center">
+                        삭제할 항목을 체크해주세요!
+                        <div className="flex m-8">
+                          <button
+                            className="bg-white mx-1 hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+                            onClick={() => {
+                              closeModal2();
+                            }}
+                          >
+                            확인
+                          </button>
+                        </div>
+                      </div>
+                    </Modal>
                   </div>
                 </div>
               </div>
@@ -123,7 +151,7 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
           </div>
           <div className="p-[2px] mb-2 bg-gradient-to-r from-amber-500 via-amber-200 to-yellow-300  "></div>
 
-          <div className="w-full h-1/12 flex rounded overflow-auto">
+          <div className="w-full max-h-screen h-1/12 flex rounded overflow-scroll">
             <table className="text-center h-full w-full bg-white dark:text-white dark:bg-darkPoint">
               <thead>
                 <tr className=" h-10 w-full bg-gradient-to-r from-amber-400 via-red-800 to-black dark:from-pink-300 dark:via-purple-400 dark:to-indigo-400  text-lg text-white font-extrabold text-center ">
