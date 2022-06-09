@@ -36,7 +36,7 @@ const categoriesAll = [
   { name: 'ADMIN 대회운영', href: '/ctf/admin/operation', icon: XIcon },
 ];
 
-const NavigationLayout = ({ member }) => {
+const NavigationLayout = ({ member, ctfId }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
@@ -56,6 +56,7 @@ const NavigationLayout = ({ member }) => {
             setCategories(categoriesHidden);
           }
         });
+      console.log('[redux]  ctfid 는 ', ctfId.ctfId);
     }
   }, [member]);
   return (
@@ -176,6 +177,6 @@ const NavigationLayout = ({ member }) => {
   );
 };
 const mapStateToProps = (state) => {
-  return { member: state.member };
+  return { member: state.member, ctfId: state.ctfId };
 };
 export default connect(mapStateToProps)(NavigationLayout);

@@ -30,6 +30,7 @@ const Ctf = ({ member }) => {
                     overview.concat(
                       <ContestOverview
                         key={contestIdx}
+                        id={contest.ctfId}
                         name={contest.name}
                         description={contest.description}
                         creator="asdf" /* TODO api 수정되면 creator 이름 받아오기 */
