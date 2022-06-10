@@ -17,6 +17,12 @@ import {
 
 const categoriesHidden = [
   { name: 'CTF', href: '/ctf', icon: HomeIcon, auth: null },
+  {
+    name: 'ADMIN 대회운영',
+    href: '/ctf/admin/operation',
+    icon: XIcon,
+    auth: 'ROLE_회장',
+  },
 ];
 const categoriesAll = [
   { name: 'CTF', href: '/ctf', icon: HomeIcon, auth: null },
