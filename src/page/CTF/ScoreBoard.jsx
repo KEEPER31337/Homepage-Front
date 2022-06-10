@@ -6,7 +6,7 @@ import ScoreBoardAnimation from './Components/ScoreBoardAnimation';
 //api
 import ctfAPI from 'API/v1/ctf';
 
-const ScoreBoard = ({ member }) => {
+const ScoreBoard = ({ member, ctfId }) => {
   const [rankList, setRankList] = useState([]);
   const [page, setPage] = useState(0);
   const [canGoNext, setCanGoNext] = useState(false);
@@ -26,7 +26,7 @@ const ScoreBoard = ({ member }) => {
         token: member.token,
         page: page,
         size: 7,
-        ctfId: 2,
+        ctfId: ctfId,
       })
       .then((data) => {
         if (data.success) {
@@ -84,7 +84,7 @@ const ScoreBoard = ({ member }) => {
 };
 
 const mapStateToProps = (state, OwnProps) => {
-  return { member: state.member };
+  return { member: state.member, ctfId: state.ctf.ctfId };
 };
 
 export default connect(mapStateToProps)(ScoreBoard);

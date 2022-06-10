@@ -9,7 +9,7 @@ import teamAPI from 'API/v1/ctf';
 // local
 import MessageModal from 'shared/MessageModal';
 
-const TeamJoin = ({ member }) => {
+const TeamJoin = ({ member, ctfId }) => {
   const [openPage, setOpenPage] = useState(true);
   const [teamList, setTeamList] = useState([]);
 
@@ -69,7 +69,7 @@ const TeamJoin = ({ member }) => {
         .createTeam({
           name: teamName,
           description: teamDescription,
-          contestId: 2,
+          contestId: ctfId,
           token: member.token,
         })
         .then((data) => {
@@ -89,7 +89,7 @@ const TeamJoin = ({ member }) => {
       teamAPI
         .joinTeam({
           teamName: teamName,
-          contestId: 2,
+          contestId: ctfId,
           token: member.token,
         })
         .then((data) => {
@@ -196,8 +196,8 @@ const TeamJoin = ({ member }) => {
   );
 };
 
-const mapStateToProps = (state, OwnProps) => {
-  return { member: state.member };
+const mapStateToProps = (state, ctfId) => {
+  return { member: state.member, ctfId: state.ctf.ctfId };
 };
 
 export default connect(mapStateToProps)(TeamJoin);

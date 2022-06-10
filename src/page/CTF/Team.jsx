@@ -9,7 +9,7 @@ import MessageModal from 'shared/MessageModal';
 
 import { CogIcon, BanIcon } from '@heroicons/react/outline';
 
-const Team = ({ member }) => {
+const Team = ({ member, ctfId }) => {
   const alertTeamModifyModalRef = useRef({});
   const alertTeamresignModalRef = useRef({});
   const alertNoTeam = useRef({}); // 팀에 가입하지 않았을 때 뜨는 알림
@@ -41,7 +41,7 @@ const Team = ({ member }) => {
   useEffect(() => {
     teamAPI
       .seeMyTeam({
-        ctfId: 2,
+        ctfId: ctfId,
         token: member.token,
       })
       .then((data) => {
@@ -81,7 +81,7 @@ const Team = ({ member }) => {
         teamId: teamId,
         name: teamNameModal,
         description: teamDesModal,
-        contestId: 2,
+        contestId: ctfId,
         token: member.token,
       })
       .then((data) => {
@@ -106,8 +106,8 @@ const Team = ({ member }) => {
 
   const runResignTeam = () => {
     teamAPI
-      .resignTeam({
-        ctfId: 2,
+      .re({
+        ctfId: csignTeamtfId,
         token: member.token,
       })
       .then((data) => {
@@ -308,8 +308,8 @@ const Team = ({ member }) => {
   );
 };
 
-const mapStateToProps = (state, OwnProps) => {
-  return { member: state.member };
+const mapStateToProps = (state, ctfId) => {
+  return { member: state.member, ctfId: state.ctf.ctfId };
 };
 
 export default connect(mapStateToProps)(Team);

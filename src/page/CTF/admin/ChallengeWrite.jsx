@@ -11,7 +11,7 @@ import ctfAPI from 'API/v1/ctf';
 
 //TODO 반응형
 
-const ChallengeWrite = ({ member }) => {
+const ChallengeWrite = ({ member, ctfId }) => {
   // 세연's->
   const content = '';
   const isDark = false; //Dark모드 여부
@@ -40,7 +40,7 @@ const ChallengeWrite = ({ member }) => {
       .createProb({
         title: inputs.challengeName,
         content: 'aaaaa', // TODO
-        contestId: 2,
+        contestId: ctfId,
         category: {
           id: Number(inputs.category),
         },
@@ -265,7 +265,7 @@ const ChallengeWrite = ({ member }) => {
 };
 
 const mapStateToProps = (state, OwnProps) => {
-  return { member: state.member };
+  return { member: state.member, ctfId: state.ctf.ctfId };
 };
 
 export default connect(mapStateToProps)(ChallengeWrite);

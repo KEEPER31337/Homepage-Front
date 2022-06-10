@@ -6,7 +6,7 @@ import Category from './Components/Category';
 // API
 import ctfAPI from 'API/v1/ctf';
 
-const Challenge = ({ member }) => {
+const Challenge = ({ member, ctfId }) => {
   const [probList, setProbList] = useState([
     {
       challengeId: null,
@@ -24,7 +24,7 @@ const Challenge = ({ member }) => {
   useEffect(() => {
     ctfAPI
       .getProbList({
-        cid: 2,
+        cid: ctfId,
         token: member.token,
       })
       .then((data) => {
@@ -81,8 +81,8 @@ const Challenge = ({ member }) => {
   );
 };
 
-const mapStateToProps = (state, OwnProps) => {
-  return { member: state.member };
+const mapStateToProps = (state, ctfId) => {
+  return { member: state.member, ctfId: state.ctf.ctfId };
 };
 
 const mapDispatchToProps = (dispatch, OwnProps) => {

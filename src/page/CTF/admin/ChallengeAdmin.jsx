@@ -10,8 +10,9 @@ import actionMember from 'redux/action/member';
 import ProbOpenCloseBtn from '../Components/ProbOpenCloseBtn';
 import DeleteBtn from '../Components/DeleteBtn';
 
-const ChallengeAdmin = ({ member, memberSignIn }) => {
+const ChallengeAdmin = ({ member, ctfId }) => {
   const [rankList, setRankList] = useState([]);
+
   const onClick = useCallback(() => {
     for (let item of checkedItems) {
       ctfAPI
@@ -57,7 +58,7 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
   useEffect(() => {
     ctfAPI
       .getAdminProbList({
-        ctfId: 2,
+        ctfId: ctfId,
         token: member.token,
       })
       .then((data) => {
@@ -199,7 +200,7 @@ const ChallengeAdmin = ({ member, memberSignIn }) => {
 };
 
 const mapStateToProps = (state, OwnProps) => {
-  return { member: state.member };
+  return { member: state.member, ctfId: state.ctf.ctfId };
 };
 
 export default connect(mapStateToProps)(ChallengeAdmin);

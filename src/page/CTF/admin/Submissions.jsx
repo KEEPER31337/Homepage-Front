@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
 
 import ctfAPI from 'API/v1/ctf';
-const Submissions = ({ member, memberSignIn }) => {
+const Submissions = ({ member, ctfId }) => {
   const [page, setPage] = useState(0);
   const [canGoNext, setCanGoNext] = useState(false);
   const [canGoPrev, setCanGoPrev] = useState(false);
@@ -125,7 +125,7 @@ const Submissions = ({ member, memberSignIn }) => {
   );
 };
 const mapStateToProps = (state, OwnProps) => {
-  return { member: state.member };
+  return { member: state.member, ctfId: state.ctf.ctfId };
 };
 
 export default connect(mapStateToProps)(Submissions);

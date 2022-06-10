@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 //api
 import ctfAPI from 'API/v1/ctf';
 
-const ScoreBoardAnimation = ({ member }) => {
+const ScoreBoardAnimation = ({ member, ctfId }) => {
   const [FirstRank, setFirstRank] = useState([]);
   const [SecondRank, setSecondRank] = useState([]);
   const [ThirdRank, setThirdRank] = useState([]);
@@ -16,7 +16,7 @@ const ScoreBoardAnimation = ({ member }) => {
         token: member.token,
         page: 0,
         size: 3,
-        ctfId: 2,
+        ctfId: ctfId,
       })
       .then((data) => {
         if (data.success) {
@@ -214,8 +214,8 @@ const ScoreBoardAnimation = ({ member }) => {
   );
 };
 
-const mapStateToProps = (state, OwnProps) => {
-  return { member: state.member };
+const mapStateToProps = (state, ctfId) => {
+  return { member: state.member, ctfId: state.ctf.ctfId };
 };
 
 export default connect(mapStateToProps)(ScoreBoardAnimation);

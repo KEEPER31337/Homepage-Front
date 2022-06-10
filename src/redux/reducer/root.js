@@ -22,7 +22,7 @@ const rootReducer = combineReducers({
   member: reducerMember,
   category: reducerCategory,
   chat: reducerChat,
-  ctfId: reducerCtf,
+  ctf: reducerCtf,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

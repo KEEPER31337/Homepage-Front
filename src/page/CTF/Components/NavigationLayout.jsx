@@ -67,12 +67,10 @@ const NavigationLayout = ({ member, ctfId }) => {
   const jobs = member?.memberInfo?.jobs;
 
   useEffect(() => {
-    if (ctfId.ctfId === null) setCategories(categoriesHidden);
+    if (ctfId === null) setCategories(categoriesHidden);
     else setCategories(categoriesAll);
 
-    console.log('[redux]  ctfid 는 ', ctfId.ctfId);
-    console.log(jobs);
-    console.log(categoriesAll[5].auth);
+    console.log('[redux]  ctfid 는 ', ctfId);
   }, [ctfId]);
   return (
     <>
@@ -200,6 +198,6 @@ const NavigationLayout = ({ member, ctfId }) => {
   );
 };
 const mapStateToProps = (state) => {
-  return { member: state.member, ctfId: state.ctfId };
+  return { member: state.member, ctfId: state.ctf.ctfId };
 };
 export default connect(mapStateToProps)(NavigationLayout);
