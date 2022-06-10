@@ -15,37 +15,64 @@ import {
   CollectionIcon,
 } from '@heroicons/react/outline';
 
-const categoriesHidden = [{ name: 'CTF', href: '/ctf', icon: HomeIcon }];
+const categoriesHidden = [
+  { name: 'CTF', href: '/ctf', icon: HomeIcon, auth: null },
+];
 const categoriesAll = [
-  { name: 'CTF', href: '/ctf', icon: HomeIcon },
-  { name: 'TEAM JOIN', href: '/ctf/teamjoin', icon: FolderAddIcon },
-  { name: 'CHALLENGES', href: '/ctf/challenge', icon: CollectionIcon },
-  { name: 'SCOREBOARD', href: '/ctf/scoreboard', icon: ChartBarIcon },
-  { name: 'TEAM', href: '/ctf/team', icon: UsersIcon },
+  { name: 'CTF', href: '/ctf', icon: HomeIcon, auth: null },
+  { name: 'TEAM JOIN', href: '/ctf/teamjoin', icon: FolderAddIcon, auth: null },
+  {
+    name: 'CHALLENGES',
+    href: '/ctf/challenge',
+    icon: CollectionIcon,
+    auth: null,
+  },
+  {
+    name: 'SCOREBOARD',
+    href: '/ctf/scoreboard',
+    icon: ChartBarIcon,
+    auth: null,
+  },
+  { name: 'TEAM', href: '/ctf/team', icon: UsersIcon, auth: null },
   {
     name: 'ADMIN 문제관리',
     href: '/ctf/admin/challengeAdmin',
     icon: FolderIcon,
+    auth: ['ROLE_회장', 'ROLE_출제자'],
   },
   {
     name: 'ADMIN 문제출제',
     href: '/ctf/admin/challengeWrite',
     icon: InboxIcon,
+    auth: ['ROLE_회장', 'ROLE_출제자'],
   },
-  { name: 'ADMIN 제출로그', href: '/ctf/admin/submissions', icon: FolderIcon },
-  { name: 'ADMIN 대회운영', href: '/ctf/admin/operation', icon: XIcon },
+  {
+    name: 'ADMIN 제출로그',
+    href: '/ctf/admin/submissions',
+    icon: FolderIcon,
+    auth: ['ROLE_회장', 'ROLE_출제자'],
+  },
+  {
+    name: 'ADMIN 대회운영',
+    href: '/ctf/admin/operation',
+    icon: XIcon,
+    auth: 'ROLE_회장',
+  },
 ];
 
 const NavigationLayout = ({ member, ctfId }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
+  const jobs = member?.memberInfo?.jobs;
 
   useEffect(() => {
     if (ctfId.ctfId === null) setCategories(categoriesHidden);
     else setCategories(categoriesAll);
 
     console.log('[redux]  ctfid 는 ', ctfId.ctfId);
+    console.log(jobs);
+    console.log(categoriesAll[5].auth);
   }, [ctfId]);
   return (
     <>
@@ -104,17 +131,21 @@ const NavigationLayout = ({ member, ctfId }) => {
 
                 <div className="mt-8 flex-1 h-0 overflow-y-auto">
                   <nav className="px-2 space-y-1">
-                    {categories.map((item) => (
-                      <Link to={item.href} key={item.name}>
-                        <div className="group flex items-center my-3 px-3 py-3 text-mainYellow font-bold rounded-md hover:text-mainWhite hover:bg-mainYellow">
-                          <item.icon
-                            className="mr-4 flex-shrink-0 h-6 w-6 "
-                            aria-hidden="true"
-                          />
-                          {item.name}
-                        </div>
-                      </Link>
-                    ))}
+                    {categories.map((item) =>
+                      !item.auth || jobs?.some((i) => item.auth.includes(i)) ? (
+                        <Link to={item.href} key={item.name}>
+                          <div className="group flex items-center my-3 px-3 py-3 text-mainYellow font-bold rounded-md hover:text-mainWhite hover:bg-mainYellow">
+                            <item.icon
+                              className="mr-4 flex-shrink-0 h-6 w-6 "
+                              aria-hidden="true"
+                            />
+                            {item.name}
+                          </div>
+                        </Link>
+                      ) : (
+                        <Fragment key={item.name}></Fragment>
+                      )
+                    )}
                   </nav>
                 </div>
               </Dialog.Panel>
@@ -132,17 +163,21 @@ const NavigationLayout = ({ member, ctfId }) => {
         <div className="flex flex-col flex-grow pt-2  overflow-y-auto">
           <div className=" flex-1 h-0 overflow-y-auto">
             <nav className="px-2 space-y-1">
-              {categories.map((item) => (
-                <Link to={item.href} key={item.name}>
-                  <div className="group flex items-center my-3 px-3 py-3 text-mainYellow font-bold rounded-md hover:text-mainWhite hover:bg-mainYellow">
-                    <item.icon
-                      className="mr-4 flex-shrink-0 h-6 w-6 "
-                      aria-hidden="true"
-                    />
-                    {item.name}
-                  </div>
-                </Link>
-              ))}
+              {categories.map((item) =>
+                !item.auth || jobs?.some((i) => item.auth.includes(i)) ? (
+                  <Link to={item.href} key={item.name}>
+                    <div className="group flex items-center my-3 px-3 py-3 text-mainYellow font-bold rounded-md hover:text-mainWhite hover:bg-mainYellow">
+                      <item.icon
+                        className="mr-4 flex-shrink-0 h-6 w-6 "
+                        aria-hidden="true"
+                      />
+                      {item.name}
+                    </div>
+                  </Link>
+                ) : (
+                  <Fragment key={item.name}></Fragment>
+                )
+              )}
             </nav>
           </div>
         </div>
