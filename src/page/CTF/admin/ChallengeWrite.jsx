@@ -60,28 +60,28 @@ const ChallengeWrite = ({ member, ctfId }) => {
       <>
         <div className="col-span-5 sm:col-span-1">
           <label
-            htmlFor="max score"
-            className="block text-sm font-medium text-gray-700"
-          >
-            최고 점수
-          </label>
-          <input
-            type="text"
-            name="max score"
-            onChange={onChange}
-            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-          />
-        </div>
-        <div className="col-span-5 sm:col-span-1">
-          <label
-            htmlFor="min score"
+            htmlFor="min_score"
             className="block text-sm font-medium text-gray-700"
           >
             최저 점수
           </label>
           <input
             type="text"
-            name="min score"
+            name="min_score"
+            onChange={onChange}
+            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+          />
+        </div>
+        <div className="col-span-5 sm:col-span-1">
+          <label
+            htmlFor="max_score"
+            className="block text-sm font-medium text-gray-700"
+          >
+            최고 점수
+          </label>
+          <input
+            type="text"
+            name="max_score"
             onChange={onChange}
             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
           />
@@ -105,8 +105,8 @@ const ChallengeWrite = ({ member, ctfId }) => {
         isSolvable: true, // TODO check box 만들기
         score: Number(inputs.score),
         dynamicInfo: {
-          maxScore: 1000,
-          minScore: 100,
+          maxScore: Number(inputs.max_score),
+          minScore: Number(inputs.min_score),
         },
         flag: inputs.flag,
         token: member.token,
