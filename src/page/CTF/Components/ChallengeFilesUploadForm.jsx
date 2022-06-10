@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { DocumentAddIcon, TrashIcon } from '@heroicons/react/solid';
-import { Input } from 'postcss';
+import Modal from 'react-awesome-modal';
 import { useEffect } from 'react';
 
 const formatFileSize = (size) => {
@@ -64,8 +64,20 @@ const FilesUploadForm = (props) => {
     );
   };
 
+  const [modalStatus, setModalState] = useState(false);
+  const openModal = () => {
+    setModalState(true);
+  };
+  const closeModal = () => {
+    setModalState(false);
+  };
   useEffect(() => {
     console.log(files);
+    console.log(files.length);
+    if (files.length >= 2) {
+      openModal();
+      deleteClickHandler(files[1].name);
+    }
   }, [files]);
   useEffect(() => {
     if (props.modifyFlag) {
@@ -193,7 +205,6 @@ const FilesUploadForm = (props) => {
           )}
         </div>
       </div>
-
       <div className="block sm:hidden space-y-2">
         <button
           {...getRootProps()}
@@ -222,6 +233,28 @@ const FilesUploadForm = (props) => {
           ''
         )}
       </div>
+      <Modal // 파일 2개이상 넣을때모달
+        visible={modalStatus}
+        width="300"
+        height="140"
+        effect="fadeInDown"
+        onClickAway={() => closeModal()}
+      >
+        <div className="m-5 p-3 flex flex-col items-center text-center dark:text-mainBlack">
+          파일 첨부는 1개까지 가능합니다
+          <div className="flex m-8">
+            <button
+              className="bg-white mx-1 hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+              onClick={() => {
+                closeModal();
+              }}
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      </Modal>
+      ;
     </>
   );
 };
