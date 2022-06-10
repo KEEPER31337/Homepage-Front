@@ -35,6 +35,61 @@ const ChallengeWrite = ({ member, ctfId }) => {
     const { value, name } = e.target;
     setInputs({ ...inputs, [name]: value });
   };
+
+  let typeScore;
+  if (type == 1) {
+    typeScore = (
+      <div className="col-span-5 sm:col-span-1">
+        <label
+          htmlFor="score"
+          className="block text-sm font-medium text-gray-700"
+        >
+          배점
+        </label>
+        <input
+          type="text"
+          name="score"
+          defaultValue={score}
+          onChange={onChange}
+          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+        />
+      </div>
+    );
+  } else if (type == 2) {
+    typeScore = (
+      <>
+        <div className="col-span-5 sm:col-span-1">
+          <label
+            htmlFor="max score"
+            className="block text-sm font-medium text-gray-700"
+          >
+            최고 점수
+          </label>
+          <input
+            type="text"
+            name="max score"
+            onChange={onChange}
+            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+          />
+        </div>
+        <div className="col-span-5 sm:col-span-1">
+          <label
+            htmlFor="min score"
+            className="block text-sm font-medium text-gray-700"
+          >
+            최저 점수
+          </label>
+          <input
+            type="text"
+            name="min score"
+            onChange={onChange}
+            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+          />
+        </div>
+      </>
+    );
+  }
+
   const onClick = () => {
     ctfAPI
       .createProb({
@@ -189,50 +244,8 @@ const ChallengeWrite = ({ member, ctfId }) => {
                       <option value={2}>DYNAMIC</option>
                     </select>
                   </div>
-                  {/* TODO 타입 선택 후 거기 해당하는 거 나오도록 */}
-                  <div className="col-span-5 sm:col-span-1">
-                    <label
-                      htmlFor="score"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      배점
-                    </label>
-                    <input
-                      type="text"
-                      name="score"
-                      defaultValue={score}
-                      onChange={onChange}
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    />
-                  </div>
-                  <div className="col-span-5 sm:col-span-1">
-                    <label
-                      htmlFor="max score"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      최고 점수
-                    </label>
-                    <input
-                      type="text"
-                      name="max score"
-                      onChange={onChange}
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    />
-                  </div>
-                  <div className="col-span-5 sm:col-span-1">
-                    <label
-                      htmlFor="min score"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      최저 점수
-                    </label>
-                    <input
-                      type="text"
-                      name="min score"
-                      onChange={onChange}
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    />
-                  </div>
+
+                  {typeScore}
 
                   <div className="col-span-5 sm:col-span-5">
                     <label
