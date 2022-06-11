@@ -13,12 +13,18 @@ import ctfAPI from 'API/v1/ctf';
 
 const ChallengeWrite = ({ member, ctfId }) => {
   // 세연's->
-  const content = '';
   const isDark = false; //Dark모드 여부
-  const updateContent = '';
   const editorRef = useRef();
   const [files, setFiles] = useState([]);
   // <-세연's
+
+  const [content, setContent] = useState('');
+
+  const updateContent = () => {
+    const editorInstance = editorRef.current.getInstance();
+    const getContent_md = editorInstance.getMarkdown();
+    setContent(getContent_md);
+  };
 
   const navigate = useNavigate();
 
@@ -94,7 +100,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
     ctfAPI
       .createProb({
         title: inputs.challengeName,
-        content: 'aaaaa', // TODO
+        content: content,
         contestId: ctfId,
         category: {
           id: Number(inputs.category),
