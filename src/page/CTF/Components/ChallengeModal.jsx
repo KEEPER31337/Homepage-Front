@@ -8,6 +8,11 @@ import {
 } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { DownloadIcon, XIcon } from '@heroicons/react/outline';
+
+import '@toast-ui/editor/dist/toastui-editor.css'; //마크다운 편집기 뷰어 에디터
+import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
+import { Viewer } from '@toast-ui/react-editor';
+
 import { connect, useDispatch, useSelector } from 'react-redux';
 import actionMember from 'redux/action/member';
 
@@ -67,6 +72,14 @@ const ChallengeModal = forwardRef((challengeId, ref) => {
     },
   }));
 
+  const isDark = false; //Dark모드 여부
+  /* const viewerRef = useRef();
+
+  useEffect(() => {
+    const viewerInstance = viewerRef.current.getInstance();
+    viewerInstance.setMarkdown(detailProbList.content);
+  }, [detailProbList.content]); */
+
   const [flag, setFlag] = useState('');
   const [flagCheckMsg, setFlagCheckMsg] = useState();
   const onChange = (e) => {
@@ -116,8 +129,6 @@ const ChallengeModal = forwardRef((challengeId, ref) => {
     }
   };
 
-  const cancelButtonRef = useRef(null);
-
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setOpen}>
@@ -166,7 +177,13 @@ const ChallengeModal = forwardRef((challengeId, ref) => {
 
                     <div className="m-5">
                       <div className="text-base text-gray-500">
-                        {detailProbList.content}
+                        <Viewer
+                          initialValue={detailProbList.content}
+                          /* change={detailProbList.content} */
+                          theme={isDark ? 'dark' : 'light'}
+                          height="100%"
+                          /* ref={viewerRef} */
+                        />
                       </div>
                       {detailProbList.file != null ? (
                         <a
