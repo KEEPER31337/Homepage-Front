@@ -4,15 +4,13 @@ import actionMember from 'redux/action/member';
 
 // local
 import ContestOverview from './Components/ContestOverview';
-import Table from './Components/Table';
 
 // API
 import ctfAPI from 'API/v1/ctf';
 
 const Ctf = ({ member }) => {
   const tableHead = ['대회명', '설명', '개최자'];
-  const [tableBody, setTableBody] = useState([]);
-  const [overview, setOverview] = useState([]);
+  const [contestList, setContestList] = useState([]);
 
   useEffect(() => {
     console.log(member);
@@ -23,28 +21,7 @@ const Ctf = ({ member }) => {
       .then((data) => {
         if (data.success) {
           console.log(data);
-          data.list.map(
-            (contest, contestIdx) => (
-              contestIdx < 3
-                ? setOverview(
-                    overview.concat(
-                      <ContestOverview
-                        key={contestIdx}
-                        id={contest.ctfId}
-                        name={contest.name}
-                        description={contest.description}
-                        creator="asdf" /* TODO api 수정되면 creator 이름 받아오기 */
-                      />
-                    )
-                  )
-                : null,
-              setTableBody(
-                tableBody.concat([
-                  [contest.name, contest.description, 'asdf'],
-                ]) /* TODO api 수정되면 creator 이름 받아오기 */
-              )
-            )
-          );
+          setContestList(data.list);
         } else {
           console.log(data);
           alert('대회 목록을 받아오는 중 오류가 발생하였습니다.');
@@ -59,15 +36,45 @@ const Ctf = ({ member }) => {
           참여할 대회를 선택해주세요!
         </div>
         <div className="my-10 mx-20 flex flex-wrap justify-between">
-          <div className="mb-20">
+          <div className="mb-20 w-full">
             <div className="m-5">OverView</div>
-            <div>{overview.map((ov) => ov)}</div>
+            <div className="flex flex-wrap justify-center">
+              {contestList.map((contest, contestIdx) =>
+                contestIdx < 3 ? (
+                  <ContestOverview
+                    key={contestIdx}
+                    name={contest.name}
+                    description={contest.description}
+                    creator={contest.creator.nickName}
+                  />
+                ) : null
+              )}
+            </div>
           </div>
           <div className="w-full">
-            <Table
-              headList={tableHead}
-              bodyList={[...tableBody].reverse()}
-            ></Table>
+            <div className="w-full h-full inline-block rounded overflow-hidden text-center">
+              <table className="w-full shadow bg-white">
+                <thead>
+                  <tr className="h-10 w-full bg-gradient-to-r from-amber-400 via-red-800 to-black dark:from-pink-300 dark:via-purple-400 dark:to-indigo-400  text-lg text-white font-extrabold text-center ">
+                    {tableHead.map((head, headIdx) => (
+                      <th key={headIdx}>{head}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {contestList.map((contest, contestIdx) => (
+                    <tr
+                      key={contestIdx}
+                      className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]"
+                    >
+                      <td>{contest.name}</td>
+                      <td>{contest.description}</td>
+                      <td>{contest.creator.nickName}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
