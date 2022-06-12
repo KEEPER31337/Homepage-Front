@@ -37,19 +37,26 @@ const Challenge = ({ member, ctfId }) => {
           alert('문제 목록을 받아오는 중 오류가 발생하였습니다.');
         }
       });
+    /* ctfAPI // TODO 카테고리 받아와서 카테고리별 리스트 만들기
+      .getCategoryList({
+        token: member.token,
+      })
+      .then((data) => {
+        console.log(data);
+      }); */
   }, []);
   // NOTE 각각 카테고리별 변수 두지 않고 한 번에 처리하도록 수정해보자
-  const webList = probList.filter((challenge) => challenge.category.id == 0);
-  const systemList = probList.filter((challenge) => challenge.category.id == 1);
+  const webList = probList.filter((challenge) => challenge.category.id == 5);
+  const systemList = probList.filter((challenge) => challenge.category.id == 2);
   const reversingList = probList.filter(
-    (challenge) => challenge.category.id == 2
+    (challenge) => challenge.category.id == 3
   );
-  const cryptoList = probList.filter((challenge) => challenge.category.id == 3);
+  const cryptoList = probList.filter((challenge) => challenge.category.id == 6);
   const forensicList = probList.filter(
     (challenge) => challenge.category.id == 4
   );
-  const miscList = probList.filter((challenge) => challenge.category.id == 5);
-  const osintList = probList.filter((challenge) => challenge.category.id == 6);
+  const miscList = probList.filter((challenge) => challenge.category.id == 1);
+  const osintList = probList.filter((challenge) => challenge.category.id == 7);
 
   let Web, System, Rev, Crypto, Forensic, Misc, Osint;
 

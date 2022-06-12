@@ -43,6 +43,7 @@ const Ctf = ({ member }) => {
                 contestIdx < 3 ? (
                   <ContestOverview
                     key={contestIdx}
+                    id={contest.ctfId}
                     name={contest.name}
                     description={contest.description}
                     creator={contest.creator.nickName}
