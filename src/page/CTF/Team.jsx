@@ -61,8 +61,13 @@ const Team = ({ member, ctfId }) => {
                 setTeamProb(data.data.solvedChallengeList);
               }
             });
-        } else if (data.code == -13004) {
+        } else if (data.code === -13004) {
           alertNoTeam.current.open();
+          setTeamName('');
+          setTeamDes('');
+          setTeamScore(0);
+          setTeamMember([]);
+          setTeamProb([]);
         }
       });
   }, []);
@@ -90,7 +95,7 @@ const Team = ({ member, ctfId }) => {
           setTeamDes(data.data.description);
           setTeamId(data.data.id);
           alertTeamModifyModalRef.current.open();
-        } else if (data.msg.indexOf('is_duplicated')) {
+        } else if (data.code === -10001) {
           alertTeamDuplicated.current.open();
         }
       });
@@ -106,13 +111,13 @@ const Team = ({ member, ctfId }) => {
 
   const runResignTeam = () => {
     teamAPI
-      .re({
-        ctfId: csignTeamtfId,
+      .resignTeam({
+        ctfId: ctfId,
         token: member.token,
       })
       .then((data) => {
         if (data.success) {
-          alertTeamresignModalRef.current.open();
+          window.location.reload();
         }
       });
   };
@@ -205,92 +210,100 @@ const Team = ({ member, ctfId }) => {
 
   return (
     <div className="md:w-4/5 flex flex-col flex-1 pt-0 p-3">
-      <TopSection />
-      <Members />
-      <Solves />
-      <Modal // 팀 정보 수정 클릭 시 뜨는 창
-        visible={settingStatus}
-        width="500"
-        height="300"
-        effect="fadeInDown"
-        onClickAway={() => closeSettingModal()}
-      >
-        <div className="m-5 p-3 flex flex-col items-center text-center">
-          <div className="flex-auto flex justify-center w-2/3">
-            팀명 :
-            <input
-              value={teamNameModal}
-              onChange={onChangeTeamName}
-              className="flex-auto p-2 mr-2 mb-2 border border-gray-300 rounded-md
+      {teamName === '' ? (
+        <div className="pt-12 text-center dark:text-slate-200 text-5xl m-2 font-extrabold">
+          팀 가입 부탁드립니다!
+        </div>
+      ) : (
+        <>
+          <TopSection />
+          <Members />
+          <Solves />
+          <Modal // 팀 정보 수정 클릭 시 뜨는 창
+            visible={settingStatus}
+            width="500"
+            height="300"
+            effect="fadeInDown"
+            onClickAway={() => closeSettingModal()}
+          >
+            <div className="m-5 p-3 flex flex-col items-center text-center">
+              <div className="flex-auto flex justify-center w-2/3">
+                팀명 :
+                <input
+                  value={teamNameModal}
+                  onChange={onChangeTeamName}
+                  className="flex-auto p-2 mr-2 mb-2 border border-gray-300 rounded-md
                 focus:bg-backGray focus:border-backGray  focus:ring-backGray
                 focus:outline-none dark:bg-gray-600 dark:text-white"
-              placeholder="팀명"
-            />
-          </div>
-          <textarea
-            rows={5}
-            value={teamDesModal}
-            onChange={onChangeTeamDes}
-            className="w-2/3 p-2 border border-gray-300 rounded-md
+                  placeholder="팀명"
+                />
+              </div>
+              <textarea
+                rows={5}
+                value={teamDesModal}
+                onChange={onChangeTeamDes}
+                className="w-2/3 p-2 border border-gray-300 rounded-md
                 focus:bg-backGray focus:border-backGray  focus:ring-backGray
                 focus:outline-none dark:bg-gray-600 dark:text-white"
-            placeholder="팀 설명부탁드립니당~!"
-          />
-          <div className="flex flex-auto m-5">
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                closeSettingModal();
-              }}
-            >
-              취소
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                closeSettingModal();
-                runReviseTeam();
-              }}
-            >
-              수정
-            </Button>
-          </div>
-        </div>
-      </Modal>
-      <Modal // 팀 정보 수정 클릭 시 뜨는 창
-        visible={banStatus}
-        width="300"
-        height="140"
-        effect="fadeInDown"
-        onClickAway={() => closeBanModal()}
-      >
-        <div className="m-5 p-3 flex flex-col items-center text-center">
-          진심으로 탈퇴하는 겁니까???????
-          <div className="flex m-8">
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                closeBanModal();
-              }}
-            >
-              취소
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                closeBanModal();
-                runResignTeam();
-              }}
-            >
-              탈퇴
-            </Button>
-          </div>
-        </div>
-      </Modal>
+                placeholder="팀 설명부탁드립니당~!"
+              />
+              <div className="flex flex-auto m-5">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    closeSettingModal();
+                  }}
+                >
+                  취소
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    closeSettingModal();
+                    runReviseTeam();
+                  }}
+                >
+                  수정
+                </Button>
+              </div>
+            </div>
+          </Modal>
+          <Modal // 팀 정보 수정 클릭 시 뜨는 창
+            visible={banStatus}
+            width="300"
+            height="140"
+            effect="fadeInDown"
+            onClickAway={() => closeBanModal()}
+          >
+            <div className="m-5 p-3 flex flex-col items-center text-center">
+              진심으로 탈퇴하는 겁니까???????
+              <div className="flex m-8">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    closeBanModal();
+                  }}
+                >
+                  취소
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    closeBanModal();
+                    runResignTeam();
+                  }}
+                >
+                  탈퇴
+                </Button>
+              </div>
+            </div>
+          </Modal>
+        </>
+      )}
       <MessageModal ref={alertTeamModifyModalRef}>
         팀 정보가 수정되었습니다~!
       </MessageModal>

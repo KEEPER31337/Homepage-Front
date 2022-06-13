@@ -19,6 +19,7 @@ const TeamJoin = ({ member, ctfId }) => {
   const alertTeamCreateComplete = useRef({}); // 팀이 생성되었다는 알림
   const alertTeamDuplicated = useRef({}); // 팀명이 중복될 때 뜨는 알림
   const alertNotExistTeam = useRef({}); // 존재하지 않는 팀 알림
+  const alertAlreadyExistTeam = useRef({}); // 이미 팀에 가입한 알림
 
   const Header = () => {
     const tmp1 =
@@ -75,10 +76,14 @@ const TeamJoin = ({ member, ctfId }) => {
         .then((data) => {
           if (data.success) {
             alertTeamCreateComplete.current.open();
-          } else if (data.msg.indexOf('is_duplicated')) {
+          } else if (data.code === -10001) {
             alertTeamDuplicated.current.open();
+          } else if (data.code === -9999) {
+            alertAlreadyExistTeam.current.open();
           }
         });
+      setTeamName('');
+      setDescription('');
     };
 
     const teamJoinBtn = () => {
@@ -97,8 +102,11 @@ const TeamJoin = ({ member, ctfId }) => {
             alertTeamJoinComplete.current.open();
           } else if (data.code === -13004) {
             alertNotExistTeam.current.open();
+          } else if (data.code === -9999) {
+            alertAlreadyExistTeam.current.open();
           }
         });
+      setTeamName('');
     };
 
     return (
@@ -191,6 +199,9 @@ const TeamJoin = ({ member, ctfId }) => {
         존재하지 않는 팀입니다~!
         <br />
         다시 확인해주십쇼!
+      </MessageModal>
+      <MessageModal ref={alertAlreadyExistTeam}>
+        가입한 팀이 존재합니다!
       </MessageModal>
     </div>
   );
