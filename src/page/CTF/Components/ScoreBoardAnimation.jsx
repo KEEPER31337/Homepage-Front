@@ -6,9 +6,9 @@ import { useState, useEffect } from 'react';
 import ctfAPI from 'API/v1/ctf';
 
 const ScoreBoardAnimation = ({ member, ctfId }) => {
-  const [FirstRank, setFirstRank] = useState([]);
-  const [SecondRank, setSecondRank] = useState([]);
-  const [ThirdRank, setThirdRank] = useState([]);
+  const [FirstRank, setFirstRank] = useState();
+  const [SecondRank, setSecondRank] = useState();
+  const [ThirdRank, setThirdRank] = useState();
 
   useEffect(() => {
     ctfAPI
@@ -20,9 +20,10 @@ const ScoreBoardAnimation = ({ member, ctfId }) => {
       })
       .then((data) => {
         if (data.success) {
-          setFirstRank(data.page.content[0]);
-          setSecondRank(data.page.content[1]);
-          setThirdRank(data.page.content[2]);
+          setFirstRank(data.page.content[0].name);
+          setSecondRank(data.page.content[1].name);
+          setThirdRank(data.page.content[2].name);
+        } else {
         }
       });
   }, []);
@@ -47,7 +48,7 @@ const ScoreBoardAnimation = ({ member, ctfId }) => {
             }}
           >
             <div className="dark:text-white mb-2">
-              {SecondRank.name === null ? '' : SecondRank.name}
+              {SecondRank === null ? '' : SecondRank}
             </div>
           </motion.div>
           <motion.div
@@ -106,7 +107,7 @@ const ScoreBoardAnimation = ({ member, ctfId }) => {
             }}
           >
             <div className="dark:text-white mb-2">
-              {FirstRank.name === null ? '' : FirstRank.name}
+              {FirstRank === null ? '' : FirstRank}
             </div>
           </motion.div>
           <motion.div
@@ -166,7 +167,7 @@ const ScoreBoardAnimation = ({ member, ctfId }) => {
             }}
           >
             <div className="dark:text-white mb-2">
-              {ThirdRank.name === null ? '' : ThirdRank.name}
+              {ThirdRank === null ? '' : ThirdRank}
             </div>
           </motion.div>
           <motion.div

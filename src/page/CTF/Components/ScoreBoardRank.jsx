@@ -59,44 +59,6 @@ const ScoreBoardRank = ({ state, rankList }) => {
             </td>
           </tr>
         ))}
-
-        <tr className="h-12 w-full">
-          <td></td>
-          <td>000</td>
-          <td>기믄지</td>
-          <td>
-            <StarIcon className="inline-block h-6 w-6 m-1 text-amber-400 dark:text-purple-300" />
-            11
-          </td>
-        </tr>
-        <tr className="h-12 w-full">
-          <td></td>
-          <td>000</td>
-          <td>기믄지</td>
-          <td>
-            <StarIcon className="inline-block h-6 w-6 m-1 text-amber-400 dark:text-purple-300" />
-            11
-          </td>
-        </tr>
-        <tr className="h-12 w-full">
-          <td></td>
-          <td>000</td>
-          <td>기믄지</td>
-          <td>
-            <StarIcon className="inline-block h-6 w-6 m-1 text-amber-400 dark:text-purple-300" />
-            11
-          </td>
-        </tr>
-
-        <tr className="h-12 w-full">
-          <td></td>
-          <td>000</td>
-          <td>7명까지 보여지게 할것임</td>
-          <td>
-            <StarIcon className="inline-block h-6 w-6 m-1 text-amber-400 dark:text-purple-300" />
-            11
-          </td>
-        </tr>
       </tbody>
     </table>
   );
