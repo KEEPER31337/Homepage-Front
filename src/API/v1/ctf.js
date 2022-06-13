@@ -504,10 +504,10 @@ async function deleteProb({ pid, token }) {
 }
 
 // 제출 로그
-async function getSubmitLog({ page, size, token }) {
+async function getSubmitLog({ cid, page, size, token }) {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/admin/ctf/submit-log',
+    url: API_URL + '/v1/admin/ctf/submit-log/' + cid,
     params: { page: page, size: size },
 
     headers: {

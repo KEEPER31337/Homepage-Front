@@ -20,6 +20,7 @@ const Submissions = ({ member, ctfId }) => {
     ctfAPI
       .getSubmitLog({
         token: member.token,
+        cid: ctfId,
         page: page,
         size: 10,
       })
