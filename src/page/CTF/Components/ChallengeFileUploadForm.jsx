@@ -38,7 +38,7 @@ const getFileIcon = (filename) => {
   }
 };
 
-const FilesUploadForm = (props) => {
+const ChallengeFileUploadForm = (props) => {
   const [files, setFiles] = useState([]);
 
   const deleteClickHandler = (fileName) => {
@@ -72,8 +72,8 @@ const FilesUploadForm = (props) => {
     setModalState(false);
   };
   useEffect(() => {
-    console.log(files);
-    console.log(files.length);
+    /* console.log(files);
+    console.log(files.length); */
     if (files.length >= 2) {
       openModal();
       deleteClickHandler(files[1].name);
@@ -254,8 +254,7 @@ const FilesUploadForm = (props) => {
           </div>
         </div>
       </Modal>
-      ;
     </>
   );
 };
-export default FilesUploadForm;
+export default ChallengeFileUploadForm;

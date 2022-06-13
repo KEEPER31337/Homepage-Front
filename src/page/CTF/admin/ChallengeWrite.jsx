@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 // local
 import ChallengeResponsiveEditor from '../Components/ChallengeResponsiveEditor';
-import FilesUploadForm from '../Components/ChallengeFilesUploadForm';
+import ChallengeFileUploadForm from '../Components/ChallengeFileUploadForm';
 
 // API
 import ctfAPI from 'API/v1/ctf';
@@ -19,6 +19,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
   // <-세연's
 
   const [content, setContent] = useState('');
+  const [solvable, setSolvable] = useState(false);
 
   const updateContent = () => {
     const editorInstance = editorRef.current.getInstance();
@@ -108,7 +109,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
         type: {
           id: Number(inputs.type),
         },
-        isSolvable: true, // TODO check box 만들기
+        isSolvable: solvable,
         score: Number(inputs.score),
         dynamicInfo: {
           maxScore: Number(inputs.max_score),
@@ -120,20 +121,21 @@ const ChallengeWrite = ({ member, ctfId }) => {
       .then((data) => {
         if (data.success) {
           console.log(data);
-          console.log('files : ', files);
-          ctfAPI
-            .addProbFile({
-              challengeId: data.data.challengeId,
-              files: files,
-              token: member.token,
-            })
-            .then((data) => {
-              if (data.success) {
-                console.log('good', data);
-              } else {
-                console.log('fail', data);
-              }
-            });
+          if (files.length != 0) {
+            ctfAPI
+              .addProbFile({
+                challengeId: data.data.challengeId,
+                files: files,
+                token: member.token,
+              })
+              .then((data) => {
+                if (data.success) {
+                  console.log('good', data);
+                } else {
+                  console.log('fail', data);
+                }
+              });
+          }
           navigate(`/ctf/admin/challengeAdmin`);
         } else {
           console.log(data);
@@ -260,20 +262,36 @@ const ChallengeWrite = ({ member, ctfId }) => {
                     >
                       문제 파일
                     </label>
-                    <div className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                      <FilesUploadForm files={files} setFiles={setFiles} />
+                    <div className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                      <ChallengeFileUploadForm
+                        files={files}
+                        setFiles={setFiles}
+                      />
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="px-4 py-3 text-right sm:px-6">
-                <button
-                  type="submit"
-                  onClick={onClick}
-                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-amber-500 hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-60"
-                >
-                  출제
-                </button>
+                <div className="flex justify-between my-8">
+                  <div className="flex py-2">
+                    <input
+                      name="solvable"
+                      type="checkbox"
+                      className="w-7 h-7 text-mainYellow focus:ring-mainYellow rounded border-gray-400 dark:bg-darkComponent dark:checked:bg-mainYellow mr-2"
+                      /* checked={true} */
+                      value={solvable}
+                      onChange={() => {
+                        setSolvable(!solvable);
+                      }}
+                    />
+                    <div className=" text-xl"> 공개 </div>
+                  </div>
+                  <button
+                    type="submit"
+                    onClick={onClick}
+                    className="my-0.5 px-4 border border-transparent shadow-sm text-lg tracking-widest font-medium rounded-md text-white bg-amber-500 hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-60"
+                  >
+                    출제
+                  </button>
+                </div>
               </div>
             </div>
           </div>
