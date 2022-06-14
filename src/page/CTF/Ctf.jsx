@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import actionMember from 'redux/action/member';
 
@@ -68,7 +69,9 @@ const Ctf = ({ member }) => {
                       key={contestIdx}
                       className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]"
                     >
-                      <td>{contest.name}</td>
+                      <td>
+                        <Link to="/ctf/teamJoin">{contest.name}</Link>
+                      </td>
                       <td>{contest.description}</td>
                       <td>{contest.creator.nickName}</td>
                     </tr>
