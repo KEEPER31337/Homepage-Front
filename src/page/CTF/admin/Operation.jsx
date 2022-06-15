@@ -192,6 +192,31 @@ const Operation = ({ member }) => {
                       </tr>
                     </thead>
                     <tbody>
+                      <tr>
+                        <td>
+                          <input
+                            type="text"
+                            value={contestName}
+                            onChange={contestNameHandler}
+                            // defaultValue={contestName}
+                            placeholder="추가 대회 이름"
+                            className="w-2/3 h-8 mt-2 text-center dark:bg-[#080b14] dark:border-opacity-0 border rounded-lg border-divisionGray focus:border-gray-300 focus:ring-gray-300 focus:ring-1 shadow-[inset_0_2px_0_1px_#f1f5f9] dark:shadow-[inset_0_2px_0_1px_#000000]"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            value={description}
+                            name="description"
+                            onChange={descriptionHandler}
+                            // defaultValue={description}
+                            placeholder="추가 대회 설명"
+                            className="w-2/3 h-8 mt-2 text-center dark:bg-[#080b14] dark:border-opacity-0 border rounded-lg border-divisionGray focus:border-gray-300 focus:ring-gray-300 focus:ring-1 shadow-[inset_0_2px_0_1px_#f1f5f9] dark:shadow-[inset_0_2px_0_1px_#000000]"
+                          />
+                        </td>
+                        <td>{member.memberInfo.nickName}</td>
+                        <td>닫힘</td>
+                      </tr>
                       {contestList.map((contest, contestIdx) => (
                         <tr
                           key={contestIdx}
@@ -213,29 +238,6 @@ const Operation = ({ member }) => {
                           </td>
                         </tr>
                       ))}
-                      <tr>
-                        <td>
-                          <input
-                            value={contestName}
-                            onChange={contestNameHandler}
-                            // defaultValue={contestName}
-                            placeholder="추가 대회 이름"
-                            className="w-2/3 h-8 text-center rounded-md border-2"
-                          />
-                        </td>
-                        <td>
-                          <input
-                            value={description}
-                            name="description"
-                            onChange={descriptionHandler}
-                            // defaultValue={description}
-                            placeholder="추가 대회 설명"
-                            className="w-2/3 h-8 text-center rounded-md border-2"
-                          />
-                        </td>
-                        <td>{member.memberInfo.nickName}</td>
-                        <td>닫힘</td>
-                      </tr>
                     </tbody>
                   </table>
                 </div>
