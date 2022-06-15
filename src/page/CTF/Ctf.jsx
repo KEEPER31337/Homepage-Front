@@ -5,6 +5,7 @@ import actionMember from 'redux/action/member';
 
 // local
 import ContestOverview from './Components/ContestOverview';
+import ContestTable from './Components/ContestTable';
 
 // API
 import ctfAPI from 'API/v1/ctf';
@@ -65,16 +66,13 @@ const Ctf = ({ member }) => {
                 </thead>
                 <tbody>
                   {contestList.map((contest, contestIdx) => (
-                    <tr
+                    <ContestTable
                       key={contestIdx}
-                      className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523]"
-                    >
-                      <td>
-                        <Link to="/ctf/teamJoin">{contest.name}</Link>
-                      </td>
-                      <td>{contest.description}</td>
-                      <td>{contest.creator.nickName}</td>
-                    </tr>
+                      id={contest.ctfId}
+                      name={contest.name}
+                      description={contest.description}
+                      creator={contest.creator.nickName}
+                    />
                   ))}
                 </tbody>
               </table>
