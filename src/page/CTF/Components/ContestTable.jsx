@@ -19,7 +19,7 @@ const ContestTable = (props) => {
     <>
       <tr
         onClick={handleChange}
-        className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523] cursor-pointer"
+        className="w-full h-10 hover:bg-gray-100 dark:hover:bg-[#0b1523] bg-white dark:text-white dark:bg-darkPoint cursor-pointer"
       >
         <td>{name}</td>
         <td>{description}</td>

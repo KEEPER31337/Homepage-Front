@@ -15,7 +15,7 @@ const ContestOverview = (props) => {
     <>
       <button
         className={
-          'w-52 h-40 truncate mx-3 mb-6 rounded-md shadow-md bg-orange-100'
+          'w-52 h-40 truncate mx-3 mb-6 rounded-md shadow-md bg-orange-100 hover:bg-orange-200 dark:bg-purple-200 dark:hover:bg-purple-300'
         }
         onClick={handleChange}
       >

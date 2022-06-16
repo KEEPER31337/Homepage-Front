@@ -60,7 +60,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
       <div className="col-span-5 sm:col-span-1">
         <label
           htmlFor="score"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-gray-700 dark:text-gray-300"
         >
           배점
         </label>
@@ -69,7 +69,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
           name="score"
           defaultValue={score}
           onChange={onChange}
-          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+          className="mt-1 dark:bg-darkComponent dark:border-darkComponent focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
         />
       </div>
     );
@@ -79,7 +79,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
         <div className="col-span-5 sm:col-span-1">
           <label
             htmlFor="min_score"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
           >
             최저 점수
           </label>
@@ -87,13 +87,13 @@ const ChallengeWrite = ({ member, ctfId }) => {
             type="text"
             name="min_score"
             onChange={onChange}
-            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+            className="mt-1 dark:bg-darkComponent dark:border-darkComponent focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
           />
         </div>
         <div className="col-span-5 sm:col-span-1">
           <label
             htmlFor="max_score"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
           >
             최고 점수
           </label>
@@ -101,7 +101,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
             type="text"
             name="max_score"
             onChange={onChange}
-            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+            className="mt-1 dark:bg-darkComponent dark:border-darkComponent focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
           />
         </div>
       </>
@@ -164,13 +164,13 @@ const ChallengeWrite = ({ member, ctfId }) => {
       <div className="mt-10 sm:mt-0">
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="mt-5 md:mt-0 md:col-span-3">
-            <div className="overflow-hidden sm:rounded-md md:p-10 bg-white">
+            <div className="overflow-hidden sm:rounded-md md:p-10 bg-white dark:bg-black dark:text-white">
               <div className="px-4 py-5 sm:p-6">
                 <div className="grid grid-cols-5 gap-6">
                   <div className="col-span-5 sm:col-span-3">
                     <label
                       htmlFor="challengeName"
-                      className="block text-sm font-medium text-gray-700"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                     >
                       문제명
                     </label>
@@ -179,14 +179,14 @@ const ChallengeWrite = ({ member, ctfId }) => {
                       name="challengeName"
                       onChange={onChange}
                       defaultValue={challengeName}
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      className="mt-1 dark:bg-darkComponent dark:border-darkComponent focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
 
                   <div className="col-span-5 sm:col-span-1">
                     <label
                       htmlFor="category"
-                      className="block text-sm font-medium text-gray-700"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                     >
                       유형
                     </label>
@@ -194,7 +194,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
                       name="category"
                       onChange={onChange}
                       defaultValue={category}
-                      className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      className="mt-1 dark:bg-darkComponent dark:border-darkComponent block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     >
                       {/* TODO map 사용하는 걸로 수정하자! */}
                       <option value={0}>선택</option>
@@ -211,11 +211,11 @@ const ChallengeWrite = ({ member, ctfId }) => {
                   <div className="col-span-5 sm:col-span-5">
                     <label
                       htmlFor="content"
-                      className="block text-sm font-medium text-gray-700"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                     >
                       문제 설명
                     </label>
-                    <div className="w-full h-[50vh] min-h-[500px] inline-block mt-1 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm sm:text-sm border-gray-300 rounded-md">
+                    <div className="w-full  h-[50vh] min-h-[500px] inline-block mt-1 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm sm:text-sm border-gray-300 rounded-md">
                       <ChallengeResponsiveEditor
                         content={content}
                         isDark={isDark}
@@ -228,7 +228,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
                   <div className="col-span-5 sm:col-span-3">
                     <label
                       htmlFor="flag"
-                      className="block text-sm font-medium text-gray-700"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                     >
                       플래그
                     </label>
@@ -238,7 +238,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
                       placeholder="KEEPER{...}"
                       defaultValue={flag}
                       onChange={onChange}
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      className="mt-1  dark:bg-darkComponent dark:border-darkComponent focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
                   <div className="col-span-5 sm:col-span-2">
@@ -248,7 +248,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
                   <div className="col-span-5 sm:col-span-1">
                     <label
                       htmlFor="type"
-                      className="block text-sm font-medium text-gray-700"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                     >
                       타입
                     </label>
@@ -256,7 +256,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
                       name="type"
                       defaultValue={type}
                       onChange={onChange}
-                      className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      className="mt-1 dark:bg-darkComponent dark:border-darkComponent block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     >
                       <option value={0}>선택</option>
                       <option value={1}>STANDARD</option>
@@ -269,7 +269,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
                   <div className="col-span-5 sm:col-span-5">
                     <label
                       htmlFor="postal-code"
-                      className="block text-sm font-medium text-gray-700"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                     >
                       문제 파일
                     </label>
@@ -286,14 +286,14 @@ const ChallengeWrite = ({ member, ctfId }) => {
                     <input
                       name="solvable"
                       type="checkbox"
-                      className="w-7 h-7 text-mainYellow focus:ring-mainYellow rounded border-gray-400 dark:bg-darkComponent dark:checked:bg-mainYellow mr-2"
+                      className="w-7 h-7 text-mainYellow focus:ring-mainYellow rounded border-gray-400 dark:border-darkComponent dark:bg-darkComponent dark:checked:bg-mainYellow mr-2"
                       /* checked={true} */
                       value={solvable}
                       onChange={() => {
                         setSolvable(!solvable);
                       }}
                     />
-                    <div className=" text-xl"> 공개 </div>
+                    <div className=" text-xl dark:text-gray-300 "> 공개 </div>
                   </div>
                   <button
                     type="submit"
