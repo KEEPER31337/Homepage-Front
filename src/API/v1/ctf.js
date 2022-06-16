@@ -521,6 +521,24 @@ async function getSubmitLog({ cid, page, size, token }) {
     return error.response.data;
   }
 }
+
+// 제출 로그
+async function getAuthor({ token }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/ctf/extra/data/challenge-maker',
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 export default {
   createContest,
   openContest,
@@ -548,4 +566,5 @@ export default {
   deleteProb,
   getSubmitLog,
   addProbFile,
+  getAuthor,
 };

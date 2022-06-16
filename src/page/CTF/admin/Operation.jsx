@@ -1,31 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import actionMember from 'redux/action/member';
-import {
-  PlusSmIcon,
-  PaperClipIcon,
-  XIcon,
-  PlusIcon,
-  ExclamationCircleIcon,
-} from '@heroicons/react/solid';
 import Modal from 'react-awesome-modal';
+import CreatorModal from '../Components/CreatorModal.jsx';
 
 // local
 import ContestOpenCloseBtn from '../Components/ContestOpenCloseBtn';
 
 //api
-import memberAPI from 'API/v1/member';
 import ctfAPI from 'API/v1/ctf';
 
 const Operation = ({ member }) => {
-  const [memberList, setMemberList] = useState([]); //멤버 오브젝트 리스트
-  const [memberIdList, setMemberIdList] = useState([]); //멤버 아이디 리스트
-  const [viewMemberList2, setViewMemberList2] = useState(false);
-  const [allMemberList, setAllMemberList] = useState([]); //멤버 추가 시 보여줄 동아리 회원의 전체 리스트
-  const [headMember, setHeadMember] = useState([]); //멤버 오브젝트
-
   const [contestList, setContestList] = useState([]);
-
   const [contestName, setcontestName] = useState('');
   const [description, descriptionName] = useState('');
 
@@ -37,31 +23,6 @@ const Operation = ({ member }) => {
   };
 
   const tableHead = ['대회명', '설명', '개최자', '개최여부'];
-
-  const [addContestInput, setTableBody] = useState([
-    [
-      <input
-        onChange={contestNameHandler}
-        defaultValue={contestName}
-        placeholder="추가 대회 이름"
-        className="w-2/3 h-8 text-center rounded-md border-2"
-      />,
-      <input
-        name="description"
-        onChange={descriptionHandler}
-        defaultValue={description}
-        placeholder="추가 대회 설명"
-        className="w-2/3 h-8 text-center rounded-md border-2"
-      />,
-      member.memberInfo.nickName,
-      '닫힘',
-    ],
-  ]);
-  useEffect(() => {
-    memberAPI.getAllMembers().then((data) => {
-      setAllMemberList(data.list);
-    });
-  });
 
   const [create, setCreate] = useState(false);
 
@@ -80,27 +41,6 @@ const Operation = ({ member }) => {
         }
       });
   }, [create]);
-
-  const addMember = (author) => {
-    ctfAPI
-      .addAuthor({
-        memberId: author.id,
-        token: member.token,
-      })
-      .then((data) => {
-        if (data.success) {
-          console.log(data);
-        } else {
-          console.log(data);
-          alert('출제자 지정 중 오류가 발생하였습니다.');
-        }
-      });
-    if (memberList.findIndex((cmember) => cmember.id == author.id) == -1) {
-      setMemberList([...memberList, author]);
-      setMemberIdList([...memberIdList, author.id]);
-      console.log(memberList);
-    }
-  };
 
   const createContestHandler = () => {
     if (contestName === '' || description === '') {
@@ -150,6 +90,13 @@ const Operation = ({ member }) => {
   const closeModal2 = () => {
     setModalState2(false);
   };
+
+  //출제자 추가버튼 모달 관련
+  const loginFailModalRef = useRef({});
+  const handleSignIn = () => {
+    loginFailModalRef.current.open();
+  };
+
   return (
     <div className="md:w-4/5 flex flex-col flex-1 p-3">
       <div className="">
@@ -173,6 +120,15 @@ const Operation = ({ member }) => {
                           대회 추가
                         </button>
                       </div>
+                    </div>
+                    <div className="ml-1 flex rounded p-1 text-md bg-amber-300 dark:bg-indigo-400 dark:border-indigo-500  border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
+                      <button
+                        className="hover:bg-amber-500 dark:hover:bg-indigo-500 m-1 hover:text-mainWhite rounded font-bold"
+                        onClick={handleSignIn}
+                      >
+                        출제자 추가
+                      </button>
+                      <CreatorModal ref={loginFailModalRef}></CreatorModal>
                     </div>
                   </div>
                 </div>
@@ -241,70 +197,6 @@ const Operation = ({ member }) => {
                     </tbody>
                   </table>
                 </div>
-              </div>
-              <div className="flex justify-end">
-                <button
-                  className={
-                    (viewMemberList2
-                      ? 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500'
-                      : 'bg-white hover:bg-gray-100 dark:bg-darkComponent dark:hover:bg-gray-700') +
-                    ' mx-2 inline-flex items-center shadow-sm py-1 px-2 my-1 border border-gray-300 text-gray-700 text-sm leading-5 font-medium rounded-lg  focus:outline-none dark:text-gray-300 dark:border-mainBlack'
-                  }
-                  onClick={() => setViewMemberList2(!viewMemberList2)}
-                >
-                  {viewMemberList2 ? (
-                    <XIcon
-                      className="text-gray-400 dark:text-mainBlack -ml-1.5 h-4 w-4 "
-                      aria-hidden="true"
-                    />
-                  ) : (
-                    <PlusIcon
-                      className="text-gray-400 -ml-1.5 h-4 w-4 "
-                      aria-hidden="true"
-                    />
-                  )}
-                  출제자 추가
-                </button>
-              </div>
-              <div className="flex justify-end">
-                {viewMemberList2 ? (
-                  <div className="w-1/3 border h-[15em] overflow-y-scroll bg-mainWhite dark:bg-mainBlack dark:border-darkComponent">
-                    <ul className="">
-                      {allMemberList.map((memb, membIdx) => (
-                        <li
-                          className="border p-1 flex justify-between items-center group hover:bg-slate-100 dark:hover:bg-gray-800 dark:border-darkComponent"
-                          onClick={() => addMember(memb)}
-                          key={membIdx}
-                        >
-                          <div className="flex items-center">
-                            <div>
-                              {memb.thumbnailPath ? (
-                                <img
-                                  className="border inline-block h-9 w-9 rounded-full dark:border-gray-600"
-                                  src={memb.thumbnailPath}
-                                  alt=""
-                                />
-                              ) : (
-                                <div className="inline-block h-9 w-9 rounded-full"></div>
-                              )}
-                            </div>
-                            <div className="ml-3">
-                              <div className="text-sm font-medium">
-                                {memb.nickName}
-                              </div>
-                            </div>
-                          </div>
-                          <PlusIcon
-                            className="text-gray-400 -ml-1.5 h-5 w-5 "
-                            aria-hidden="true"
-                          />
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : (
-                  ''
-                )}
               </div>
             </div>
           </div>
