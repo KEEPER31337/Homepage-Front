@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 // local
 import ChallengeResponsiveEditor from '../Components/ChallengeResponsiveEditor';
 import ChallengeFileUploadForm from '../Components/ChallengeFileUploadForm';
+import AuthModal from '../Components/AuthModal';
 
 // API
 import ctfAPI from 'API/v1/ctf';
@@ -12,6 +13,16 @@ import ctfAPI from 'API/v1/ctf';
 //TODO 반응형
 
 const ChallengeWrite = ({ member, ctfId }) => {
+  //권한 없을시 나가게
+  const [auth, setAuth] = useState(['ROLE_회장', 'ROLE_출제자']);
+  const jobs = member?.memberInfo?.jobs;
+  const ModalRef = useRef({});
+  useEffect(() => {
+    if (!jobs?.some((i) => auth.includes(i))) {
+      ModalRef.current.open();
+    }
+  }, []);
+
   // 세연's->
   const isDark = false; //Dark모드 여부
   const editorRef = useRef();
@@ -297,6 +308,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
           </div>
         </div>
       </div>
+      <AuthModal ref={ModalRef}>CTF관리자만 접근할 수 있습니다</AuthModal>
     </div>
   );
 };

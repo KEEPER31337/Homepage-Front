@@ -6,11 +6,22 @@ import CreatorModal from '../Components/CreatorModal.jsx';
 
 // local
 import ContestOpenCloseBtn from '../Components/ContestOpenCloseBtn';
+import AuthModal from '../Components/AuthModal';
 
 //api
 import ctfAPI from 'API/v1/ctf';
 
 const Operation = ({ member }) => {
+  //권한 없을시 나가게
+  const [auth, setAuth] = useState(['ROLE_회장']);
+  const jobs = member?.memberInfo?.jobs;
+  const ModalRef = useRef({});
+  useEffect(() => {
+    if (!jobs?.some((i) => auth.includes(i))) {
+      ModalRef.current.open();
+    }
+  }, []);
+
   const [contestList, setContestList] = useState([]);
   const [contestName, setcontestName] = useState('');
   const [description, descriptionName] = useState('');
@@ -37,7 +48,7 @@ const Operation = ({ member }) => {
           setContestList(data.list);
         } else {
           console.log(data);
-          alert('대회 목록 불러오는 중 오류가 발생하였습니다.');
+          //alert('대회 목록 불러오는 중 오류가 발생하였습니다.');
         }
       });
   }, [create]);
@@ -254,6 +265,7 @@ const Operation = ({ member }) => {
           </div>
         </div>
       </Modal>
+      <AuthModal ref={ModalRef}>CTF운영자만 접근할 수 있습니다</AuthModal>
     </div>
   );
 };

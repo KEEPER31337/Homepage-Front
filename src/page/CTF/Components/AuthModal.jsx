@@ -55,22 +55,22 @@ const AuthModal = forwardRef((props, ref) => {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-3 text-left align-middle shadow-xl transition-all">
-                  <div class="p-6 text-center">
+                  <div className="p-6 text-center">
                     <svg
-                      class="mx-auto mb-4 w-14 h-14 text-gray-400 dark:text-gray-200"
+                      className="mx-auto mb-4 w-14 h-14 text-gray-400 dark:text-gray-200"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
                         d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                       ></path>
                     </svg>
-                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                    <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
                       {props.children}
                     </h3>
                   </div>

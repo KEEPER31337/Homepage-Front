@@ -5,13 +5,18 @@ import ctfAPI from 'API/v1/ctf';
 import Modal from 'react-awesome-modal';
 import 'moment/locale/ko';
 // local
-import authAPI from 'API/v1/auth';
-import actionMember from 'redux/action/member';
+import AuthModal from '../Components/AuthModal';
+
 import ProbOpenCloseBtn from '../Components/ProbOpenCloseBtn';
 import DeleteBtn from '../Components/DeleteBtn';
 
 const ChallengeAdmin = ({ member, ctfId }) => {
   const [rankList, setRankList] = useState([]);
+
+  //권한 없을시 나가게
+  const [auth, setAuth] = useState(['ROLE_회장', 'ROLE_출제자']);
+  const jobs = member?.memberInfo?.jobs;
+  const ModalRef = useRef({});
 
   const onClick = useCallback(() => {
     for (let item of checkedItems) {
@@ -56,6 +61,9 @@ const ChallengeAdmin = ({ member, ctfId }) => {
   };
 
   useEffect(() => {
+    if (!jobs?.some((i) => auth.includes(i))) {
+      ModalRef.current.open();
+    }
     ctfAPI
       .getAdminProbList({
         ctfId: ctfId,
@@ -195,6 +203,7 @@ const ChallengeAdmin = ({ member, ctfId }) => {
           </div>
         </div>
       </div>
+      <AuthModal ref={ModalRef}>CTF관리자만 접근할 수 있습니다</AuthModal>
     </div>
   );
 };

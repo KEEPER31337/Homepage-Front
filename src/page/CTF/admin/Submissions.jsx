@@ -1,9 +1,20 @@
 import { connect } from 'react-redux';
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
+import AuthModal from '../Components/AuthModal';
 
 import ctfAPI from 'API/v1/ctf';
 const Submissions = ({ member, ctfId }) => {
+  //권한 없을시 나가게
+  const [auth, setAuth] = useState(['ROLE_회장', 'ROLE_출제자']);
+  const jobs = member?.memberInfo?.jobs;
+  const ModalRef = useRef({});
+  useEffect(() => {
+    if (!jobs?.some((i) => auth.includes(i))) {
+      ModalRef.current.open();
+    }
+  }, []);
+
   const [page, setPage] = useState(0);
   const [canGoNext, setCanGoNext] = useState(false);
   const [canGoPrev, setCanGoPrev] = useState(false);
@@ -122,6 +133,7 @@ const Submissions = ({ member, ctfId }) => {
           {/* 1. 마이페이지(작성글) 컴포넌트*/}
         </div>
       </div>
+      <AuthModal ref={ModalRef}>CTF관리자만 접근할 수 있습니다</AuthModal>
     </div>
   );
 };
