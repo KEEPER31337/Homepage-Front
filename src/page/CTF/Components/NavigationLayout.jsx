@@ -46,12 +46,7 @@ const categoriesAll = [
     icon: FolderIcon,
     auth: ['ROLE_회장', 'ROLE_출제자'],
   },
-  {
-    name: 'ADMIN 문제출제',
-    href: '/ctf/admin/challengeWrite',
-    icon: InboxIcon,
-    auth: ['ROLE_회장', 'ROLE_출제자'],
-  },
+
   {
     name: 'ADMIN 제출로그',
     href: '/ctf/admin/submissions',
