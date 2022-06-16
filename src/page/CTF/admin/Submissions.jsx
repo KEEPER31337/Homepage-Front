@@ -57,7 +57,7 @@ const Submissions = ({ member, ctfId }) => {
                         <ChevronLeftIcon className="inline-block  dark:hover:bg-indigo-500 hover:bg-amber-500  rounded h-10 w-10 text-white bg-amber-400 dark:bg-indigo-300" />
                       </button>
                     )}
-                    <div className="h-10 w-10 text-center text-3xl p-3 mx-1 rounded flex items-center dark:bg-indigo-300 bg-amber-400 text-white font-bold">
+                    <div className="h-10 w-10 text-center justify-center text-3xl mx-1 rounded flex items-center dark:bg-indigo-300 bg-amber-400 text-white font-bold">
                       {page + 1}
                     </div>
                     {canGoNext ? (
