@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import actionMember from 'redux/action/member';
 import Category from './Components/Category';
-
+import AuthModal from './Components/AuthModal';
 // API
 import ctfAPI from 'API/v1/ctf';
 
@@ -21,6 +21,20 @@ const Challenge = ({ member, ctfId }) => {
     },
   ]);
 
+  const ModalRef = useRef({});
+
+  useEffect(() => {
+    ctfAPI
+      .seeMyTeam({
+        ctfId: ctfId,
+        token: member.token,
+      })
+      .then((data) => {
+        if (data.code === -13004) {
+          ModalRef.current.open();
+        }
+      });
+  }, []);
   useEffect(() => {
     ctfAPI
       .getProbList({
@@ -34,7 +48,7 @@ const Challenge = ({ member, ctfId }) => {
           setProbList(data.list);
         } else {
           console.log(data);
-          alert('문제 목록을 받아오는 중 오류가 발생하였습니다.');
+          // alert('문제 목록을 받아오는 중 오류가 발생하였습니다.');
         }
       });
     /* ctfAPI // TODO 카테고리 받아와서 카테고리별 리스트 만들기
@@ -84,6 +98,9 @@ const Challenge = ({ member, ctfId }) => {
       {Forensic}
       {Misc}
       {Osint}
+      <AuthModal ref={ModalRef}>
+        가입한 팀을 찾을 수 없습니다 <br />팀 가입 부탁드립니다!
+      </AuthModal>
     </div>
   );
 };

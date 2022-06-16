@@ -3,9 +3,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import Modal from 'react-awesome-modal';
 import Button from '@material-ui/core/Button';
 
-import NavigationLayout from './Components/NavigationLayout';
 import teamAPI from 'API/v1/ctf';
 import MessageModal from 'shared/MessageModal';
+import AuthModal from './Components/AuthModal';
 
 import { CogIcon, BanIcon } from '@heroicons/react/outline';
 
@@ -38,6 +38,9 @@ const Team = ({ member, ctfId }) => {
   const [teamMember, setTeamMember] = useState([]);
   const [teamProb, setTeamProb] = useState([]);
 
+  //출제자 추가버튼 모달 관련
+  const creatorModalRef = useRef({});
+
   useEffect(() => {
     teamAPI
       .seeMyTeam({
@@ -62,7 +65,7 @@ const Team = ({ member, ctfId }) => {
               }
             });
         } else if (data.code === -13004) {
-          alertNoTeam.current.open();
+          creatorModalRef.current.open();
           setTeamName('');
           setTeamDes('');
           setTeamScore(0);
@@ -310,13 +313,12 @@ const Team = ({ member, ctfId }) => {
       <MessageModal ref={alertTeamresignModalRef}>
         팀 탈퇴가 성공적으로 이루어졌습니다ㅜ
       </MessageModal>
-      <MessageModal ref={alertNoTeam}>
-        가입한 팀을 찾을 수 없습니다!
-        <br />팀 가입 부탁드립니다!
-      </MessageModal>
       <MessageModal ref={alertTeamDuplicated}>
         동일한 팀명이 있습니다.. <br />한 발 늦었구만유~ ㅋ
       </MessageModal>
+      <AuthModal ref={creatorModalRef}>
+        가입한 팀을 찾을 수 없습니다 <br />팀 가입 부탁드립니다!
+      </AuthModal>
     </div>
   );
 };

@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
 import ScoreBoardRank from './Components/ScoreBoardRank';
 import ScoreBoardAnimation from './Components/ScoreBoardAnimation';
 //api
 import ctfAPI from 'API/v1/ctf';
+import AuthModal from './Components/AuthModal';
 
 const ScoreBoard = ({ member, ctfId }) => {
   const [rankList, setRankList] = useState([]);
@@ -19,6 +20,20 @@ const ScoreBoard = ({ member, ctfId }) => {
   const goPrevPage = () => {
     setPage(page - 1);
   };
+  const ModalRef = useRef({});
+
+  useEffect(() => {
+    ctfAPI
+      .seeMyTeam({
+        ctfId: ctfId,
+        token: member.token,
+      })
+      .then((data) => {
+        if (data.code === -13004) {
+          ModalRef.current.open();
+        }
+      });
+  }, []);
 
   useEffect(() => {
     ctfAPI
@@ -77,6 +92,9 @@ const ScoreBoard = ({ member, ctfId }) => {
             <ScoreBoardAnimation />
             <ScoreBoardRank rankList={rankList} />
           </div>
+          <AuthModal ref={ModalRef}>
+            가입한 팀을 찾을 수 없습니다 <br />팀 가입 부탁드립니다!
+          </AuthModal>
         </div>
       </div>
     </div>

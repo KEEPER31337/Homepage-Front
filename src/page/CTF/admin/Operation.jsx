@@ -92,9 +92,9 @@ const Operation = ({ member }) => {
   };
 
   //출제자 추가버튼 모달 관련
-  const loginFailModalRef = useRef({});
-  const handleSignIn = () => {
-    loginFailModalRef.current.open();
+  const creatorModalRef = useRef({});
+  const handleCreator = () => {
+    creatorModalRef.current.open();
   };
 
   return (
@@ -124,11 +124,11 @@ const Operation = ({ member }) => {
                     <div className="ml-1 flex rounded p-1 text-md bg-amber-300 dark:bg-indigo-400 dark:border-indigo-500  border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
                       <button
                         className="hover:bg-amber-500 dark:hover:bg-indigo-500 m-1 hover:text-mainWhite rounded font-bold"
-                        onClick={handleSignIn}
+                        onClick={handleCreator}
                       >
                         출제자 추가
                       </button>
-                      <CreatorModal ref={loginFailModalRef}></CreatorModal>
+                      <CreatorModal ref={creatorModalRef}></CreatorModal>
                     </div>
                   </div>
                 </div>
