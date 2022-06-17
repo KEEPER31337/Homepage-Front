@@ -135,29 +135,7 @@ const Operation = ({ member }) => {
                   <div className="font-extrabold text-4xl m-1">
                     CTF-Operation
                   </div>
-                  <div className="flex items-center">
-                    {canGoPrev ? (
-                      <button disabled className="cursor-not-allowed">
-                        <ChevronLeftIcon className="inline-block  rounded h-10 w-10 text-white bg-slate-300" />
-                      </button>
-                    ) : (
-                      <button onClick={goPrevPage}>
-                        <ChevronLeftIcon className="inline-block  dark:hover:bg-indigo-500 hover:bg-amber-500  rounded h-10 w-10 text-white bg-amber-400 dark:bg-indigo-300" />
-                      </button>
-                    )}
-                    <div className="h-10 w-10 text-center justify-center text-3xl mx-1 rounded flex items-center dark:bg-indigo-300 bg-amber-400 text-white font-bold">
-                      {page + 1}
-                    </div>
-                    {canGoNext ? (
-                      <button disabled className="cursor-not-allowed">
-                        <ChevronRightIcon className="inline-block  rounded h-10 w-10 text-white bg-slate-300" />
-                      </button>
-                    ) : (
-                      <button onClick={goNextPage}>
-                        <ChevronRightIcon className="inline-block  dark:hover:bg-indigo-500 hover:bg-amber-500    rounded h-10 w-10 text-white bg-amber-400 dark:bg-indigo-300" />
-                      </button>
-                    )}
-                  </div>
+
                   <div className="flex m-1">
                     <div className="flex rounded p-1 bg-amber-300 dark:bg-indigo-400 dark:border-indigo-500  border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
                       <div className=" text-md ">
@@ -245,6 +223,29 @@ const Operation = ({ member }) => {
                     </tbody>
                   </table>
                 </div>
+              </div>
+              <div className="flex w-full justify-end ">
+                {canGoPrev ? (
+                  <button disabled className="cursor-not-allowed">
+                    <ChevronLeftIcon className="inline-block  rounded h-9 w-9 text-white bg-slate-300" />
+                  </button>
+                ) : (
+                  <button onClick={goPrevPage}>
+                    <ChevronLeftIcon className="inline-block  dark:hover:bg-indigo-500 hover:bg-amber-500  rounded h-9 w-9 text-white bg-amber-400 dark:bg-indigo-300" />
+                  </button>
+                )}
+                <div className="h-9 w-9 text-center justify-center text-3xl mx-1 rounded flex items-center dark:bg-indigo-300 bg-amber-400 text-white font-bold">
+                  {page + 1}
+                </div>
+                {canGoNext ? (
+                  <button disabled className="cursor-not-allowed">
+                    <ChevronRightIcon className="inline-block mr-2 rounded h-9 w-9 text-white bg-slate-300" />
+                  </button>
+                ) : (
+                  <button onClick={goNextPage}>
+                    <ChevronRightIcon className="inline-block mr-2  dark:hover:bg-indigo-500 hover:bg-amber-500    rounded h-9 w-9 text-white bg-amber-400 dark:bg-indigo-300" />
+                  </button>
+                )}
               </div>
             </div>
           </div>
