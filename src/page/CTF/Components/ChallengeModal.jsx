@@ -18,7 +18,7 @@ import ctfAPI from 'API/v1/ctf';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-const ChallengeModal = forwardRef(({ detailProbList }, ref) => {
+const ChallengeModal = forwardRef(({ detailProbList, member }, ref) => {
   const [open, setOpen] = useState(false);
 
   useImperativeHandle(ref, () => ({
@@ -56,9 +56,9 @@ const ChallengeModal = forwardRef(({ detailProbList }, ref) => {
     } else {
       ctfAPI
         .submitFlag({
-          pid: challengeId.challengeId,
+          pid: detailProbList.challengeId,
           content: flag,
-          token: token,
+          token: member.token,
         })
         .then((data) => {
           if (data.success) {

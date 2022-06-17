@@ -67,7 +67,11 @@ const ChallengeCard = (props) => {
         </div>
       </button>
 
-      <ChallengeModal detailProbList={detailProbList} ref={challengeModalRef} />
+      <ChallengeModal
+        detailProbList={detailProbList}
+        member={member}
+        ref={challengeModalRef}
+      />
     </>
   );
 };
