@@ -69,6 +69,18 @@ const NavigationLayout = ({ member, ctfId, ctfName }) => {
 
   const cancelButtonRef = useRef();
 
+  const ctfNameView1 = (
+    <div className="absolute inset-x-0 bottom-5 mx-5 px-5 items-center py-3 font-bold rounded-md border-2 border-mainYellow text-mainYellow text-center bg-amber-100 dark:bg-opacity-20  ">
+      {ctfName}
+    </div>
+  );
+
+  const ctfNameView2 = (
+    <div className="bottom-full mx-5 px-5 items-center py-3 font-bold rounded-md border-2 border-mainYellow text-mainYellow text-center bg-amber-100 dark:bg-opacity-20  ">
+      {ctfName}
+    </div>
+  );
+
   useEffect(() => {
     if (ctfId === null) setCategories(categoriesHidden);
     else {
@@ -164,6 +176,7 @@ const NavigationLayout = ({ member, ctfId, ctfName }) => {
                       )
                     )}
                   </nav>
+                  {ctfName != null ? ctfNameView1 : null}
                 </div>
               </Dialog.Panel>
             </Transition.Child>
@@ -196,6 +209,7 @@ const NavigationLayout = ({ member, ctfId, ctfName }) => {
                 )
               )}
             </nav>
+            {ctfName != null ? ctfNameView2 : null}
           </div>
         </div>
       </div>
