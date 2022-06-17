@@ -7,6 +7,7 @@ import CreatorModal from '../Components/CreatorModal.jsx';
 // local
 import ContestOpenCloseBtn from '../Components/ContestOpenCloseBtn';
 import AuthModal from '../Components/AuthModal';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
 
 //api
 import ctfAPI from 'API/v1/ctf';
@@ -37,21 +38,34 @@ const Operation = ({ member }) => {
 
   const [create, setCreate] = useState(false);
 
+  //page 이동 관련
+  const [page, setPage] = useState(0);
+  const [canGoNext, setCanGoNext] = useState(false);
+  const [canGoPrev, setCanGoPrev] = useState(false);
+
+  const goNextPage = () => {
+    setPage(page + 1);
+  };
+
+  const goPrevPage = () => {
+    setPage(page - 1);
+  };
+
   useEffect(() => {
     ctfAPI
       .getContestList({
+        page: page,
+        size: 9,
         token: member.token,
       })
       .then((data) => {
         if (data.success) {
-          console.log(data);
-          setContestList(data.list);
-        } else {
-          console.log(data);
-          //alert('대회 목록 불러오는 중 오류가 발생하였습니다.');
+          setCanGoPrev(data.page.first);
+          setCanGoNext(data.page.last);
+          setContestList(data.page.content);
         }
       });
-  }, [create]);
+  }, [page, create]);
 
   const createContestHandler = () => {
     if (contestName === '' || description === '') {
@@ -120,6 +134,29 @@ const Operation = ({ member }) => {
                 <div className="flex justify-between m-1">
                   <div className="font-extrabold text-4xl m-1">
                     CTF-Operation
+                  </div>
+                  <div className="flex items-center">
+                    {canGoPrev ? (
+                      <button disabled className="cursor-not-allowed">
+                        <ChevronLeftIcon className="inline-block  rounded h-10 w-10 text-white bg-slate-300" />
+                      </button>
+                    ) : (
+                      <button onClick={goPrevPage}>
+                        <ChevronLeftIcon className="inline-block  dark:hover:bg-indigo-500 hover:bg-amber-500  rounded h-10 w-10 text-white bg-amber-400 dark:bg-indigo-300" />
+                      </button>
+                    )}
+                    <div className="h-10 w-10 text-center justify-center text-3xl mx-1 rounded flex items-center dark:bg-indigo-300 bg-amber-400 text-white font-bold">
+                      {page + 1}
+                    </div>
+                    {canGoNext ? (
+                      <button disabled className="cursor-not-allowed">
+                        <ChevronRightIcon className="inline-block  rounded h-10 w-10 text-white bg-slate-300" />
+                      </button>
+                    ) : (
+                      <button onClick={goNextPage}>
+                        <ChevronRightIcon className="inline-block  dark:hover:bg-indigo-500 hover:bg-amber-500    rounded h-10 w-10 text-white bg-amber-400 dark:bg-indigo-300" />
+                      </button>
+                    )}
                   </div>
                   <div className="flex m-1">
                     <div className="flex rounded p-1 bg-amber-300 dark:bg-indigo-400 dark:border-indigo-500  border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">

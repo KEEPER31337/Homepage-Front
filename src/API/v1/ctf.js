@@ -81,10 +81,11 @@ async function closeContest({ cid, token }) {
 }
 
 // CTF 대회 목록 보기
-async function getContestList({ token }) {
+async function getContestList({ token, page, size }) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/admin/ctf/contests',
+    params: { page: page, size: size },
     headers: {
       Authorization: token,
     },
@@ -234,11 +235,11 @@ async function getDetailProbList({ token, pid }) {
 }
 
 // CTF 문제 목록 조회(ADMIN)
-async function getAdminProbList({ token, ctfId }) {
+async function getAdminProbList({ token, page, size, ctfId }) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/admin/ctf/prob',
-    params: { ctfId },
+    params: { ctfId, page, size },
     headers: {
       Authorization: token,
     },

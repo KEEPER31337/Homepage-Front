@@ -9,6 +9,7 @@ import AuthModal from '../Components/AuthModal';
 
 import ProbOpenCloseBtn from '../Components/ProbOpenCloseBtn';
 import DeleteBtn from '../Components/DeleteBtn';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
 
 const ChallengeAdmin = ({ member, ctfId }) => {
   const [rankList, setRankList] = useState([]);
@@ -60,6 +61,19 @@ const ChallengeAdmin = ({ member, ctfId }) => {
     setModalState2(false);
   };
 
+  //page 이동 관련
+  const [page, setPage] = useState(0);
+  const [canGoNext, setCanGoNext] = useState(false);
+  const [canGoPrev, setCanGoPrev] = useState(false);
+
+  const goNextPage = () => {
+    setPage(page + 1);
+  };
+
+  const goPrevPage = () => {
+    setPage(page - 1);
+  };
+
   useEffect(() => {
     if (!jobs?.some((i) => auth.includes(i))) {
       ModalRef.current.open();
@@ -67,15 +81,19 @@ const ChallengeAdmin = ({ member, ctfId }) => {
     ctfAPI
       .getAdminProbList({
         ctfId: ctfId,
+        page: page,
+        size: 10,
         token: member.token,
       })
       .then((data) => {
         // TODO cid 받아와서 넣기
         if (data.success) {
-          setRankList(data.list);
+          setCanGoPrev(data.page.first);
+          setCanGoNext(data.page.last);
+          setRankList(data.page.content);
         }
       });
-  }, []);
+  }, [page]);
 
   return (
     <div className="md:w-4/5 flex flex-col flex-1 p-3">
@@ -86,6 +104,29 @@ const ChallengeAdmin = ({ member, ctfId }) => {
               <div className="font-extrabold text-4xl m-1">문제관리페이지</div>
 
               <div className="flex m-1">
+                <div className="flex items-center">
+                  {canGoPrev ? (
+                    <button disabled className="cursor-not-allowed">
+                      <ChevronLeftIcon className="inline-block  rounded h-10 w-10 text-white bg-slate-300" />
+                    </button>
+                  ) : (
+                    <button onClick={goPrevPage}>
+                      <ChevronLeftIcon className="inline-block  dark:hover:bg-indigo-500 hover:bg-amber-500  rounded h-10 w-10 text-white bg-amber-400 dark:bg-indigo-300" />
+                    </button>
+                  )}
+                  <div className="h-10 w-10 text-center justify-center text-3xl mx-1 rounded flex items-center dark:bg-indigo-300 bg-amber-400 text-white font-bold">
+                    {page + 1}
+                  </div>
+                  {canGoNext ? (
+                    <button disabled className="cursor-not-allowed">
+                      <ChevronRightIcon className="inline-block  rounded h-10 w-10 text-white bg-slate-300" />
+                    </button>
+                  ) : (
+                    <button onClick={goNextPage}>
+                      <ChevronRightIcon className="inline-block  dark:hover:bg-indigo-500 hover:bg-amber-500    rounded h-10 w-10 text-white bg-amber-400 dark:bg-indigo-300" />
+                    </button>
+                  )}
+                </div>
                 <div className="mr-1 flex rounded p-1 bg-amber-300 dark:bg-indigo-400 dark:border-indigo-500 border-2 border-amber-400 shadow-[inset_0_2px_0_1px_#ffffff]">
                   <div className=" text-md ">
                     <button className="hover:bg-amber-500  m-1 hover:text-mainWhite rounded font-bold  dark:hover:bg-indigo-500">
@@ -160,7 +201,7 @@ const ChallengeAdmin = ({ member, ctfId }) => {
           </div>
           <div className="p-[2px] mb-2 dark:from-purple-500 dark:via-purple-200 dark:to-amner-200 bg-gradient-to-r from-amber-500 via-amber-200 to-yellow-300  "></div>
 
-          <div className="w-full max-h-screen h-1/12 flex rounded overflow-y-scroll">
+          <div className="w-full max-h-screen h-1/12 flex rounded">
             <table className="text-center h-full w-full bg-white dark:text-white dark:bg-darkPoint">
               <thead>
                 <tr className=" h-10 w-full bg-gradient-to-r from-amber-400 via-red-800 to-black dark:from-pink-300 dark:via-purple-400 dark:to-indigo-400  text-lg text-white font-extrabold text-center ">
