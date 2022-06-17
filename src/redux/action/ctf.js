@@ -1,7 +1,8 @@
 import { createAction } from '@reduxjs/toolkit';
 
 const actionMember = {
-  updateInfo: createAction('ctf/updateInfo'),
+  updateId: createAction('ctf/updateId'),
+  updateName: createAction('ctf/updateName'),
 };
 
 export default actionMember;

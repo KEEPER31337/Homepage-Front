@@ -10,6 +10,7 @@ const ContestOverview = (props) => {
 
   const handleChange = (e) => {
     props.updateCtfId(id);
+    props.updateCtfName(name);
   };
   return (
     <>
@@ -36,7 +37,10 @@ const mapStateToProps = (state, OwnProps) => {
 const mapDispatchToProps = (dispatch, OwnProps) => {
   return {
     updateCtfId: (id) => {
-      dispatch(actionCtf.updateInfo(id));
+      dispatch(actionCtf.updateId(id));
+    },
+    updateCtfName: (name) => {
+      dispatch(actionCtf.updateName(name));
     },
   };
 };

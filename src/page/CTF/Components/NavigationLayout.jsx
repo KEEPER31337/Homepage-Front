@@ -61,7 +61,7 @@ const categoriesAll = [
   },
 ];
 
-const NavigationLayout = ({ member, ctfId }) => {
+const NavigationLayout = ({ member, ctfId, ctfName }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
@@ -88,7 +88,7 @@ const NavigationLayout = ({ member, ctfId }) => {
         });
     }
 
-    // console.log('[redux]  ctfid 는 ', ctfId);
+    console.log('[redux]  ctfid 는 ', ctfId, '[redux]  ctfNAME 는 ', ctfName);
   }, [ctfId]);
   return (
     <>
@@ -218,6 +218,10 @@ const NavigationLayout = ({ member, ctfId }) => {
   );
 };
 const mapStateToProps = (state) => {
-  return { member: state.member, ctfId: state.ctf.ctfId };
+  return {
+    member: state.member,
+    ctfId: state.ctf.ctfId,
+    ctfName: state.ctf.ctfName,
+  };
 };
 export default connect(mapStateToProps)(NavigationLayout);
