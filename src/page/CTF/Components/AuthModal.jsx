@@ -9,27 +9,22 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 
 const AuthModal = forwardRef((props, ref) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
   const closeModal = () => {
-    setIsOpen(false);
+    setOpen(false);
     navigate('/ctf');
   };
-
-  const openModal = () => {
-    setIsOpen(true);
-  };
-
   useImperativeHandle(ref, () => ({
     open: () => {
-      openModal();
+      setOpen(true);
     },
   }));
 
   return (
     <>
-      <Transition appear show={isOpen} as={Fragment}>
+      <Transition appear show={open} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
           <Transition.Child
             as={Fragment}
@@ -73,6 +68,8 @@ const AuthModal = forwardRef((props, ref) => {
                     <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
                       {props.children}
                     </h3>
+                    {/* 이거 없으면 focusTrap워닝 */}
+                    <button onClick={closeModal} />
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
