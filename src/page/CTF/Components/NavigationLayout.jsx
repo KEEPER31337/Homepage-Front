@@ -71,7 +71,22 @@ const NavigationLayout = ({ member, ctfId }) => {
 
   useEffect(() => {
     if (ctfId === null) setCategories(categoriesHidden);
-    else setCategories(categoriesAll);
+    else {
+      setCategories(categoriesAll);
+      ctfAPI
+        .seeMyTeam({
+          ctfId: ctfId,
+          token: member.token,
+        })
+        .then((data) => {
+          if (data.code === 0) {
+            setCategories((categories) =>
+              categories.filter((categories) => categories.name !== 'TEAM JOIN')
+            );
+            console.log(categories);
+          }
+        });
+    }
 
     // console.log('[redux]  ctfid 는 ', ctfId);
   }, [ctfId]);

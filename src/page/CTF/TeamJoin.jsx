@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from 'assets/img/keeper_logo.png';
 
 // API
@@ -47,6 +48,7 @@ const TeamJoin = ({ member, ctfId }) => {
   };
 
   const Content = () => {
+    const navigate = useNavigate();
     const [teamName, setTeamName] = useState('');
     const [teamDescription, setDescription] = useState('');
     const onChangeTeamName = (e) => {
@@ -76,6 +78,8 @@ const TeamJoin = ({ member, ctfId }) => {
         .then((data) => {
           if (data.success) {
             alertTeamCreateComplete.current.open();
+            window.location.reload();
+            navigate('/ctf');
           } else if (data.code === -10001) {
             alertTeamDuplicated.current.open();
           } else if (data.code === -9999) {
@@ -100,6 +104,8 @@ const TeamJoin = ({ member, ctfId }) => {
         .then((data) => {
           if (data.success) {
             alertTeamJoinComplete.current.open();
+            window.location.reload();
+            navigate('/ctf');
           } else if (data.code === -13004) {
             alertNotExistTeam.current.open();
           } else if (data.code === -9999) {
