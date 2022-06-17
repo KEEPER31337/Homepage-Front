@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Dialog, Transition } from '@headlessui/react';
 import ctfAPI from 'API/v1/ctf';
@@ -67,6 +67,8 @@ const NavigationLayout = ({ member, ctfId }) => {
   const navigate = useNavigate();
   const jobs = member?.memberInfo?.jobs;
 
+  const cancelButtonRef = useRef();
+
   useEffect(() => {
     if (ctfId === null) setCategories(categoriesHidden);
     else setCategories(categoriesAll);
@@ -78,8 +80,9 @@ const NavigationLayout = ({ member, ctfId }) => {
       {/* 모바일 슬라이드 열었을때!! */}
       <Transition.Root show={sidebarOpen} as={Fragment}>
         <Dialog
+          initialFocus={cancelButtonRef}
           as="div"
-          className="relative z-40 md:hidden"
+          className="relative z-40 lg:hidden"
           onClose={setSidebarOpen}
         >
           <Transition.Child
@@ -184,6 +187,7 @@ const NavigationLayout = ({ member, ctfId }) => {
       {/* 모바일에서, slidebar 버튼! */}
       <div className="fixed flex z-10 ">
         <button
+          ref={cancelButtonRef}
           type="button"
           className="p-1 rounded-r-lg border-gray-200 text-gray-500 bg-mainYellow lg:hidden"
           onClick={() => setSidebarOpen(true)}
