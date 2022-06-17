@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import actionMember from 'redux/action/member';
 import Category from './Components/Category';
-import AuthModal from './Components/AuthModal';
+import TeamModal from './Components/TeamModal';
 // API
 import ctfAPI from 'API/v1/ctf';
 
@@ -98,9 +98,9 @@ const Challenge = ({ member, ctfId }) => {
       {Forensic}
       {Misc}
       {Osint}
-      <AuthModal ref={ModalRef}>
+      <TeamModal ref={ModalRef}>
         가입한 팀을 찾을 수 없습니다 <br />팀 가입 부탁드립니다!
-      </AuthModal>
+      </TeamModal>
     </div>
   );
 };

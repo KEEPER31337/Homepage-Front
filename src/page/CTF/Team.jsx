@@ -2,7 +2,8 @@ import { connect } from 'react-redux';
 import React, { useState, useEffect, useRef } from 'react';
 import Modal from 'react-awesome-modal';
 import Button from '@material-ui/core/Button';
-
+import actionCtf from 'redux/action/ctf';
+import { Link, useNavigate } from 'react-router-dom';
 // API
 import teamAPI from 'API/v1/ctf';
 
@@ -13,7 +14,7 @@ import SuccessModal from './Components/SuccessModal';
 
 import { CogIcon, BanIcon } from '@heroicons/react/outline';
 
-const Team = ({ member, ctfId }) => {
+const Team = ({ member, ctfId, updateCtfTeamName }) => {
   const alertTeamModifyModalRef = useRef({});
   const alertTeamresignModalRef = useRef({});
   const alertNoTeam = useRef({}); // 팀에 가입하지 않았을 때 뜨는 알림
@@ -115,7 +116,7 @@ const Team = ({ member, ctfId }) => {
   const closeBanModal = () => {
     setBanState(false);
   };
-
+  const navigate = useNavigate();
   const runResignTeam = () => {
     teamAPI
       .resignTeam({
@@ -124,7 +125,10 @@ const Team = ({ member, ctfId }) => {
       })
       .then((data) => {
         if (data.success) {
-          window.location.reload();
+          updateCtfTeamName(null);
+          alertTeamresignModalRef.current.open();
+          //navigate('/ctf/teamjoin');
+          // window.location.reload();
         }
       });
   };
@@ -332,5 +336,12 @@ const Team = ({ member, ctfId }) => {
 const mapStateToProps = (state, ctfId) => {
   return { member: state.member, ctfId: state.ctf.ctfId };
 };
+const mapDispatchToProps = (dispatch, OwnProps) => {
+  return {
+    updateCtfTeamName: (teamName) => {
+      dispatch(actionCtf.updateTeamName(teamName));
+    },
+  };
+};
 
-export default connect(mapStateToProps)(Team);
+export default connect(mapStateToProps, mapDispatchToProps)(Team);

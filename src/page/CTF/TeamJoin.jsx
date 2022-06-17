@@ -2,14 +2,14 @@ import { connect } from 'react-redux';
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from 'assets/img/keeper_logo.png';
-
+import actionCtf from 'redux/action/ctf';
 // API
 import teamAPI from 'API/v1/ctf';
 
 // local
 import AlertModal from './Components/SuccessModal';
 
-const TeamJoin = ({ member, ctfId }) => {
+const TeamJoin = ({ member, ctfId, updateCtfTeamName }) => {
   const [openPage, setOpenPage] = useState(true);
   const [teamList, setTeamList] = useState([]);
 
@@ -76,6 +76,7 @@ const TeamJoin = ({ member, ctfId }) => {
         })
         .then((data) => {
           if (data.success) {
+            updateCtfTeamName(data.data.name);
             navigate('/ctf/team');
           } else if (data.code === -10001) {
             alertTeamDuplicated.current.open();
@@ -100,6 +101,7 @@ const TeamJoin = ({ member, ctfId }) => {
         })
         .then((data) => {
           if (data.success) {
+            updateCtfTeamName(data.data.name);
             navigate('/ctf/team');
           } else if (data.code === -13004) {
             alertNotExistTeam.current.open();
@@ -209,4 +211,12 @@ const mapStateToProps = (state, ctfId) => {
   return { member: state.member, ctfId: state.ctf.ctfId };
 };
 
-export default connect(mapStateToProps)(TeamJoin);
+const mapDispatchToProps = (dispatch, OwnProps) => {
+  return {
+    updateCtfTeamName: (teamName) => {
+      dispatch(actionCtf.updateTeamName(teamName));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TeamJoin);

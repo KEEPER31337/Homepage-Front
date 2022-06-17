@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import actionCtf from 'redux/action/ctf';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import ctfAPI from 'API/v1/ctf';
 
 const ContestTable = (props) => {
   const id = props.id; //바꿀 ctfid
@@ -14,8 +15,22 @@ const ContestTable = (props) => {
   const handleChange = (e) => {
     props.updateCtfId(id);
     props.updateCtfName(name);
-
-    navigate('/ctf/teamJoin');
+    ctfAPI
+      .seeMyTeam({
+        ctfId: id,
+        token: props.member.token,
+      })
+      .then((data) => {
+        if (data.code === 0) {
+          console.log(data.data.name);
+          props.updateCtfTeamName(data.data.name);
+          navigate('/ctf/challenge');
+        } else {
+          //팀 없을 경우에만 teamjoin으로 이동
+          props.updateCtfTeamName(null);
+          navigate('/ctf/teamJoin');
+        }
+      });
   };
   return (
     <>
@@ -31,7 +46,7 @@ const ContestTable = (props) => {
   );
 };
 const mapStateToProps = (state, OwnProps) => {
-  return { ctfId: state.ctfId };
+  return { member: state.member, ctfId: state.ctfId };
 };
 const mapDispatchToProps = (dispatch, OwnProps) => {
   return {
@@ -40,6 +55,9 @@ const mapDispatchToProps = (dispatch, OwnProps) => {
     },
     updateCtfName: (name) => {
       dispatch(actionCtf.updateName(name));
+    },
+    updateCtfTeamName: (teamName) => {
+      dispatch(actionCtf.updateTeamName(teamName));
     },
   };
 };
