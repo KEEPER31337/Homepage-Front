@@ -67,6 +67,21 @@ const CreatorModal = forwardRef((props, ref) => {
 
   const deleteMember = (id) => {
     //TODO API 들어오면 할것!!
+    ctfAPI
+      .deleteAuthor({
+        memberId: id,
+        token: token,
+      })
+      .then((data) => {
+        if (data.success) {
+          console.log(data);
+          ctfAPI.getAuthor({ token: token }).then((data) => {
+            setCreatorList(data.list);
+          });
+        } else {
+          console.log(data);
+        }
+      });
     console.log('삭제할 사람의 id는 ', id);
   };
 

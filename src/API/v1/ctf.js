@@ -540,6 +540,26 @@ async function getAuthor({ token }) {
   }
 }
 
+// 출제자 삭제
+async function deleteAuthor({ memberId, token }) {
+  const options = {
+    method: 'DELETE',
+    url: API_URL + '/v1/admin/ctf/prob/maker',
+    data: {
+      memberId,
+    },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 export default {
   createContest,
   openContest,
@@ -568,4 +588,5 @@ export default {
   getSubmitLog,
   addProbFile,
   getAuthor,
+  deleteAuthor,
 };
