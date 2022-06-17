@@ -84,10 +84,10 @@ const Operation = ({ member }) => {
       })
       .then((data) => {
         if (data.success) {
-          console.log(data);
+          // console.log(data);
           setCreate(!create);
         } else {
-          console.log(data);
+          // console.log(data);
           alert('대회 생성 중 오류가 발생하였습니다.');
         }
       });

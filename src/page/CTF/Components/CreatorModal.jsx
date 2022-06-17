@@ -53,12 +53,12 @@ const CreatorModal = forwardRef((props, ref) => {
         })
         .then((data) => {
           if (data.success) {
-            console.log(data);
+            // console.log(data);
             ctfAPI.getAuthor({ token: token }).then((data) => {
               setCreatorList(data.list);
             });
           } else {
-            console.log(data);
+            // console.log(data);
             alert('출제자 지정 중 오류가 발생하였습니다.');
           }
         });
@@ -74,15 +74,15 @@ const CreatorModal = forwardRef((props, ref) => {
       })
       .then((data) => {
         if (data.success) {
-          console.log(data);
+          // console.log(data);
           ctfAPI.getAuthor({ token: token }).then((data) => {
             setCreatorList(data.list);
           });
         } else {
-          console.log(data);
+          // console.log(data);
         }
       });
-    console.log('삭제할 사람의 id는 ', id);
+    // console.log('삭제할 사람의 id는 ', id);
   };
 
   return (

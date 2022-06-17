@@ -37,7 +37,7 @@ const Submissions = ({ member, ctfId }) => {
       })
       .then((data) => {
         if (data.success) {
-          console.log(data);
+          // console.log(data);
           setCanGoPrev(data.page.first);
           setCanGoNext(data.page.last);
           setRankList(data.page.content);

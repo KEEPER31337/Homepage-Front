@@ -44,10 +44,10 @@ const Challenge = ({ member, ctfId }) => {
       .then((data) => {
         // TODO cid 받아와서 넣기
         if (data.success) {
-          console.log(data);
+          // console.log(data);
           setProbList(data.list);
         } else {
-          console.log(data);
+          // console.log(data);
           // alert('문제 목록을 받아오는 중 오류가 발생하였습니다.');
         }
       });
@@ -56,7 +56,7 @@ const Challenge = ({ member, ctfId }) => {
         token: member.token,
       })
       .then((data) => {
-        console.log(data);
+        // console.log(data);
       }); */
   }, []);
   // NOTE 각각 카테고리별 변수 두지 않고 한 번에 처리하도록 수정해보자

@@ -81,7 +81,7 @@ const ChallengeFileUploadForm = (props) => {
   }, [files]);
   useEffect(() => {
     if (props.modifyFlag) {
-      console.log(props.board.files);
+      // console.log(props.board.files);
       //setFiles(props.board.files);
     }
   }, []);

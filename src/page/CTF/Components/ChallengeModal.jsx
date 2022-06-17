@@ -46,7 +46,7 @@ const ChallengeModal = forwardRef(({ detailProbList, member }, ref) => {
   };
 
   const submitFlagHandler = () => {
-    console.log(flag);
+    // console.log(flag);
     if (detailProbList.isSolved) {
       setFlagCheckMsg(
         <div className="border-2 border-gray-300 bg-gray-200 w-full p-1 rounded-md text-center text-gray-800">
@@ -62,7 +62,7 @@ const ChallengeModal = forwardRef(({ detailProbList, member }, ref) => {
         })
         .then((data) => {
           if (data.success) {
-            console.log(data);
+            // console.log(data);
             if (data.data.isCorrect) {
               setFlagCheckMsg(
                 <div className="border-2 border-green-300 bg-green-200 w-full p-1 rounded-md text-center text-green-800">
@@ -77,7 +77,7 @@ const ChallengeModal = forwardRef(({ detailProbList, member }, ref) => {
               );
             }
           } else {
-            console.log(data);
+            // console.log(data);
             alert('flag 제출중 오류가 발생하였습니다.');
           }
         });

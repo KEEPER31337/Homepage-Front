@@ -24,10 +24,10 @@ const ContestOpenCloseBtn = ({ member, isJoinable, ctfId }) => {
       })
       .then((data) => {
         if (data.success) {
-          console.log(data);
+          // console.log(data);
           setState(false);
         } else {
-          console.log(data);
+          // console.log(data);
           alert('대회 닫기 중 오류가 발생하였습니다.');
         }
       });
@@ -41,10 +41,10 @@ const ContestOpenCloseBtn = ({ member, isJoinable, ctfId }) => {
       })
       .then((data) => {
         if (data.success) {
-          console.log(data);
+          // console.log(data);
           setState(true);
         } else {
-          console.log(data);
+          // console.log(data);
           alert('대회 열기 중 오류가 발생하였습니다.');
         }
       });

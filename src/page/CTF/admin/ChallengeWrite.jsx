@@ -171,7 +171,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
         })
         .then((data) => {
           if (data.success) {
-            console.log(data);
+            // console.log(data);
             if (files.length != 0) {
               ctfAPI
                 .addProbFile({
@@ -181,15 +181,15 @@ const ChallengeWrite = ({ member, ctfId }) => {
                 })
                 .then((data) => {
                   if (data.success) {
-                    console.log('good', data);
+                    // console.log('good', data);
                   } else {
-                    console.log('fail', data);
+                    // console.log('fail', data);
                   }
                 });
             }
             navigate(`/ctf/admin/challengeAdmin`);
           } else {
-            console.log(data);
+            // console.log(data);
             alert('문제 생성 중 오류가 발생하였습니다.');
           }
         });

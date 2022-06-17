@@ -73,7 +73,7 @@ const NavigationLayout = ({ member, ctfId }) => {
     if (ctfId === null) setCategories(categoriesHidden);
     else setCategories(categoriesAll);
 
-    console.log('[redux]  ctfid 는 ', ctfId);
+    // console.log('[redux]  ctfid 는 ', ctfId);
   }, [ctfId]);
   return (
     <>

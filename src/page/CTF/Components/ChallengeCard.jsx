@@ -37,10 +37,10 @@ const ChallengeCard = (props) => {
       })
       .then((data) => {
         if (data.success) {
-          console.log(data);
+          // console.log(data);
           setDetailProbList(data.data);
         } else {
-          console.log(data);
+          // console.log(data);
           alert('문제 세부 목록을 받아오는 중 오류가 발생하였습니다.');
         }
       });

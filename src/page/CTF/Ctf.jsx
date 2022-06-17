@@ -15,17 +15,17 @@ const Ctf = ({ member }) => {
   const [contestList, setContestList] = useState([]);
 
   useEffect(() => {
-    console.log(member);
+    // console.log(member);
     ctfAPI
       .getJoinableContestList({
         token: member.token,
       })
       .then((data) => {
         if (data.success) {
-          console.log(data);
+          // console.log(data);
           setContestList(data.list);
         } else {
-          console.log(data);
+          // console.log(data);
           alert('대회 목록을 받아오는 중 오류가 발생하였습니다.');
         }
       });

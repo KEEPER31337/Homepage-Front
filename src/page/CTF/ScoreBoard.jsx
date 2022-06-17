@@ -45,7 +45,7 @@ const ScoreBoard = ({ member, ctfId }) => {
       })
       .then((data) => {
         if (data.success) {
-          console.log(data.page.last);
+          // console.log(data.page.last);
           setCanGoPrev(data.page.first);
           setCanGoNext(data.page.last);
           setRankList(data.page.content);
