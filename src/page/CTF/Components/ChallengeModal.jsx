@@ -13,62 +13,17 @@ import '@toast-ui/editor/dist/toastui-editor.css'; //마크다운 편집기 뷰�
 import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
 import { Viewer } from '@toast-ui/react-editor';
 
-import { connect, useDispatch, useSelector } from 'react-redux';
-import actionMember from 'redux/action/member';
-
 // API
 import ctfAPI from 'API/v1/ctf';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-const ChallengeModal = forwardRef((challengeId, ref) => {
+const ChallengeModal = forwardRef(({ detailProbList }, ref) => {
   const [open, setOpen] = useState(false);
-  const [detailProbList, setDetailProbList] = useState({
-    challengeId: null,
-    title: null,
-    content: null,
-    category: {
-      id: null,
-      name: null,
-    },
-    score: null,
-    creatorName: null,
-    contestId: null,
-    solvedTeamCount: null,
-    isSolved: null,
-    file: null,
-  });
-
-  //redux 연결
-  const token = useSelector((store) => store.member.token);
-  const memberInfo = useSelector((store) => store.member.memberInfo);
-  //dispatch 예시
-  const dispatch = useDispatch();
-  const updateInfo = ({ memberInfo }) => {
-    dispatch(actionMember.updateInfo({ memberInfo }));
-  };
-
-  useEffect(() => {
-    updateInfo({ memberInfo });
-  }, [memberInfo]);
 
   useImperativeHandle(ref, () => ({
     open: () => {
       setOpen(true);
-      ctfAPI
-        .getDetailProbList({
-          pid: challengeId.challengeId,
-          token: token,
-        })
-        .then((data) => {
-          if (data.success) {
-            console.log(data);
-            setDetailProbList(data.data);
-          } else {
-            console.log(data);
-            alert('문제 세부 목록을 받아오는 중 오류가 발생하였습니다.');
-          }
-        });
     },
   }));
 
