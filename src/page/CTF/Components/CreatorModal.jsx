@@ -126,7 +126,8 @@ const CreatorModal = forwardRef((props, ref) => {
                             <XIcon
                               className="inline-block h-5 w-5 cursor-pointer text-slate-300 hover:text-slate-400  dark:text-gray-500 dark:hover:text-gray-300"
                               aria-hidden="true"
-                              onClick={() => deleteMember(member.id)}
+                              //TODO 출제자 api 안됨!!!
+                              // onClick={() => deleteMember(member.id)}
                             />
                           </span>
                         </div>
