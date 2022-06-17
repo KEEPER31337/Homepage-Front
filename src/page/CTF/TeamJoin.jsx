@@ -4,11 +4,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import Logo from 'assets/img/keeper_logo.png';
 
 // API
-import memberAPI from 'API/v1/member';
 import teamAPI from 'API/v1/ctf';
 
 // local
-import MessageModal from 'shared/MessageModal';
+import AlertModal from './Components/SuccessModal';
 
 const TeamJoin = ({ member, ctfId }) => {
   const [openPage, setOpenPage] = useState(true);
@@ -77,9 +76,7 @@ const TeamJoin = ({ member, ctfId }) => {
         })
         .then((data) => {
           if (data.success) {
-            alertTeamCreateComplete.current.open();
-            window.location.reload();
-            navigate('/ctf');
+            navigate('/ctf/team');
           } else if (data.code === -10001) {
             alertTeamDuplicated.current.open();
           } else if (data.code === -9999) {
@@ -103,9 +100,7 @@ const TeamJoin = ({ member, ctfId }) => {
         })
         .then((data) => {
           if (data.success) {
-            alertTeamJoinComplete.current.open();
-            window.location.reload();
-            navigate('/ctf');
+            navigate('/ctf/team');
           } else if (data.code === -13004) {
             alertNotExistTeam.current.open();
           } else if (data.code === -9999) {
@@ -125,6 +120,7 @@ const TeamJoin = ({ member, ctfId }) => {
             <div className="mt-8 mb-12 flex flex-col items-center justify-center">
               <div className="flex-auto flex justify-center w-2/3">
                 <input
+                  maxLength={45}
                   value={teamName}
                   onChange={onChangeTeamName}
                   className="flex-auto p-2 mr-2 mb-2 border border-gray-300 rounded-md
@@ -142,6 +138,7 @@ const TeamJoin = ({ member, ctfId }) => {
               </div>
               <textarea
                 rows={5}
+                maxLength="199"
                 value={teamDescription}
                 onChange={onChangeTeamDes}
                 className="w-2/3 p-2 border border-gray-300 rounded-md
@@ -158,6 +155,7 @@ const TeamJoin = ({ member, ctfId }) => {
               <img className="mx-auto mt-12 w-2/3" src={Logo} alt="" />
               <div className="mx-auto mt-8 w-2/3 flex justify-center mb-12">
                 <input
+                  maxLength={45}
                   value={teamName}
                   onChange={onChangeTeamName}
                   className="flex-auto p-2 border border-gray-300 rounded-md
@@ -186,29 +184,23 @@ const TeamJoin = ({ member, ctfId }) => {
       <Header />
       <Content />
 
-      <MessageModal ref={alertTeamNameModalRef}>
+      <AlertModal ref={alertTeamNameModalRef}>
         팀 명을 입력해주세요~!
-      </MessageModal>
-      <MessageModal ref={alertTeamDescModalRef}>
+      </AlertModal>
+      <AlertModal ref={alertTeamDescModalRef}>
         팀 설명을 입력해주세요~!
-      </MessageModal>
-      <MessageModal ref={alertTeamCreateComplete}>
-        팀이 생성 되었습니다!
-      </MessageModal>
-      <MessageModal ref={alertTeamJoinComplete}>
-        팀에 성공적으로 가입되었습니다!
-      </MessageModal>
-      <MessageModal ref={alertTeamDuplicated}>
+      </AlertModal>
+      <AlertModal ref={alertTeamDuplicated}>
         동일한 팀명이 있습니다.. <br />한 발 늦었구만유~ ㅋ
-      </MessageModal>
-      <MessageModal ref={alertNotExistTeam}>
+      </AlertModal>
+      <AlertModal ref={alertNotExistTeam}>
         존재하지 않는 팀입니다~!
         <br />
         다시 확인해주십쇼!
-      </MessageModal>
-      <MessageModal ref={alertAlreadyExistTeam}>
+      </AlertModal>
+      <AlertModal ref={alertAlreadyExistTeam}>
         가입한 팀이 존재합니다!
-      </MessageModal>
+      </AlertModal>
     </div>
   );
 };

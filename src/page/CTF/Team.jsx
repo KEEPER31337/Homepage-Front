@@ -3,9 +3,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import Modal from 'react-awesome-modal';
 import Button from '@material-ui/core/Button';
 
+// API
 import teamAPI from 'API/v1/ctf';
-import MessageModal from 'shared/MessageModal';
-import AuthModal from './Components/AuthModal';
+
+// Modal
+import TeamModal from './Components/TeamModal';
+import AlertModal from './Components/AlertModal';
+import SuccessModal from './Components/SuccessModal';
 
 import { CogIcon, BanIcon } from '@heroicons/react/outline';
 
@@ -233,6 +237,7 @@ const Team = ({ member, ctfId }) => {
               <div className="flex-auto flex justify-center w-2/3">
                 팀명 :
                 <input
+                  maxLength={45}
                   value={teamNameModal}
                   onChange={onChangeTeamName}
                   className="flex-auto p-2 mr-2 mb-2 border border-gray-300 rounded-md
@@ -243,6 +248,7 @@ const Team = ({ member, ctfId }) => {
               </div>
               <textarea
                 rows={5}
+                maxLength={199}
                 value={teamDesModal}
                 onChange={onChangeTeamDes}
                 className="w-2/3 p-2 border border-gray-300 rounded-md
@@ -307,18 +313,18 @@ const Team = ({ member, ctfId }) => {
           </Modal>
         </>
       )}
-      <MessageModal ref={alertTeamModifyModalRef}>
+      <SuccessModal ref={alertTeamModifyModalRef}>
         팀 정보가 수정되었습니다~!
-      </MessageModal>
-      <MessageModal ref={alertTeamresignModalRef}>
+      </SuccessModal>
+      <TeamModal ref={alertTeamresignModalRef}>
         팀 탈퇴가 성공적으로 이루어졌습니다ㅜ
-      </MessageModal>
-      <MessageModal ref={alertTeamDuplicated}>
+      </TeamModal>
+      <AlertModal ref={alertTeamDuplicated}>
         동일한 팀명이 있습니다.. <br />한 발 늦었구만유~ ㅋ
-      </MessageModal>
-      <AuthModal ref={creatorModalRef}>
+      </AlertModal>
+      <TeamModal ref={creatorModalRef}>
         가입한 팀을 찾을 수 없습니다 <br />팀 가입 부탁드립니다!
-      </AuthModal>
+      </TeamModal>
     </div>
   );
 };
