@@ -8,6 +8,7 @@ import reducerMember from './member';
 import reducerCategory from './category';
 import reducerBoardStyle from './boardStyle';
 import reducerChat from './chat';
+import reducerCtf from './ctf';
 
 const persistConfig = {
   key: 'root',
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   member: reducerMember,
   category: reducerCategory,
   chat: reducerChat,
+  ctf: reducerCtf,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
