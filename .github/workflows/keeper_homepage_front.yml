@@ -34,7 +34,7 @@ jobs:
 
       - name: Build
         run: |
-          npm i
+          npm i --force
           CI= npm run build
 
       - name: Compress
