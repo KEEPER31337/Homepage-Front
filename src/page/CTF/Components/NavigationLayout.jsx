@@ -24,6 +24,41 @@ const categoriesHidden = [
     auth: 'ROLE_회장',
   },
 ];
+const categoriesTeam = [
+  { name: 'CTF', href: '/ctf', icon: HomeIcon, auth: null },
+  {
+    name: 'CHALLENGES',
+    href: '/ctf/challenge',
+    icon: CollectionIcon,
+    auth: null,
+  },
+  {
+    name: 'SCOREBOARD',
+    href: '/ctf/scoreboard',
+    icon: ChartBarIcon,
+    auth: null,
+  },
+  { name: 'TEAM', href: '/ctf/team', icon: UsersIcon, auth: null },
+  {
+    name: 'ADMIN 문제관리',
+    href: '/ctf/admin/challengeAdmin',
+    icon: FolderIcon,
+    auth: ['ROLE_회장', 'ROLE_출제자'],
+  },
+
+  {
+    name: 'ADMIN 제출로그',
+    href: '/ctf/admin/submissions',
+    icon: FolderIcon,
+    auth: ['ROLE_회장', 'ROLE_출제자'],
+  },
+  {
+    name: 'ADMIN 대회운영',
+    href: '/ctf/admin/operation',
+    icon: XIcon,
+    auth: 'ROLE_회장',
+  },
+];
 const categoriesAll = [
   { name: 'CTF', href: '/ctf', icon: HomeIcon, auth: null },
   { name: 'TEAM JOIN', href: '/ctf/teamjoin', icon: FolderAddIcon, auth: null },
@@ -61,7 +96,13 @@ const categoriesAll = [
   },
 ];
 
-const NavigationLayout = ({ member, ctfId, ctfName }) => {
+const NavigationLayout = ({
+  darkMode,
+  member,
+  ctfId,
+  ctfName,
+  ctfTeamName,
+}) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
@@ -84,7 +125,6 @@ const NavigationLayout = ({ member, ctfId, ctfName }) => {
   useEffect(() => {
     if (ctfId === null) setCategories(categoriesHidden);
     else {
-      setCategories(categoriesAll);
       ctfAPI
         .seeMyTeam({
           ctfId: ctfId,
@@ -92,16 +132,26 @@ const NavigationLayout = ({ member, ctfId, ctfName }) => {
         })
         .then((data) => {
           if (data.code === 0) {
-            setCategories((categories) =>
-              categories.filter((categories) => categories.name !== 'TEAM JOIN')
-            );
-            console.log(categories);
+            //팀이 있을경우, teamjoin제외
+            // setCategories((categories) =>
+            //   categories.filter((categories) => categories.name !== 'TEAM JOIN')
+            // ); rendering땜에, 눈 아파서 그냥 배열 2개 만듦.
+            setCategories(categoriesTeam);
+          } else {
+            setCategories(categoriesAll);
           }
         });
     }
 
-    console.log('[redux]  ctfid 는 ', ctfId, '[redux]  ctfNAME 는 ', ctfName);
-  }, [ctfId]);
+    console.log(
+      '[redux]  ctfid 는 ',
+      ctfId,
+      '[redux]  ctfNAME 는 ',
+      ctfName,
+      '[redux]  ctfTeamId 는 ',
+      ctfTeamName
+    );
+  }, [ctfId, ctfTeamName]);
   return (
     <>
       {/* 모바일 슬라이드 열었을때!! */}
@@ -134,7 +184,13 @@ const NavigationLayout = ({ member, ctfId, ctfName }) => {
               leaveFrom="translate-x-0"
               leaveTo="-translate-x-full"
             >
-              <Dialog.Panel className="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-mainWhite">
+              <Dialog.Panel
+                className={
+                  darkMode
+                    ? 'relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-black'
+                    : 'relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-mainWhite'
+                }
+              >
                 <Transition.Child
                   as={Fragment}
                   enter="ease-in-out duration-300"
@@ -233,9 +289,11 @@ const NavigationLayout = ({ member, ctfId, ctfName }) => {
 };
 const mapStateToProps = (state) => {
   return {
+    darkMode: state.darkMode,
     member: state.member,
     ctfId: state.ctf.ctfId,
     ctfName: state.ctf.ctfName,
+    ctfTeamName: state.ctf.ctfTeamName,
   };
 };
 export default connect(mapStateToProps)(NavigationLayout);

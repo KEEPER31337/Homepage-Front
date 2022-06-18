@@ -43,6 +43,7 @@ const ChallengeModal = forwardRef(({ detailProbList, member }, ref) => {
 
   const onClick = () => {
     setOpen(false);
+    if (flagCheckMsg.props.children === 'Correct') window.location.reload();
   };
 
   const submitFlagHandler = () => {

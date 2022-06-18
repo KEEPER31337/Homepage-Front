@@ -5,7 +5,7 @@ import ScoreBoardRank from './Components/ScoreBoardRank';
 import ScoreBoardAnimation from './Components/ScoreBoardAnimation';
 //api
 import ctfAPI from 'API/v1/ctf';
-import AuthModal from './Components/AuthModal';
+import TeamModal from './Components/TeamModal';
 
 const ScoreBoard = ({ member, ctfId }) => {
   const [rankList, setRankList] = useState([]);
@@ -93,9 +93,9 @@ const ScoreBoard = ({ member, ctfId }) => {
               </button>
             )}
           </div>
-          <AuthModal ref={ModalRef}>
+          <TeamModal ref={ModalRef}>
             가입한 팀을 찾을 수 없습니다 <br />팀 가입 부탁드립니다!
-          </AuthModal>
+          </TeamModal>
         </div>
       </div>
     </div>
