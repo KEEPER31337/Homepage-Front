@@ -18,6 +18,8 @@ const Team = ({ member, ctfId }) => {
   const alertTeamresignModalRef = useRef({});
   const alertNoTeam = useRef({}); // 팀에 가입하지 않았을 때 뜨는 알림
   const alertTeamDuplicated = useRef({}); // 팀명이 중복될 때 뜨는 알림
+  const alertTeamNameModalRef = useRef({}); // 팀명을 입력해달라는 알림
+  const alertTeamDescModalRef = useRef({}); // 팀 설명을 입력해달라는 알림
 
   // 정보 수정 눌렸을 시 뜨는 모달과 관련된 state
   const [settingStatus, setSettingState] = useState(false);
@@ -41,9 +43,6 @@ const Team = ({ member, ctfId }) => {
   const [teamId, setTeamId] = useState(-1);
   const [teamMember, setTeamMember] = useState([]);
   const [teamProb, setTeamProb] = useState([]);
-
-  //출제자 추가버튼 모달 관련
-  const creatorModalRef = useRef({});
 
   useEffect(() => {
     teamAPI
@@ -69,7 +68,7 @@ const Team = ({ member, ctfId }) => {
               }
             });
         } else if (data.code === -13004) {
-          creatorModalRef.current.open();
+          alertNoTeam.current.open();
           setTeamName('');
           setTeamDes('');
           setTeamScore(0);
@@ -88,6 +87,13 @@ const Team = ({ member, ctfId }) => {
   };
 
   const runReviseTeam = () => {
+    if (teamNameModal === '') {
+      alertTeamNameModalRef.current.open();
+      return;
+    } else if (teamDesModal === '') {
+      alertTeamDescModalRef.current.open();
+      return;
+    }
     teamAPI
       .reviseTeam({
         teamId: teamId,
@@ -322,9 +328,15 @@ const Team = ({ member, ctfId }) => {
       <AlertModal ref={alertTeamDuplicated}>
         동일한 팀명이 있습니다.. <br />한 발 늦었구만유~ ㅋ
       </AlertModal>
-      <TeamModal ref={creatorModalRef}>
+      <TeamModal ref={alertNoTeam}>
         가입한 팀을 찾을 수 없습니다 <br />팀 가입 부탁드립니다!
       </TeamModal>
+      <AlertModal ref={alertTeamNameModalRef}>
+        팀 명을 입력해주세요~!
+      </AlertModal>
+      <AlertModal ref={alertTeamDescModalRef}>
+        팀 설명을 입력해주세요~!
+      </AlertModal>
     </div>
   );
 };
