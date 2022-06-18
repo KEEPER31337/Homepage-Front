@@ -96,7 +96,13 @@ const categoriesAll = [
   },
 ];
 
-const NavigationLayout = ({ member, ctfId, ctfName, ctfTeamName }) => {
+const NavigationLayout = ({
+  darkMode,
+  member,
+  ctfId,
+  ctfName,
+  ctfTeamName,
+}) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
@@ -178,7 +184,13 @@ const NavigationLayout = ({ member, ctfId, ctfName, ctfTeamName }) => {
               leaveFrom="translate-x-0"
               leaveTo="-translate-x-full"
             >
-              <Dialog.Panel className="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-mainWhite">
+              <Dialog.Panel
+                className={
+                  darkMode
+                    ? 'relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-black'
+                    : 'relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-mainWhite'
+                }
+              >
                 <Transition.Child
                   as={Fragment}
                   enter="ease-in-out duration-300"
@@ -277,6 +289,7 @@ const NavigationLayout = ({ member, ctfId, ctfName, ctfTeamName }) => {
 };
 const mapStateToProps = (state) => {
   return {
+    darkMode: state.darkMode,
     member: state.member,
     ctfId: state.ctf.ctfId,
     ctfName: state.ctf.ctfName,
