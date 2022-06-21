@@ -40,7 +40,7 @@ async function tmp({
 async function getIntroInfo() {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/about/title/type/intro',
+    url: API_URL + '/v1/about/titles/types/intro',
   };
   try {
     const response = await axios(options);
@@ -53,7 +53,7 @@ async function getIntroInfo() {
 async function getActivityInfo() {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/about/title/type/activity',
+    url: API_URL + '/v1/about/titles/types/activity',
   };
   try {
     const response = await axios(options);
@@ -66,7 +66,7 @@ async function getActivityInfo() {
 async function getExcellenceInfo() {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/about/title/type/excellence',
+    url: API_URL + '/v1/about/titles/types/excellence',
   };
   try {
     const response = await axios(options);
@@ -79,7 +79,7 @@ async function getExcellenceInfo() {
 async function getHistoryInfo() {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/about/title/type/history',
+    url: API_URL + '/v1/about/titles/types/history',
   };
   try {
     const response = await axios(options);
