@@ -36,7 +36,7 @@ const ChallengeModal = forwardRef(({ detailProbList, member }, ref) => {
   }, [detailProbList.content]); */
 
   const [flag, setFlag] = useState('');
-  const [flagCheckMsg, setFlagCheckMsg] = useState();
+  const [flagCheckMsg, setFlagCheckMsg] = useState(<></>);
   const onChange = (e) => {
     setFlag(e.target.value);
   };
@@ -87,7 +87,7 @@ const ChallengeModal = forwardRef(({ detailProbList, member }, ref) => {
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={setOpen}>
+      <Dialog as="div" className="relative z-10" onClose={onClick}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
