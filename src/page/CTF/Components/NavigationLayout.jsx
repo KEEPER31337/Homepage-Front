@@ -143,14 +143,14 @@ const NavigationLayout = ({
         });
     }
 
-    console.log(
-      '[redux]  ctfid 는 ',
-      ctfId,
-      '[redux]  ctfNAME 는 ',
-      ctfName,
-      '[redux]  ctfTeamId 는 ',
-      ctfTeamName
-    );
+    // console.log(
+    //   '[redux]  ctfid 는 ',
+    //   ctfId,
+    //   '[redux]  ctfNAME 는 ',
+    //   ctfName,
+    //   '[redux]  ctfTeamId 는 ',
+    //   ctfTeamName
+    // );
   }, [ctfId, ctfTeamName]);
   return (
     <>
