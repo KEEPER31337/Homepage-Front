@@ -33,6 +33,10 @@ const ContestOpenCloseBtn = ({ member, isJoinable, ctfId }) => {
       });
   };
 
+  useEffect(() => {
+    setState(isJoinable);
+  }, [isJoinable]);
+
   const openContest = () => {
     ctfAPI
       .openContest({
