@@ -16,9 +16,12 @@ const MemberGrid = ({ member }) => {
 
   useEffect(() => {
     memberAPI.getMembers({ token: member.token }).then((data) => {
-      setMemberList(data.list);
+      if (data.success) {
+        setMemberList(data.list);
+      }
     });
   }, [member]);
+
   return (
     <div className="bg-mainWhite dark:bg-mainBlack text-mainBlack dark:text-mainYellow">
       <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
