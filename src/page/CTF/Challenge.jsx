@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import actionMember from 'redux/action/member';
 import Category from './Components/Category';
 import TeamModal from './Components/TeamModal';
+import noticeImg from 'assets/img/ctfImg/notice.png';
+
 // API
 import ctfAPI from 'API/v1/ctf';
 
@@ -91,6 +93,15 @@ const Challenge = ({ member, ctfId }) => {
 
   return (
     <div className="md:w-4/5 flex flex-col flex-1 p-3">
+      {probList.length == 0 ? (
+        <div className="pt-5 grid place-items-center mr-20">
+          <img className="h-24 w-24" src={noticeImg} />
+          <div className="flex whitespace-pre text-center dark:text-slate-200 text-4xl m-2 font-bold">
+            문제 <div className="text-mainYellow">준비중</div>
+            입니다.
+          </div>
+        </div>
+      ) : null}
       {Web}
       {System}
       {Rev}
