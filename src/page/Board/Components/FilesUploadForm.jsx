@@ -7,7 +7,6 @@ import { formatFileSize } from '../BoardUtil';
 
 const getFileIcon = (filename) => {
   const extension = filename?.split('.')[1];
-
   try {
     return (
       <img
@@ -25,15 +24,42 @@ const getFileIcon = (filename) => {
   }
 };
 
-const FilesUploadForm = (props) => {
-  const [files, setFiles] = useState([]);
-
+const FilesUploadForm = ({
+  files,
+  setFiles,
+  modifyFlag,
+  deleteFileIdList,
+  setDeleteFileIdList,
+  originFiles,
+  setOriginFile,
+}) => {
+  const deleteOriginClickHandler = (id) => {
+    setOriginFile(originFiles.filter((file) => file.id !== id));
+    setDeleteFileIdList([...deleteFileIdList, id]); //지울 파일 리스트에 아이디 추가
+  };
+  const getFileInfoOrigin = (file) => {
+    //기존에 첨부되어 있던 파일의 상세 정보 display
+    return (
+      <tr className="border-b" key={file.fileName}>
+        <td>
+          {getFileIcon(file.fileName)}
+          {file.fileName}
+        </td>
+        <td className="text-center">{formatFileSize(file.fileSize)}</td>
+        <td className="text-red-500 text-center">
+          <button onClick={() => deleteOriginClickHandler(file.id)}>
+            <TrashIcon className=" h-5 w-5 inline-block " aria-hidden="true" />
+            삭제
+          </button>
+        </td>
+      </tr>
+    );
+  };
   const deleteClickHandler = (fileName) => {
-    props.setFiles(files.filter((file) => file.name !== fileName));
     setFiles(files.filter((file) => file.name !== fileName));
   };
-
   const getFileInfo = (file) => {
+    //새로 첨부한 파일의 상세 정보 display
     return (
       <tr className="border-b" key={file.name}>
         <td>
@@ -52,21 +78,26 @@ const FilesUploadForm = (props) => {
   };
 
   useEffect(() => {
-    console.log(files);
-  }, [files]);
+    console.log('origin:', originFiles);
+    console.log('new:', files);
+  }, [files, originFiles]);
   useEffect(() => {
-    if (props.modifyFlag) {
-      console.log(props.board.files);
-      //setFiles(props.board.files);
+    if (modifyFlag) {
+      //console.log('origin:', props.board.files);
+      //props.setOriginFiles(props.board.files);
     }
   }, []);
   const onDrop = useCallback(
     (acceptedFiles) => {
-      var temp = [...files];
+      var temp = [...originFiles, ...files];
+      console.log(originFiles);
+      console.log(temp);
       var realAddFiles = []; //최종적으로 추가될 파일
       var notAddFiles = []; //중복된 파일
       acceptedFiles.forEach((newFile) => {
-        const isRepeat = temp.filter((file) => file.name == newFile.name);
+        const isRepeat = temp.filter(
+          (file) => file.name == newFile.name || file.fileName == newFile.name
+        );
         if (isRepeat.length != 0) {
           //console.log('중복');
           notAddFiles = [...notAddFiles, newFile];
@@ -106,7 +137,6 @@ const FilesUploadForm = (props) => {
             ') 기존 파일을 삭제하고 새로 업로드 해주십시오.'
         );
       }
-      props.setFiles([...files, ...realAddFiles]);
       setFiles([...files, ...realAddFiles]);
     },
     [files]
@@ -121,13 +151,15 @@ const FilesUploadForm = (props) => {
     <>
       <div
         className={
-          (files.length === 0 ? 'h-[200px]' : 'h-[400px]') +
+          (files.length === 0 && originFiles.length === 0
+            ? 'h-[200px]'
+            : 'h-[400px]') +
           ' flex-column w-full border-4 border-dashed rounded-xl hidden sm:block dark:border-slate-500'
         }
       >
         <div
           className={
-            files.length === 0
+            files.length === 0 && originFiles.length === 0
               ? 'hidden'
               : '' +
                 ' w-full h-[200px] overflow-y-scroll rounded-t-lg border-b-4 border-dashed dark:border-slate-500 '
@@ -141,7 +173,10 @@ const FilesUploadForm = (props) => {
                 <th className="min-w-[4em] w-1/5">삭제</th>
               </tr>
             </thead>
-            <tbody>{files.map((file) => getFileInfo(file))}</tbody>
+            <tbody>
+              {originFiles.map((file) => getFileInfoOrigin(file))}
+              {files.map((file) => getFileInfo(file))}
+            </tbody>
           </table>
         </div>
 
@@ -151,7 +186,7 @@ const FilesUploadForm = (props) => {
             (isDragActive
               ? 'bg-blue-300 bg-opacity-50'
               : 'bg-slate-100 bg-opacity-50') +
-            (files.length === 0
+            (files.length === 0 && originFiles.length === 0
               ? ' h-full rounded-lg'
               : ' h-[192px] rounded-b-lg ') +
             ' flex items-center justify-center '
@@ -193,7 +228,7 @@ const FilesUploadForm = (props) => {
           />
           파일 추가
         </button>
-        {files.length !== 0 ? (
+        {files.length !== 0 || originFiles.length !== 0 ? ( //첨부된 파일이 있을 경우
           <table className="w-full dark:text-mainWhite">
             {/*console.log(files.length)*/}
             <thead className="bg-mainYellow bg-opacity-100 ">
@@ -203,7 +238,10 @@ const FilesUploadForm = (props) => {
                 <th className="min-w-[4em] w-1/5 rounded-tr-lg">삭제</th>
               </tr>
             </thead>
-            <tbody>{files.map((file) => getFileInfo(file))}</tbody>
+            <tbody>
+              {originFiles?.map((file) => getFileInfoOrigin(file))}
+              {files?.map((file) => getFileInfo(file))}
+            </tbody>
           </table>
         ) : (
           ''

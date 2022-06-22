@@ -60,7 +60,7 @@ const Excellence = ({ member }) => {
           staticWriteTitleId: null,
           thumbnailPath: null,
           displayOrder: null,
-          staticWriteContentResults: [
+          staticWriteContents: [
             {
               id: null,
               content: null,
@@ -106,7 +106,7 @@ const Excellence = ({ member }) => {
       if (data.success) {
         data.list.map((title) => {
           // Subtitle display order 순서로 정렬
-          title.subtitleImageResults.sort(function (a, b) {
+          title.subtitleImageResults.sort((a, b) => {
             if (a.displayOrder > b.displayOrder) {
               return 1;
             }
@@ -117,7 +117,7 @@ const Excellence = ({ member }) => {
           });
           title.subtitleImageResults.map((content) => {
             // Content display order 순서로 정렬
-            content.staticWriteContentResults.sort(function (a, b) {
+            content.staticWriteContents.sort((a, b) => {
               if (a.displayOrder > b.displayOrder) {
                 return 1;
               }
@@ -176,7 +176,7 @@ const Excellence = ({ member }) => {
                       </h3>
                       <div className="py-2 text-center sm:text-left text-black">
                         <ul>
-                          {article.staticWriteContentResults.map(
+                          {article.staticWriteContents.map(
                             (contentInfo, index) => (
                               <li key={index}>{contentInfo.content}</li>
                             )

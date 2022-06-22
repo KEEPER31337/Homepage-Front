@@ -6,7 +6,6 @@ async function create({
   title,
   content,
   categoryId,
-  ipAddress,
   allowComment,
   isNotice,
   isSecret,
@@ -20,7 +19,6 @@ async function create({
   formData.append('title', title);
   formData.append('content', content);
   formData.append('categoryId', categoryId);
-  formData.append('ipAddress', ipAddress);
   formData.append('allowComment', allowComment);
   formData.append('isNotice', isNotice);
   formData.append('isSecret', isSecret);
@@ -129,7 +127,6 @@ async function modify({
   title,
   content,
   categoryId,
-  ipAddress,
   allowComment,
   isNotice,
   isSecret,
@@ -143,7 +140,6 @@ async function modify({
   formData.append('title', title);
   formData.append('content', content);
   formData.append('categoryId', categoryId);
-  formData.append('ipAddress', ipAddress);
   formData.append('allowComment', allowComment);
   formData.append('isNotice', isNotice);
   formData.append('isSecret', isSecret);
@@ -167,10 +163,25 @@ async function modify({
     );
     return response.data;
   } catch (error) {
-    return error.response.data;
+    return error.response?.data;
   }
 }
-
+async function deleteFiles({ fileIdList, token }) {
+  const options = {
+    method: 'DELETE',
+    url: API_URL + '/v1/post/files',
+    params: { fileIdList: fileIdList.join(',') },
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response?.data;
+  }
+}
 async function remove({ boardId, token }) {
   const options = {
     method: 'DELETE',
@@ -259,6 +270,7 @@ export default {
   getNoticeList,
   downloadFile,
   modify,
+  deleteFiles,
   remove,
   search,
   like,
