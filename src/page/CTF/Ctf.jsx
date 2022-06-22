@@ -6,6 +6,7 @@ import actionMember from 'redux/action/member';
 // local
 import ContestOverview from './Components/ContestOverview';
 import ContestTable from './Components/ContestTable';
+import noticeImg from 'assets/img/ctfImg/notice.png';
 
 // API
 import ctfAPI from 'API/v1/ctf';
@@ -34,9 +35,19 @@ const Ctf = ({ member }) => {
   return (
     <div className="md:w-4/5 flex flex-col flex-1 p-3">
       <div className="mr-20">
-        <div className="my-10 text-center text-lg font-basic dark:text-amber-200 ">
-          참여할 대회를 선택해주세요!
-        </div>
+        {contestList.length == 0 ? (
+          <div className="pt-5 grid place-items-center mr-20">
+            <img className="h-24 w-24" src={noticeImg} />
+            <div className="flex whitespace-pre text-center dark:text-slate-200 text-4xl m-2 font-bold">
+              대회 <div className="text-mainYellow">준비중</div>
+              입니다.
+            </div>
+          </div>
+        ) : (
+          <div className="my-10 text-center text-lg font-basic dark:text-amber-200 ">
+            참여할 대회를 선택해주세요!
+          </div>
+        )}
         <div className="my-10 mx-20 flex flex-wrap justify-between">
           <div className="mb-20 w-full">
             <div className="m-5">OverView</div>

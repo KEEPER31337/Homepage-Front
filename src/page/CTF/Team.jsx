@@ -13,6 +13,7 @@ import AlertModal from './Components/AlertModal';
 import SuccessModal from './Components/SuccessModal';
 
 import { CogIcon, BanIcon } from '@heroicons/react/outline';
+import noticeImg from 'assets/img/ctfImg/notice2.png';
 
 const Team = ({ member, ctfId, updateCtfTeamName }) => {
   const alertTeamModifyModalRef = useRef({});
@@ -228,8 +229,12 @@ const Team = ({ member, ctfId, updateCtfTeamName }) => {
   return (
     <div className="md:w-4/5 flex flex-col flex-1 pt-0 p-3">
       {teamName === '' ? (
-        <div className="pt-12 text-center dark:text-slate-200 text-5xl m-2 font-extrabold">
-          팀 가입 부탁드립니다!
+        <div className="pt-5 grid place-items-center mr-20">
+          <img className="h-24 w-24" src={noticeImg} />
+          <div className="flex whitespace-pre text-center dark:text-slate-200 text-4xl m-2 font-bold">
+            <div className="text-red-500 ">팀 가입 </div>
+            부탁드립니다.
+          </div>
         </div>
       ) : (
         <>
