@@ -1,4 +1,6 @@
+import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
+
 import { StarIcon } from '@heroicons/react/outline';
 import firstGradeBadge from 'assets/img/ctfImg/badge_grade_first.gif';
 import firstGradeBadgeDark from 'assets/img/ctfImg/badge_grade_first_dark.gif';
@@ -6,9 +8,31 @@ import secondGradeBadge from 'assets/img/ctfImg/badge_grade_second.png';
 import secondGradeBadgeDark from 'assets/img/ctfImg/badge_grade_second_dark.png';
 import thirdGradeBadge from 'assets/img/ctfImg/badge_grade_third.png';
 import thirdGradeBadgeDark from 'assets/img/ctfImg/badge_grade_third_dark.png';
+import OtherTeamInfoModal from './OtherTeamInfoModal';
+
+// API
+import ctfAPI from 'API/v1/ctf';
 
 const ScoreBoardRank = ({ state, rankList }) => {
   const isDark = state.darkMode;
+  const otherTeamInfoModalRef = useRef({});
+  const [otherTeamInfo, setOtherTeamInfo] = useState();
+
+  const clickTeamHandler = (info) => {
+    //console.log(info, state.member.token);
+    otherTeamInfoModalRef.current.open();
+    ctfAPI
+      .seeTeamDetail({
+        teamId: info.id,
+        token: state.member.token,
+      })
+      .then((data) => {
+        if (data.success) {
+          //console.log(data);
+          setOtherTeamInfo(data.data);
+        }
+      });
+  };
 
   return (
     <table className="h-auto w-full lg:w-3/5 text-left bg-white dark:text-white dark:bg-darkPoint">
@@ -23,7 +47,10 @@ const ScoreBoardRank = ({ state, rankList }) => {
       </thead>
       <tbody>
         {rankList.map((info) => (
-          <tr key={info.id} className="h-12 w-full  ">
+          <tr
+            key={info.id}
+            className="h-12 w-full hover:bg-gray-100 dark:hover:bg-slate-700   "
+          >
             {/* shadow shadow-purple-300 */}
             <td className="h-12">
               {info.rank === 1 ? (
@@ -52,7 +79,7 @@ const ScoreBoardRank = ({ state, rankList }) => {
               )}
             </td>
             <td>{info.rank}</td>
-            <td>{info.name}</td>
+            <td onClick={() => clickTeamHandler(info)}>{info.name}</td>
             <td>
               <StarIcon className="inline-block h-6 w-6 m-1 text-amber-400 dark:text-purple-300" />
               {info.score}
@@ -60,6 +87,10 @@ const ScoreBoardRank = ({ state, rankList }) => {
           </tr>
         ))}
       </tbody>
+      <OtherTeamInfoModal
+        ref={otherTeamInfoModalRef}
+        otherTeamInfo={otherTeamInfo}
+      />
     </table>
   );
 };
