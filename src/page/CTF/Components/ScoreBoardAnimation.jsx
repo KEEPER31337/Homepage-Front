@@ -15,7 +15,7 @@ const ScoreBoardAnimation = ({ member, ctfId }) => {
       .getRanking({
         token: member.token,
         page: 0,
-        size: 3,
+        size: 7,
         ctfId: ctfId,
       })
       .then((data) => {
