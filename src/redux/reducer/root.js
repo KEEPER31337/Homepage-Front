@@ -6,7 +6,7 @@ import storage from 'redux-persist/lib/storage';
 import reducerDarkMode from './darkMode';
 import reducerMember from './member';
 import reducerCategory from './category';
-import reducerBoardStyle from './boardStyle';
+import reducerBoardState from './boardState';
 import reducerChat from './chat';
 import reducerCtf from './ctf';
 
@@ -17,7 +17,7 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-  boardStyle: reducerBoardStyle,
+  boardState: reducerBoardState,
   darkMode: reducerDarkMode,
   member: reducerMember,
   category: reducerCategory,
