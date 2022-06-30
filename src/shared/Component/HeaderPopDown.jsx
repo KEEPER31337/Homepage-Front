@@ -6,7 +6,10 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ViewGridIcon } from '@heroicons/react/outline';
 
-const PopDown = ({ category, member }) => {
+//local
+import actionBoardState from 'redux/action/boardState';
+
+const PopDown = ({ category, member, initialize }) => {
   const jobs = member?.memberInfo?.jobs;
 
   return (
@@ -43,7 +46,11 @@ const PopDown = ({ category, member }) => {
                         key={index}
                         to={item.href}
                         className="-m-3 p-3 flex items-start rounded-lg hover:bg-pointYellow"
-                        onClick={() => {}}
+                        onClick={() => {
+                          event.preventDefault();
+                          console.log('i');
+                          initialize();
+                        }}
                       >
                         <ViewGridIcon
                           className="flex-shrink-0 h-6 w-6 text-white"
@@ -77,7 +84,11 @@ const mapStateToProps = (state, OwnProps) => {
   return { member: state.member };
 };
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    initialize: () => {
+      dispatch(actionBoardState.initialize());
+    },
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PopDown);
