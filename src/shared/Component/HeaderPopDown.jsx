@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { ViewGridIcon } from '@heroicons/react/outline';
 
 //local
-import actionBoardState from '../../redux/action/boardState';
+import actionBoardState from 'redux/action/boardState';
 
 const PopDown = ({ category, member, initialize }) => {
   const jobs = member?.memberInfo?.jobs;
