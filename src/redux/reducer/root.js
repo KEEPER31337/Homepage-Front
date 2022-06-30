@@ -17,14 +17,12 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-  boardState: reducerBoardState,
-  darkMode: reducerDarkMode,
-  member: reducerMember,
+  boardState: persistReducer(persistConfig, reducerBoardState),
+  darkMode: persistReducer(persistConfig, reducerDarkMode),
+  member: persistReducer(persistConfig, reducerMember),
+  chat: persistReducer(persistConfig, reducerChat),
+  ctf: persistReducer(persistConfig, reducerCtf),
   category: reducerCategory,
-  chat: reducerChat,
-  ctf: reducerCtf,
 });
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-export default persistedReducer;
+export default rootReducer;
