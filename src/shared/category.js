@@ -38,8 +38,9 @@ const categoriesAll = [
       {
         id: null,
         name: '위키',
-        href: 'wiki/%EB%8C%80%EB%AC%B8',
+        href: 'https://keeper.or.kr/wiki/%EB%8C%80%EB%AC%B8',
         auth: null,
+        external: true,
       },
     ],
   },
