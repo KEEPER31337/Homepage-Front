@@ -11,20 +11,18 @@ const Submissions = lazy(() => import('page/Vote/admin/Submissions'));
 
 const VOTEApp = () => {
   return (
-    <AuthUser>
-      <div className="bg-mainWhite dark:bg-mainBlack min-h-screen">
-        <div className="max-w-7xl mx-auto flex flex-row">
-          <VOTEHeader />
-          <Routes>
-            <Route path="/" element={<Vote />} />
-            <Route path="/scoreboard" element={<ScoreBoard />} />
-            <Route path="/mypick" element={<MyPick />} />
-            <Route path="/admin/operation" element={<Operation />} />
-            <Route path="/admin/submissions" element={<Submissions />} />
-          </Routes>
-        </div>
+    <div className="bg-mainWhite dark:bg-mainBlack min-h-screen">
+      <div className="max-w-7xl mx-auto flex flex-row">
+        <VOTEHeader />
+        <Routes>
+          <Route path="/" element={<Vote />} />
+          <Route path="/scoreboard" element={<ScoreBoard />} />
+          <Route path="/mypick" element={<MyPick />} />
+          <Route path="/admin/operation" element={<Operation />} />
+          <Route path="/admin/submissions" element={<Submissions />} />
+        </Routes>
       </div>
-    </AuthUser>
+    </div>
   );
 };
 

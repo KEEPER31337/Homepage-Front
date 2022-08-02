@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import actionMember from 'redux/action/member';
 
 const MyPick = ({ member }) => {
+  //TODO
+  //투표여부 확인 api -> 했으면 -> 진행여부(실시간) 애니메이션만
+  // 안했으면 ->
   return (
     <div className="text-white text-center w-full">
       {' '}

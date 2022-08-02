@@ -19,13 +19,13 @@ const categories1 = [
   { name: '투표하기', href: '/vote/mypick', icon: HomeIcon, auth: null },
   { name: '집계결과', href: '/vote/scoreboard', icon: HomeIcon, auth: null },
   {
-    name: '대회 열기',
+    name: 'ADMIN 선거관리',
     href: '/vote/admin/operation',
     icon: HomeIcon,
     auth: null,
   },
   {
-    name: '후보자 넣기',
+    name: 'ADMIN 인원관리',
     href: '/vote/admin/submissions',
     icon: HomeIcon,
     auth: null,
