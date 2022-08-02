@@ -141,7 +141,7 @@ const VOTEHeader = ({ darkMode, member }) => {
               {categories.map((item) =>
                 !item.auth || jobs?.some((i) => item.auth.includes(i)) ? (
                   <Link to={item.href} key={item.name}>
-                    <div className="group flex items-center my-3 px-3 py-3 text-mainYellow font-bold rounded-md hover:text-mainWhite hover:bg-mainYellow">
+                    <div className="group flex items-center my-3 px-3 py-3 text-slate-600 font-bold rounded-md hover:text-mainWhite hover:bg-slate-300">
                       <item.icon
                         className="mr-4 flex-shrink-0 h-6 w-6 "
                         aria-hidden="true"

@@ -42,7 +42,8 @@ const App = ({ member, darkMode, signOut }) => {
   }, [member]);
 
   return (
-    <div className={darkMode ? 'dark' : 'light'}>
+    //TODO 다음에 다크모드로 기본 바꾸기
+    <div className={darkMode ? 'light' : 'dark'}>
       <>
         <Header />
         <Suspense fallback={<Loading />}>
