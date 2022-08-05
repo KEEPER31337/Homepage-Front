@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import actionMember from 'redux/action/member';
 import VoteSelect from './Components/VoteSelect';
-
+import VotingPaper from './Components/VotingPaper';
 const MyPick = ({ member }) => {
   //TODO
   //투표여부 확인 api -> 했으면 -> 진행여부(실시간) 애니메이션만
   // 안했으면 ->
   return (
-    <div className="md:w-4/5 w-full p-3 text-xl font-basic flex justify-center">
-      <div className="h-full w-full flex container justify-center bg-slate-50 items-center p-3">
+    <div className="md:w-4/5 w-full p-3 text-xl font-basic flex flex-col justify-center">
+      <div className="h-fit w-full flex container justify-center bg-slate-50 items-center p-3">
         {/* 투표용지 */}
         <div className="h-full md:w-5/12 w-full flex flex-col p-3 bg-white border border-slate-100 shadow-md">
           <div className="mt-2 mb-4 text-center "> 2022년 2학기 </div>
@@ -43,6 +43,56 @@ const MyPick = ({ member }) => {
               투표
             </button>
           </div>
+        </div>
+      </div>
+      <div className="flex flex-row">
+        {' '}
+        <div className="bg-slate-100 h-fit w-11/12 flex flex-wrap justify-start p-2">
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+          <VotingPaper />
+        </div>
+        <div className="w-1/12 bg-amber-300 items-center flex flex-col justify-center">
+          <div>투표율</div>
+          <div className="text-2xl font-bold">55%</div>
         </div>
       </div>
     </div>
