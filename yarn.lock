@@ -8920,6 +8920,11 @@
   "resolved" "https://registry.npmjs.org/react-awesome-modal/-/react-awesome-modal-2.0.5.tgz"
   "version" "2.0.5"
 
+"react-chart-race@^0.0.3":
+  "integrity" "sha512-LHPUXvHxx3hPVD9dj1EIDpG+FlUT/E7lyy6vW/IgjypJB+vt0HveQM3ityC1pwxn36zXu+PGj9IYoT8/gGZgNQ=="
+  "resolved" "https://registry.npmjs.org/react-chart-race/-/react-chart-race-0.0.3.tgz"
+  "version" "0.0.3"
+
 "react-dev-utils@^12.0.0":
   "integrity" "sha512-xBQkitdxozPxt1YZ9O1097EJiVpwHr9FoAuEVURCKV0Av8NBERovJauzP7bo1ThvuhZ4shsQ1AJiu4vQpoT1AQ=="
   "resolved" "https://registry.npmjs.org/react-dev-utils/-/react-dev-utils-12.0.0.tgz"
