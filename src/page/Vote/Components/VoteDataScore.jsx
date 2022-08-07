@@ -12,7 +12,24 @@ const tmp = [
   '김은지',
   '장서윤',
   '임연후',
+  '11',
+  '2',
+  '3',
+  '4',
+  '임연후',
+  '민예진',
+  '김은지',
+  '김은지',
+  '김은지',
+  '김은지',
 ];
+const randomColor = () => {
+  //r -> 250~255, g -> 225~245, b -> 130~200
+  return `rgb( 
+    ${Math.random() * (255 - 250) + 250},  
+    ${Math.random() * (245 - 225) + 225},
+    ${Math.random() * (200 - 130) + 130})`;
+};
 
 const getVoteData = () => {
   const [data, setData] = useState([]);
@@ -31,7 +48,7 @@ const getVoteData = () => {
         setcount((count) => count + 1);
         counter++;
       }
-    }, 1000); // 1초마다 name 재설정
+    }, 200); // 1초마다 name 재설정
     return () => clearInterval(interval);
   }, [tmp]);
 
@@ -40,7 +57,7 @@ const getVoteData = () => {
       id: nextId.current,
       title: name,
       value: 1,
-      color: '#c33178',
+      color: randomColor(),
     };
     const abc = data.map((u) =>
       u.title === name ? { ...u, value: u.value + 1 } : u
@@ -57,7 +74,7 @@ const getVoteData = () => {
       // value 값의 변화가 있음
       // => 바뀐 셋으로 설정
     }
-  }, [name]); // name이 변할때 마다 다시 하기
+  }, [count]); // name이 변할때 마다 다시 하기
 
   return data;
 };

@@ -16,33 +16,46 @@ const ScoreBoard = ({ member }) => {
   useEffect(() => {
     if (width < 640) {
       // sm
-      setChartWidth(300);
+      setChartWidth(400);
       setItemHeight(20);
     } else if (width < 770) {
       // md
-      setChartWidth(450);
+      setChartWidth(650);
       setItemHeight(25);
     } else {
       // lg
-      setChartWidth(600);
+      setChartWidth(800);
       setItemHeight(30);
     }
   }, [width]);
 
   return (
-    <div className="flex flex-col items-center w-full">
-      <div className="text-3xl font-bold p-2">집계 결과!</div>
+    <div className="flex flex-col items-center w-full font-basic">
+      <div className="text-xl font-bold  p-2 mt-4">
+        <button className=" w-24 h-10 font-extrabold bg-amber-200 border-amber-400 rounded border-b-4 px-4 py-1 hover:bg-amber-300 mx-2">
+          회장
+        </button>
+        <button className="w-24 h-10 font-extrabold bg-amber-200 border-amber-400 rounded border-b-4 px-4 py-1 hover:bg-amber-300 mx-2">
+          부회장
+        </button>
+        <button className="w-24 h-10 font-extrabold bg-amber-200 border-amber-400 rounded border-b-4 px-4 py-1 hover:bg-amber-300 mx-2">
+          총무
+        </button>
+      </div>
       <ChartRace
         data={data}
-        backgroundColor="#000"
+        backgroundColor="#fff"
         width={chartWidth}
         padding={12}
         itemHeight={itemHeight}
         gap={12}
-        titleStyle={{ font: 'normal 400 13px Arial', color: '#fff' }}
+        titleStyle={{
+          font: ' font-basic normal 400 13px Arial',
+          color: '#000',
+        }}
         valueStyle={{
           font: 'normal 400 11px Arial',
-          color: 'rgba(255,255,255, 0.42)',
+          color: 'rgba(0,0,0, 0.42)',
         }}
       />
     </div>
