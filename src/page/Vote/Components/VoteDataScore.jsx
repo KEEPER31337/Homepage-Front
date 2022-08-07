@@ -27,8 +27,8 @@ const randomColor = () => {
   //r -> 250~255, g -> 225~245, b -> 130~200
   return `rgb( 
     ${Math.random() * (255 - 250) + 250},  
-    ${Math.random() * (245 - 225) + 225},
-    ${Math.random() * (200 - 130) + 130})`;
+    ${Math.random() * (247 - 225) + 225},
+    ${Math.random() * (160 - 130) + 130})`;
 };
 
 const getVoteData = () => {
