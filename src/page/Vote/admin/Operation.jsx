@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import actionMember from 'redux/action/member';
 import ProbOpenCloseBtn from '../Components/ProbOpenCloseBtn';
 import DeleteBtn from '../Components/DeleteBtn';
+import DeleteVote from '../Components/Operation/DeleteVote';
+import CreateVote from '../Components/Operation/CreateVote';
 const Operation = ({ member }) => {
   const [rankList, setRankList] = useState([]);
   useEffect(() => {
@@ -25,9 +27,7 @@ const Operation = ({ member }) => {
   return (
     <div className="flex flex-col w-full h-full font-basic text-black p-4">
       <div className="flex flex-row text-xl justify-end my-1">
-        <button className="w-24 h-10 font-extrabold bg-slate-100 border-slate-300 rounded border-b-4 px-4 py-1  hover:bg-slate-200 mx-2">
-          <div>추가</div>
-        </button>
+        <CreateVote />
         <button className="w-24 h-10 font-extrabold bg-slate-100 border-slate-300 rounded border-b-4 px-4 py-1  hover:bg-slate-200">
           <div>삭제</div>
         </button>
