@@ -65,7 +65,7 @@ const MyPick = (props) => {
 
                 <button
                   onClick={Voting}
-                  class="bg-slate-100 border-slate-300 rounded border-b-4 mt-4 px-4 py-1  hover:bg-slate-200"
+                  className="bg-slate-100 border-slate-300 rounded border-b-4 mt-4 px-4 py-1  hover:bg-slate-200"
                 >
                   투표
                 </button>
@@ -85,7 +85,7 @@ const MyPick = (props) => {
         {' '}
         <div className="bg-slate-100 h-fit w-11/12 flex flex-wrap justify-start p-2">
           {/* 실시간 애니메이션 */}
-          <VotingPaperBox />
+          {/* <VotingPaperBox /> */}
         </div>
         <div className="w-1/12 bg-amber-300 items-center flex flex-col justify-center">
           <div>투표율</div>
