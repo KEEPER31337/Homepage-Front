@@ -3,20 +3,27 @@ import { connect } from 'react-redux';
 import actionMember from 'redux/action/member';
 import VoteSelect from './Components/VoteSelect';
 import VotingPaper from './Components/MyPick/VotingPaper';
-const MyPick = ({ member }) => {
+const MyPick = (props) => {
   //TODO
   //투표여부 확인 api -> 했으면 -> 진행여부(실시간) 애니메이션만
   // 안했으면 ->
+  const [voteName, setVoteName] = useState('');
 
   const [voteList, setVoteList] = useState(32);
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log('my pick 페이지 redux');
+    console.log(props.vote.voteId);
+    console.log(props.vote.voteName);
+
+    setVoteName(props.vote.voteName);
+  }, []);
 
   return (
-    <div className="md:w-4/5 w-full p-3 text-xl font-basic flex flex-col justify-center">
-      <div className="h-fit w-full flex container justify-center bg-slate-50 items-center p-3">
+    <div className=" w-full p-3 text-xl font-basic flex flex-col justify-center">
+      <div className="h-fit w-full flex justify-center bg-slate-50 items-center p-3">
         {/* 투표용지 */}
-        <div className="h-full md:w-5/12 w-full flex flex-col p-3 bg-white border border-slate-100 shadow-md">
-          <div className="mt-2 mb-4 text-center "> 2022년 2학기 </div>
+        <div className="h-full sm:w-5/12 w-full flex flex-col p-3 bg-white border border-slate-100 shadow-md">
+          <div className="mt-2 mb-4 text-center "> {voteName} </div>
 
           <div className="flex flex-row w-full">
             <div className="w-2/6 items-center p-2">회장</div>
@@ -52,7 +59,7 @@ const MyPick = ({ member }) => {
       <div className="flex flex-row">
         {' '}
         <div className="bg-slate-100 h-fit w-11/12 flex flex-wrap justify-start p-2">
-          <VotingPaper />
+          {/* <VotingPaper /> */}
         </div>
         <div className="w-1/12 bg-amber-300 items-center flex flex-col justify-center">
           <div>투표율</div>
@@ -64,7 +71,7 @@ const MyPick = ({ member }) => {
 };
 
 const mapStateToProps = (state, OwnProps) => {
-  return { member: state.member };
+  return { member: state.member, vote: state.vote };
 };
 
 const mapDispatchToProps = (dispatch, OwnProps) => {

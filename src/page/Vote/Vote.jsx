@@ -14,7 +14,7 @@ const Vote = ({ member }) => {
       {
         name: '2022 2학기',
         description: '2022 2학기 선거입니댜',
-        ctfId: 2,
+        voteId: 2,
         creator: {
           id: 5,
           nickName: '정현모',
@@ -28,7 +28,7 @@ const Vote = ({ member }) => {
   }, []);
 
   return (
-    <div className="md:w-4/5 flex flex-col flex-1 p-3">
+    <div className=" flex flex-col flex-1 p-3">
       <div className="mr-20">
         {contestList.length == 0 ? (
           <div className="pt-5 grid place-items-center mr-20">
@@ -49,7 +49,7 @@ const Vote = ({ member }) => {
                     contestIdx < 3 ? (
                       <VoteOverview
                         key={contestIdx}
-                        id={contest.ctfId}
+                        id={contest.voteId}
                         name={contest.name}
                         description={contest.description}
                         creator={contest.creator.nickName}

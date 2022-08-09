@@ -8,6 +8,7 @@ import CreateVote from '../Components/Operation/CreateVote';
 
 const Operation = ({ member }) => {
   const [rankList, setRankList] = useState([]);
+
   useEffect(() => {
     setRankList([
       {

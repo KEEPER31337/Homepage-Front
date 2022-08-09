@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import actionCtf from 'redux/action/ctf';
+import actionVote from 'redux/action/vote';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import ctfAPI from 'API/v1/ctf';
@@ -11,10 +12,13 @@ const ContestOverview = (props) => {
   const description = props.description;
   const creator = props.creator;
   const navigate = useNavigate();
-  const handleChange = (e) => {
-    props.updateCtfId(id);
-    props.updateCtfName(name);
 
+  const handleChange = (e) => {
+    //redux 업데이트
+    props.updateVoteId(id);
+    props.updateVoteName(name);
+
+    console.log(props.member.token);
     //TODO 투표 여부 확인 api
     //-> 했던 안했던 둘다 투표하기 페이지로
     //-> 보여주는건,
@@ -38,18 +42,15 @@ const ContestOverview = (props) => {
   );
 };
 const mapStateToProps = (state, OwnProps) => {
-  return { member: state.member, ctfId: state.ctfId };
+  return { member: state.member };
 };
 const mapDispatchToProps = (dispatch, OwnProps) => {
   return {
-    updateCtfId: (id) => {
-      dispatch(actionCtf.updateId(id));
+    updateVoteId: (id) => {
+      dispatch(actionVote.updateId(id));
     },
-    updateCtfName: (name) => {
-      dispatch(actionCtf.updateName(name));
-    },
-    updateCtfTeamName: (teamName) => {
-      dispatch(actionCtf.updateTeamName(teamName));
+    updateVoteName: (name) => {
+      dispatch(actionVote.updateName(name));
     },
   };
 };

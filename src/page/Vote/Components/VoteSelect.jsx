@@ -69,7 +69,7 @@ export default function VoteSelect() {
     <Listbox value={selected} onChange={setSelected}>
       {({ open }) => (
         <>
-          <div className="mt-1 relative text-xl font-basic">
+          <div className="  relative text-xl font-basic">
             <Listbox.Button className="relative rounded-md  w-full bg-white p-2">
               <span className="flex items-center ">
                 {/* 맨처음, 아무것도 클릭하지 않았을때, avatar가 없을때 */}

@@ -7,7 +7,14 @@ import actionMember from 'redux/action/member';
 import useWindowDimensions from './Components/WindowDimensions';
 import getVoteData from './Components/VoteDataScore';
 
-const ScoreBoard = ({ member }) => {
+const ScoreBoard = (props) => {
+  //redux
+  useEffect(() => {
+    console.log('집계 결과 페이지 redux');
+    console.log(props.vote.voteId);
+    console.log(props.vote.voteName);
+  }, []);
+
   const { height, width } = useWindowDimensions();
   const data = getVoteData();
   const [chartWidth, setChartWidth] = useState(0);
@@ -63,7 +70,7 @@ const ScoreBoard = ({ member }) => {
 };
 
 const mapStateToProps = (state, OwnProps) => {
-  return { member: state.member };
+  return { member: state.member, vote: state.vote };
 };
 
 const mapDispatchToProps = (dispatch, OwnProps) => {

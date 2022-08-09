@@ -19,16 +19,23 @@ const MIDDLEBOSS = 1; // 부회장
 const MONEYMEN = 2; // 총무
 const USER = 3; // 활동인원
 
-const Operation = ({ member }) => {
+const Operation = (props) => {
+  //redux
+  useEffect(() => {
+    console.log('인원 관리 페이지 redux');
+    console.log(props.vote.voteId);
+    console.log(props.vote.voteName);
+  }, []);
+
   // 전체 회원 띄우기 위한 셋팅
   const [memberList, setMemberList] = useState([]);
   useEffect(() => {
-    memberAPI.getMembers({ token: member.token }).then((data) => {
+    memberAPI.getMembers({ token: props.member.token }).then((data) => {
       if (data.success) {
         setMemberList(data.list);
       }
     });
-  }, [member]);
+  }, [props.member]);
 
   // 현재 어느 목록의 후보자를 뽑을 것인지
   const [job, setJob] = useState(BOSS);
@@ -126,7 +133,7 @@ const Operation = ({ member }) => {
 };
 
 const mapStateToProps = (state, OwnProps) => {
-  return { member: state.member };
+  return { member: state.member, vote: state.vote };
 };
 
 const mapDispatchToProps = (dispatch, OwnProps) => {
