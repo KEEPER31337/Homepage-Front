@@ -17,7 +17,7 @@ const CreateVote = ({}) => {
       {/* 추가버튼 */}
       <button
         onClick={openModal}
-        className="w-24 h-10 font-extrabold bg-slate-100 border-slate-300 rounded border-b-4 px-4 py-1 hover:bg-slate-200 mx-2"
+        className="w-28 h-10 font-extrabold bg-slate-100 border-slate-300 rounded border-b-4 px-4 py-1 hover:bg-slate-200 mx-2"
       >
         <div>추가</div>
       </button>

@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import actionMember from 'redux/action/member';
 import ProbOpenCloseBtn from '../Components/ProbOpenCloseBtn';
-import DeleteBtn from '../Components/DeleteBtn';
+
 import DeleteVote from '../Components/Operation/DeleteVote';
 import CreateVote from '../Components/Operation/CreateVote';
+
 const Operation = ({ member }) => {
   const [rankList, setRankList] = useState([]);
   useEffect(() => {
@@ -26,11 +27,8 @@ const Operation = ({ member }) => {
 
   return (
     <div className="flex flex-col w-full h-full font-basic text-black p-4">
-      <div className="flex flex-row text-xl justify-end my-1">
+      <div className="flex flex-row text-xl justify-end my-1 mb-1">
         <CreateVote />
-        <button className="w-24 h-10 font-extrabold bg-slate-100 border-slate-300 rounded border-b-4 px-4 py-1  hover:bg-slate-200">
-          <div>삭제</div>
-        </button>
       </div>
 
       <table className="text-center h-full w-full  bg-white shadow-md">
@@ -40,7 +38,7 @@ const Operation = ({ member }) => {
             <th className="w-7/12">설명</th>
             <th className="w-1/12">상태</th>
 
-            <th className="w-1/12"></th>
+            <th className="w-1/12">삭제</th>
           </tr>
         </thead>
         <tbody className="">
@@ -57,7 +55,7 @@ const Operation = ({ member }) => {
                 />
               </td>
               <td>
-                <DeleteBtn
+                <DeleteVote
                   challengeId={info.voteId}
                   // checkedItemHandler={checkedItemHandler}
                 />{' '}
