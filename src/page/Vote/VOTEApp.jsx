@@ -8,6 +8,9 @@ const ScoreBoard = lazy(() => import('page/Vote/ScoreBoard'));
 const MyPick = lazy(() => import('page/Vote/MyPick'));
 const Operation = lazy(() => import('page/Vote/admin/Operation'));
 const Submissions = lazy(() => import('page/Vote/admin/Submissions'));
+const RevisePeople = lazy(() =>
+  import('page/Vote/Components/Submissions/RevisePeople')
+);
 
 const VOTEApp = () => {
   return (
@@ -20,6 +23,7 @@ const VOTEApp = () => {
           <Route path="/mypick" element={<MyPick />} />
           <Route path="/admin/operation" element={<Operation />} />
           <Route path="/admin/submissions" element={<Submissions />} />
+          <Route path="/admin/submissions/revise" element={<RevisePeople />} />
         </Routes>
       </div>
     </div>

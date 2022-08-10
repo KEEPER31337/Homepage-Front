@@ -100,10 +100,106 @@ async function getVoteList({ token, page, size }) {
   }
 }
 
+// 선거 후보자 목록 조회
+async function getCandidate({ token, eid, jid }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/elections/' + eid + '/jobs/' + jid,
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+// 선거 후보자 단일 등록
+async function addCandidate({token, memberId, electionId, memberJobId}){
+  const options = {
+    method: 'POST',
+    url: API_URL + '/v1/admin/elections/candidate',
+    data: {
+      memberId: memberId,
+      description: "",
+      electionId: electionId,
+      memberJobId: memberJobId
+    },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+// 선거 후보자 단일 삭제
+async function deleteCandidate({token, id}){
+  const options = {
+    method: 'DELETE',
+    url: API_URL + '/v1/admin/elections/candidate/'+id,
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+// 선거 투표자 단일 등록
+async function addVoters({token, eid, vid, }){
+  const options = {
+    method: 'POST',
+    url: API_URL + '/v1/admin/elections/' + eid + '/voters/' + vid,
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+// 선거 투표자 단일 삭제
+async function deleteVoters({token, eid, vid, }){
+  const options = {
+    method: 'DELETE',
+    url: API_URL + '/v1/admin/elections/' + eid + '/voters/' + vid,
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 export default {
   createVote,
   deleteVote,
   openVote,
   closeVote,
   getVoteList,
+  getCandidate,
+  addCandidate,
+  deleteCandidate,
+  addVoters,
+  deleteVoters,
 };

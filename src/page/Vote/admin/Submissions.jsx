@@ -4,129 +4,77 @@ import Marquee from 'react-fast-marquee';
 
 // redux
 import actionMember from 'redux/action/member';
-
 //local
-import Header from '../Components/SubmitHeader';
-import ContentMD from '../Components/SubmitContentMD';
-import ContentLG from '../Components/SubmitContentLG';
-import ContentSM from '../Components/SubmitContentSM';
-
+import Header from '../Components/Submissions/SubmitHeader';
+import Content from '../Components/Submissions/SubmitContent';
 // API
 import memberAPI from 'API/v1/member';
+import voteAPI from 'API/v1/vote';
 
-const BOSS = 0; // 회장
-const MIDDLEBOSS = 1; // 부회장
-const MONEYMEN = 2; // 총무
-const USER = 3; // 활동인원
+const BOSS = 1; // 회장
+const MIDDLEBOSS = 2; // 부회장
+const MONEYMEN = 3; // 총무
+const USER = 4; // 활동인원
 
-const Operation = (props) => {
-  //redux
-  useEffect(() => {
-    console.log('인원 관리 페이지 redux');
-    console.log(props.vote.voteId);
-    console.log(props.vote.voteName);
-  }, []);
-
-  // 전체 회원 띄우기 위한 셋팅
+const Submissions = ({ member, vote }) => {
+  // TODO 각 후보자 목록 받아오는 걸로 바꾸기
   const [memberList, setMemberList] = useState([]);
+  // TODO 아래로!
+  const [current, setCurrent] = useState([]);
+  const [BossCandidate, setBoss] = useState([]);
+  const [MiddleCandidate, setMiddle] = useState([]);
+  const [MoneyCandidate, setMoney] = useState([]);
+  const [Voters, setvoters] = useState([]);
   useEffect(() => {
-    memberAPI.getMembers({ token: props.member.token }).then((data) => {
+    memberAPI.getMembers({ token: member.token }).then((data) => {
       if (data.success) {
         setMemberList(data.list);
       }
     });
-  }, [props.member]);
+  }, [member]);
 
-  // 현재 어느 목록의 후보자를 뽑을 것인지
+  useEffect(() => {
+    // TODO data.list 에 정보가 담겨서 옴.
+    // 닉네임, 기수, 썸네일이 다 표시 되면 그것에 맞게 고치기!
+    // 제가 하겠습니다..
+    // 서윤님 좀 만 기다려주세요...
+    voteAPI
+      .getCandidate({
+        token: member.token,
+        eid: vote.voteId,
+        jid: USER,
+      })
+      .then((data) => console.log(data));
+  }, []);
+
+  // 현재 어느 목록의 후보자를 보여줄 것인지
   const [job, setJob] = useState(BOSS);
-
-  // 후보자 체크된 목록을 담고 있는 변수
-  const [current, setCurrent] = useState(new Set());
-  const [checkedBoss, setCheckedBoss] = useState(new Set());
-  const [checkedMiddle, setCheckedMiddle] = useState(new Set());
-  const [checkedMoney, setCheckedMoney] = useState(new Set());
-  const [checkedUser, setCheckedUser] = useState(new Set());
-  const checkedItemHandler = (memberId, isChecked) => {
-    switch (job) {
-      case BOSS:
-        if (isChecked) {
-          checkedBoss.add(memberId);
-          setCheckedBoss(checkedBoss);
-        } else if (!isChecked && checkedBoss.has(memberId)) {
-          checkedBoss.delete(memberId);
-          setCheckedBoss(checkedBoss);
-        }
-        break;
-      case MIDDLEBOSS:
-        if (isChecked) {
-          checkedMiddle.add(memberId);
-          setCheckedMiddle(checkedMiddle);
-        } else if (!isChecked && checkedMiddle.has(memberId)) {
-          checkedMiddle.delete(memberId);
-          setCheckedMiddle(checkedMiddle);
-        }
-        break;
-      case MONEYMEN:
-        if (isChecked) {
-          checkedMoney.add(memberId);
-          setCheckedMoney(checkedMoney);
-        } else if (!isChecked && checkedMoney.has(memberId)) {
-          checkedMoney.delete(memberId);
-          setCheckedMoney(checkedMoney);
-        }
-        break;
-      case USER:
-        if (isChecked) {
-          checkedUser.add(memberId);
-          setCheckedUser(checkedUser);
-        } else if (!isChecked && checkedUser.has(memberId)) {
-          checkedUser.delete(memberId);
-          setCheckedUser(checkedUser);
-        }
-        break;
-      default:
-        break;
-    }
-  };
 
   useEffect(() => {
     switch (job) {
       case BOSS:
-        setCurrent(checkedBoss);
+        setCurrent(BossCandidate);
         break;
       case MIDDLEBOSS:
-        setCurrent(checkedMiddle);
+        setCurrent(MiddleCandidate);
         break;
       case MONEYMEN:
-        setCurrent(checkedMoney);
+        setCurrent(MoneyCandidate);
         break;
       case USER:
-        setCurrent(checkedUser);
+        setCurrent(Voters);
         break;
       default:
         break;
     }
-  }, [checkedBoss, checkedMoney, checkedMiddle, checkedUser, job]);
+  }, [BossCandidate, MiddleCandidate, MoneyCandidate, Voters, job]);
 
   return (
     <div className="flex flex-1 justify-center items-center">
       <div className="flex flex-col w-fit mt-5">
         <Header job={job} setJob={setJob} />
-        <ContentSM
-          memberList={memberList}
-          checkedItemHandler={checkedItemHandler}
-          currentItem={current}
-        />
-        <ContentMD
-          memberList={memberList}
-          checkedItemHandler={checkedItemHandler}
-          currentItem={current}
-        />
-        <ContentLG
-          memberList={memberList}
-          checkedItemHandler={checkedItemHandler}
-          currentItem={current}
-        />
+        {/* TODO 나중에 memberList -> current 로 바꾸기! */}
+        <Content memberList={memberList} />
       </div>
     </div>
   );
@@ -144,4 +92,4 @@ const mapDispatchToProps = (dispatch, OwnProps) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Operation);
+export default connect(mapStateToProps, mapDispatchToProps)(Submissions);
