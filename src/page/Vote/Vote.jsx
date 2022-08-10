@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import actionMember from 'redux/action/member';
 import vote from 'assets/img/vote.png';
 // local
-import VoteOverview from './Components/VoteOverview';
+import VoteOverview from './Components/Vote/VoteOverview';
+import CloseVoteOverview from './Components/Vote/CloseVoteOverview';
 
 //api
 import voteAPI from 'API/v1/vote';
@@ -50,8 +51,8 @@ const Vote = ({ member }) => {
   }, []);
 
   return (
-    <div className=" flex flex-col flex-1 p-3">
-      <div className="mr-20">
+    <div className=" flex flex-col flex-1 p-3 font-basic">
+      <div className="flex sm:flex-row flex-col w-full h-full ">
         {openVoteList.length == 0 ? (
           <div className="pt-5 grid place-items-center mr-20">
             <div className="flex whitespace-pre text-center dark:text-slate-200 text-4xl m-2 font-bold">
@@ -61,31 +62,27 @@ const Vote = ({ member }) => {
           </div>
         ) : (
           <>
-            <div className="my-10 text-center text-lg font-basic dark:text-amber-200 ">
-              진행중 선거
+            <div className="flex flex-col w-full sm:w-2/3 mb-8 h-full  justify-start items-center">
+              <div className="my-5 text-lg  ">다음 선거가 진행중입니다!</div>
+              {openVoteList.map((info) => (
+                <VoteOverview
+                  key={info.electionId}
+                  id={info.electionId}
+                  name={info.name}
+                  description={info.description}
+                />
+              ))}
             </div>
-            <div className="my-10 mx-20 flex flex-wrap justify-between">
-              <div className="mb-20 w-full">
-                <div className="flex flex-wrap justify-center">
-                  {openVoteList.map((info) => (
-                    <VoteOverview
-                      key={info.electionId}
-                      id={info.electionId}
-                      name={info.name}
-                      description={info.description}
-                    />
-                  ))}
-                  완료
-                  {closeVoteList.map((info) => (
-                    <VoteOverview
-                      key={info.electionId}
-                      id={info.electionId}
-                      name={info.name}
-                      description={info.description}
-                    />
-                  ))}
-                </div>
-              </div>
+            <div className="flex flex-col  w-full sm:w-1/3 h-full bg-slate-50 justify-start items-center p-5">
+              <div className="text-lg">완료된 선거</div>
+              {closeVoteList.map((info) => (
+                <CloseVoteOverview
+                  key={info.electionId}
+                  id={info.electionId}
+                  name={info.name}
+                  description={info.description}
+                />
+              ))}
             </div>
           </>
         )}

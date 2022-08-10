@@ -7,10 +7,10 @@ import { useNavigate } from 'react-router-dom';
 import ctfAPI from 'API/v1/ctf';
 
 const ContestOverview = (props) => {
-  const id = props.id; //바꿀 ctfid
+  const id = props.id; //바꿀 선거 id
   const name = props.name;
   const description = props.description;
-  const creator = props.creator;
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -28,14 +28,13 @@ const ContestOverview = (props) => {
     <>
       <button
         className={
-          'w-52 h-48 truncate mx-3 mb-6 rounded-sm shadow-md border bg-slate-50 hover:bg-slate-200 dark:bg-purple-200 dark:hover:bg-purple-300'
+          'w-52 h-48 truncate mt-4 rounded-sm shadow-md border bg-slate-50 hover:bg-slate-200 dark:bg-purple-200 dark:hover:bg-purple-300'
         }
         onClick={handleChange}
       >
         <div className="my-3">
           <div className="text-xl m-4">{name}</div>
           <div>{description}</div>
-          <div>{creator}</div>
         </div>
       </button>
     </>
