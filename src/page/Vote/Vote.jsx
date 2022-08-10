@@ -1,36 +1,58 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import actionMember from 'redux/action/member';
-
+import vote from 'assets/img/vote.png';
 // local
 import VoteOverview from './Components/VoteOverview';
 
+//api
+import voteAPI from 'API/v1/vote';
+
 const Vote = ({ member }) => {
-  const [contestList, setContestList] = useState([]);
-  const tableHead = ['대회명', '설명', '개최자'];
+  const [allVoteList, setAllVoteList] = useState([]);
+  const [openVoteList, setOpenVoteList] = useState([]);
+  const [closeVoteList, setCloseVoteList] = useState([]);
+  //page 이동 관련
+  const [page, setPage] = useState(0);
+  const [canGoNext, setCanGoNext] = useState(false);
+  const [canGoPrev, setCanGoPrev] = useState(false);
+
+  const goNextPage = () => {
+    setPage(page + 1);
+  };
+
+  const goPrevPage = () => {
+    setPage(page - 1);
+  };
 
   useEffect(() => {
-    setContestList([
-      {
-        name: '2022 2학기',
-        description: '2022 2학기 선거입니댜',
-        voteId: 2,
-        creator: {
-          id: 5,
-          nickName: '정현모',
-          jobs: ['ROLE_회원', 'ROLE_회장', 'ROLE_출제자'],
-          thumbnailPath: 'http://13.209.6.87/v1/util/thumbnail/1',
-          generation: 13,
-        },
-      },
-    ]);
-    console.log(contestList);
+    voteAPI
+      .getVoteList({
+        page: page,
+        size: 10,
+        token: member.token,
+      })
+      .then((data) => {
+        // TODO cid 받아와서 넣기
+        if (data.success) {
+          setCanGoPrev(data.page.first);
+          setCanGoNext(data.page.last);
+          setOpenVoteList(data.page.content);
+          setCloseVoteList(data.page.content);
+
+          //open
+          setOpenVoteList((aa) => aa.filter((s) => s.isAvailable === true));
+          //close
+
+          setCloseVoteList((aa) => aa.filter((s) => s.isAvailable === false));
+        }
+      });
   }, []);
 
   return (
     <div className=" flex flex-col flex-1 p-3">
       <div className="mr-20">
-        {contestList.length == 0 ? (
+        {openVoteList.length == 0 ? (
           <div className="pt-5 grid place-items-center mr-20">
             <div className="flex whitespace-pre text-center dark:text-slate-200 text-4xl m-2 font-bold">
               대회 <div className="text-mainYellow">준비중</div>
@@ -40,22 +62,28 @@ const Vote = ({ member }) => {
         ) : (
           <>
             <div className="my-10 text-center text-lg font-basic dark:text-amber-200 ">
-              참여할 선거를 선택해주세요!
+              진행중 선거
             </div>
             <div className="my-10 mx-20 flex flex-wrap justify-between">
               <div className="mb-20 w-full">
                 <div className="flex flex-wrap justify-center">
-                  {contestList.map((contest, contestIdx) =>
-                    contestIdx < 3 ? (
-                      <VoteOverview
-                        key={contestIdx}
-                        id={contest.voteId}
-                        name={contest.name}
-                        description={contest.description}
-                        creator={contest.creator.nickName}
-                      />
-                    ) : null
-                  )}
+                  {openVoteList.map((info) => (
+                    <VoteOverview
+                      key={info.electionId}
+                      id={info.electionId}
+                      name={info.name}
+                      description={info.description}
+                    />
+                  ))}
+                  완료
+                  {closeVoteList.map((info) => (
+                    <VoteOverview
+                      key={info.electionId}
+                      id={info.electionId}
+                      name={info.name}
+                      description={info.description}
+                    />
+                  ))}
                 </div>
               </div>
             </div>

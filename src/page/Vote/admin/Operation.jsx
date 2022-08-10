@@ -11,7 +11,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
 import voteAPI from 'API/v1/vote';
 
 const Operation = ({ member }) => {
-  const [rankList, setRankList] = useState([]);
+  const [voteList, setVoteList] = useState([]);
 
   const [update, setUpdate] = useState(true);
 
@@ -34,7 +34,7 @@ const Operation = ({ member }) => {
   };
   useEffect(() => {
     voteAPI
-      .getVostList({
+      .getVoteList({
         page: page,
         size: 10,
         token: member.token,
@@ -44,14 +44,14 @@ const Operation = ({ member }) => {
         if (data.success) {
           setCanGoPrev(data.page.first);
           setCanGoNext(data.page.last);
-          setRankList(data.page.content);
-          console.log(rankList);
+          setVoteList(data.page.content);
+          console.log(voteList);
         }
       });
   }, []);
   useEffect(() => {
     voteAPI
-      .getVostList({
+      .getVoteList({
         page: page,
         size: 10,
         token: member.token,
@@ -61,7 +61,7 @@ const Operation = ({ member }) => {
         if (data.success) {
           setCanGoPrev(data.page.first);
           setCanGoNext(data.page.last);
-          setRankList(data.page.content);
+          setVoteList(data.page.content);
         }
       });
   }, [page, update]);
@@ -83,7 +83,7 @@ const Operation = ({ member }) => {
           </tr>
         </thead>
         <tbody className="">
-          {rankList.map((info) => (
+          {voteList.map((info) => (
             <tr key={info.electionId} className="h-10 w-full  ">
               {/* shadow shadow-purple-300 */}
               <td>{info.name}</td>

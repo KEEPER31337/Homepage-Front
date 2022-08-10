@@ -83,7 +83,7 @@ async function closeVote({ electionId, token }) {
 }
 
 // 선거 목록 보기
-async function getVostList({ token, page, size }) {
+async function getVoteList({ token, page, size }) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/elections',
@@ -105,5 +105,5 @@ export default {
   deleteVote,
   openVote,
   closeVote,
-  getVostList,
+  getVoteList,
 };

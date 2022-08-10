@@ -87,7 +87,7 @@ const DeleteVote = ({ member, electionId, updateHandler }) => {
       >
         <div className=" p-3 w-full h-full flex flex-col  items-center text-center text-base">
           <div className="h-full w-full flex justify-center items-center text-center">
-            해당 선거를 비공개로 바꿔주세요!
+            해당 선거를 '완료'로 바꿔주세요!
           </div>
           <div className="flex ">
             <button

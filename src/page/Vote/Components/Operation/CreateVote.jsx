@@ -107,7 +107,7 @@ const CreateVote = ({ member, updateHandler }) => {
                     checked={isAvailable === true}
                     className="mr-1 w-4 h-4 text-slate-400 bg-gray-100 border-gray-300 focus:ring-slate-500 dark:focus:ring-slate-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                   />
-                  공개
+                  진행중
                 </label>{' '}
                 <label>
                   <input
@@ -118,7 +118,7 @@ const CreateVote = ({ member, updateHandler }) => {
                     onChange={isAvailableHandler}
                     className="mr-1 w-4 h-4 text-slate-400 bg-gray-100 border-gray-300 focus:ring-slate-500 dark:focus:ring-slate-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                   />
-                  비공개
+                  완료
                 </label>
               </div>
             </div>
