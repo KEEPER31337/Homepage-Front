@@ -1,21 +1,41 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Modal from 'react-awesome-modal';
-import ctfAPI from 'API/v1/ctf';
+import voteAPI from 'API/v1/vote';
 import { connect } from 'react-redux';
 import { TrashIcon } from '@heroicons/react/outline';
 
-const DeleteVote = ({ challengeId }) => {
+const DeleteVote = ({ member, electionId, updateHandler }) => {
   // 삭제 눌렀을때 뜨는 모달
   const [modalStatus, setModalState] = useState(false);
-  const openModal = (id) => {
+  const openModal = () => {
     setModalState(true);
   };
   const closeModal = () => {
     setModalState(false);
   };
 
+  //비공개 해야 삭제 가능하다는 모달
+  const [checkModalStatus, setCheckModalState] = useState(false);
+  const openCheckModal = () => {
+    setCheckModalState(true);
+    console.log('비공개해야함');
+  };
+
   const deleteVote = () => {
-    //TODO 삭제 api
+    voteAPI
+      .deleteVote({
+        token: member.token,
+        electionId: electionId,
+      })
+      .then((data) => {
+        if (data.success) {
+          updateHandler(); //부모한테서 가져온 업데이트 -> 목록 업데이트 함
+        } else if (data.code == -14010) {
+          openCheckModal(true);
+          //   console.log(data);
+          //   alert('대회 생성 중 오류가 발생하였습니다.');
+        }
+      });
   };
 
   return (
@@ -50,7 +70,30 @@ const DeleteVote = ({ challengeId }) => {
               className="bg-white   mx-1 hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
               onClick={() => {
                 closeModal();
-                DeleteVote();
+                deleteVote();
+              }}
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal // 비공개 해야 삭제 가능하다는 모달
+        visible={checkModalStatus}
+        width="300"
+        height="140"
+        onClickAway={() => setCheckModalState(false)}
+      >
+        <div className=" p-3 w-full h-full flex flex-col  items-center text-center text-base">
+          <div className="h-full w-full flex justify-center items-center text-center">
+            해당 선거를 비공개로 바꿔주세요!
+          </div>
+          <div className="flex ">
+            <button
+              className="bg-white   mx-1 hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+              onClick={() => {
+                setCheckModalState(false);
               }}
             >
               확인

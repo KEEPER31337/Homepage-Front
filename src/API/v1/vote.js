@@ -8,10 +8,10 @@ async function createVote({ token, name, description, isAvailable }) {
     method: 'POST',
     url: API_URL + '/v1/admin/elections',
     data: {
-      name: '회장 선거1',
-      description: '새로운 회장 선출을 위한 투표',
+      name: name,
+      description: description,
       registerTime: null,
-      isAvailable: true,
+      isAvailable: isAvailable,
     },
     headers: {
       Authorization: token,
@@ -25,67 +25,85 @@ async function createVote({ token, name, description, isAvailable }) {
   }
 }
 // 선거 삭제
-// async function deleteVote({ memberId, token }) {
-//   const options = {
-//     method: 'DELETE',
-//     url: API_URL + '/v1/admin/elections',
-//     data: {
-//       memberId,
-//     },
-//     headers: {
-//       Authorization: token,
-//     },
-//   };
-//   try {
-//     const response = await axios(options);
-//     return response.data;
-//   } catch (error) {
-//     return error.response.data;
-//   }
-// }
+async function deleteVote({ electionId, token }) {
+  const options = {
+    method: 'DELETE',
+    url: API_URL + '/v1/admin/elections/' + electionId,
+
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
 
 // // 선거 오픈
-// async function openVote({ cid, token }) {
-//   const options = {
-//     method: 'PATCH',
-//     url: API_URL + '/v1/admin/ctf/contest/' + cid + '/open',
-//     data: {
-//       cid,
-//     },
-//     headers: {
-//       Authorization: token,
-//     },
-//   };
-//   try {
-//     const response = await axios(options);
-//     return response.data;
-//   } catch (error) {
-//     return error.response.data;
-//   }
-// }
+async function openVote({ electionId, token }) {
+  const options = {
+    method: 'PATCH',
+    url: API_URL + '/v1/admin/elections/' + electionId + '/open',
+    data: {
+      electionId,
+    },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
 
 // // 선거 종료
-// async function closeVote({ cid, token }) {
-//   const options = {
-//     method: 'PATCH',
-//     url: API_URL + '/v1/admin/ctf/contest/' + cid + '/close',
-//     data: {
-//       cid,
-//     },
-//     headers: {
-//       Authorization: token,
-//     },
-//   };
-//   try {
-//     const response = await axios(options);
-//     return response.data;
-//   } catch (error) {
-//     return error.response.data;
-//   }
-// }
+async function closeVote({ electionId, token }) {
+  const options = {
+    method: 'PATCH',
+    url: API_URL + '/v1/admin/elections/' + electionId + '/close',
+    data: {
+      electionId,
+    },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+// 선거 목록 보기
+async function getVostList({ token, page, size }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/elections',
+    params: { page: page, size: size },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
 
 export default {
   createVote,
-  // openVote,
-  // closeVote,
+  deleteVote,
+  openVote,
+  closeVote,
+  getVostList,
 };

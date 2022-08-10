@@ -3,7 +3,7 @@ import Modal from 'react-awesome-modal';
 import voteAPI from 'API/v1/vote';
 import { connect } from 'react-redux';
 
-const CreateVote = ({ member }) => {
+const CreateVote = ({ member, updateHandler }) => {
   //modal 관련
   const [modalStatus, setModalState] = useState(false);
   const openModal = (id) => {
@@ -12,6 +12,8 @@ const CreateVote = ({ member }) => {
   const closeModal = () => {
     setModalState(false);
   };
+  //선거 이름, 설명 입력 alert
+  const [alert, setAlert] = useState(false);
 
   //input 값 관련
   const [voteName, setVoteName] = useState('');
@@ -25,31 +27,40 @@ const CreateVote = ({ member }) => {
     setVoteDescription(e.target.value);
   };
   const isAvailableHandler = (e) => {
-    setIsAvailable(e.target.value);
+    // setIsAvailable(e.target.value);
+    console.log(e.target.value);
+    {
+      e.target.value == 'open' ? setIsAvailable(true) : setIsAvailable(false);
+    }
   };
 
-  const createVote1 = () => {
-    console.log(member.token);
+  const createVote = () => {
     //대회 추가하겠냐는 모달 후, 확인누르면, 실제로 api 동작하는 함수
-    voteAPI
-      .createVote({
-        token: member.token,
-        name: voteName,
-        description: voteDescription,
-        isAvailable: isAvailable,
-      })
-      .then((data) => {
-        if (data.success) {
-          console.log(data);
-          // setCreate(!create);
-        } else {
-          console.log(data);
-          alert('대회 생성 중 오류가 발생하였습니다.');
-        }
-      });
-
-    setVoteName('');
-    setVoteDescription('');
+    if (voteName != '' && voteDescription != '') {
+      voteAPI
+        .createVote({
+          token: member.token,
+          name: voteName,
+          description: voteDescription,
+          isAvailable: isAvailable,
+        })
+        .then((data) => {
+          if (data.success) {
+            closeModal();
+            //input값들 초기화
+            setAlert(false);
+            setVoteName('');
+            setVoteDescription('');
+            updateHandler(); //부모한테서 가져온 업데이트 -> 목록 업데이트 함
+          } else {
+            alert('오류가 발생하였습니다.');
+          }
+        });
+    } else {
+      //선거 이름, 설명 입력 alert
+      setAlert(true);
+      console.log('Dddd');
+    }
   };
 
   return (
@@ -57,7 +68,7 @@ const CreateVote = ({ member }) => {
       {/* 추가버튼 */}
       <button
         onClick={openModal}
-        className="w-28 h-10 font-extrabold bg-slate-100 border-slate-300 rounded border-b-4 px-4 py-1 hover:bg-slate-200 mx-2"
+        className="w-28 h-10 font-extrabold bg-slate-100 border-slate-300 rounded border-b-4 px-4 py-1 hover:bg-slate-200 mb-1"
       >
         <div>추가</div>
       </button>
@@ -82,35 +93,42 @@ const CreateVote = ({ member }) => {
               value={voteDescription}
               onChange={voteDescriptionHandler}
               placeholder="선거 설명을 적어주세요"
-              className="w-2/3 h-full mt-2 text-center dark:bg-[#080b14] dark:border-opacity-0 border rounded-lg border-divisionGray focus:border-gray-300 focus:ring-gray-300 focus:ring-1 shadow-[inset_0_2px_0_1px_#f1f5f9] dark:shadow-[inset_0_2px_0_1px_#000000]"
+              className="w-2/3 resize-none h-full mt-2 text-center dark:bg-[#080b14] dark:border-opacity-0 border rounded-lg border-divisionGray focus:border-gray-300 focus:ring-gray-300 focus:ring-1 shadow-[inset_0_2px_0_1px_#f1f5f9] dark:shadow-[inset_0_2px_0_1px_#000000]"
             />
             {/* 공개, 비공개 radio 박스 */}
-            <div
-              onChange={isAvailableHandler}
-              className="w-2/3 h-8 mt-2  text-center justify-end items-center flex flex-row"
-            >
-              <div className="flex items-center mx-2">
-                <input
-                  id="isAvailable-radio1"
-                  type="radio"
-                  value="open"
-                  name="list-radio"
-                  className="mr-1 w-4 h-4 text-slate-400 bg-gray-100 border-gray-300 focus:ring-slate-500 dark:focus:ring-slate-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                />
-                <label for="isAvailable-radio1">공개</label>
-              </div>
-
-              <div className="flex items-center mx-2">
-                <input
-                  id="isAvailable-radio2"
-                  type="radio"
-                  value="close"
-                  name="list-radio"
-                  className="mr-1 w-4 h-4 text-slate-400 bg-gray-100 border-gray-300 focus:ring-slate-500 dark:focus:ring-slate-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                />
-                <label for="isAvailable-radio2">비공개</label>
+            <div className="w-2/3 h-8 mt-2 text-center justify-end items-center flex flex-row">
+              <div className="flex items-center ">
+                <label className="mr-2">
+                  <input
+                    type="radio"
+                    value="open"
+                    name="vote"
+                    onChange={isAvailableHandler}
+                    checked={isAvailable === true}
+                    className="mr-1 w-4 h-4 text-slate-400 bg-gray-100 border-gray-300 focus:ring-slate-500 dark:focus:ring-slate-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                  />
+                  공개
+                </label>{' '}
+                <label>
+                  <input
+                    type="radio"
+                    value="close"
+                    name="vote"
+                    checked={isAvailable === false}
+                    onChange={isAvailableHandler}
+                    className="mr-1 w-4 h-4 text-slate-400 bg-gray-100 border-gray-300 focus:ring-slate-500 dark:focus:ring-slate-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                  />
+                  비공개
+                </label>
               </div>
             </div>
+            {alert ? (
+              <div className="my-2 text-red-600">
+                선거 이름과 설명을 입력해주세요!
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
           <div className="w-full mt-2">
             <button
@@ -124,8 +142,7 @@ const CreateVote = ({ member }) => {
             <button
               className="bg-white   mx-1 hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
               onClick={() => {
-                closeModal();
-                createVote1();
+                createVote();
               }}
             >
               확인

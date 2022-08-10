@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Modal from 'react-awesome-modal';
-import ctfAPI from 'API/v1/ctf';
+import voteAPI from 'API/v1/vote';
 import { connect } from 'react-redux';
 
-const ProbOpenCloseBtn = ({ member, isSolvable, challengeId }) => {
+const ProbOpenCloseBtn = ({ member, isAvailable, electionId }) => {
   // 탈퇴 눌렀을때 뜨는 모달
   useEffect(() => {}, []);
   //새로 api(list)받지않고, 버튼 색깔 바꾸기 위해
-  const [state, setState] = useState(isSolvable);
+  const [state, setState] = useState(isAvailable);
 
   const [modalStatus, setModalState] = useState(false);
   const openModal = (id) => {
@@ -16,29 +16,29 @@ const ProbOpenCloseBtn = ({ member, isSolvable, challengeId }) => {
   const closeModal = () => {
     setModalState(false);
   };
-  const closeProb = () => {
-    // ctfAPI
-    //   .closeProb({
-    //     pid: challengeId,
-    //     token: member.token,
-    //   })
-    //   .then((data) => {
-    //     if (data.success) {
-    //       setState(false);
-    //     }
-    //   });
+  const closeVote = () => {
+    voteAPI
+      .closeVote({
+        electionId: electionId,
+        token: member.token,
+      })
+      .then((data) => {
+        if (data.success) {
+          setState(false);
+        }
+      });
   };
-  const openProb = () => {
-    // ctfAPI
-    //   .openProb({
-    //     pid: challengeId,
-    //     token: member.token,
-    //   })
-    //   .then((data) => {
-    //     if (data.success) {
-    //       setState(true);
-    //     }
-    //   });
+  const openVote = () => {
+    voteAPI
+      .openVote({
+        electionId: electionId,
+        token: member.token,
+      })
+      .then((data) => {
+        if (data.success) {
+          setState(true);
+        }
+      });
   };
   return (
     <>
@@ -85,7 +85,7 @@ const ProbOpenCloseBtn = ({ member, isSolvable, challengeId }) => {
                 closeModal();
 
                 {
-                  state === true ? closeProb() : openProb();
+                  state === true ? closeVote() : openVote();
                 }
               }}
             >
