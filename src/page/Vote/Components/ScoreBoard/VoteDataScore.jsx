@@ -20,6 +20,7 @@ const getVoteData = ({ member, vote, job }) => {
   const [name, setName] = useState('');
   const [count, setcount] = useState(0);
   const nextId = useRef(0);
+
   const [current, setCurrent] = useState([]);
   const [BossCandidate, setBoss] = useState([]);
   const [MiddleCandidate, setMiddle] = useState([]);
@@ -32,26 +33,9 @@ const getVoteData = ({ member, vote, job }) => {
         jobId: BOSS,
       })
       .then((data) => {
-        console.log(data);
-        const tmp1 = [
-          {
-            memberId: 1,
-            name: '김은지',
-          },
-          {
-            memberId: 1,
-            name: '이다은',
-          },
-          {
-            memberId: 1,
-            name: '장서윤',
-          },
-          {
-            memberId: 1,
-            name: '김은지',
-          },
-        ];
-        setBoss(tmp1);
+        if (data.success) {
+          setBoss(data.list);
+        }
       });
     voteAPI
       .getVoteResult({
@@ -60,26 +44,9 @@ const getVoteData = ({ member, vote, job }) => {
         jobId: MIDDLEBOSS,
       })
       .then((data) => {
-        console.log(data);
-        const tmp2 = [
-          {
-            memberId: 1,
-            name: '김은지',
-          },
-          {
-            memberId: 1,
-            name: '이다은',
-          },
-          {
-            memberId: 1,
-            name: '장서윤',
-          },
-          {
-            memberId: 1,
-            name: '이다은',
-          },
-        ];
-        setMiddle(tmp2);
+        if (data.success) {
+          setMiddle(data.list);
+        }
       });
     voteAPI
       .getVoteResult({
@@ -88,26 +55,9 @@ const getVoteData = ({ member, vote, job }) => {
         jobId: MONEYMEN,
       })
       .then((data) => {
-        console.log(data);
-        const tmp3 = [
-          {
-            memberId: 1,
-            name: '김은지',
-          },
-          {
-            memberId: 1,
-            name: '이다은',
-          },
-          {
-            memberId: 1,
-            name: '장서윤',
-          },
-          {
-            memberId: 1,
-            name: '장서윤',
-          },
-        ];
-        setMoney(tmp3);
+        if (data.success) {
+          setMoney(data.list);
+        }
       });
   }, []);
 

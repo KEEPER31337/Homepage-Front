@@ -17,11 +17,11 @@ const ChartBar = ({ member, vote, job }) => {
       setItemHeight(20);
     } else if (width < 770) {
       // md
-      setChartWidth(650);
+      setChartWidth(500);
       setItemHeight(25);
     } else {
       // lg
-      setChartWidth(800);
+      setChartWidth(700);
       setItemHeight(30);
     }
   }, [width]);
