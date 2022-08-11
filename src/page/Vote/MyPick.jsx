@@ -219,7 +219,6 @@ const MyPick = (props) => {
                 openModal();
               }
             }}
-            onConnect={() => {}}
             ref={$websocket}
           />
         </div>

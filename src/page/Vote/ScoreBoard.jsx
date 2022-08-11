@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-awesome-modal';
 import { useNavigate } from 'react-router-dom';
+import SockJsClient from 'react-stomp';
 // redux
 import actionMember from 'redux/action/member';
 // local
@@ -10,9 +11,13 @@ import noticeImg from 'assets/img/ctfImg/notice.png';
 import Header from './Components/ScoreBoard/ScoreHeader';
 // api
 import voteAPI from 'API/v1/vote';
+const url = process.env.REACT_APP_API_URL;
 
 const ScoreBoard = ({ member, vote }) => {
   const navigate = useNavigate();
+  //웹소켓
+  const $websocket = useRef(null);
+
   // 투표 집계 가능한지 판단 기준!!
   const [visible, setVisible] = useState(false);
   useEffect(() => {
@@ -60,6 +65,17 @@ const ScoreBoard = ({ member, vote }) => {
           </div>
         </div>
       )}
+      <SockJsClient
+        url="http://13.209.6.87/v1/websocket"
+        topics={['/topics/votes/end']}
+        onMessage={(msg) => {
+          //실시간으로 투표가 종료되면 (관리자가 완료버튼 누르면)
+          if (!msg.isOpen) {
+            setVisible(true);
+          }
+        }}
+        ref={$websocket}
+      />
       <Modal
         visible={modalStatus}
         width="300"
