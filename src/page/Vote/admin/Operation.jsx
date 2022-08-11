@@ -47,7 +47,7 @@ const Operation = ({ member }) => {
     voteAPI
       .getVoteList({
         page: page,
-        size: 10,
+        size: 5,
         token: member.token,
       })
       .then((data) => {
@@ -64,7 +64,7 @@ const Operation = ({ member }) => {
     voteAPI
       .getVoteList({
         page: page,
-        size: 10,
+        size: 5,
         token: member.token,
       })
       .then((data) => {

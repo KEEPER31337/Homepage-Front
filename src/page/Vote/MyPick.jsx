@@ -27,6 +27,12 @@ const MyPick = (props) => {
   const [myMoneyMan, setMyMoneyMan] = useState('');
 
   useEffect(() => {
+    //선거 클릭하지 않았을때
+    if (props.vote.voteId === null) {
+      setModalMessage('선거를 선택하지 않았습니다!');
+      openModal();
+    }
+
     setVoteName(props.vote.voteName);
 
     //투표결과 불러오기 api TODO
@@ -77,7 +83,11 @@ const MyPick = (props) => {
   };
   const closeModal = () => {
     setModalState(false);
-    navigate('/vote/scoreboard');
+    {
+      props.vote.voteId === null
+        ? navigate('/vote')
+        : navigate('/vote/scoreboard');
+    }
   };
 
   const Voting = () => {
