@@ -118,15 +118,15 @@ async function getCandidate({ token, eid, jid }) {
 }
 
 // 선거 후보자 단일 등록
-async function addCandidate({token, memberId, electionId, memberJobId}){
+async function addCandidate({ token, memberId, electionId, memberJobId }) {
   const options = {
     method: 'POST',
     url: API_URL + '/v1/admin/elections/candidate',
     data: {
       memberId: memberId,
-      description: "",
+      description: '',
       electionId: electionId,
-      memberJobId: memberJobId
+      memberJobId: memberJobId,
     },
     headers: {
       Authorization: token,
@@ -141,10 +141,10 @@ async function addCandidate({token, memberId, electionId, memberJobId}){
 }
 
 // 선거 후보자 단일 삭제
-async function deleteCandidate({token, id}){
+async function deleteCandidate({ token, id }) {
   const options = {
     method: 'DELETE',
-    url: API_URL + '/v1/admin/elections/candidate/'+id,
+    url: API_URL + '/v1/admin/elections/candidate/' + id,
     headers: {
       Authorization: token,
     },
@@ -158,7 +158,7 @@ async function deleteCandidate({token, id}){
 }
 
 // 선거 투표자 단일 등록
-async function addVoters({token, eid, vid, }){
+async function addVoters({ token, eid, vid }) {
   const options = {
     method: 'POST',
     url: API_URL + '/v1/admin/elections/' + eid + '/voters/' + vid,
@@ -175,7 +175,7 @@ async function addVoters({token, eid, vid, }){
 }
 
 // 선거 투표자 단일 삭제
-async function deleteVoters({token, eid, vid, }){
+async function deleteVoters({ token, eid, vid }) {
   const options = {
     method: 'DELETE',
     url: API_URL + '/v1/admin/elections/' + eid + '/voters/' + vid,
@@ -190,9 +190,64 @@ async function deleteVoters({token, eid, vid, }){
     return error.response.data;
   }
 }
+// 선거 참여여부
+async function getJoinable({ token, eid }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/elections/join/' + eid,
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
 
+// 선거 투표여부
+async function getVotable({ token, eid, vid }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/elections/votes',
+    params: { electionId: eid, voterId: vid },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+// 투표하기
+async function voting({ token, eid, vid, candidateIds }) {
+  const options = {
+    method: 'POST',
+    url: API_URL + '/v1/elections/votes',
+    data: {
+      voterId: vid,
+      electionId: eid,
+      candidateIds: candidateIds,
+    },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    console.log(candidateIds);
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
 // 투표 결과 목록 조회
-async function getVoteResult({ token, electionId, jobId }){
+async function getVoteResult({ token, electionId, jobId }) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/elections/results',
@@ -220,5 +275,8 @@ export default {
   deleteCandidate,
   addVoters,
   deleteVoters,
+  getJoinable,
+  getVotable,
+  voting,
   getVoteResult,
 };

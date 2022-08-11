@@ -18,7 +18,6 @@ const ContestOverview = (props) => {
     props.updateVoteId(id);
     props.updateVoteName(name);
 
-    console.log(props.member.token);
     //TODO 투표 여부 확인 api
     //-> 했던 안했던 둘다 투표하기 페이지로
     //-> 보여주는건,

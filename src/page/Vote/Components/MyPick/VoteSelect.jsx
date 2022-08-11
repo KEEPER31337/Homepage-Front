@@ -5,22 +5,11 @@ import { Listbox, Transition } from '@headlessui/react';
 import { StarIcon, ChevronDownIcon } from '@heroicons/react/solid';
 
 // API
-import memberAPI from 'API/v1/member';
+import voteAPI from 'API/v1/vote';
 
-const people = [
-  {
-    id: 1,
-    name: '장서윤',
-    avatar:
-      'https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  },
-  {
-    id: 2,
-    name: '이다은',
-    avatar:
-      'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  },
-];
+const BOSS = 1; // 회장
+const MIDDLEBOSS = 2; // 부회장
+const MONEYMEN = 7; // 총무
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -28,22 +17,60 @@ function classNames(...classes) {
 
 const VoteSelect = (props) => {
   const [voterList, setVoterList] = useState([]);
+  const [selected, setSelected] = useState([]);
 
   useEffect(() => {
-    //TODO 나중에 이것만 후보자 리스트 api로 바꾸기!
-    memberAPI.getMembers({ token: props.member.token }).then((data) => {
-      if (data.success) {
-        setVoterList(data.list);
-        console.log(voterList);
-      }
-    });
-  }, [props.member]);
+    switch (props.job) {
+      case BOSS:
+        voteAPI
+          .getCandidate({
+            token: props.member.token,
+            eid: props.vote.voteId,
+            jid: BOSS,
+          })
+          .then((data) => {
+            if (data.success) {
+              setVoterList(data.list);
+            }
+          });
 
-  const [selected, setSelected] = useState({
-    memberId: 0,
-    nickName: '',
-    thumbnailPath: '',
-  });
+        break;
+      case MIDDLEBOSS:
+        voteAPI
+          .getCandidate({
+            token: props.member.token,
+            eid: props.vote.voteId,
+            jid: MIDDLEBOSS,
+          })
+          .then((data) => {
+            if (data.success) {
+              setVoterList(data.list);
+            }
+          });
+        break;
+      case MONEYMEN:
+        voteAPI
+          .getCandidate({
+            token: props.member.token,
+            eid: props.vote.voteId,
+            jid: MONEYMEN,
+          })
+          .then((data) => {
+            if (data.success) {
+              setVoterList(data.list);
+            }
+          });
+        break;
+
+      default:
+        break;
+    }
+  }, []);
+
+  //selected바뀔때마다 부모로 넘겨주게.
+  useEffect(() => {
+    props.MyPick(selected.candidateId);
+  }, [selected]);
 
   return (
     <Listbox value={selected} onChange={setSelected}>
@@ -62,7 +89,7 @@ const VoteSelect = (props) => {
                   ''
                 )}
 
-                <span className="ml-3 block truncate">{selected.nickName}</span>
+                <span className="ml-3 block truncate">{selected.realName}</span>
               </span>
               <span className="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                 <ChevronDownIcon
@@ -82,7 +109,7 @@ const VoteSelect = (props) => {
               <Listbox.Options className="absolute z-10 mt-1 rounded-md shadow-sm border border-slate-100  w-full bg-white max-h-56  overflow-auto">
                 {voterList.map((voter) => (
                   <Listbox.Option
-                    key={voter.memberId}
+                    key={voter.candidateId}
                     className={({ active }) =>
                       classNames(
                         active ? ' bg-slate-200' : 'text-gray-900',
@@ -105,7 +132,7 @@ const VoteSelect = (props) => {
                               'ml-3 block truncate'
                             )}
                           >
-                            {voter.nickName}
+                            {voter.realName}
                           </span>
                         </div>
 
