@@ -150,7 +150,7 @@ const VOTEHeader = ({ darkMode, member, vote }) => {
       </Transition.Root>
 
       {/* 화면 꽉 찼을때, 기본 슬라이드바 부모의 1/5 */}
-      <div className="hidden lg:flex lg:w-1/5 lg:flex-col lg:inset-y-0 ">
+      <div className="hidden lg:flex lg:w-[280px] lg:flex-col lg:inset-y-0 ">
         {/* Sidebar component, swap this element with another sidebar if you like */}
         <div className="flex flex-col flex-grow pt-2  overflow-y-auto">
           <div className=" flex-1 h-0 overflow-y-auto">
