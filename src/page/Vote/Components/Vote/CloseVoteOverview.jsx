@@ -28,7 +28,7 @@ const ContestOverview = (props) => {
     <>
       <button
         className={
-          'flex flex-row items-center justify-center w-52 h-10 truncate mt-4  bg-white border border-slate-100 shadow-md hover:bg-slate-200'
+          'flex flex-row items-center justify-center w-52 h-10 truncate mt-4  bg-white border border-slate-100 shadow-md dark:text-slate-300 hover:bg-slate-200 dark:bg-darkPoint dark:border-darkPoint dark:hover:border-slate-300 rounded-sm'
         }
         onClick={handleChange}
       >

@@ -57,7 +57,7 @@ const ProbOpenCloseBtn = ({ member, isAvailable, electionId }) => {
             onClick={openModal}
             className="hover:bg-amber-400  w-full hover:text-mainWhite rounded"
           >
-            완료
+            진행중
           </button>
         </div>
       )}
@@ -69,7 +69,7 @@ const ProbOpenCloseBtn = ({ member, isAvailable, electionId }) => {
         onClickAway={() => closeModal()}
       >
         <div className="m-5 p-3 flex flex-col items-center text-center">
-          {state === true ? '완료' : '진행중'}로 전환하시겠습니까?
+          {state === true ? '비공개' : '공개'}로 전환하시겠습니까?
           <div className="flex m-8">
             <button
               className="bg-white mx-1 hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"

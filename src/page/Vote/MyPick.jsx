@@ -93,7 +93,7 @@ const MyPick = (props) => {
       .then((data) => {
         if (data.success) {
           console.log('투표완료!');
-          setModalMessage('완료한 투표입니다!');
+          setVoteMessage('완료한 투표입니다!');
           setIsVote(true);
         }
         console.log(data);
@@ -129,9 +129,9 @@ const MyPick = (props) => {
 
   return (
     <div className="h-full w-full p-3 text-xl font-basic flex flex-col justify-center">
-      <div className="h-fit w-full flex justify-center bg-slate-50 items-center p-3">
+      <div className="h-fit w-full flex justify-center bg-slate-50 dark:bg-darkPoint items-center p-3">
         {/* 투표용지 */}
-        <div className="h-full sm:w-5/12 w-full flex flex-col p-3 bg-white border border-slate-100 shadow-md">
+        <div className="h-full sm:w-5/12 w-full flex flex-col p-3 bg-white border border-slate-100  shadow-md">
           <div className="mt-2 mb-4 text-center font-semibold">{voteName}</div>
 
           {/* 투표여부에 따라 */}
@@ -181,7 +181,7 @@ const MyPick = (props) => {
         </div>
       </div>
       <div className="flex flex-row">
-        <div className="bg-slate-100 h-fit w-11/12 flex flex-wrap justify-start p-2">
+        <div className="bg-slate-100 dark:bg-black w-11/12 flex flex-wrap justify-start p-2">
           {/* 실시간 애니메이션 */}
           {/* <VotingPaperBox /> */}
           {list.map((info) => (
@@ -214,7 +214,7 @@ const MyPick = (props) => {
           />
         </div>
 
-        <div className="w-1/12 p-2 bg-amber-300 items-center flex flex-col justify-center">
+        <div className="w-1/12 p-2 bg-amber-300 dark:bg-black dark:text-slate-300 items-center flex flex-col justify-center">
           <div>투표율</div>
           <div className="text-2xl font-bold">{rate}%</div>
         </div>

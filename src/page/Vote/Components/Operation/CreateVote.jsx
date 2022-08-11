@@ -87,13 +87,13 @@ const CreateVote = ({ member, updateHandler }) => {
               value={voteName}
               onChange={voteNameHandler}
               placeholder="선거 이름을 적어주세요"
-              className="w-2/3 h-8 mt-2 text-center dark:bg-[#080b14] dark:border-opacity-0 border rounded-lg border-divisionGray focus:border-gray-300 focus:ring-gray-300 focus:ring-1 shadow-[inset_0_2px_0_1px_#f1f5f9] dark:shadow-[inset_0_2px_0_1px_#000000]"
+              className="w-2/3 h-8 mt-2 text-center dark:bg-[#080b14] dark:text-white  dark:border-opacity-0 border rounded-lg border-divisionGray focus:border-gray-300 focus:ring-gray-300 focus:ring-1 shadow-[inset_0_2px_0_1px_#f1f5f9] dark:shadow-[inset_0_2px_0_1px_#000000]"
             />
             <textarea
               value={voteDescription}
               onChange={voteDescriptionHandler}
               placeholder="선거 설명을 적어주세요"
-              className="w-2/3 resize-none h-full mt-2 text-center dark:bg-[#080b14] dark:border-opacity-0 border rounded-lg border-divisionGray focus:border-gray-300 focus:ring-gray-300 focus:ring-1 shadow-[inset_0_2px_0_1px_#f1f5f9] dark:shadow-[inset_0_2px_0_1px_#000000]"
+              className="w-2/3 resize-none  h-full mt-2 text-center dark:text-white dark:bg-[#080b14] dark:border-opacity-0 border rounded-lg border-divisionGray focus:border-gray-300 focus:ring-gray-300 focus:ring-1 shadow-[inset_0_2px_0_1px_#f1f5f9] dark:shadow-[inset_0_2px_0_1px_#000000]"
             />
             {/* 공개, 비공개 radio 박스 */}
             <div className="w-2/3 h-8 mt-2 text-center justify-end items-center flex flex-row">

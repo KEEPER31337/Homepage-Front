@@ -48,10 +48,28 @@ const Vote = ({ member }) => {
           setCloseVoteList((aa) => aa.filter((s) => s.isAvailable === false));
         }
       });
+
+    // voteAPI
+    //   .getOpenVoteList({
+    //     page: page,
+    //     size: 10,
+    //     token: member.token,
+    //   })
+    //   .then((data) => {
+    //     // TODO cid 받아와서 넣기
+    //     if (data.success) {
+    //       setOpenVoteList(data.page.content);
+
+    //       //open
+    //       setOpenVoteList((aa) => aa.filter((s) => s.isAvailable === true));
+    //       //close
+    //     }
+    //     console.log(data);
+    //   });
   }, []);
 
   return (
-    <div className=" flex flex-col flex-1 p-3 font-basic">
+    <div className=" flex flex-col flex-1 p-3 font-basic dark:text-white ">
       <div className="flex sm:flex-row flex-col w-full h-full ">
         {openVoteList.length == 0 ? (
           <div className="pt-5 grid place-items-center mr-20">
@@ -73,7 +91,7 @@ const Vote = ({ member }) => {
                 />
               ))}
             </div>
-            <div className="flex flex-col  w-full sm:w-1/3 h-full bg-slate-50 justify-start items-center p-5">
+            <div className="flex flex-col  w-full dark:text-slate-200 sm:w-1/3 h-full bg-slate-50 dark:bg-[#080a12] justify-start items-center p-5">
               <div className="text-lg">완료된 선거</div>
               {closeVoteList.map((info) => (
                 <CloseVoteOverview

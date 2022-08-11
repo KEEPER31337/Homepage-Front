@@ -72,9 +72,9 @@ const Operation = ({ member }) => {
         <CreateVote updateHandler={updateHandler} />
       </div>
 
-      <table className="text-center h-full w-full  bg-white shadow-md">
+      <table className="text-center h-full w-full dark:bg-darkPoint  bg-white shadow-md">
         <thead>
-          <tr className=" h-10 w-full bg-slate-200 font-extrabold text-center ">
+          <tr className=" h-10 w-full bg-slate-200 font-extrabold text-center dark:text-black">
             <th className="w-3/12">선거이름</th>
             <th className="w-7/12">설명</th>
             <th className="w-1/12">상태</th>
@@ -86,8 +86,8 @@ const Operation = ({ member }) => {
           {voteList.map((info) => (
             <tr key={info.electionId} className="h-10 w-full  ">
               {/* shadow shadow-purple-300 */}
-              <td>{info.name}</td>
-              <td>{info.description}</td>
+              <td className="dark:text-white">{info.name}</td>
+              <td className="dark:text-white">{info.description}</td>
 
               <td>
                 <ProbOpenCloseBtn
