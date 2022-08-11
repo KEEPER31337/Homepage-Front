@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import actionMember from 'redux/action/member';
 import VoteSelect from './Components/MyPick/VoteSelect';
@@ -7,12 +7,16 @@ import vote from 'assets/img/vote.png';
 import Modal from 'react-awesome-modal';
 import { useNavigate } from 'react-router-dom';
 import voteAPI from 'API/v1/vote';
+import VotingPaper from './Components/MyPick/VotingPaper';
+import SockJsClient from 'react-stomp';
 
 const BOSS = 1; // 회장
 const MIDDLEBOSS = 2; // 부회장
 const MONEYMEN = 7; // 총무
+const url = process.env.REACT_APP_API_URL;
 
 const MyPick = (props) => {
+  console.log(url);
   const navigate = useNavigate();
 
   const [voteName, setVoteName] = useState('');
@@ -43,7 +47,6 @@ const MyPick = (props) => {
             //투표불가능하면 vote 페이지로 이동.
             setIsVote(true);
             setModalMessage('참여 권한이 없습니다! ');
-            openModal();
           } else {
             //2차. 이미 투표했는지 안했는지.
 
@@ -59,8 +62,7 @@ const MyPick = (props) => {
                   if (data.data) {
                     //투표했으면 vote 페이지로 이동.
                     setIsVote(true);
-                    setModalMessage('이미 투표했습니다 ');
-                    openModal();
+                    setModalMessage('이미 완료한 투표입니다!');
                   }
                 }
               });
@@ -98,12 +100,50 @@ const MyPick = (props) => {
       });
   };
 
+  //웹소켓 TODO
+  const [totalVoter, setTotalVoter] = useState(10);
+  const [validVoter, setValidVoter] = useState(0);
+
+  const [list, setlist] = useState([]);
+  const exampleList = [];
+
+  const $websocket = useRef(null);
+
+  const handleMsg = (msg) => {
+    console.log(msg);
+  };
+
+  const handleClickSendTo = () => {
+    //서버에 메시지 보냄
+    console.log('Dd');
+    $websocket.current.sendMessage('/votes/result');
+  };
+
+  const handleClickSendTemplate = () => {
+    $websocket.current.sendMessage('/votes/end');
+  };
+
+  useEffect(() => {
+    var step;
+    for (step = 0; step < validVoter; step++) {
+      exampleList[step] = { id: step, isVote: true };
+    }
+    for (step; step < totalVoter; step++) {
+      exampleList[step] = { id: step, isVote: false };
+    }
+    setlist(exampleList);
+    console.log('dd');
+  }, [totalVoter, validVoter]);
+
   return (
     <div className="h-full w-full p-3 text-xl font-basic flex flex-col justify-center">
       <div className="h-fit w-full flex justify-center bg-slate-50 items-center p-3">
         {/* 투표용지 */}
         <div className="h-full sm:w-5/12 w-full flex flex-col p-3 bg-white border border-slate-100 shadow-md">
-          <div className="mt-2 mb-4 text-center "> {voteName} </div>
+          <div className="mt-2 mb-4 text-center font-semibold">
+            {' '}
+            {voteName}{' '}
+          </div>
 
           {/* 투표여부에 따라 */}
           {!isVote ? (
@@ -144,7 +184,7 @@ const MyPick = (props) => {
           ) : (
             <>
               <div className="flex justify-center w-full mb-4">
-                이미 완료된 투표입니다!
+                {modalMessage}
                 <img className="h-6 w-6 ml-2" src={vote}></img>
               </div>
             </>
@@ -155,7 +195,29 @@ const MyPick = (props) => {
         <div className="bg-slate-100 h-fit w-11/12 flex flex-wrap justify-start p-2">
           {/* 실시간 애니메이션 */}
           {/* <VotingPaperBox /> */}
+          {list.map((info) => (
+            <VotingPaper key={info.id} isVote={info.isVote} />
+          ))}
+
+          <SockJsClient
+            url="http://13.209.6.87/v1/websocket"
+            topics={['/topics/votes/result', '/topics/votes/end']}
+            onMessage={(msg) => {
+              //TODO 메시지 받아오기
+              console.log(msg);
+            }}
+            onConnect={() => {
+              console.log('처음');
+              handleClickSendTemplate();
+            }}
+            ref={$websocket}
+          />
+          <div className="flex flex-col">
+            <button onClick={handleClickSendTo}>SendTo</button>
+            <button onClick={handleClickSendTemplate}>SendTemplate</button>
+          </div>
         </div>
+
         <div className="w-1/12 bg-amber-300 items-center flex flex-col justify-center">
           <div>투표율</div>
           <div className="text-2xl font-bold">{}</div>
