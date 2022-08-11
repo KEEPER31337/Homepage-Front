@@ -10,10 +10,13 @@ const Content = ({ memberList }) => {
     e.target.src = memberImage;
   }; // 회원의 이미지가 없을때 보여줄 프로필사진
   return (
-    <div className=" w-fit bg-slate-50 border-gray-500 border-2 rounded-b-md rounded-tr-md">
+    <div className=" min-w-fit bg-slate-50 border-gray-500 border-2 rounded-b-md rounded-tr-md">
       {/* 사람 체크 리스트  */}
       <div className="h-6 w-full bg-gray-500"></div>
       <div className="w-fit p-2">
+        {memberList.length == 0 && (
+          <div className="w-[435px] text-center">등록된 후보자가 없습니당!</div>
+        )}
         <div className="grid grid-cols-4 gap-2 m-2">
           {memberList?.map((member, index) => (
             <div
@@ -28,12 +31,12 @@ const Content = ({ memberList }) => {
               />
               <div className="flex flex-col p-2 text-left">
                 <div className="text-sm md:text-lg font-medium truncate w-16 md:w-20 lg:w-28">
-                  {member.nickName.length > 10 ? (
+                  {member.realName.length > 10 ? (
                     <Marquee gradient={false} speed={10} className="text-black">
-                      {member.nickName}
+                      {member.realName}
                     </Marquee>
                   ) : (
-                    member.nickName
+                    member.realName
                   )}
                 </div>
                 <div className="text-xs md:text-sm ">
