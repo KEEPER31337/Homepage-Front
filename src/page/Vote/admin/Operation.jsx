@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import actionMember from 'redux/action/member';
 import ProbOpenCloseBtn from '../Components/Operation/ProbOpenCloseBtn';
@@ -10,9 +10,16 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
 //api
 import voteAPI from 'API/v1/vote';
 
-const Operation = ({ member }) => {
-  const [voteList, setVoteList] = useState([]);
+//local
+import AuthModal from '../Components/AuthModal';
 
+const Operation = ({ member }) => {
+  // 권한 없는 자가 접근했을 경우, vote페이지로 이동
+  const [auth, setAuth] = useState(['ROLE_회장']);
+  const jobs = member?.memberInfo?.jobs;
+  const ModalRef = useRef({});
+
+  const [voteList, setVoteList] = useState([]);
   const [update, setUpdate] = useState(true);
 
   const updateHandler = () => {
@@ -33,6 +40,10 @@ const Operation = ({ member }) => {
     setPage(page - 1);
   };
   useEffect(() => {
+    if (!jobs?.some((i) => auth.includes(i))) {
+      ModalRef.current.open();
+    }
+
     voteAPI
       .getVoteList({
         page: page,
@@ -129,6 +140,7 @@ const Operation = ({ member }) => {
           </button>
         )}
       </div>
+      <AuthModal ref={ModalRef}>선거 관리자만 접근할 수 있습니다</AuthModal>
     </div>
   );
 };
