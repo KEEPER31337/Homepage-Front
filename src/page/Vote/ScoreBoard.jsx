@@ -1,70 +1,47 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
-import ChartRace from 'react-chart-race';
 // redux
 import actionMember from 'redux/action/member';
-//local
-import useWindowDimensions from './Components/WindowDimensions';
-import getVoteData from './Components/VoteDataScore';
+// local
+import ChartBar from './Components/ScoreBoard/GetChartBar';
+import noticeImg from 'assets/img/ctfImg/notice.png';
+import Header from './Components/ScoreBoard/ScoreHeader';
+// api
+import voteAPI from 'API/v1/vote';
 
-const ScoreBoard = (props) => {
-  //redux
+const ScoreBoard = ({ member, vote }) => {
+  // 투표 집계 가능한지 판단 기준!!
+  const [visible, setVisible] = useState(false);
   useEffect(() => {
-    console.log('집계 결과 페이지 redux');
-    console.log(props.vote.voteId);
-    console.log(props.vote.voteName);
+    voteAPI.getVoteList({ token: member.token }).then((data) => {
+      if (data.success) {
+        data.page.content.map((ct) => {
+          if (ct.electionId === vote.voteId) {
+            setVisible(!ct.isAvailable);
+            // 종료 된지 그 여부를 알고 싶기 때문에 not!
+          }
+        });
+      } // TODO 만약 다른 이유로 데이터를 받아오는데 문제가 생겼다면???
+    });
   }, []);
 
-  const { height, width } = useWindowDimensions();
-  const data = getVoteData();
-  const [chartWidth, setChartWidth] = useState(0);
-  const [itemHeight, setItemHeight] = useState(0);
-
-  useEffect(() => {
-    if (width < 640) {
-      // sm
-      setChartWidth(400);
-      setItemHeight(20);
-    } else if (width < 770) {
-      // md
-      setChartWidth(650);
-      setItemHeight(25);
-    } else {
-      // lg
-      setChartWidth(800);
-      setItemHeight(30);
-    }
-  }, [width]);
+  // 지금 어느 직업 개표인지 판단
+  const [job, setJob] = useState(1); // 1 == BOSS
 
   return (
     <div className="flex flex-col items-center w-full font-basic">
-      <div className="text-xl font-bold  p-2 mt-4">
-        <button className=" w-24 h-10 font-extrabold bg-amber-200 border-amber-400 rounded border-b-4 px-4 py-1 hover:bg-amber-300 mx-2">
-          회장
-        </button>
-        <button className="w-24 h-10 font-extrabold bg-amber-200 border-amber-400 rounded border-b-4 px-4 py-1 hover:bg-amber-300 mx-2">
-          부회장
-        </button>
-        <button className="w-24 h-10 font-extrabold bg-amber-200 border-amber-400 rounded border-b-4 px-4 py-1 hover:bg-amber-300 mx-2">
-          총무
-        </button>
-      </div>
-      <ChartRace
-        data={data}
-        backgroundColor="#fff"
-        width={chartWidth}
-        padding={12}
-        itemHeight={itemHeight}
-        gap={12}
-        titleStyle={{
-          font: ' font-basic normal 400 13px Arial',
-          color: '#000',
-        }}
-        valueStyle={{
-          font: 'normal 400 11px Arial',
-          color: 'rgba(0,0,0, 0.42)',
-        }}
-      />
+      <Header job={job} setJob={setJob} />
+      {visible ? (
+        <ChartBar member={member} vote={vote} job={job} />
+      ) : (
+        <div className="pt-5 grid place-items-center">
+          <img className="h-24 w-24" src={noticeImg} />
+          <div className="flex whitespace-pre text-center dark:text-slate-200 text-4xl m-2 font-bold">
+            아직 투표가 <div className="text-mainYellow">진행중</div>입니다!
+          </div>
+          <div className="text-xl">투표 종료를 해주세욥!!</div>
+        </div>
+      )}
     </div>
   );
 };

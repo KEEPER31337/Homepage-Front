@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 
 const BOSS = 1; // 회장
 const MIDDLEBOSS = 2; // 부회장
-const MONEYMEN = 3; // 총무
-const USER = 4; // 활동인원
+const MONEYMEN = 7; // 총무
+const VOTER = 4; // 활동인원
 
 const Header = ({ job, setJob }) => {
   const navigate = useNavigate();
@@ -39,8 +39,8 @@ const Header = ({ job, setJob }) => {
           총무 후보
         </div>
         <div
-          className={job === USER ? checked : notChecked}
-          onClick={() => setJob(USER)}
+          className={job === VOTER ? checked : notChecked}
+          onClick={() => setJob(VOTER)}
         >
           활동 인원
         </div>
