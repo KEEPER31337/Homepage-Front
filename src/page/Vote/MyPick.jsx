@@ -26,14 +26,10 @@ const MyPick = (props) => {
   const [myMiddleBoss, setMyMiddleBoss] = useState('');
   const [myMoneyMan, setMyMoneyMan] = useState('');
 
-  const [modalMessage, setModalMessage] = useState('');
-
-  useEffect(() => {
-    console.log('내 투표 : ', myBoss, myMiddleBoss, myMoneyMan);
-  }, [myBoss, myMiddleBoss, myMoneyMan]);
-
   useEffect(() => {
     setVoteName(props.vote.voteName);
+
+    //투표결과 불러오기 api TODO
 
     //1차로, 참여 여부 api로, 내가 투표자에 등록되어있는지
     voteAPI
@@ -46,7 +42,7 @@ const MyPick = (props) => {
           if (!data.data) {
             //투표불가능하면 vote 페이지로 이동.
             setIsVote(true);
-            setModalMessage('참여 권한이 없습니다! ');
+            setVoteMessage('참여 권한이 없습니다! ');
           } else {
             //2차. 이미 투표했는지 안했는지.
 
@@ -62,7 +58,7 @@ const MyPick = (props) => {
                   if (data.data) {
                     //투표했으면 vote 페이지로 이동.
                     setIsVote(true);
-                    setModalMessage('이미 완료한 투표입니다!');
+                    setVoteMessage('완료한 투표입니다!');
                   }
                 }
               });
@@ -73,12 +69,15 @@ const MyPick = (props) => {
 
   // 선거 안누르고 들어갔을때 뜨는 모달
   const [modalStatus, setModalState] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [voteMessage, setVoteMessage] = useState('');
+
   const openModal = () => {
     setModalState(true);
   };
   const closeModal = () => {
     setModalState(false);
-    navigate('/vote');
+    navigate('/vote/scoreboard');
   };
 
   const Voting = () => {
@@ -88,21 +87,13 @@ const MyPick = (props) => {
       .voting({
         eid: props.vote.voteId,
         vid: props.member.memberInfo.id,
-        candidateIds: [
-          myBoss,
-          myMiddleBoss,
-          myMoneyMan,
-          // myBoss,
-          // myMiddleBoss,
-          // myMoneyMan,
-          // myBoss,
-          // myBoss,
-        ],
+        candidateIds: [myBoss, myMiddleBoss, myMoneyMan],
         token: props.member.token,
       })
       .then((data) => {
         if (data.success) {
           console.log('투표완료!');
+          setModalMessage('완료한 투표입니다!');
           setIsVote(true);
         }
         console.log(data);
@@ -119,18 +110,10 @@ const MyPick = (props) => {
 
   const $websocket = useRef(null);
 
-  const handleMsg = (msg) => {
-    console.log(msg);
-  };
-
   const handleClickSendTo = () => {
     //서버에 메시지 보냄
     console.log('Dd');
     $websocket.current.sendMessage('/votes/result');
-  };
-
-  const handleClickSendTemplate = () => {
-    $websocket.current.sendMessage('/votes/end');
   };
 
   useEffect(() => {
@@ -142,7 +125,6 @@ const MyPick = (props) => {
       exampleList[step] = { id: step, isVote: false };
     }
     setlist(exampleList);
-    console.log('dd');
   }, [totalVoter, validVoter]);
 
   return (
@@ -150,10 +132,7 @@ const MyPick = (props) => {
       <div className="h-fit w-full flex justify-center bg-slate-50 items-center p-3">
         {/* 투표용지 */}
         <div className="h-full sm:w-5/12 w-full flex flex-col p-3 bg-white border border-slate-100 shadow-md">
-          <div className="mt-2 mb-4 text-center font-semibold">
-            {' '}
-            {voteName}{' '}
-          </div>
+          <div className="mt-2 mb-4 text-center font-semibold">{voteName}</div>
 
           {/* 투표여부에 따라 */}
           {!isVote ? (
@@ -194,7 +173,7 @@ const MyPick = (props) => {
           ) : (
             <>
               <div className="flex justify-center w-full mb-4">
-                {modalMessage}
+                {voteMessage}
                 <img className="h-6 w-6 ml-2" src={vote}></img>
               </div>
             </>
@@ -214,26 +193,30 @@ const MyPick = (props) => {
             onMessage={(msg) => {
               //TODO 메시지 받아오기
               console.log('투표햇당');
-              console.log(msg);
               setTotalVoter(msg.total);
               setValidVoter(msg.voted);
               setRate(msg.rate);
+              //실시간으로 투표가 종료되면 (관리자가 완료버튼 누르면)
+              if (!msg.isOpen) {
+                //값들이 다 0으로 초기화되기때문에, 보이는것만
+                setModalMessage(
+                  <>
+                    <div>투표가 종료되었습니다!</div>
+                    <div>집계결과페이지로 이동합니다</div>
+                  </>
+                );
+                setRate(100);
+                openModal();
+              }
             }}
-            onConnect={() => {
-              console.log('처음');
-              handleClickSendTemplate();
-            }}
+            onConnect={() => {}}
             ref={$websocket}
           />
-          <div className="flex flex-col">
-            <button onClick={handleClickSendTo}>SendTo</button>
-            <button onClick={handleClickSendTemplate}>SendTemplate</button>
-          </div>
         </div>
 
-        <div className="w-1/12 bg-amber-300 items-center flex flex-col justify-center">
+        <div className="w-1/12 p-2 bg-amber-300 items-center flex flex-col justify-center">
           <div>투표율</div>
-          <div className="text-2xl font-bold">{rate}</div>
+          <div className="text-2xl font-bold">{rate}%</div>
         </div>
       </div>
       {/* 모달창 */}
@@ -244,7 +227,7 @@ const MyPick = (props) => {
         onClickAway={() => closeModal(false)}
       >
         <div className=" p-3 w-full h-full flex flex-col  items-center text-center text-base">
-          <div className="h-full w-full flex justify-center items-center text-center">
+          <div className="h-full w-full flex flex-col justify-center items-center text-center">
             {modalMessage}
           </div>
           <div className="flex ">
