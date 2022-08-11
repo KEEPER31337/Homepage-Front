@@ -88,7 +88,16 @@ const MyPick = (props) => {
       .voting({
         eid: props.vote.voteId,
         vid: props.member.memberInfo.id,
-        candidateIds: [myBoss, myMiddleBoss, myMoneyMan],
+        candidateIds: [
+          myBoss,
+          myMiddleBoss,
+          myMoneyMan,
+          // myBoss,
+          // myMiddleBoss,
+          // myMoneyMan,
+          // myBoss,
+          // myBoss,
+        ],
         token: props.member.token,
       })
       .then((data) => {
@@ -101,8 +110,9 @@ const MyPick = (props) => {
   };
 
   //웹소켓 TODO
-  const [totalVoter, setTotalVoter] = useState(10);
+  const [totalVoter, setTotalVoter] = useState(0);
   const [validVoter, setValidVoter] = useState(0);
+  const [rate, setRate] = useState(0);
 
   const [list, setlist] = useState([]);
   const exampleList = [];
@@ -198,13 +208,16 @@ const MyPick = (props) => {
           {list.map((info) => (
             <VotingPaper key={info.id} isVote={info.isVote} />
           ))}
-
           <SockJsClient
             url="http://13.209.6.87/v1/websocket"
             topics={['/topics/votes/result', '/topics/votes/end']}
             onMessage={(msg) => {
               //TODO 메시지 받아오기
+              console.log('투표햇당');
               console.log(msg);
+              setTotalVoter(msg.total);
+              setValidVoter(msg.voted);
+              setRate(msg.rate);
             }}
             onConnect={() => {
               console.log('처음');
@@ -220,7 +233,7 @@ const MyPick = (props) => {
 
         <div className="w-1/12 bg-amber-300 items-center flex flex-col justify-center">
           <div>투표율</div>
-          <div className="text-2xl font-bold">{}</div>
+          <div className="text-2xl font-bold">{rate}</div>
         </div>
       </div>
       {/* 모달창 */}
