@@ -48,7 +48,7 @@ const ProbOpenCloseBtn = ({ member, isAvailable, electionId }) => {
             onClick={openModal}
             className="hover:bg-green-400  w-full hover:text-mainWhite rounded"
           >
-            완료
+            진행중
           </button>
         </div>
       ) : (
@@ -57,7 +57,7 @@ const ProbOpenCloseBtn = ({ member, isAvailable, electionId }) => {
             onClick={openModal}
             className="hover:bg-amber-400  w-full hover:text-mainWhite rounded"
           >
-            진행중
+            완료
           </button>
         </div>
       )}
