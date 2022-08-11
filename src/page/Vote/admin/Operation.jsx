@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import actionMember from 'redux/action/member';
-import ProbOpenCloseBtn from '../Components/ProbOpenCloseBtn';
+import ProbOpenCloseBtn from '../Components/Operation/ProbOpenCloseBtn';
 
 import DeleteVote from '../Components/Operation/DeleteVote';
 import CreateVote from '../Components/Operation/CreateVote';

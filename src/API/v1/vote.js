@@ -280,6 +280,23 @@ async function getOpenVoteList({ token, page, size }) {
     return error.response.data;
   }
 }
+// 열린 선거 목록 보기
+async function getCloseVoteList({ token, page, size }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/elections/close',
+    params: { page: page, size: size },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
 
 export default {
   createVote,
@@ -297,4 +314,5 @@ export default {
   voting,
   getVoteResult,
   getOpenVoteList,
+  getCloseVoteList,
 };
