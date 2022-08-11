@@ -16,7 +16,7 @@ import voteAPI from 'API/v1/vote';
 
 const BOSS = 1; // 회장
 const MIDDLEBOSS = 2; // 부회장
-const MONEYMEN = 3; // 총무
+const MONEYMEN = 7; // 총무
 const VOTER = 4; // 활동인원
 
 const RevisePeople = ({ member, vote }) => {

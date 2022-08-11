@@ -191,6 +191,24 @@ async function deleteVoters({token, eid, vid, }){
   }
 }
 
+// 투표 결과 목록 조회
+async function getVoteResult({ token, electionId, jobId }){
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/elections/results',
+    params: { electionId: electionId, jobId: jobId },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 export default {
   createVote,
   deleteVote,
@@ -202,4 +220,5 @@ export default {
   deleteCandidate,
   addVoters,
   deleteVoters,
+  getVoteResult,
 };
