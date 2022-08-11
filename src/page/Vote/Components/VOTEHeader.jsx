@@ -3,43 +3,60 @@ import { Link } from 'react-router-dom';
 import { Dialog, Transition } from '@headlessui/react';
 import { connect } from 'react-redux';
 import {
-  FolderAddIcon,
-  ChartBarIcon,
-  FolderIcon,
+  PencilAltIcon,
   HomeIcon,
-  InboxIcon,
   ChevronRightIcon,
-  UsersIcon,
   XIcon,
-  CollectionIcon,
+  CogIcon,
+  UserGroupIcon,
+  ChartSquareBarIcon,
 } from '@heroicons/react/outline';
 
-const categories1 = [
+const categoriesFirst = [
   { name: 'VOTE', href: '/vote', icon: HomeIcon, auth: null },
-  { name: '투표하기', href: '/vote/mypick', icon: HomeIcon, auth: null },
-  { name: '집계결과', href: '/vote/scoreboard', icon: HomeIcon, auth: null },
   {
     name: 'ADMIN 선거관리',
     href: '/vote/admin/operation',
-    icon: HomeIcon,
+    icon: CogIcon,
+    auth: 'ROLE_회장',
+  },
+];
+
+const categoriesAll = [
+  { name: 'VOTE', href: '/vote', icon: HomeIcon, auth: null },
+  { name: '투표하기', href: '/vote/mypick', icon: PencilAltIcon, auth: null },
+  {
+    name: '집계결과',
+    href: '/vote/scoreboard',
+    icon: ChartSquareBarIcon,
     auth: null,
   },
   {
     name: 'ADMIN 인원관리',
     href: '/vote/admin/submissions',
-    icon: HomeIcon,
-    auth: null,
+    icon: UserGroupIcon,
+    auth: 'ROLE_회장',
+  },
+  {
+    name: 'ADMIN 선거관리',
+    href: '/vote/admin/operation',
+    icon: CogIcon,
+    auth: 'ROLE_회장',
   },
 ];
 
-const VOTEHeader = ({ darkMode, member }) => {
+const VOTEHeader = ({ darkMode, member, vote }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const jobs = member?.memberInfo?.jobs;
   const cancelButtonRef = useRef();
 
   useEffect(() => {
-    setCategories(categories1);
+    if (vote.voteId === null) {
+      setCategories(categoriesFirst);
+    } else {
+      setCategories(categoriesAll);
+    }
   });
 
   return (
@@ -93,7 +110,7 @@ const VOTEHeader = ({ darkMode, member }) => {
                   <div className="absolute top-0 right-0  p-2">
                     <button
                       type="button"
-                      className="ml-1 flex items-center justify-center h-10 w-10 p-1 rounded  bg-mainYellow"
+                      className="ml-1 flex items-center justify-center h-10 w-10 p-1 rounded bg-slate-500"
                       onClick={() => setSidebarOpen(false)}
                     >
                       <XIcon
@@ -109,7 +126,7 @@ const VOTEHeader = ({ darkMode, member }) => {
                     {categories.map((item) =>
                       !item.auth || jobs?.some((i) => item.auth.includes(i)) ? (
                         <Link to={item.href} key={item.name}>
-                          <div className="group flex items-center my-3 px-3 py-3 text-mainYellow font-bold rounded-md hover:text-mainWhite hover:bg-mainYellow">
+                          <div className="group flex items-center my-3 px-3 py-3 text-slate-600 font-bold rounded-md hover:text-mainWhite hover:bg-slate-300">
                             <item.icon
                               className="mr-4 flex-shrink-0 h-6 w-6 "
                               aria-hidden="true"
@@ -180,6 +197,7 @@ const mapStateToProps = (state) => {
   return {
     darkMode: state.darkMode,
     member: state.member,
+    vote: state.vote,
   };
 };
 export default connect(mapStateToProps)(VOTEHeader);
