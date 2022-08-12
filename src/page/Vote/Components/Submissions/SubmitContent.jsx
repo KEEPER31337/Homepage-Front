@@ -10,7 +10,7 @@ const Content = ({ memberList }) => {
     e.target.src = memberImage;
   }; // 회원의 이미지가 없을때 보여줄 프로필사진
   return (
-    <div className=" min-w-fit bg-slate-50 border-gray-500 border-2 rounded-b-md rounded-tr-md">
+    <div className=" min-w-fit bg-slate-50 dark:bg-darkPoint  border-gray-500 border-2 rounded-b-md rounded-tr-md">
       {/* 사람 체크 리스트  */}
       <div className="h-6 w-full bg-gray-500"></div>
       <div className="w-fit p-2">
@@ -21,7 +21,7 @@ const Content = ({ memberList }) => {
           {memberList?.map((member, index) => (
             <div
               key={index}
-              className="flex flex-row justify-center items-center bg-white rounded-lg px-2"
+              className="flex flex-row justify-center items-center bg-white dark:bg-darkPoint dark:border-2  dark:border-slate-700 dark:text-white rounded-lg px-2"
             >
               <img
                 src={member.thumbnailPath ? member.thumbnailPath : memberImage}

@@ -25,7 +25,7 @@ const Submissions = ({ member, vote }) => {
   const current = getContentData({ member, vote, job });
 
   return (
-    <div className="flex flex-1 justify-center ">
+    <div className="flex flex-1 justify-center font-basic">
       <div className="flex flex-col w-fit mt-5">
         <Header job={job} setJob={setJob} />
         <Content memberList={current} />

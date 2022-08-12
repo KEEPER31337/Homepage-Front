@@ -11,7 +11,7 @@ const ContentMD = ({ memberList, checkedItemHandler, currentItem }) => {
     e.target.src = memberImage;
   }; // 회원의 이미지가 없을때 보여줄 프로필사진
   return (
-    <div className="hidden md:block lg:hidden w-fit bg-slate-50 border-gray-500 border-2 rounded-b-md rounded-tr-md">
+    <div className="hidden md:block lg:hidden w-fit bg-slate-50 dark:bg-darkPoint border-gray-500 border-2 rounded-b-md rounded-tr-md">
       {/* 사람 체크 리스트  */}
       <div className="h-6 w-full bg-gray-500"></div>
       <div className="w-fit p-2">
@@ -19,7 +19,7 @@ const ContentMD = ({ memberList, checkedItemHandler, currentItem }) => {
           {memberList?.map((member, index) => (
             <div
               key={index}
-              className="flex flex-row justify-center items-center bg-white rounded-lg px-2"
+              className="flex flex-row justify-center items-center dark:bg-darkPoint dark:border-2  dark:border-slate-700 dark:text-white  bg-white rounded-lg px-2"
             >
               <img
                 src={member.thumbnailPath ? member.thumbnailPath : memberImage}
@@ -30,7 +30,11 @@ const ContentMD = ({ memberList, checkedItemHandler, currentItem }) => {
               <div className="flex flex-col p-2 text-left">
                 <div className="text-lg font-medium truncate w-20 lg:w-28">
                   {member.nickName.length > 6 ? (
-                    <Marquee gradient={false} speed={10} className="text-black">
+                    <Marquee
+                      gradient={false}
+                      speed={10}
+                      className="text-black dark:text-white"
+                    >
                       {member.nickName}
                     </Marquee>
                   ) : (
