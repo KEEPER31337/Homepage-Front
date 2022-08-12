@@ -92,7 +92,7 @@ const getVoteData = ({ member, vote, job }) => {
         setcount((count) => count + 1);
         counter++;
       }
-    }, 200); // 1초마다 name 재설정
+    }, 300); // 1초마다 name 재설정
     return () => clearInterval(interval);
   }, [current]);
 

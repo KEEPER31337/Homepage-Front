@@ -52,7 +52,6 @@ const Vote = ({ member }) => {
       .then((data) => {
         // TODO cid 받아와서 넣기
         if (data.success) {
-          console.log(data);
           setCanGoPrev(data.page.first);
           setCanGoNext(data.page.last);
           setCloseVoteList(data.page.content);

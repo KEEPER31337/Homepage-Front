@@ -16,11 +16,13 @@ const MONEYMEN = 7; // 총무
 const url = process.env.REACT_APP_API_URL;
 
 const MyPick = (props) => {
-  console.log(url);
+  const socketUrl = url + '/v1/websocket';
+
   const navigate = useNavigate();
 
   const [voteName, setVoteName] = useState('');
   const [isVote, setIsVote] = useState(false);
+  const [alertMessage, setAlertMessage] = useState(<></>);
 
   const [myBoss, setMyBoss] = useState('');
   const [myMiddleBoss, setMyMiddleBoss] = useState('');
@@ -58,7 +60,6 @@ const MyPick = (props) => {
               })
               .then((data) => {
                 if (data.success) {
-                  console.log(data);
                   if (data.data) {
                     //투표했으면 vote 페이지로 이동.
                     setIsVote(true);
@@ -77,8 +78,6 @@ const MyPick = (props) => {
       })
       .then((data) => {
         if (data.success) {
-          console.log(data);
-
           setTotalVoter(data.data.total);
           setValidVoter(data.data.voted);
           setRate(data.data.rate);
@@ -89,21 +88,34 @@ const MyPick = (props) => {
   const Voting = () => {
     //투표 버튼 눌렀을때도, IsVote바뀌게!!
     console.log([myBoss, myMiddleBoss, myMoneyMan]);
-    voteAPI
-      .voting({
-        eid: props.vote.voteId,
-        vid: props.member.memberInfo.id,
-        candidateIds: [myBoss, myMiddleBoss, myMoneyMan],
-        token: props.member.token,
-      })
-      .then((data) => {
-        if (data.success) {
-          console.log('투표완료!');
-          setVoteMessage('완료한 투표입니다!');
-          setIsVote(true);
-        }
-        console.log(data);
-      });
+    if (
+      myBoss !== undefined &&
+      myMiddleBoss !== undefined &&
+      myMoneyMan !== undefined
+    ) {
+      voteAPI
+        .voting({
+          eid: props.vote.voteId,
+          vid: props.member.memberInfo.id,
+          candidateIds: [myBoss, myMiddleBoss, myMoneyMan],
+          token: props.member.token,
+        })
+        .then((data) => {
+          if (data.success) {
+            console.log('투표완료!');
+            setVoteMessage('완료한 투표입니다!');
+            setIsVote(true);
+          }
+          console.log(data);
+        });
+    } else {
+      console.log('xx');
+      setAlertMessage(
+        <div className="text-sm text-red-500 flex justify-center ">
+          모든 후보자들을 선택해주세요
+        </div>
+      );
+    }
   };
 
   // NOTE 실시간 웹소켓
@@ -177,12 +189,13 @@ const MyPick = (props) => {
                   <VoteSelect MyPick={setMyMoneyMan} job={MONEYMEN} />
                 </div>
               </div>
+              {alertMessage}
               <div className="flex justify-between">
                 <div></div>
 
                 <button
                   onClick={Voting}
-                  className="bg-slate-100 border-slate-300 rounded border-b-4 mt-4 px-4 py-1  hover:bg-slate-200"
+                  className="bg-slate-100 border-slate-300 rounded border-b-4 mt-2 px-4 py-1  hover:bg-slate-200"
                 >
                   투표
                 </button>
@@ -206,7 +219,7 @@ const MyPick = (props) => {
             <VotingPaper key={info.id} isVote={info.isVote} />
           ))}
           <SockJsClient
-            url="http://13.209.6.87/v1/websocket"
+            url={socketUrl}
             topics={['/topics/votes/result', '/topics/votes/end']}
             onMessage={(msg) => {
               //TODO 메시지 받아오기

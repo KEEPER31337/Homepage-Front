@@ -17,6 +17,7 @@ const ScoreBoard = ({ member, vote }) => {
   const navigate = useNavigate();
   //웹소켓
   const $websocket = useRef(null);
+  const socketUrl = url + '/v1/websocket';
 
   // 투표 집계 가능한지 판단 기준!!
   const [visible, setVisible] = useState(false);
@@ -66,7 +67,7 @@ const ScoreBoard = ({ member, vote }) => {
         </div>
       )}
       <SockJsClient
-        url="http://13.209.6.87/v1/websocket"
+        url={socketUrl}
         topics={['/topics/votes/end']}
         onMessage={(msg) => {
           //실시간으로 투표가 종료되면 (관리자가 완료버튼 누르면)
