@@ -6,7 +6,7 @@ import vote from 'assets/img/vote.png';
 import noticeImg from 'assets/img/ctfImg/notice.png';
 import VoteOverview from './Components/Vote/VoteOverview';
 import CloseVoteOverview from './Components/Vote/CloseVoteOverview';
-
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
 //api
 import voteAPI from 'API/v1/vote';
 
@@ -14,7 +14,9 @@ const Vote = ({ member }) => {
   const [allVoteList, setAllVoteList] = useState([]);
   const [openVoteList, setOpenVoteList] = useState([]);
   const [closeVoteList, setCloseVoteList] = useState([]);
+
   //page 이동 관련
+  const [totalPage, setTotalPage] = useState(0);
   const [page, setPage] = useState(0);
   const [canGoNext, setCanGoNext] = useState(false);
   const [canGoPrev, setCanGoPrev] = useState(false);
@@ -29,28 +31,6 @@ const Vote = ({ member }) => {
 
   useEffect(() => {
     voteAPI
-      .getVoteList({
-        page: page,
-        size: 10,
-        token: member.token,
-      })
-      .then((data) => {
-        // TODO cid 받아와서 넣기
-        if (data.success) {
-          setCanGoPrev(data.page.first);
-          setCanGoNext(data.page.last);
-          setOpenVoteList(data.page.content);
-          setCloseVoteList(data.page.content);
-
-          //open
-          setOpenVoteList((aa) => aa.filter((s) => s.isAvailable === true));
-          //close
-
-          setCloseVoteList((aa) => aa.filter((s) => s.isAvailable === false));
-        }
-      });
-
-    voteAPI
       .getOpenVoteList({
         page: page,
         size: 10,
@@ -60,24 +40,44 @@ const Vote = ({ member }) => {
         // TODO cid 받아와서 넣기
         if (data.success) {
           setOpenVoteList(data.page.content);
-          setOpenVoteList((aa) => aa.filter((s) => s.isAvailable === true));
         }
       });
 
     voteAPI
       .getCloseVoteList({
         page: page,
-        size: 10,
+        size: 5,
         token: member.token,
       })
       .then((data) => {
         // TODO cid 받아와서 넣기
         if (data.success) {
+          console.log(data);
+          setCanGoPrev(data.page.first);
+          setCanGoNext(data.page.last);
           setCloseVoteList(data.page.content);
-          setCloseVoteList((aa) => aa.filter((s) => s.isAvailable === true));
+
+          setTotalPage(data.page.totalElements);
         }
       });
   }, []);
+
+  useEffect(() => {
+    voteAPI
+      .getCloseVoteList({
+        page: page,
+        size: 5,
+        token: member.token,
+      })
+      .then((data) => {
+        // TODO cid 받아와서 넣기
+        if (data.success) {
+          setCanGoPrev(data.page.first);
+          setCanGoNext(data.page.last);
+          setCloseVoteList(data.page.content);
+        }
+      });
+  }, [page]);
 
   return (
     <div className=" flex flex-col flex-1 p-3 font-basic dark:text-white">
@@ -104,6 +104,33 @@ const Vote = ({ member }) => {
                 description={info.description}
               />
             ))}
+            {totalPage > 5 ? (
+              <div className="flex w-full  justify-end mt-4">
+                {canGoPrev ? (
+                  <button disabled className="cursor-not-allowed">
+                    <ChevronLeftIcon className="inline-block  rounded h-8 w-8 text-white bg-slate-300" />
+                  </button>
+                ) : (
+                  <button onClick={goPrevPage}>
+                    <ChevronLeftIcon className="inline-block  dark:hover:bg-indigo-500 hover:bg-amber-500  rounded h-8 w-8 text-white bg-amber-400 dark:bg-indigo-300" />
+                  </button>
+                )}
+                <div className="h-8 w-8 text-center justify-center text-3xl mx-1 rounded flex items-center dark:bg-indigo-300 bg-amber-400 text-white font-bold">
+                  {page + 1}
+                </div>
+                {canGoNext ? (
+                  <button disabled className="cursor-not-allowed">
+                    <ChevronRightIcon className="inline-block rounded h-8 w-8 text-white bg-slate-300" />
+                  </button>
+                ) : (
+                  <button onClick={goNextPage}>
+                    <ChevronRightIcon className="inline-block dark:hover:bg-indigo-500 hover:bg-amber-500    rounded h-8 w-8 text-white bg-amber-400 dark:bg-indigo-300" />
+                  </button>
+                )}
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         </>
       </div>

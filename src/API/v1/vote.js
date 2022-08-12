@@ -298,6 +298,40 @@ async function getCloseVoteList({ token, page, size }) {
   }
 }
 
+// 선거 투표 현황 조회
+async function getVoteStatus({ token, eid }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/elections/' + eid + '/votes',
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+// 선거 투표자 목록 조회
+async function getVoters({ token, eid }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/admin/elections/' + eid + '/voters',
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 export default {
   createVote,
   deleteVote,
@@ -315,4 +349,6 @@ export default {
   getVoteResult,
   getOpenVoteList,
   getCloseVoteList,
+  getVoteStatus,
+  getVoters,
 };

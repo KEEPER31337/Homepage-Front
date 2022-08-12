@@ -27,15 +27,13 @@ const MyPick = (props) => {
   const [myMoneyMan, setMyMoneyMan] = useState('');
 
   useEffect(() => {
-    //선거 클릭하지 않았을때
+    //선거 클릭하지 않았을때 에러처리
     if (props.vote.voteId === null) {
       setModalMessage('선거를 선택하지 않았습니다!');
       openModal();
     }
 
     setVoteName(props.vote.voteName);
-
-    //투표결과 불러오기 api TODO
 
     //1차로, 참여 여부 api로, 내가 투표자에 등록되어있는지
     voteAPI
@@ -71,24 +69,22 @@ const MyPick = (props) => {
           }
         }
       });
+
+    voteAPI
+      .getVoteStatus({
+        eid: props.vote.voteId,
+        token: props.member.token,
+      })
+      .then((data) => {
+        if (data.success) {
+          console.log(data);
+
+          setTotalVoter(data.data.total);
+          setValidVoter(data.data.voted);
+          setRate(data.data.rate);
+        }
+      });
   }, []);
-
-  // 선거 안누르고 들어갔을때 뜨는 모달
-  const [modalStatus, setModalState] = useState(false);
-  const [modalMessage, setModalMessage] = useState('');
-  const [voteMessage, setVoteMessage] = useState('');
-
-  const openModal = () => {
-    setModalState(true);
-  };
-  const closeModal = () => {
-    setModalState(false);
-    {
-      props.vote.voteId === null
-        ? navigate('/vote')
-        : navigate('/vote/scoreboard');
-    }
-  };
 
   const Voting = () => {
     //투표 버튼 눌렀을때도, IsVote바뀌게!!
@@ -110,7 +106,7 @@ const MyPick = (props) => {
       });
   };
 
-  //웹소켓 TODO
+  // NOTE 실시간 웹소켓
   const [totalVoter, setTotalVoter] = useState(0);
   const [validVoter, setValidVoter] = useState(0);
   const [rate, setRate] = useState(0);
@@ -120,12 +116,7 @@ const MyPick = (props) => {
 
   const $websocket = useRef(null);
 
-  const handleClickSendTo = () => {
-    //서버에 메시지 보냄
-    console.log('Dd');
-    $websocket.current.sendMessage('/votes/result');
-  };
-
+  // 애니메이션 관련
   useEffect(() => {
     var step;
     for (step = 0; step < validVoter; step++) {
@@ -136,6 +127,23 @@ const MyPick = (props) => {
     }
     setlist(exampleList);
   }, [totalVoter, validVoter]);
+
+  // NOTE  에러처리 관련
+  const [modalStatus, setModalState] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [voteMessage, setVoteMessage] = useState('');
+
+  const openModal = () => {
+    setModalState(true);
+  };
+  const closeModal = () => {
+    setModalState(false);
+    {
+      props.vote.voteId === null
+        ? navigate('/vote')
+        : navigate('/vote/scoreboard');
+    }
+  };
 
   return (
     <div className="h-full w-full p-3 text-xl font-basic flex flex-col justify-center">
@@ -215,7 +223,7 @@ const MyPick = (props) => {
                     <div>집계결과페이지로 이동합니다</div>
                   </>
                 );
-                setRate(100);
+
                 openModal();
               }
             }}

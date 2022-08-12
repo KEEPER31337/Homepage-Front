@@ -51,10 +51,9 @@ const getContentData = ({ job, member, vote }) => {
         }
       });
     voteAPI
-      .getCandidate({
+      .getVoters({
         token: member.token,
         eid: vote.voteId,
-        jid: VOTER,
       })
       .then((data) => {
         if (data.success) {
