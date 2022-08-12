@@ -31,7 +31,7 @@ export default function Intro() {
     },
   ]);
 
-  const [boss, setBoss] = useState();
+  const [boss, setBoss] = useState('');
 
   useEffect(() => {
     aboutAPI.getIntroInfo().then((data) => {

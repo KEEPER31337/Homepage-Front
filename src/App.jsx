@@ -8,6 +8,7 @@ import Header from 'shared/Header.jsx';
 import attendanceAPI from 'API/v1/attendance';
 import actionMember from 'redux/action/member';
 import CTFApp from 'page/CTF/CTFApp.jsx';
+import VOTEApp from 'page/Vote/VOTEApp';
 
 // pages
 import Loading from 'shared/Loading';
@@ -41,7 +42,8 @@ const App = ({ member, darkMode, signOut }) => {
   }, [member]);
 
   return (
-    <div className={darkMode ? 'dark' : 'light'}>
+    //TODO 다음에 다크모드로 기본 바꾸기
+    <div className={darkMode ? 'light' : 'dark'}>
       <>
         <Header />
         <Suspense fallback={<Loading />}>
@@ -66,6 +68,7 @@ const App = ({ member, darkMode, signOut }) => {
             <Route path="/ranking" element={<Ranking />} />
             <Route path="/study" element={<Study />} />
             <Route path="/ctf/*" element={<CTFApp />} />
+            <Route path="/vote/*" element={<VOTEApp />} />
           </Routes>
         </Suspense>
         <Chatting />
