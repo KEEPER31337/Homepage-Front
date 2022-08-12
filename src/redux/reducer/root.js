@@ -9,6 +9,7 @@ import reducerCategory from './category';
 import reducerBoardState from './boardState';
 import reducerChat from './chat';
 import reducerCtf from './ctf';
+import reducerVote from './vote';
 
 const persistConfig = {
   key: 'root',
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   member: persistReducer(persistConfig, reducerMember),
   chat: persistReducer(persistConfig, reducerChat),
   ctf: persistReducer(persistConfig, reducerCtf),
+  vote: persistReducer(persistConfig, reducerVote),
   category: reducerCategory,
 });
 
