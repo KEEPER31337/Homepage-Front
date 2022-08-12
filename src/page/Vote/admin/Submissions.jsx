@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
+import Modal from 'react-awesome-modal';
 // redux
 import actionMember from 'redux/action/member';
 //local
@@ -18,7 +19,23 @@ const Submissions = ({ member, vote }) => {
     if (!jobs?.some((i) => auth.includes(i))) {
       ModalRef.current.open();
     }
+    if (vote.voteId === null) {
+      setModalMessage('선거를 선택하지 않았습니다!');
+      openModal();
+    }
   }, []);
+
+  // 여러가지 에러를 띄워주는 모달 창 관리
+  const [modalStatus, setModalState] = useState(false);
+  const openModal = () => {
+    setModalState(true);
+  };
+  const closeModal = () => {
+    setModalState(false);
+    navigate('/vote');
+  };
+  // 모달창 안에 들어갈 문구!
+  const [modalMessage, setModalMessage] = useState('');
 
   // 현재 어느 목록의 후보자를 보여줄 것인지
   const [job, setJob] = useState(1); // 1 == 회장
@@ -31,6 +48,29 @@ const Submissions = ({ member, vote }) => {
         <Content memberList={current} />
       </div>
       <AuthModal ref={ModalRef}>선거 관리자만 접근할 수 있습니다</AuthModal>
+
+      <Modal
+        visible={modalStatus}
+        width="300"
+        height="140"
+        onClickAway={() => closeModal(false)}
+      >
+        <div className=" p-3 w-full h-full flex flex-col  items-center text-center text-base">
+          <div className="h-full w-full flex justify-center items-center text-center">
+            {modalMessage}
+          </div>
+          <div className="flex ">
+            <button
+              className="bg-white   mx-1 hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+              onClick={() => {
+                closeModal(false);
+              }}
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

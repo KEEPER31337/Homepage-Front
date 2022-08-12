@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
 import Marquee from 'react-fast-marquee';
 
 const CheckContent = ({ member, checkedItemHandler, currentItem }) => {
@@ -11,7 +10,7 @@ const CheckContent = ({ member, checkedItemHandler, currentItem }) => {
 
   const checkHandler = () => {
     setChecked(!checked);
-    checkedItemHandler(member.memberId, !checked);
+    checkedItemHandler(member, !checked);
   };
 
   const selected =

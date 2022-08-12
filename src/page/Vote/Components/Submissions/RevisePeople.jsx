@@ -26,7 +26,6 @@ const RevisePeople = ({ member, vote }) => {
     memberAPI.getMembers({ token: member.token }).then((data) => {
       if (data.success) {
         setMemberList(data.list);
-        console.log(data.list);
       }
     });
   }, [member]);
@@ -40,6 +39,7 @@ const RevisePeople = ({ member, vote }) => {
   const [checkedMiddle, setCheckedMiddle] = useState(new Set());
   const [checkedMoney, setCheckedMoney] = useState(new Set());
   const [checkedUser, setCheckedUser] = useState(new Set());
+  const [value, setValue] = useState(0);
 
   const [BossCandidate, setBoss] = useState([]);
   const [MiddleCandidate, setMiddle] = useState([]);
@@ -56,12 +56,67 @@ const RevisePeople = ({ member, vote }) => {
       .then((data) => {
         if (data.success) {
           setBoss(data.list);
-          console.log(data.list);
-          // TODO
-          // 이미 등록된 후보자의 경우 다르게 표시 하기 위해
-          // checkedBox들에 넣어주기!!
-          // 근데 memberId로 구분하려 했는데.. 그걸 안받아 왔넹.. 하핳...
-          // 우창님 죄송...
+          data.list.map((member, idx) => {
+            checkedBoss.add(member.memberId);
+            setCheckedBoss(checkedBoss);
+          });
+        }
+      });
+    voteAPI
+      .getCandidate({
+        token: member.token,
+        eid: vote.voteId,
+        jid: MIDDLEBOSS,
+      })
+      .then((data) => {
+        if (data.success) {
+          setMiddle(data.list);
+          data.list.map((member, idx) => {
+            checkedMiddle.add(member.memberId);
+            setCheckedMiddle(checkedMiddle);
+          });
+        }
+      });
+    voteAPI
+      .getCandidate({
+        token: member.token,
+        eid: vote.voteId,
+        jid: MONEYMEN,
+      })
+      .then((data) => {
+        if (data.success) {
+          setMoney(data.list);
+          data.list.map((member, idx) => {
+            checkedMoney.add(member.memberId);
+            setCheckedMoney(checkedMoney);
+          });
+        }
+      });
+    voteAPI
+      .getVoters({
+        token: member.token,
+        eid: vote.voteId,
+      })
+      .then((data) => {
+        if (data.success) {
+          setvoters(data.list);
+          data.list.map((member, idx) => {
+            checkedUser.add(member.memberId);
+            setCheckedUser(checkedUser);
+          });
+        }
+      });
+  }, []);
+  useEffect(() => {
+    voteAPI
+      .getCandidate({
+        token: member.token,
+        eid: vote.voteId,
+        jid: BOSS,
+      })
+      .then((data) => {
+        if (data.success) {
+          setBoss(data.list);
         }
       });
     voteAPI
@@ -87,116 +142,121 @@ const RevisePeople = ({ member, vote }) => {
         }
       });
     voteAPI
-      .getCandidate({
+      .getVoters({
         token: member.token,
         eid: vote.voteId,
-        jid: VOTER,
       })
       .then((data) => {
         if (data.success) {
           setvoters(data.list);
         }
       });
-  }, []);
+  }, [value]);
 
-  const checkedItemHandler = (memberId, isChecked) => {
+  const checkedItemHandler = (members, isChecked) => {
     switch (job) {
       case BOSS:
         if (isChecked) {
-          checkedBoss.add(memberId);
+          checkedBoss.add(members.memberId);
           setCheckedBoss(checkedBoss);
           voteAPI
             .addCandidate({
               token: member.token,
-              memberId: memberId,
+              memberId: members.memberId,
               electionId: vote.voteId,
               memberJobId: BOSS,
             })
-            .then((data) => {
-              console.log(data);
-              // TODO
-              // 실패 했을 때 에러 처리하기
-              // voteID가 없을때
-              // navigate로 선거 선택하게 하기.
+            .then(() => {
+              setValue((dd) => dd + 1);
             });
-        } else if (!isChecked && checkedBoss.has(memberId)) {
-          checkedBoss.delete(memberId);
+        } else if (!isChecked && checkedBoss.has(members.memberId)) {
+          checkedBoss.delete(members.memberId);
           setCheckedBoss(checkedBoss);
-          // TODO deleteCandidate API 추가
-          // id : candidateId 넘겨받기 위해 코드 수정하기.
-          // candidateId 는 후보자 목록 api 수정되면 넣을 수 있을듯...
-          // 내가 할게.. 하하
+          BossCandidate.map((mem) => {
+            if (mem.memberId == members.memberId) {
+              voteAPI.deleteCandidate({
+                token: member.token,
+                id: mem.candidateId,
+              });
+            }
+          });
         }
         break;
       case MIDDLEBOSS:
         if (isChecked) {
-          checkedMiddle.add(memberId);
+          checkedMiddle.add(members.memberId);
           setCheckedMiddle(checkedMiddle);
           voteAPI
             .addCandidate({
               token: member.token,
-              memberId: memberId,
+              memberId: members.memberId,
               electionId: vote.voteId,
               memberJobId: MIDDLEBOSS,
             })
-            .then((data) => {
-              console.log(data);
-              // TODO
-              // 실패 했을 때 에러 처리하기
-              // voteID가 없을때
-              // navigate로 선거 선택하게 하기.
+            .then(() => {
+              setValue((dd) => dd + 1);
             });
-        } else if (!isChecked && checkedMiddle.has(memberId)) {
-          checkedMiddle.delete(memberId);
+        } else if (!isChecked && checkedMiddle.has(members.memberId)) {
+          checkedMiddle.delete(members.memberId);
           setCheckedMiddle(checkedMiddle);
-          // TODO 보스와 마찬가지로 후보자 삭제 api 넣기
+          MiddleCandidate.map((mem) => {
+            if (mem.memberId == members.memberId) {
+              voteAPI.deleteCandidate({
+                token: member.token,
+                id: mem.candidateId,
+              });
+            }
+          });
         }
         break;
       case MONEYMEN:
         if (isChecked) {
-          checkedMoney.add(memberId);
+          checkedMoney.add(members.memberId);
           setCheckedMoney(checkedMoney);
           voteAPI
             .addCandidate({
               token: member.token,
-              memberId: memberId,
+              memberId: members.memberId,
               electionId: vote.voteId,
               memberJobId: MONEYMEN,
             })
-            .then((data) => {
-              console.log(data);
-              // TODO
-              // 실패 했을 때 에러 처리하기
-              // voteID가 없을때
-              // navigate로 선거 선택하게 하기.
+            .then(() => {
+              setValue((dd) => dd + 1);
             });
-        } else if (!isChecked && checkedMoney.has(memberId)) {
-          checkedMoney.delete(memberId);
+        } else if (!isChecked && checkedMoney.has(members.memberId)) {
+          checkedMoney.delete(members.memberId);
           setCheckedMoney(checkedMoney);
-          // TODO 보스와 마찬가지로 후보자 삭제 api 넣기
+          MoneyCandidate.map((mem) => {
+            if (mem.memberId == members.memberId) {
+              voteAPI.deleteCandidate({
+                token: member.token,
+                id: mem.candidateId,
+              });
+            }
+          });
         }
         break;
       case VOTER:
         if (isChecked) {
-          checkedUser.add(memberId);
+          checkedUser.add(members.memberId);
           setCheckedUser(checkedUser);
           voteAPI
             .addVoters({
               token: member.token,
-              vid: memberId,
+              vid: members.memberId,
               eid: vote.voteId,
             })
-            .then((data) => {
-              console.log(data);
-              // TODO
-              // 실패 했을 때 에러 처리하기
-              // voteID가 없을때
-              // navigate로 선거 선택하게 하기.
+            .then(() => {
+              setValue((dd) => dd + 1);
             });
-        } else if (!isChecked && checkedUser.has(memberId)) {
-          checkedUser.delete(memberId);
+        } else if (!isChecked && checkedUser.has(members.memberId)) {
+          checkedUser.delete(members.memberId);
           setCheckedUser(checkedUser);
-          // TODO 보스와 마찬가지로 후보자 삭제 api 넣기
+          voteAPI.deleteVoters({
+            token: member.token,
+            eid: vote.voteId,
+            vid: members.memberId,
+          });
         }
         break;
       default:
