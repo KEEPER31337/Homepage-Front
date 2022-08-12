@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 
-const CheckBox = ({ memberId, checkedItemHandler, currentItem }) => {
+const CheckBox = ({ members, checkedItemHandler, currentItem }) => {
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
-    setChecked(currentItem?.has(memberId));
+    setChecked(currentItem?.has(members.memberId));
   }, [currentItem]);
 
   const checkHandler = ({ target }) => {
     setChecked(!checked);
-    checkedItemHandler(memberId, target.checked);
+    checkedItemHandler(members, target.checked);
   };
 
   return (

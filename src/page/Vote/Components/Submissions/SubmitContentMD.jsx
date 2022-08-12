@@ -28,7 +28,7 @@ const ContentMD = ({ memberList, checkedItemHandler, currentItem }) => {
                 className=" w-10 rounded-md object-center object-cover group-hover:opacity-75"
               />
               <div className="flex flex-col p-2 text-left">
-                <div className="text-lg font-medium truncate w-20 lg:w-28">
+                <div className="text-lg font-medium truncate w-20">
                   {member.nickName.length > 6 ? (
                     <Marquee
                       gradient={false}
@@ -48,7 +48,7 @@ const ContentMD = ({ memberList, checkedItemHandler, currentItem }) => {
                 </div>
               </div>
               <CheckBox
-                memberId={member.memberId}
+                members={member}
                 checkedItemHandler={checkedItemHandler}
                 currentItem={currentItem}
               />
