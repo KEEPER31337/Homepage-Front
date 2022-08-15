@@ -7,7 +7,11 @@ import Chatting from 'shared/Chat/Chatting';
 import Header from 'shared/Header.jsx';
 import attendanceAPI from 'API/v1/attendance';
 import actionMember from 'redux/action/member';
+import CTFApp from 'page/CTF/CTFApp.jsx';
+import VOTEApp from 'page/Vote/VOTEApp';
+
 // pages
+import Loading from 'shared/Loading';
 const Home = lazy(() => import('page/Home/Home'));
 const About = lazy(() => import('page/About/About'));
 const Attandance = lazy(() => import('page/Attandance/Attandance'));
@@ -38,10 +42,11 @@ const App = ({ member, darkMode, signOut }) => {
   }, [member]);
 
   return (
-    <div className={darkMode ? 'dark' : 'light'}>
+    //TODO 다음에 다크모드로 기본 바꾸기
+    <div className={darkMode ? 'light' : 'dark'}>
       <>
         <Header />
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<Loading />}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
@@ -62,6 +67,8 @@ const App = ({ member, darkMode, signOut }) => {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/ranking" element={<Ranking />} />
             <Route path="/study" element={<Study />} />
+            <Route path="/ctf/*" element={<CTFApp />} />
+            <Route path="/vote/*" element={<VOTEApp />} />
           </Routes>
         </Suspense>
         <Chatting />

@@ -78,7 +78,7 @@ const Activity = ({ member }) => {
           staticWriteTitleId: null,
           thumbnailPath: null,
           displayOrder: null,
-          staticWriteContentResults: [
+          staticWriteContents: [
             {
               id: null,
               content: null,
@@ -136,7 +136,7 @@ const Activity = ({ member }) => {
           });
           title.subtitleImageResults.map((content) => {
             // Content display order 순서로 정렬
-            content.staticWriteContentResults.sort((a, b) => {
+            content.staticWriteContents.sort((a, b) => {
               if (a.displayOrder > b.displayOrder) {
                 return 1;
               }
@@ -188,11 +188,9 @@ const Activity = ({ member }) => {
                   </h3>
                   <div className="mt-2 text-base">
                     <ul>
-                      {article.staticWriteContentResults.map(
-                        (contentInfo, index) => (
-                          <li key={index}>{contentInfo.content}</li>
-                        )
-                      )}
+                      {article.staticWriteContents.map((contentInfo, index) => (
+                        <li key={index}>{contentInfo.content}</li>
+                      ))}
                     </ul>
                   </div>
                 </div>

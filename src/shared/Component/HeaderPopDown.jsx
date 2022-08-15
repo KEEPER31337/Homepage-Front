@@ -6,7 +6,10 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ViewGridIcon } from '@heroicons/react/outline';
 
-const PopDown = ({ category, member }) => {
+//local
+import actionBoardState from 'redux/action/boardState';
+
+const PopDown = ({ category, member, initialize }) => {
   const jobs = member?.memberInfo?.jobs;
 
   return (
@@ -39,25 +42,52 @@ const PopDown = ({ category, member }) => {
                 <div className="relative grid gap-6 bg-mainYellow px-5 py-6 sm:gap-8 sm:p-8">
                   {category.subs.map((item, index) =>
                     !item.auth || jobs?.includes(item.auth) ? (
-                      <Link
-                        key={index}
-                        to={item.href}
-                        className="-m-3 p-3 flex items-start rounded-lg hover:bg-pointYellow"
-                        onClick={() => {}}
-                      >
-                        <ViewGridIcon
-                          className="flex-shrink-0 h-6 w-6 text-white"
-                          aria-hidden="true"
-                        />
-                        <div className="ml-4">
-                          <p className="text-base font-semibold text-mainWhite">
-                            {item.name}
-                          </p>
-                          <p className="mt-1 text-sm text-mainWhite">
-                            {item.description}
-                          </p>
-                        </div>
-                      </Link>
+                      item.external ? (
+                        <a
+                          key={index}
+                          href={item.href}
+                          className="-m-3 p-3 flex items-start rounded-lg hover:bg-pointYellow"
+                          onClick={() => {
+                            initialize();
+                          }}
+                        >
+                          <ViewGridIcon
+                            className="flex-shrink-0 h-6 w-6 text-white"
+                            aria-hidden="true"
+                          />
+                          <div className="ml-4">
+                            <p className="text-base font-semibold text-mainWhite">
+                              {item.name}
+                            </p>
+                            <p className="mt-1 text-sm text-mainWhite">
+                              {item.description}
+                            </p>
+                          </div>
+                        </a>
+                      ) : (
+                        <Link
+                          key={index}
+                          to={item.href}
+                          className="-m-3 p-3 flex items-start rounded-lg hover:bg-pointYellow"
+                          onClick={() => {
+                            event.preventDefault();
+                            initialize();
+                          }}
+                        >
+                          <ViewGridIcon
+                            className="flex-shrink-0 h-6 w-6 text-white"
+                            aria-hidden="true"
+                          />
+                          <div className="ml-4">
+                            <p className="text-base font-semibold text-mainWhite">
+                              {item.name}
+                            </p>
+                            <p className="mt-1 text-sm text-mainWhite">
+                              {item.description}
+                            </p>
+                          </div>
+                        </Link>
+                      )
                     ) : (
                       <Fragment key={index}></Fragment>
                     )
@@ -77,7 +107,11 @@ const mapStateToProps = (state, OwnProps) => {
   return { member: state.member };
 };
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    initialize: () => {
+      dispatch(actionBoardState.initialize());
+    },
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PopDown);

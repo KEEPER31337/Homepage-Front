@@ -18,7 +18,7 @@ export default function Intro() {
           staticWriteTitleId: null,
           thumbnailPath: null,
           displayOrder: null,
-          staticWriteContentResults: [
+          staticWriteContents: [
             {
               id: null,
               content: null,
@@ -31,12 +31,13 @@ export default function Intro() {
     },
   ]);
 
-  const [boss, setBoss] = useState();
+  const [boss, setBoss] = useState('');
 
   useEffect(() => {
     aboutAPI.getIntroInfo().then((data) => {
       if (data.success) {
         setIntroInfo(data.list);
+        console.log(data);
       }
     });
     memberAPI.getCommonMembers().then((data) => {
@@ -53,7 +54,7 @@ export default function Intro() {
   const sectionTitle = introInfo[0].title;
 
   const content =
-    introInfo[0].subtitleImageResults[0].staticWriteContentResults[0].content;
+    introInfo[0].subtitleImageResults[0].staticWriteContents[0].content;
 
   const supervisors = `
 동아리 회장 : ${boss}

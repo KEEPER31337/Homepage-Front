@@ -93,19 +93,33 @@ const HeaderMobile = ({ member }) => {
                       // leaveTo="opacity-0 translate-y-1"
                       show={openTab === index}
                     >
-                      {item.subs.map((subItem, subIndex) => (
-                        <Link
-                          key={subIndex}
-                          to={subItem.href}
-                          className="-m-3 py-3 px-8 flex items-center rounded-md hover:bg-gray-50"
-                        >
-                          <Popover.Button className="w-full text-left">
-                            <span className="ml-3 text-base font-semibold text-mainYellow">
-                              {subItem.name}
-                            </span>
-                          </Popover.Button>
-                        </Link>
-                      ))}
+                      {item.subs.map((subItem, subIndex) =>
+                        subItem.external ? (
+                          <a
+                            key={subIndex}
+                            href={subItem.href}
+                            className="-m-3 py-3 px-8 flex items-center rounded-md hover:bg-gray-50"
+                          >
+                            <Popover.Button className="w-full text-left">
+                              <span className="ml-3 text-base font-semibold text-mainYellow">
+                                {subItem.name}
+                              </span>
+                            </Popover.Button>
+                          </a>
+                        ) : (
+                          <Link
+                            key={subIndex}
+                            to={subItem.href}
+                            className="-m-3 py-3 px-8 flex items-center rounded-md hover:bg-gray-50"
+                          >
+                            <Popover.Button className="w-full text-left">
+                              <span className="ml-3 text-base font-semibold text-mainYellow">
+                                {subItem.name}
+                              </span>
+                            </Popover.Button>
+                          </Link>
+                        )
+                      )}
                     </Transition>
                   </Fragment>
                 ))}

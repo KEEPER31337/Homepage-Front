@@ -100,7 +100,7 @@ export default function History() {
           staticWriteTitleId: null,
           thumbnailPath: null,
           displayOrder: null,
-          staticWriteContentResults: [
+          staticWriteContents: [
             {
               id: null,
               content: null,
@@ -129,7 +129,7 @@ export default function History() {
           });
           title.subtitleImageResults.map((content) => {
             // Content display order 순서로 정렬
-            content.staticWriteContentResults.sort((a, b) => {
+            content.staticWriteContents.sort((a, b) => {
               if (a.displayOrder > b.displayOrder) {
                 return 1;
               }
@@ -154,7 +154,7 @@ export default function History() {
           </h2>
           <div className="px-2 lg:px-4 overflow-hidden">
             {historyInfo[0].subtitleImageResults.map((article, articleIdx) =>
-              article.staticWriteContentResults.length ? (
+              article.staticWriteContents.length ? (
                 <div
                   key={article.subtitle}
                   className={classNames(
@@ -186,7 +186,7 @@ export default function History() {
                         </span>
                         <span className="text-gray-500 dark:text-white">
                           <ul>
-                            {article.staticWriteContentResults.map(
+                            {article.staticWriteContents.map(
                               (contentInfo, index) => (
                                 <li key={index}>{contentInfo.content}</li>
                               )

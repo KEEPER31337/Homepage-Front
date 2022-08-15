@@ -2,10 +2,10 @@ import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-async function getRank({ token }) {
+async function getRank({ token, page, size }) {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/rank',
+    url: API_URL + `/v1/rank?page=${page}&size=${size}`,
     headers: {
       Authorization: token,
     },

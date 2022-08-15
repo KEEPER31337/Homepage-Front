@@ -35,6 +35,19 @@ const categoriesAll = [
         href: 'ctf',
         auth: null,
       },
+      {
+        id: null,
+        name: '투표',
+        href: 'vote',
+        auth: null,
+      },
+      {
+        id: null,
+        name: '위키',
+        href: 'https://keeper.or.kr/wiki/%EB%8C%80%EB%AC%B8',
+        auth: null,
+        external: true,
+      },
     ],
   },
   {
