@@ -1,6 +1,6 @@
 import React from 'react';
 import './font.css';
-import testImg from '../../assets/img/libraryImg/book.png';
+import keeper_logo_key from '../../assets/img/keeper_logo_key.png';
 import moment from 'moment';
 import 'moment/locale/ko';
 const LibraryList = ({
@@ -15,7 +15,6 @@ const LibraryList = ({
   thumbnailId,
   setMainBook,
 }) => {
-  const API_URL = process.env.REACT_APP_API_URL;
   return (
     <button
       onClick={() => {
@@ -32,22 +31,19 @@ const LibraryList = ({
         });
       }}
     >
-      <div className="flex   flex-col justify-center m-4">
+      <div className="flex flex-row p-1">
         <div className="">
           {thumbnailId === null ? (
             <img
-              src={testImg}
+              className="w-[85px] h-[105px] bg-mainWhite p-2"
+              src={keeper_logo_key}
               style={{
-                boxShadow: '2px 2px 5px 2px #0000001A',
-                width: '250px',
-                height: '250px',
                 objectFit: 'contain',
-                background: 'white',
               }}
             />
           ) : (
             <img
-              className="w-full h-[162.5px] bg-mainWhite"
+              className="w-[85px] h-[105px] bg-mainWhite p-2"
               src={`${thumbnailId}`}
               style={{
                 objectFit: 'contain',
@@ -56,11 +52,11 @@ const LibraryList = ({
           )}
         </div>
 
-        <div className="flex flex-col">
-          <div className="font text-left text-lg truncate mt-2">{title}</div>
-          <div className="font text-left text-gray-400 truncate">
-            by {author}
+        <div className="flex flex-col truncate p-3">
+          <div className=" text-left  truncate font-semibold text-slate-800">
+            {title}
           </div>
+          <div className="text-left truncate text-slate-500">by {author}</div>
         </div>
       </div>
     </button>
