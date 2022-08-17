@@ -9,6 +9,7 @@ import attendanceAPI from 'API/v1/attendance';
 import actionMember from 'redux/action/member';
 import CTFApp from 'page/CTF/CTFApp.jsx';
 import VOTEApp from 'page/Vote/VOTEApp';
+import CLERKApp from 'page/Clerk/Admin/CLERKApp';
 
 // pages
 import Loading from 'shared/Loading';
@@ -31,6 +32,8 @@ const BookAdd = lazy(() => import('./page/Library/BookAdd'));
 const BookManage = lazy(() => import('./page/Library/BookManage'));
 const Ranking = lazy(() => import('page/Ranking/Ranking'));
 const Study = lazy(() => import('page/Study/Study'));
+const AutoAttend = lazy(() => import('page/Clerk/AutoAttend'));
+const Research = lazy(() => import('page/Clerk/Research'));
 
 const App = ({ member, darkMode, signOut }) => {
   useEffect(() => {
@@ -69,6 +72,9 @@ const App = ({ member, darkMode, signOut }) => {
             <Route path="/study" element={<Study />} />
             <Route path="/ctf/*" element={<CTFApp />} />
             <Route path="/vote/*" element={<VOTEApp />} />
+            <Route path="/autoAttend" element={<AutoAttend />} />
+            <Route path="/research" element={<Research />} />
+            <Route path="/clerk/*" element={<CLERKApp />} />
           </Routes>
         </Suspense>
         <Chatting />
