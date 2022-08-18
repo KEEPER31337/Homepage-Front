@@ -5,27 +5,24 @@ import axios from 'axios';
 // local
 import LibraryList from './LibraryList';
 import RecommendBook from './RecommendBook';
-import ScrollHorizontal from 'react-scroll-horizontal';
 import AuthUser from 'shared/AuthUser';
 
 const Library = () => {
-  let page = 0;
   const [bookList, setBookList] = useState();
   const [mainBook, setMainBook] = useState({
-    title: '책을 골라주세요 !',
-    author: '키퍼',
+    title: '책을 골라주세요!',
+    author: 'KEEPER',
     information: '',
     total: '',
     enable: '',
     registerDate: '',
-    thumbnailId: 81,
+    thumbnailId: null,
   });
   const API_URL = process.env.REACT_APP_API_URL;
+
   const getRecentBookList = async () => {
     try {
-      const { data } = await axios.get(
-        `${API_URL}/v1/recentbooks?page=${page}`
-      );
+      const { data } = await axios.get(`${API_URL}/v1/recentbooks?&size=8`);
       setBookList(data);
     } catch (err) {}
   };
@@ -49,58 +46,29 @@ const Library = () => {
       />
     );
   });
+  const [isSearch, setIsSearch] = useState(false);
   return (
     <AuthUser>
-      <div
-        className="text-center"
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          flexDirection: 'column',
-          overflow: 'scroll',
-          background: 'linear-gradient(#A2D2FF 60%, #ffffff 40%)',
-        }}
-      >
-        <RecommendBook
-          mainBook={mainBook}
-          setBookList={setBookList}
-        ></RecommendBook>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-          }}
-        >
-          {listData}
-        </div>
-        <nav
-          className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6"
-          aria-label="Pagination"
-        >
-          <div className="hidden sm:block"></div>
-          <div className="flex-1 flex justify-between sm:justify-end">
-            <button
-              onClick={() => {
-                if (page > 0) page -= 1;
-                getRecentBookList();
-              }}
-              className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-            >
-              이전
-            </button>
-            <button
-              onClick={() => {
-                page += 1;
-                getRecentBookList();
-              }}
-              className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-            >
-              다음
-            </button>
+      <div className="flex  w-full justify-center min-h-screen  dark:bg-black font-basic ">
+        <div className="flex max-h-[80vh] md:flex-row flex-col w-10/12 h-full bg-white mt-2">
+          <div className="flex md:w-4/12 w-full border-2 border-slate-100 shadow-sm p-5">
+            <RecommendBook
+              mainBook={mainBook}
+              setBookList={setBookList}
+              setIsSearch={setIsSearch}
+            ></RecommendBook>
           </div>
-        </nav>
+          {/* 책 좌라락  */}
+          <div className="flex flex-col md:w-8/12 w-full bg-slate-100 border-2 border-slate-100 shadow-sm ">
+            {!isSearch && (
+              <div className=" px-2 py-1 bg-amber-300">최근 추가된 도서</div>
+            )}
+
+            <div className="p-2 flex flex-col overflow-y-scroll ">
+              {listData}
+            </div>
+          </div>
+        </div>
       </div>
     </AuthUser>
   );
