@@ -1,0 +1,5 @@
+#year::-webkit-inner-spin-button,
+#year::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
