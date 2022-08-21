@@ -19,7 +19,7 @@ const TEMP = 1;
 
 const TextEditer = (props) => {
   const { categoryId } = useParams();
-  const isDark = props.state.darkMode; //Dark모드 여부
+  const isDark = props.state.darkMode?.isDark; //Dark모드 여부
   const token = props.state.member.token;
   const modifyFlag = !!props.redirectData.state?.modifyFlag;
   const board = props.redirectData.state?.board;
@@ -130,7 +130,6 @@ const TextEditer = (props) => {
         console.log(res);
       });
 
-    
     postAPI
       .modify({
         boardId: board.id,

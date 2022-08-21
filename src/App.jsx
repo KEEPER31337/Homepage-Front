@@ -32,7 +32,7 @@ const BookManage = lazy(() => import('./page/Library/BookManage'));
 const Ranking = lazy(() => import('page/Ranking/Ranking'));
 const Study = lazy(() => import('page/Study/Study'));
 
-const App = ({ member, darkMode, signOut }) => {
+const App = ({ member, isDark, signOut }) => {
   useEffect(() => {
     if (member.token) {
       attendanceAPI.check({ token: member.token }).then((data) => {
@@ -43,7 +43,7 @@ const App = ({ member, darkMode, signOut }) => {
 
   return (
     //TODO 다음에 다크모드로 기본 바꾸기
-    <div className={darkMode ? 'light' : 'dark'}>
+    <div className={isDark ? 'light' : 'dark'}>
       <>
         <Header />
         <Suspense fallback={<Loading />}>
@@ -78,7 +78,7 @@ const App = ({ member, darkMode, signOut }) => {
 };
 
 const mapStateToProps = (state, OwnProps) => {
-  return { darkMode: state.darkMode, member: state.member };
+  return { isDark: state.darkMode?.isDark, member: state.member };
 };
 
 const mapDispatchToProps = (dispatch, OwnProps) => {
