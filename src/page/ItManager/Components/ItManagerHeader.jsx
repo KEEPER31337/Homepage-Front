@@ -5,23 +5,10 @@ import { connect } from 'react-redux';
 import { HomeIcon, ChevronRightIcon, XIcon } from '@heroicons/react/outline';
 
 const categoriesAll = [
-  { name: '활동인원관리', href: '/clerk', icon: HomeIcon, auth: null },
-  {
-    name: '상벌점누계',
-    href: '/clerk/point',
-    icon: HomeIcon,
-    auth: null,
-  },
-  {
-    name: '상벌점사유',
-    href: '/clerk/reason',
-    icon: HomeIcon,
-    auth: null,
-  },
-  { name: '출결확인', href: '/clerk/attend', icon: HomeIcon, auth: null },
+  { name: '직책 관리', href: '/itmanager', icon: HomeIcon, auth: null },
 ];
 
-const CLERKHeader = ({ darkMode, member }) => {
+const ItManagerHeader = ({ darkMode, member }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [categories, setCategories] = useState(categoriesAll);
   const navigate = useNavigate();
@@ -168,4 +155,4 @@ const mapStateToProps = (state) => {
     member: state.member,
   };
 };
-export default connect(mapStateToProps)(CLERKHeader);
+export default connect(mapStateToProps)(ItManagerHeader);
