@@ -45,7 +45,7 @@ const categoriesAll = [
   },
 ];
 
-const VOTEHeader = ({ darkMode, member, vote }) => {
+const VOTEHeader = ({ isDark, member, vote }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const jobs = member?.memberInfo?.jobs;
@@ -93,7 +93,7 @@ const VOTEHeader = ({ darkMode, member, vote }) => {
             >
               <Dialog.Panel
                 className={
-                  darkMode
+                  isDark
                     ? 'relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-black'
                     : 'relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-mainWhite'
                 }
@@ -195,7 +195,7 @@ const VOTEHeader = ({ darkMode, member, vote }) => {
 
 const mapStateToProps = (state) => {
   return {
-    darkMode: state.darkMode,
+    isDark: state.darkMode?.isDark,
     member: state.member,
     vote: state.vote,
   };
