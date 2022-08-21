@@ -10,6 +10,7 @@ import actionMember from 'redux/action/member';
 import CTFApp from 'page/CTF/CTFApp.jsx';
 import VOTEApp from 'page/Vote/VOTEApp';
 import CLERKApp from 'page/Clerk/Admin/CLERKApp';
+import ItManagerApp from 'page/ItManager/Admin/ItManagerApp';
 
 // pages
 import Loading from 'shared/Loading';
@@ -75,6 +76,7 @@ const App = ({ member, darkMode, signOut }) => {
             <Route path="/autoAttend" element={<AutoAttend />} />
             <Route path="/research" element={<Research />} />
             <Route path="/clerk/*" element={<CLERKApp />} />
+            <Route path="/ItManager/*" element={<ItManagerApp />} />
           </Routes>
         </Suspense>
         <Chatting />

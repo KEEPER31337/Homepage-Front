@@ -216,8 +216,14 @@ const categoriesAll = [
         href: 'clerk',
         auth: null,
       },
-    ]
-  }
+      {
+        id: 37,
+        name: 'admin전산관리자',
+        href: 'itManager',
+        auth: null,
+      },
+    ],
+  },
 ];
 
 const categoriesHidden = [
