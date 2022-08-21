@@ -34,7 +34,7 @@ const ROULETTE_GAME_ID = 1;
 const LOTTO_GAME_ID = 2;
 
 const Game = (props) => {
-  const isDark = props.state.darkMode; //Dark모드 여부
+  const isDark = props.state.darkMode?.isDark; //Dark모드 여부
   const [game, setGame] = useState(0);
   const [gameInfo, setGameInfo] = useState({});
 

@@ -26,7 +26,7 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
   const { categoryId, postId } = useParams();
   //board는 게시글 정보가 담긴 객체
   //console.log(state.member.memberId); //(내 아이디)나중에 업데이트 될거임
-  const isDark = state.darkMode; //Dark모드 여부
+  const isDark = state.darkMode?.isDark; //Dark모드 여부
   const myId = state.member?.memberInfo?.id; //게시글을 보고 있는 나의 정보
   const [isDisliked, setIsDisliked] = useState(); //비추천을 눌렀는지 여부
   const [isLiked, setIsLiked] = useState(); //추천을 눌렀는지 여부

@@ -96,13 +96,7 @@ const categoriesAll = [
   },
 ];
 
-const NavigationLayout = ({
-  darkMode,
-  member,
-  ctfId,
-  ctfName,
-  ctfTeamName,
-}) => {
+const NavigationLayout = ({ isDark, member, ctfId, ctfName, ctfTeamName }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
@@ -186,7 +180,7 @@ const NavigationLayout = ({
             >
               <Dialog.Panel
                 className={
-                  darkMode
+                  isDark
                     ? 'relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-black'
                     : 'relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-mainWhite'
                 }
@@ -289,7 +283,7 @@ const NavigationLayout = ({
 };
 const mapStateToProps = (state) => {
   return {
-    darkMode: state.darkMode,
+    isDark: state.darkMode?.isDark,
     member: state.member,
     ctfId: state.ctf.ctfId,
     ctfName: state.ctf.ctfName,
