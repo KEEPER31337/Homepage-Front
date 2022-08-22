@@ -56,8 +56,8 @@ const Research = () => {
         </button>
       </div>
       <div className="flex flex-1 justify-center font-basic">
-        <div className="border bg-slate-50 rounded-md flex flex-col gap-2 max-w-md w-screen h-[70vh] my-4 mx-2 p-4">
-          <div className="text-center text-lg text-violet-600 p-1">
+        <div className="border bg-slate-200 rounded-md flex flex-col gap-2 max-w-md w-screen h-[70vh] my-4 mx-2 p-4">
+          <div className="font-title text-center text-lg text-violet-600 p-1">
             {serveyPeriod ? (
               <>
                 2022년 2학기 활동인원조사가 진행중입니다!
@@ -73,7 +73,7 @@ const Research = () => {
           <div className="flex justify-center">
             {isAdmin ? (
               <button
-                className="border border-gray-400 rounded-md shadow-md p-1 px-2 bg-gray-100 text-xs hover:bg-gray-200 active:shadow-none focus:outline-none focus:ring-0"
+                className="border border-gray-400 rounded-md shadow-md p-1 px-2 bg-slate-100 text-xs hover:bg-slate-200 active:shadow-none focus:outline-none focus:ring-0"
                 onClick={() => setOnCreateModal(true)}
               >
                 {serveyPeriod
@@ -107,7 +107,7 @@ const Research = () => {
                   </>
                 )}
                 <button
-                  className="border border-violet-400 rounded-md shadow-md p-1 px-2 bg-violet-200 active:shadow-none focus:outline-none focus:ring-0"
+                  className="border border-violet-400 rounded-md shadow-md p-1 px-2 bg-violet-200 hover:bg-violet-300 active:shadow-none focus:outline-none focus:ring-0"
                   onClick={() => setOnResearchModal(true)}
                 >
                   {isRespond ? '다시 ' : ''}응답하기
@@ -127,7 +127,7 @@ const Research = () => {
           {isAdmin ? (
             <div className="border flex items-end">
               <button
-                className="border w-full border-gray-400 rounded-md shadow-md p-2 bg-gray-100 text-sm hover:bg-gray-200 active:shadow-none focus:outline-none focus:ring-0"
+                className="border w-full border-gray-400 rounded-md shadow-md p-2 bg-slate-100 text-sm hover:bg-slate-200 active:shadow-none focus:outline-none focus:ring-0"
                 onClick={() => viewList()}
               >
                 집계결과 보기
