@@ -140,7 +140,9 @@ const WriteTableCell = ({ no, pointData, setPointData }) => {
               className="inline-block pl-3 pr-0 w-[4em] py-2 text-base border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 sm:text-sm rounded-md dark:bg-mainBlack dark:border-darkComponent"
               defaultValue={2}
               value={oneData.point}
-              onBlur={(e) => setOneData({ ...oneData, point: e.target.value })}
+              onChange={(e) =>
+                setOneData({ ...oneData, point: e.target.value })
+              }
             />
             점
           </td>
