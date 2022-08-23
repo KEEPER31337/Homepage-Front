@@ -17,13 +17,13 @@ const Mreason = [
   { no: 5, text: '기타', point: '' },
 ];
 
-const WriteTableCell = ({ no, pointData, setPointData }) => {
+const WriteTableCell = ({ no, appendData, setAppendData }) => {
   const [isETC, setIsETC] = useState(false);
-  const [oneData, setOneData] = useState(pointData[no - 1]);
+  const [oneData, setOneData] = useState(appendData[no - 1]);
   useEffect(() => {
     //한 셀의 데이터 변경시 최종 데이터 리스트 업데이트
-    setPointData(
-      pointData.map((data) => {
+    setAppendData(
+      appendData.map((data) => {
         if (data.no === no) return oneData;
         return data;
       })
@@ -69,7 +69,16 @@ const WriteTableCell = ({ no, pointData, setPointData }) => {
       <td className=" min-w-[2em] p-1 text-center">{no}</td>
       <tbody className="flex flex-col w-full">
         <div className="flex w-full">
-          <td className="border-x  w-full sm:w-[10em] p-1">
+          <td className="border-x min-w-[7em] p-1">
+            <input
+              type="date"
+              className="w-full inline-block px-1 py-2 text-xs border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 rounded-md dark:bg-mainBlack dark:border-darkComponent"
+              value={oneData.date}
+              onChange={(e) => setOneData({ ...oneData, date: e.target.value })}
+              required
+            />
+          </td>
+          <td className="border-x min-w-[7em] w-full sm:w-[10em] p-1">
             <input
               type="text"
               className="inline-block px-3 py-2 w-full text-base border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 sm:text-sm rounded-md dark:bg-mainBlack dark:border-darkComponent"
@@ -132,7 +141,7 @@ const WriteTableCell = ({ no, pointData, setPointData }) => {
               ''
             )}
           </td>
-          <td className="min-w-[6em] w-[6em] p-1">
+          <td className="hidden sm:block min-w-[6em] w-[6em] p-1">
             <input
               type="number"
               min="0"
@@ -187,6 +196,20 @@ const WriteTableCell = ({ no, pointData, setPointData }) => {
               ''
             )}
           </div>
+          <td className="min-w-[4em] w-[4em] flex items-center px-1">
+            <input
+              type="number"
+              min="0"
+              max="10"
+              className="inline-block pl-2 pr-0 w-full py-2 text-base border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 sm:text-sm rounded-md dark:bg-mainBlack dark:border-darkComponent"
+              defaultValue={2}
+              value={oneData.point}
+              onChange={(e) =>
+                setOneData({ ...oneData, point: e.target.value })
+              }
+            />
+            점
+          </td>
         </div>
       </tbody>
     </tr>

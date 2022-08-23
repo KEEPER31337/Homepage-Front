@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import WriteTableCell from './WriteTableCell';
-
-const WriteTable = ({ appendData, setAppendData }) => {
+const ViewTable = ({ pointBreakdown, setBreakdown }) => {
   useEffect(() => {}, []);
 
   return (
@@ -19,15 +17,15 @@ const WriteTable = ({ appendData, setAppendData }) => {
           </th>
         </div>
       </tr>
-      {appendData.map((data) => (
+      {pointData.map((data) => (
         <WriteTableCell
           no={data.no}
-          appendData={appendData}
-          setAppendData={setAppendData}
+          pointData={pointData}
+          setPointData={setPointData}
         />
       ))}
     </table>
   );
 };
 
-export default WriteTable;
+export default ViewTable;

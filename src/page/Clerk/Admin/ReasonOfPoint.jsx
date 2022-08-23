@@ -5,29 +5,42 @@ import { PlusCircleIcon } from '@heroicons/react/solid';
 import WriteTable from '../Components/ReasonOfPoint/WriteTable';
 
 const ReasonOfPoint = () => {
-  const [pointData, setPointData] = useState([]);
-  const appendData = () => {
-    setPointData([
-      ...pointData,
+  const [appendData, setAppendData] = useState([]);
+
+  const getNow = () => {
+    return new Date().toISOString().substring(0, 10);
+  };
+  const addData = () => {
+    setAppendData([
+      ...appendData,
       {
-        no: pointData.length + 1,
+        no: appendData.length + 1,
         name: '',
         pm: 'm',
         reason: '1',
         etcReason: '',
         point: 2,
+        date: getNow(),
       },
     ]);
   };
   useEffect(() => {
-    setPointData([
-      { no: 1, name: '', pm: 'm', reason: '1', etcReason: '', point: 2 },
+    setAppendData([
+      {
+        no: 1,
+        name: '',
+        pm: 'm',
+        reason: '1',
+        etcReason: '',
+        point: 2,
+        date: getNow(),
+      },
     ]);
   }, []);
 
   useEffect(() => {
-    console.log(pointData);
-  }, [pointData]);
+    console.log(appendData);
+  }, [appendData]);
   return (
     <AuthUser>
       <div className="flex flex-1 justify-center">
@@ -38,10 +51,13 @@ const ReasonOfPoint = () => {
           >
             <p className="text-2xl">상벌점 내역 추가하기</p>
             <div className="rounded-md flex flex-col gap-y-2 p-2 bg-mainWhite">
-              <WriteTable pointData={pointData} setPointData={setPointData} />
+              <WriteTable
+                appendData={appendData}
+                setAppendData={setAppendData}
+              />
               <button
                 className="flex border rounded-xl justify-center p-1 shadow-sm"
-                onClick={() => appendData()}
+                onClick={() => addData()}
               >
                 <PlusCircleIcon className="inline-block h-5 w-5 translate-y-0.5  text-slate-500" />
                 추가하기
