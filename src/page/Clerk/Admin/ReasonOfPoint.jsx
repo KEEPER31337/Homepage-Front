@@ -4,61 +4,15 @@ import { PlusCircleIcon } from '@heroicons/react/solid';
 
 import WriteTable from '../Components/ReasonOfPoint/WriteTable';
 import ViewTable from '../Components/ReasonOfPoint/ViewTable';
+import { getNow } from '../Components/ReasonOfPoint/PointUtil';
+
 const years = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
-const testData = [
-  {
-    date: '2022-08-16',
-    name: '김김김',
-    reason: '무단결석',
-    plusP: 0,
-    minusP: 2,
-  },
-  {
-    date: '2022-08-16',
-    name: '이이이',
-    reason: '회비 미납부',
-    plusP: 0,
-    minusP: 1,
-  },
-  {
-    date: '2022-08-16',
-    name: '아무개',
-    reason: '각종 대외발표',
-    plusP: 2,
-    minusP: 0,
-  },
-  {
-    date: '2022-08-22',
-    name: '정정정',
-    reason: '무단결석',
-    plusP: 0,
-    minusP: 2,
-  },
-  {
-    date: '2022-08-22',
-    name: '박박박',
-    reason: '지각 2회',
-    plusP: 0,
-    minusP: 2,
-  },
-  {
-    date: '2022-08-22',
-    name: '김김김',
-    reason: '그냥',
-    plusP: 1,
-    minusP: 0,
-  },
-];
 
 const ReasonOfPoint = () => {
   const [appendData, setAppendData] = useState([]);
   const [recordData, setRecordData] = useState([]);
   const [curYear, setCurYear] = useState();
 
-  const getNow = () => {
-    //오늘 날짜 반환
-    return new Date().toISOString().substring(0, 10);
-  };
   const addData = () => {
     setAppendData([
       ...appendData,
@@ -73,29 +27,16 @@ const ReasonOfPoint = () => {
       },
     ]);
   };
-
   useEffect(() => {
-    setAppendData([
-      {
-        no: 1,
-        name: '',
-        pm: 'm',
-        reason: '1',
-        etcReason: '',
-        point: 2,
-        date: getNow(),
-      },
-    ]);
-    setRecordData(testData);
+    setCurYear(years[0]);
   }, []);
-
   useEffect(() => {
     console.log(appendData);
   }, [appendData]);
 
   return (
     <AuthUser>
-      <div className="flex flex-1 justify-center">
+      <div className="flex flex-1 justify-center min-h-screen">
         <div className="flex flex-col gap-y-4 w-full p-2 bg-gray-100 sm:bg-transparent">
           <div
             name="상벌점 추가 폼"
@@ -126,7 +67,7 @@ const ReasonOfPoint = () => {
           </div>
           <div
             name="상벌점 추가 내역"
-            className="flex flex-col gap-y-2 rounded-md border w-full p-2 bg-gray-100"
+            className="flex flex-col gap-y-2 rounded-md border w-full p-2  bg-mainWhite sm:bg-gray-100"
           >
             <p className="text-2xl">상벌점 내역</p>
             <div name="연도 선택"></div>

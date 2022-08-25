@@ -1,9 +1,22 @@
 import React, { useState, useEffect } from 'react';
 
 import WriteTableCell from './WriteTableCell';
+import { getNow } from './PointUtil';
 
 const WriteTable = ({ appendData, setAppendData }) => {
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setAppendData([
+      {
+        no: 1,
+        name: '',
+        pm: 'm',
+        reason: '1',
+        etcReason: '',
+        point: 2,
+        date: getNow(),
+      },
+    ]);
+  }, []);
 
   return (
     <table className="w-full">
