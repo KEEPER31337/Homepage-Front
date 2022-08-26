@@ -16,7 +16,7 @@ const getNow = () => {
 const CreateFormModal = ({ isModify, setOnCreateModal, researchData }) => {
   return (
     <div className="font-basic border h-w-full flex justify-center fixed top-0 left-0 right-0 bottom-0 z-[99] bg-mainBlack bg-opacity-60">
-      <div className="my-auto">
+      <div className="my-auto text-sm sm:text-base">
         <div className="rounded-t-lg relative p-3 pr-8 bg-mainWhite font-bold dark:bg-darkPoint dark:text-gray-200">
           KEEPER 활동인원조사 {isModify ? '수정하기' : '등록하기'}
           <button
@@ -29,7 +29,7 @@ const CreateFormModal = ({ isModify, setOnCreateModal, researchData }) => {
           </button>
         </div>
         <form
-          className="max-w-2xl w-[70vw] h-[50vh] bg-slate-200 rounded-b-lg flex flex-col justify-center"
+          className="max-w-2xl w-[95vw] sm:w-[70vw] h-[50vh] bg-slate-200 rounded-b-lg flex flex-col justify-center"
           onSubmit={(e) => {
             e.preventDefault();
           }}
@@ -61,23 +61,31 @@ const CreateFormModal = ({ isModify, setOnCreateModal, researchData }) => {
               </div>
               <div className="flex items-center gap-2">
                 <span className="p-4 font-bold">조사 기간</span>
-                <input
-                  type="date"
-                  className="mt-1 inline-block px-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 sm:text-sm rounded-md dark:bg-mainBlack dark:border-darkComponent"
-                  defaultValue={
-                    researchData?.startDate ? researchData.startDate : getNow()
-                  }
-                  required
-                />
-                ~
-                <input
-                  type="date"
-                  className="mt-1 inline-block px-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 sm:text-sm rounded-md dark:bg-mainBlack dark:border-darkComponent"
-                  defaultValue={
-                    researchData?.endDate ? researchData.endDate : getNow()
-                  }
-                  required
-                />
+                <div className="sm:block flex flex-col">
+                  <div className="sm:inline-block block">
+                    <input
+                      type="date"
+                      className="mt-1 inline-block px-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 sm:text-sm rounded-md dark:bg-mainBlack dark:border-darkComponent"
+                      defaultValue={
+                        researchData?.startDate
+                          ? researchData.startDate
+                          : getNow()
+                      }
+                      required
+                    />
+                  </div>
+                  <div className="sm:inline-block block">
+                    ~
+                    <input
+                      type="date"
+                      className="mt-1 inline-block px-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 sm:text-sm rounded-md dark:bg-mainBlack dark:border-darkComponent"
+                      defaultValue={
+                        researchData?.endDate ? researchData.endDate : getNow()
+                      }
+                      required
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
