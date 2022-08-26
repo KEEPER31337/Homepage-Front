@@ -6,7 +6,9 @@ const Appointment = lazy(() => import('./Appointment'));
 const Point = lazy(() => import('./Point'));
 const ReasonOfPoint = lazy(() => import('./ReasonOfPoint'));
 const TableOfAttend = lazy(() => import('./TableOfAttend'));
-
+const ReviseAppointment = lazy(() =>
+  import('../Components/Appointment/Revise/ReviseAppointment')
+);
 const CLERKApp = ({}) => {
   return (
     <div className="bg-mainWhite dark:bg-mainBlack min-h-screen">
@@ -17,6 +19,7 @@ const CLERKApp = ({}) => {
           <Route path="/point" element={<Point />} />
           <Route path="/reason" element={<ReasonOfPoint />} />
           <Route path="/attend" element={<TableOfAttend />} />
+          <Route path="/revise" element={<ReviseAppointment />} />
         </Routes>
       </div>
     </div>
