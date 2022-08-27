@@ -14,7 +14,11 @@ const Research = () => {
     year: 2022,
     season: 3,
     startDate: '2022-08-18',
+    startTime: '12:00:00',
     endDate: '2022-08-25',
+    endTime: '12:00:00',
+    description: 'ㅁㅁㅁㅁ',
+    isVisible: true,
   });
   const [response, setResponse] = useState(); //내가 제출할 응답
   const [result, setResult] = useState({
@@ -239,6 +243,7 @@ const Research = () => {
           setOnCreateModal={setOnCreateModal}
           isModify={serveyPeriod}
           researchData={researchData}
+          setResearchData={setResearchData}
         />
       ) : (
         ''

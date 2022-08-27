@@ -35,8 +35,55 @@ async function changeType({ token, memberId, typeId }) {
     return error.response.data;
   }
 }
+/**활동 인원 조사 페이지 */
+async function createResearch({
+  token,
+  surveyName,
+  openTime,
+  closeTime,
+  description,
+  isVisible,
+}) {
+  const url = API_URL + '/v1/admin/clerk/surveys';
+  const data = {
+    surveyName,
+    openTime,
+    closeTime,
+    description,
+    isVisible,
+  };
+  const options1 = {
+    headers: {
+      Authorization: `${token}`,
+    },
+  };
+  const options = {
+    method: 'POST',
+    url: API_URL + '/v1/admin/clerk/surveys',
+    headers: {
+      Authorization: `${token}`,
+    },
+    params: {
+      surveyName,
+      openTime,
+      closeTime,
+      description,
+      isVisible,
+    },
+  };
+  try {
+    const response = await axios.post(url, data, options1);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error.response;
+  }
+}
+
+/**========================= */
 
 export default {
   getTypeMemberList,
   changeType,
+  createResearch,
 };
