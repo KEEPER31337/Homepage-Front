@@ -15,10 +15,8 @@ const GRADUATE = 4; // 졸업
 const QUIT = 5; //탈퇴
 
 const Appointment = ({ member }) => {
-  useEffect(() => {}, []);
   const [gen, setGen] = useState(13); // 2 == 초기엔 활동인원
   const [non, regular, sleep, graduate, quit] = getContentData({ member, gen });
-  //console.log(non, regular, sleep, graduate, quit);
 
   //선택한 사람들 직책 변경
   const [changeItems, setChangeItems] = useState(new Set());
@@ -26,7 +24,8 @@ const Appointment = ({ member }) => {
   const navigate = useNavigate();
 
   const reviseClick = () => {
-    for (let item of changeItems) {
+    setChangeItems(changeItems);
+    changeItems.forEach((item) =>
       clerkAPI
         .changeType({
           token: member.token,
@@ -35,10 +34,10 @@ const Appointment = ({ member }) => {
         })
         .then((data) => {
           if (data.success) {
-            console.log(data);
           }
-        });
-    }
+        })
+    );
+
     navigate('/clerk');
   };
 

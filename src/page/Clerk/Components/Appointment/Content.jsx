@@ -1,48 +1,56 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import Marquee from 'react-fast-marquee';
-import { useNavigate } from 'react-router-dom';
 
-const Content = ({ typeMemberList }) => {
+const NON = 1; //비회원
+const REGULAR = 2; // 정회원
+const SLEEP = 3; // 휴면회원
+const GRADUATE = 4; // 졸업
+const QUIT = 5; //탈퇴
+
+const Content = ({ type, typeMemberList }) => {
+  const [color, setColor] = useState('');
+
   useEffect(() => {
-    console.log(typeMemberList);
-  }, [typeMemberList]);
+    switch (type) {
+      case NON:
+        setColor('bg-slate-100 mr-2 w-3 h-3 rounded-3xl');
+        break;
+      case REGULAR:
+        setColor('bg-emerald-300 mr-2 w-3 h-3 rounded-3xl');
+        break;
+      case SLEEP:
+        setColor('bg-amber-300 mr-2 w-3 h-3 rounded-3xl');
+        break;
+      case GRADUATE:
+        setColor('bg-slate-800 mr-2 w-3 h-3 rounded-3xl');
+        break;
+      case QUIT:
+        setColor('bg-red-400 mr-2 w-3 h-3 rounded-3xl');
+        break;
+      default:
+        break;
+    }
+  }, []);
 
-  const navigate = useNavigate();
-  const reviseClick = () => {
-    navigate('/clerk/revise');
-  };
   return (
     <>
-      <div className="bg-white border-2 border-violet-100 p-2 w-full h-[50vh] scrollbar-hide overflow-y-scroll flex flex-col text-center ">
-        <div className="grid grid-cols-4 md:grid-cols-6 w-full h-fit text-center">
-          {typeMemberList.map((member) => (
-            <div className="h-fit border bg-violet-100 border-violet-50 flex flex-row justify-start m-[2px] text-slate-800 rounded">
-              <div className="p-1">
-                <img
-                  src={member.profileImagePath}
-                  className="h-9 w-9 rounded"
-                />
+      {typeMemberList.map((member) => (
+        <div className="bg-white h-fit relative flex flex-row justify-start m-[2px] text-slate-800 rounded ">
+          <div className="p-1 ">
+            <img src={member.profileImagePath} className="h-9 w-9 rounded " />
+          </div>
+          <div className="flex flex-row items-center justify-between flex-1">
+            <div className="flex flex-row items-center ">
+              <div className="text-sm text-slate-400">
+                {`${member.generation === null ? '?' : member.generation}기`}
               </div>
-              <div className="flex  items-center">
-                <div className="text-sm text-slate-400">
-                  {`${member.generation === null ? '?' : member.generation}기`}
-                </div>
-                <div className="px-2 ">{member.nickName}</div>
-              </div>
+              <div className="px-2 ">{member.nickName}</div>
             </div>
-          ))}
+
+            <div className={color}></div>
+          </div>
         </div>
-      </div>
-      <div className="w-full bg-white items-center flex justify-end p-2">
-        <div
-          className="text-center bg-violet-200 hover:bg-violet-200 border-b-4  border-violet-300 w-20 p-1 rounded-md cursor-pointer"
-          onClick={reviseClick}
-        >
-          {/* TODO 모달창, 이 사람들을 삭제하시겠습니까 */}
-          수정하기
-        </div>
-      </div>
+      ))}
     </>
   );
 };

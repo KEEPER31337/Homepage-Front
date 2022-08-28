@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 
 // api
 import clerkAPI from 'API/v1/clerk';
-import memberAPI from 'API/v1/member';
 
 const NON = 1; //비회원
 const REGULAR = 2; // 정회원

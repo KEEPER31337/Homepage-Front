@@ -2,21 +2,40 @@
 import React, { useEffect, useState } from 'react';
 
 // api
-import itmanagerAPI from 'API/v1/itmanager';
+import clerkAPI from 'API/v1/clerk';
 
+const NON = 1; //비회원
 const REGULAR = 2; // 정회원
 const SLEEP = 3; // 휴면회원
 const GRADUATE = 4; // 졸업
+const QUIT = 5; //탈퇴
 
-const getContentData = ({ member, type, ge }) => {
-  const [current, setCurrent] = useState([]);
+const ReviseGetContentData = ({ member, gen }) => {
+  const [GenRegular, setGenRegular] = useState([]);
+  const [GenSleep, setGenSleep] = useState([]);
+  const [GenGraduate, setGenGraduate] = useState([]);
+  const [GenNon, setGenNon] = useState([]);
+  const [GenQuit, setGenQuit] = useState([]);
+
+  const [non, setNon] = useState([]);
   const [regular, setRegular] = useState([]);
   const [sleep, setSleep] = useState([]);
   const [graduate, setGraduate] = useState([]);
+  const [quit, setQuit] = useState([]);
 
   useEffect(() => {
-    //TODO clerk으로 바꾸기
-    itmanagerAPI
+    clerkAPI
+      .getTypeMemberList({
+        token: member.token,
+        typeId: NON,
+      })
+      .then((data) => {
+        if (data.success) {
+          setNon(data.list);
+        }
+      });
+
+    clerkAPI
       .getTypeMemberList({
         token: member.token,
         typeId: REGULAR,
@@ -27,7 +46,7 @@ const getContentData = ({ member, type, ge }) => {
         }
       });
 
-    itmanagerAPI
+    clerkAPI
       .getTypeMemberList({
         token: member.token,
         typeId: SLEEP,
@@ -38,7 +57,7 @@ const getContentData = ({ member, type, ge }) => {
         }
       });
 
-    itmanagerAPI
+    clerkAPI
       .getTypeMemberList({
         token: member.token,
         typeId: GRADUATE,
@@ -48,26 +67,28 @@ const getContentData = ({ member, type, ge }) => {
           setGraduate(data.list);
         }
       });
-    console.log('d');
-  }, []);
-  //기수, type 변할때마다
-  useEffect(() => {
-    switch (type) {
-      case REGULAR:
-        setCurrent(regular.filter((data) => data.generation === ge));
-        break;
-      case SLEEP:
-        setCurrent(sleep.filter((data) => data.generation === ge));
-        break;
-      case GRADUATE:
-        setCurrent(graduate.filter((data) => data.generation === ge));
-        break;
-      default:
-        break;
-    }
-  }, [ge, type, regular, sleep, graduate]);
 
-  return current;
+    clerkAPI
+      .getTypeMemberList({
+        token: member.token,
+        typeId: QUIT,
+      })
+      .then((data) => {
+        if (data.success) {
+          setQuit(data.list);
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    setGenNon(non.filter((data) => data.generation === gen));
+    setGenRegular(regular.filter((data) => data.generation === gen));
+    setGenSleep(sleep.filter((data) => data.generation === gen));
+    setGenGraduate(graduate.filter((data) => data.generation === gen));
+    setGenQuit(quit.filter((data) => data.generation === gen));
+  }, [gen, regular, sleep, graduate, quit]);
+
+  return [GenNon, GenRegular, GenSleep, GenGraduate, GenQuit];
 };
 
-export default getContentData;
+export default ReviseGetContentData;
