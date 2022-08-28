@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 const Job = ({ member, list, job, setJob }) => {
-  const [badgePath, setJobBadgePath] = useState();
+  const [badgePath, setJobBadgePath] = useState('');
   const [currentJobId, setCurrentJobId] = useState(0);
   const [jobName, setJobName] = useState('');
   const [nickName, setNickName] = useState('');
@@ -10,8 +10,8 @@ const Job = ({ member, list, job, setJob }) => {
 
   useEffect(() => {
     setCurrentJobId(list.hasJobs[0].id);
-    setJobBadgePath(list.hasJobs[0].badgePath);
-    setJobName(list.hasJobs[0].name);
+    setJobBadgePath(list.hasJobs[1].badgePath);
+    setJobName(list.hasJobs[1].name);
     setNickName(list.nickName);
     setGeneration(list.generation);
   }, []);

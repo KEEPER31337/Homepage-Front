@@ -22,32 +22,10 @@ const Appointment = ({ member }) => {
           name: 'ROLE_회장',
           badgePath: 'https://keeper.or.kr/v1/util/thumbnail/11',
         },
-      ],
-    },
-
-    {
-      memberId: 1328,
-      nickName: '장서윤',
-      generation: 14,
-      profileImagePath: 'http://localhost:8080/v1/util/thumbnail/1399',
-      hasJobs: [
         {
-          id: 3,
-          name: 'ROLE_부회장',
-          badgePath: 'https://keeper.or.kr/v1/util/thumbnail/13',
-        },
-      ],
-    },
-    {
-      memberId: 1329,
-      nickName: '장서윤',
-      generation: 12,
-      profileImagePath: 'http://localhost:8080/v1/util/thumbnail/1399',
-      hasJobs: [
-        {
-          id: 34,
-          name: 'ROLE_서기',
-          badgePath: 'https://keeper.or.kr/v1/util/thumbnail/16',
+          id: 1,
+          name: 'ROLE_회장',
+          badgePath: 'https://keeper.or.kr/v1/util/thumbnail/11',
         },
       ],
     },
@@ -55,15 +33,16 @@ const Appointment = ({ member }) => {
 
   useEffect(() => {
     //TODO api 이름 현재파일이랑 통일
-    // itmanagerAPI
-    //   .getAllRoleMemberList({
-    //     token: member.token,
-    //   })
-    //   .then((data) => {
-    //     if (data.success) {
-    //     }
-    //     console.log(data);
-    //   });
+    itmanagerAPI
+      .getAllRoleMemberList({
+        token: member.token,
+      })
+      .then((data) => {
+        if (data.success) {
+          setAllMemberList(data.list);
+        }
+        console.log(data);
+      });
   }, []);
 
   //Member 컴포넌트에서 전달받은 정보 -> 2번째 박스에 넣어줄거임
@@ -92,11 +71,11 @@ const Appointment = ({ member }) => {
             </div>
           </div> */}
 
-          <ChangeMemberJob
+          {/* <ChangeMemberJob
             // key={selectedMemberInfo.memberId}
             job={job}
             // setAllMemberList={setAllMemberList}
-          />
+          /> */}
         </div>
       </div>
     </AuthUser>

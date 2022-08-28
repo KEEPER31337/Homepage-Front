@@ -34,11 +34,11 @@ async function getRoleMemberList({ token, jobId }) {
     return error.response.data;
   }
 }
-// 직업 별 회원 불러오기
-async function getAllRoleMemberList({ token, jobId }) {
+// 역할을_가진_모든_회원_목록_불러오기
+async function getAllRoleMemberList({ token }) {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/admin/sysadmin/jobs/members',
+    url: API_URL + '/v1/admin/system-admin/jobs/members',
     headers: {
       Authorization: token,
     },

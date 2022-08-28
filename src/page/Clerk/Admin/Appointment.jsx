@@ -8,12 +8,13 @@ const Appointment = ({ member }) => {
   useEffect(() => {}, []);
 
   const [type, setType] = useState(2); // 2 == 초기엔 활동인원
-  const current = getContentData({ member, type });
 
+  const [ge, setGe] = useState(13); // 2 == 초기엔 활동인원
+  const current = getContentData({ member, type, ge });
   return (
     <AuthUser>
-      <div className="font-basic flex flex-1 flex-col items-center justify-between ">
-        <Header type={type} setType={setType} />
+      <div className="font-basic flex flex-1 flex-col items-center justify-between p-2">
+        <Header type={type} setType={setType} setGe={setGe} />
         <Content typeMemberList={current} />
       </div>
     </AuthUser>

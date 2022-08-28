@@ -8,7 +8,7 @@ const REGULAR = 2; // 정회원
 const SLEEP = 3; // 휴면회원
 const GRADUATE = 4; // 졸업
 
-const getContentData = ({ member, type }) => {
+const getContentData = ({ member, type, ge }) => {
   const [current, setCurrent] = useState([]);
   const [regular, setRegular] = useState([]);
   const [sleep, setSleep] = useState([]);
@@ -48,23 +48,24 @@ const getContentData = ({ member, type }) => {
           setGraduate(data.list);
         }
       });
+    console.log('d');
   }, []);
-
+  //기수, type 변할때마다
   useEffect(() => {
     switch (type) {
       case REGULAR:
-        setCurrent(regular);
+        setCurrent(regular.filter((data) => data.generation === ge));
         break;
       case SLEEP:
-        setCurrent(sleep);
+        setCurrent(sleep.filter((data) => data.generation === ge));
         break;
       case GRADUATE:
-        setCurrent(graduate);
+        setCurrent(graduate.filter((data) => data.generation === ge));
         break;
       default:
         break;
     }
-  }, [type, regular, sleep, graduate]);
+  }, [ge, type, regular, sleep, graduate]);
 
   return current;
 };
