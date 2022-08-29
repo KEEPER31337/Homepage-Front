@@ -35,10 +35,17 @@ const CheckContent = ({ type, member, changeItems }) => {
 
   const checkHandler = (e) => {
     //TODO parseInt 써야함!!
+    changeItems.forEach((item) => {
+      if (item.memberId === member.memberId) {
+        changeItems.delete(item);
+      }
+    });
+
     changeItems.add({
       type: parseInt(e.target.value),
       memberId: member.memberId,
     });
+    //원래 있었으면 그건 delete해야함!!!!!!!
 
     switch (parseInt(e.target.value)) {
       case NON:
@@ -59,6 +66,7 @@ const CheckContent = ({ type, member, changeItems }) => {
       default:
         break;
     }
+    console.log(changeItems);
   };
 
   const [tooltip, setTooltip] = useState(false);

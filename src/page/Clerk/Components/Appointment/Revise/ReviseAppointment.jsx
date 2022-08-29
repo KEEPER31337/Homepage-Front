@@ -34,11 +34,13 @@ const Appointment = ({ member }) => {
         })
         .then((data) => {
           if (data.success) {
+            console.log('--');
           }
         })
     );
 
     navigate('/clerk');
+    // window.location.reload();
   };
 
   return (

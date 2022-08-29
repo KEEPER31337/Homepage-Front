@@ -18,7 +18,7 @@ const QUIT = 5; //탈퇴
 const Appointment = ({ member }) => {
   const [gen, setGen] = useState(13); // 2 == 초기엔 활동인원
   const [non, regular, sleep, graduate, quit] = getContentData({ member, gen });
-
+  console.log(non, regular, sleep, graduate, quit);
   const navigate = useNavigate();
 
   const reviseClick = () => {

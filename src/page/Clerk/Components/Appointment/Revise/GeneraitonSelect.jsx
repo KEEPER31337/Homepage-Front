@@ -11,9 +11,9 @@ const GeneraitonSelect = ({ setGen }) => {
     //TODO 현재 기수목록 불러오는 API
   }, []);
 
-  const changeGeneration = useCallback((e) => {
+  const changeGeneration = (e) => {
     setGen(parseInt(e.target.value));
-  });
+  };
 
   return (
     <div className="flex items-center ">

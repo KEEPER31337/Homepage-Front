@@ -5,7 +5,6 @@ import clerkAPI from 'API/v1/clerk';
 
 const Content = ({ token, type, typeMemberList, changeItems }) => {
   useEffect(() => {
-    //console.log(typeMemberList);
     // console.log(AllmemberList);
   }, [typeMemberList]);
 
