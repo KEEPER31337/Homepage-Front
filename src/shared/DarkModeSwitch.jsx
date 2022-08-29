@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import actionDarkMode from 'redux/action/darkMode';
 
 const DarkModeSwitch = ({ state, darkModeToggle }) => {
-  const darkMode = state.darkMode;
+  const isDark = state.darkMode?.isDark;
 
   const handleChange = (e) => {
     darkModeToggle();
@@ -14,7 +14,7 @@ const DarkModeSwitch = ({ state, darkModeToggle }) => {
 
   return (
     <Switch
-      checked={darkMode}
+      checked={isDark}
       onChange={handleChange}
       className="bg-gray-200 dark:bg-darkComponent relative inline-flex items-center h-6 rounded-full w-11"
     >
