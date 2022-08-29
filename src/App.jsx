@@ -34,6 +34,7 @@ const BookManage = lazy(() => import('./page/Library/BookManage'));
 const Ranking = lazy(() => import('page/Ranking/Ranking'));
 const Study = lazy(() => import('page/Study/Study'));
 const AutoAttend = lazy(() => import('page/Clerk/AutoAttend'));
+const StartAttend = lazy(() => import('page/Clerk/Components/AutoAttend/StartAttend'));
 const Research = lazy(() => import('page/Clerk/Research'));
 
 const App = ({ member, isDark, signOut }) => {
@@ -74,6 +75,7 @@ const App = ({ member, isDark, signOut }) => {
             <Route path="/ctf/*" element={<CTFApp />} />
             <Route path="/vote/*" element={<VOTEApp />} />
             <Route path="/autoAttend" element={<AutoAttend />} />
+            <Route path="/startAttend" element={<StartAttend />} />
             <Route path="/research" element={<Research />} />
             <Route path="/clerk/*" element={<CLERKApp />} />
             <Route path="/ItManager/*" element={<ItManagerApp />} />
