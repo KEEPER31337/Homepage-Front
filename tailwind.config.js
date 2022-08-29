@@ -3,6 +3,7 @@ module.exports = {
   theme: {
     fontFamily: {
       basic: ['GowunDodum-Regular'],
+      title: ['CBNUJIKJI'],
     },
     extend: {
       backgroundImage: {

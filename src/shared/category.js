@@ -194,6 +194,36 @@ const categoriesAll = [
       },
     ],
   },
+  {
+    id: 33,
+    name: '출석체크',
+    subs: [
+      {
+        id: 34,
+        name: '출석체크',
+        href: 'autoAttend',
+        auth: null,
+      },
+      {
+        id: 35,
+        name: '활동인원조사',
+        href: 'research',
+        auth: null,
+      },
+      {
+        id: 36,
+        name: 'admin서기',
+        href: 'clerk',
+        auth: null,
+      },
+      {
+        id: 37,
+        name: 'admin전산관리자',
+        href: 'itManager',
+        auth: null,
+      },
+    ],
+  },
 ];
 
 const categoriesHidden = [
