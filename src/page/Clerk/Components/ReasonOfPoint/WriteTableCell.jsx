@@ -10,8 +10,8 @@ const Preason = [
   { no: 7, text: '기타', point: '' },
 ];
 const Mreason = [
-  { no: 1, text: '무단 결석', point: 2 },
-  { no: 2, text: '지각 2회', point: 2 },
+  { no: 1, text: '무단 결석', point: 3 },
+  { no: 2, text: '지각 2회', point: 3 },
   { no: 3, text: '회비 미납부', point: 1 },
   { no: 4, text: '기술문서 불참', point: 5 },
   { no: 5, text: '기타', point: '' },
@@ -33,6 +33,23 @@ const WriteTableCell = ({ no, appendData, setAppendData }) => {
   //pm이 바뀔 때
   useEffect(() => {
     setOneData({ ...oneData, reason: '1' });
+    if (oneData.pm === 'p') {
+      if (oneData.reason === '7') {
+        setIsETC(true);
+      } else {
+        setIsETC(false);
+      }
+      const point = Preason[Number(oneData.reason) - 1]?.point;
+      setOneData({ ...oneData, reason: '1', point: point });
+    } else {
+      if (oneData.reason === '5') {
+        setIsETC(true);
+      } else {
+        setIsETC(false);
+      }
+      const point = Mreason[Number(oneData.reason) - 1]?.point;
+      setOneData({ ...oneData, reason: '1', point: point });
+    }
   }, [oneData.pm]);
 
   //isEtc가 바뀔 때마다
@@ -40,7 +57,7 @@ const WriteTableCell = ({ no, appendData, setAppendData }) => {
     setOneData({ ...oneData, etcReason: '' });
   }, [isETC]);
 
-  //pm이 바뀜으로써 reason이 바뀔 때 point 값도 같이 업데이트 되도록
+  //reason이 바뀔 때 point 값도 같이 업데이트 되도록
   useEffect(() => {
     if (oneData.pm === 'p') {
       if (oneData.reason === '7') {
@@ -147,7 +164,6 @@ const WriteTableCell = ({ no, appendData, setAppendData }) => {
               min="0"
               max="10"
               className="inline-block pl-3 pr-0 w-[4em] py-2 text-base border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 sm:text-sm rounded-md dark:bg-mainBlack dark:border-darkComponent"
-              defaultValue={2}
               value={oneData.point}
               onChange={(e) =>
                 setOneData({ ...oneData, point: e.target.value })
@@ -202,7 +218,6 @@ const WriteTableCell = ({ no, appendData, setAppendData }) => {
               min="0"
               max="10"
               className="inline-block pl-2 pr-0 w-full py-2 text-base border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 sm:text-sm rounded-md dark:bg-mainBlack dark:border-darkComponent"
-              defaultValue={2}
               value={oneData.point}
               onChange={(e) =>
                 setOneData({ ...oneData, point: e.target.value })
