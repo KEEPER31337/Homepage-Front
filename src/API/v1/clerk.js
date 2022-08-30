@@ -253,7 +253,7 @@ async function getReply({ token, surveyId, memberId }) {
 async function getRunningResearch({ token }) {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/clerk/surveys',
+    url: API_URL + '/v1/clerk/surveys/visible',
     headers: {
       Authorization: token,
     },

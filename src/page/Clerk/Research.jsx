@@ -16,9 +16,8 @@ const Research = ({ state }) => {
   const [isModify, setIsModify] = useState(false); //관리자)설문 수정하기인지 생성하기인지 여부
   const [selectedSurvey, setSelectedSurvey] = useState(); //수정하기 할 설문조사
   const [serveyPeriod, setServeyPeriod] = useState(false);
-  const [lastData, setLastData] = useState({
-    //마지막으로 진행된 설문조사의 정보와 나의 응답
-  });
+  const [lastData, setLastData] = useState();
+  //마지막으로 진행된 설문조사의 정보와 나의 응답
   const [researchData, setResearchData] = useState({
     //현재 진행중인 설문조사
     year: '',
@@ -357,6 +356,7 @@ const Research = ({ state }) => {
                 '지금은 조사 기간이 아닙니다.'
               )}
             </div>
+            {console.log(lastData)}
             <div className="border bg-mainWhite mb-4 h-full flex flex-col items-center justify-center">
               {serveyPeriod ? (
                 <>
@@ -386,7 +386,7 @@ const Research = ({ state }) => {
                     {isRespond ? '다시 ' : ''}응답하기
                   </button>
                 </>
-              ) : (
+              ) : lastData ? (
                 <div className="text-center">
                   <p className="my-2">{lastData.surveyName}에 응답한 내용</p>
                   <strong className="block px-4 py-2 border shadow-inner rounded-md text-violet-400">
@@ -397,6 +397,10 @@ const Research = ({ state }) => {
                     )}
                   </strong>
                   <div className="h-12"></div>
+                </div>
+              ) : (
+                <div className="text-center text-slate-300">
+                  이전에 진행된 설문조사가 없습니다.
                 </div>
               )}
             </div>

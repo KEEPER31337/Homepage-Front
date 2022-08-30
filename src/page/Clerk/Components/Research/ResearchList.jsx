@@ -135,7 +135,7 @@ const ResearchList = ({
             surveyList.map((survey, index) => (
               <div
                 key={index}
-                className="w-full flex justify-center border-2 rounded-lg bg-slate-50 p-1 items-center"
+                className="w-full flex justify-center border-2 rounded-lg bg-slate-50 p-1 gap-1 items-center"
               >
                 {getProgress(
                   survey.startDate,
@@ -208,7 +208,7 @@ const ResearchList = ({
                       </svg>
                       수정하기
                     </button>
-                    <button className="border rounded-md bg-gray-100 w-full">
+                    <button className="border rounded-md bg-gray-100 w-full hover:bg-gray-200 active:shadow-none focus:outline-none focus:ring-0">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
