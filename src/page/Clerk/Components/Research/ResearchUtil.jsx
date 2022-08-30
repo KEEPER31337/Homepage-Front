@@ -31,4 +31,13 @@ const isClerk = (jobs) => {
     return true;
   return false;
 };
-export { makeSurveyName, makeTime, getNow, getTime, isClerk };
+const getProgress = (startDate, startTime, endDate, endTime) => {
+  //현재 종료됐는지 진행중인지 예정인지 여부
+  const now = new Date();
+  const start = new Date(startDate + 'T' + startTime);
+  const end = new Date(endDate + 'T' + endTime);
+  if (now < start) return 'P'; //예정
+  else if (now > end) return 'E'; //종료
+  else return 'R';
+};
+export { makeSurveyName, makeTime, getNow, getTime, isClerk, getProgress };

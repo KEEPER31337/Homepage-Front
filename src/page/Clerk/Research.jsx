@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 //local
 import clerkAPI from 'API/v1/clerk';
 import { isClerk, getNow, getTime } from './Components/Research/ResearchUtil';
+import ResearchList from './Components/Research/ResearchList';
 import CreateFormModal from './Components/Research/CreateFormModal';
 import FormModal from './Components/Research/FormModal';
 import ResultModal from './Components/Research/ResultModal';
@@ -12,6 +13,8 @@ import './Components/Research/research.css';
 const Research = ({ state }) => {
   const [isRespond, setIsRespond] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isModify, setIsModify] = useState(false); //관리자)설문 수정하기인지 생성하기인지 여부
+  const [selectedSurvey, setSelectedSurvey] = useState(); //수정하기 할 설문조사
   const [serveyPeriod, setServeyPeriod] = useState(false);
   const [lastData, setLastData] = useState({
     //마지막으로 진행된 설문조사의 정보와 나의 응답
@@ -245,6 +248,7 @@ const Research = ({ state }) => {
     //API 호출하여 조사집계결과를 가져옴
     setOnResultModal(true);
   };
+
   useEffect(() => {
     setIsAdmin(isClerk(myStatus));
     clerkAPI.getRunningResearch({ token }).then((res) => {
@@ -293,9 +297,8 @@ const Research = ({ state }) => {
         <CreateFormModal
           onCreateModal={onCreateModal}
           setOnCreateModal={setOnCreateModal}
-          isModify={serveyPeriod}
-          researchData={researchData}
-          setResearchData={setResearchData}
+          isModify={isModify}
+          selectedSurvey={selectedSurvey}
         />
       ) : (
         ''
@@ -337,89 +340,93 @@ const Research = ({ state }) => {
           기간여부 : {serveyPeriod ? 'true' : 'false'}
         </button>
       </div>
-      <div className="flex flex-1 justify-center font-basic">
-        <div className="border bg-slate-200 rounded-md flex flex-col gap-2 max-w-md w-screen h-[70vh] my-4 mx-2 p-4">
-          <div className="font-title text-center text-lg text-violet-600 p-1">
-            {serveyPeriod ? (
-              <>
-                {researchData.surveyName}가 진행중입니다!
-                <br />
-                <span className="text-sm text-gray-400">
-                  응답 기간 : {researchData.startDate.split('-').join('/')}~
-                  {researchData.endDate.split('-').join('/')}
-                </span>
-              </>
-            ) : (
-              '지금은 조사 기간이 아닙니다.'
-            )}
-          </div>
-          <div className="flex justify-center">
+      <div className=" max-w-3xl mx-auto px-2 py-4 space-y-4 sm:space-y-0 md:max-w-5xl sm:px-3 md:px-8 md:flex sm:gap-x-3 md:gap-x-5 font-basic">
+        <div className=" w-full flex justify-center">
+          <div className=" bg-slate-200 rounded-md flex flex-col gap-2 max-w-md w-screen h-[70vh] my-4 mx-2 p-4">
+            <div className="font-title text-center text-lg text-violet-600 p-1">
+              {serveyPeriod ? (
+                <>
+                  {researchData.surveyName}가 진행중입니다!
+                  <br />
+                  <span className="text-sm text-gray-400">
+                    응답 기간 : {researchData.startDate.split('-').join('/')}~
+                    {researchData.endDate.split('-').join('/')}
+                  </span>
+                </>
+              ) : (
+                '지금은 조사 기간이 아닙니다.'
+              )}
+            </div>
+            <div className="border bg-mainWhite mb-4 h-full flex flex-col items-center justify-center">
+              {serveyPeriod ? (
+                <>
+                  {isRespond ? (
+                    <>
+                      <p className=" text-violet-500 text-sm mb-2">
+                        *응답을 완료했습니다.*
+                      </p>
+                      <p className="mb-4  ">
+                        현재 응답 :{' '}
+                        <strong className="inline-block px-4 py-2 border shadow-inner rounded-md text-violet-400">
+                          {response?.state}
+                        </strong>
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-red-500 text-sm mb-2">
+                        *아직 인원 조사에 응답하지 않았습니다.*
+                      </p>
+                    </>
+                  )}
+                  <button
+                    className="border border-violet-400 rounded-md shadow-md p-1 px-2 bg-violet-200 hover:bg-violet-300 active:shadow-none focus:outline-none focus:ring-0"
+                    onClick={() => setOnResearchModal(true)}
+                  >
+                    {isRespond ? '다시 ' : ''}응답하기
+                  </button>
+                </>
+              ) : (
+                <div className="text-center">
+                  <p className="my-2">{lastData.surveyName}에 응답한 내용</p>
+                  <strong className="block px-4 py-2 border shadow-inner rounded-md text-violet-400">
+                    {lastData.replyId ? (
+                      ''
+                    ) : (
+                      <span className="text-gray-400">무응답</span>
+                    )}
+                  </strong>
+                  <div className="h-12"></div>
+                </div>
+              )}
+            </div>
+
             {isAdmin ? (
-              <button
-                className="border border-gray-400 rounded-md shadow-md p-1 px-2 bg-slate-100 text-xs hover:bg-slate-200 active:shadow-none focus:outline-none focus:ring-0"
-                onClick={() => setOnCreateModal(true)}
-              >
-                {serveyPeriod
-                  ? '활동인원조사 폼 수정하기'
-                  : '활동인원조사 폼 만들기'}
-              </button>
+              <div className="border flex items-end">
+                <button
+                  className="border w-full border-gray-400 rounded-md shadow-md p-2 bg-slate-100 text-sm hover:bg-slate-200 active:shadow-none focus:outline-none focus:ring-0"
+                  onClick={() => loadResult()}
+                >
+                  집계결과 보기
+                </button>
+              </div>
             ) : (
               ''
             )}
           </div>
-          <div className="border bg-mainWhite mb-4 h-full flex flex-col items-center justify-center">
-            {serveyPeriod ? (
-              <>
-                {isRespond ? (
-                  <>
-                    <p className=" text-violet-500 text-sm mb-2">
-                      *응답을 완료했습니다.*
-                    </p>
-                    <p className="mb-4  ">
-                      현재 응답 :{' '}
-                      <strong className="inline-block px-4 py-2 border shadow-inner rounded-md text-violet-400">
-                        {response?.state}
-                      </strong>
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <p className="text-red-500 text-sm mb-2">
-                      *아직 인원 조사에 응답하지 않았습니다.*
-                    </p>
-                  </>
-                )}
-                <button
-                  className="border border-violet-400 rounded-md shadow-md p-1 px-2 bg-violet-200 hover:bg-violet-300 active:shadow-none focus:outline-none focus:ring-0"
-                  onClick={() => setOnResearchModal(true)}
-                >
-                  {isRespond ? '다시 ' : ''}응답하기
-                </button>
-              </>
-            ) : (
-              <div className="text-center">
-                <p className="my-2">{lastData.surveyName}에 응답한 내용</p>
-                <strong className="block px-4 py-2 border shadow-inner rounded-md text-violet-400">
-                  {lastData.replyId}
-                </strong>
-                <div className="h-12"></div>
-              </div>
-            )}
-          </div>
-
-          {isAdmin ? (
-            <div className="border flex items-end">
-              <button
-                className="border w-full border-gray-400 rounded-md shadow-md p-2 bg-slate-100 text-sm hover:bg-slate-200 active:shadow-none focus:outline-none focus:ring-0"
-                onClick={() => loadResult()}
-              >
-                집계결과 보기
-              </button>
-            </div>
-          ) : (
-            ''
-          )}
         </div>
+        {isAdmin ? (
+          <div name="관리자페이지 리스트" className="">
+            <ResearchList
+              setOnCreateModal={setOnCreateModal}
+              selectedSurvey={selectedSurvey}
+              setSelectedSurvey={setSelectedSurvey}
+              setIsModify={setIsModify}
+            />
+          </div>
+        ) : (
+          ''
+        )}
       </div>
     </AuthUser>
   );

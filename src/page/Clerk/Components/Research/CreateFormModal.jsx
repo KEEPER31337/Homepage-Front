@@ -9,13 +9,11 @@ const CreateFormModal = ({
   isModify,
   onCreateModal,
   setOnCreateModal,
-  researchData,
-  setResearchData,
+  selectedSurvey,
   state,
 }) => {
-  const [formData, setFormData] = useState(researchData);
+  const [formData, setFormData] = useState(selectedSurvey);
   const token = state.member.token;
-  const myStatus = state.member.memberInfo.jobs;
 
   const registerHandler = () => {
     if (isModify) {
@@ -23,7 +21,7 @@ const CreateFormModal = ({
       clerkAPI
         .modifyResearch({
           token: token,
-          surveyId: researchData.surveyId,
+          surveyId: selectedSurvey.surveyId,
           surveyName: `${formData.year}년 ${formData.season} 활동조사`,
           openTime: [
             ...formData.startDate.split('-'),
@@ -71,24 +69,7 @@ const CreateFormModal = ({
         });
     }
   };
-  useEffect(() => {
-    console.log(isModify);
-    if (!isModify) {
-      //수정하는 게 아니라면 초기값으로 설정
-      setFormData({
-        year: '',
-        season: '1학기',
-        startDate: getNow(),
-        startTime: getTime(),
-        endDate: getNow(),
-        endTime: getTime(),
-        description: '테스트테스트',
-        isVisible: true,
-      });
-    } else {
-      setFormData(researchData);
-    }
-  }, [onCreateModal]);
+
   return (
     <div className="font-basic border h-w-full flex justify-center fixed top-0 left-0 right-0 bottom-0 z-[99] bg-mainBlack bg-opacity-60">
       <div className="my-auto text-sm sm:text-base h-[50vh] flex flex-col">
@@ -231,7 +212,7 @@ const CreateFormModal = ({
                 <input
                   type="checkbox"
                   className=" mt-1 inline-block text-sm text-violet-400 border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 rounded-md checked:bg-violet-400 dark:bg-mainBlack dark:border-darkComponent"
-                  //checked={researchData?.isVisible ? true : false}
+                  defaultChecked={!formData.isVisible}
                   onChange={(e) =>
                     setFormData({
                       ...formData,
