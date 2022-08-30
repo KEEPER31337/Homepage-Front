@@ -20,4 +20,15 @@ const makeTime = (date, time) => {
 const getNow = () => {
   return new Date().toISOString().substring(0, 10);
 };
-export { makeSurveyName, makeTime, getNow };
+const getTime = () => {
+  return new Date().toISOString().substring(11, 19);
+};
+const isClerk = (jobs) => {
+  //관리자인지 여부
+  if (
+    jobs.filter((job) => job === 'ROLE_회장' || job === 'ROLE_서기').length > 0
+  )
+    return true;
+  return false;
+};
+export { makeSurveyName, makeTime, getNow, getTime, isClerk };

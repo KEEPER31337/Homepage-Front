@@ -1,23 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import AuthUser from 'shared/AuthUser';
+import { connect } from 'react-redux';
 
 //local
+import clerkAPI from 'API/v1/clerk';
+import { isClerk, getNow, getTime } from './Components/Research/ResearchUtil';
 import CreateFormModal from './Components/Research/CreateFormModal';
 import FormModal from './Components/Research/FormModal';
 import ResultModal from './Components/Research/ResultModal';
 import './Components/Research/research.css';
-const Research = () => {
-  const [isRespond, setIsRespond] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(true);
-  const [serveyPeriod, setServeyPeriod] = useState(true);
+const Research = ({ state }) => {
+  const [isRespond, setIsRespond] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [serveyPeriod, setServeyPeriod] = useState(false);
+  const [lastData, setLastData] = useState({
+    //마지막으로 진행된 설문조사의 정보와 나의 응답
+  });
   const [researchData, setResearchData] = useState({
-    year: 2022,
-    season: 3,
-    startDate: '2022-08-18',
-    startTime: '12:00:00',
-    endDate: '2022-08-25',
-    endTime: '12:00:00',
-    description: 'ㅁㅁㅁㅁ',
+    //현재 진행중인 설문조사
+    year: '',
+    season: '1학기',
+    startDate: getNow(),
+    startTime: getTime(),
+    endDate: getNow(),
+    endTime: getTime(),
+    description: '',
     isVisible: true,
   });
   const [response, setResponse] = useState(); //내가 제출할 응답
@@ -229,17 +236,62 @@ const Research = () => {
   const [onCreateModal, setOnCreateModal] = useState(false);
   const [onResearchModal, setOnResearchModal] = useState(false);
   const [onResultModal, setOnResultModal] = useState(false);
-  const respondHandler = () => {};
+
+  const token = state.member.token;
+  const myStatus = state.member.memberInfo.jobs;
+  const memberId = state.member.memberInfo.id;
+
   const loadResult = () => {
     //API 호출하여 조사집계결과를 가져옴
     setOnResultModal(true);
   };
-  const viewList = () => {};
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setIsAdmin(isClerk(myStatus));
+    clerkAPI.getRunningResearch({ token }).then((res) => {
+      console.log(res);
+      if (res.data) {
+        //지금 진행중인 설문조사가 있는 경우
+        clerkAPI
+          .getReply({ token, surveyId: res.data, memberId })
+          .then((res) => {
+            console.log(res.data);
+            if (res.data.success) {
+              setServeyPeriod(true);
+              console.log(res);
+              const data = res.data;
+              setResearchData({
+                surveyId: data.surveyId,
+                surveyName: data.surveyName,
+                year: Number(data.surveyName.slice(0, 4)),
+                season: data.surveyName.split(' ')[1],
+                startDate: data.openTime.split('T')[0],
+                startTime: data.openTime.split('T')[1],
+                endDate: data.closeTime.split('T')[0],
+                endTime: data.closeTime.split('T')[1],
+                description: '',
+                isVisible: data.isVisible,
+              });
+              setIsRespond(data.isResponded);
+              setResponse({ state: data.reply, reason: '//TODO 나중에 수정' });
+            }
+          });
+      } else {
+        setServeyPeriod(false);
+        clerkAPI.getLastResearch({ token }).then((res) => {
+          console.log(res);
+          setLastData({
+            surveyName: res.data.surveyName,
+            reply: res.data.reply,
+          });
+        });
+      }
+    });
+  }, [onCreateModal, onResearchModal, onResultModal]);
   return (
     <AuthUser>
       {onCreateModal ? (
         <CreateFormModal
+          onCreateModal={onCreateModal}
           setOnCreateModal={setOnCreateModal}
           isModify={serveyPeriod}
           researchData={researchData}
@@ -250,8 +302,11 @@ const Research = () => {
       )}
       {onResearchModal ? (
         <FormModal
+          onResearchModal={onResearchModal}
           setOnResearchModal={setOnResearchModal}
           isModify={isRespond}
+          researchData={researchData}
+          isRespond={isRespond}
           response={response}
           setResponse={setResponse}
         />
@@ -260,6 +315,7 @@ const Research = () => {
       )}
       {onResultModal ? (
         <ResultModal
+          onResultModal={onResultModal}
           setOnResultModal={setOnResultModal}
           resultInfo={result.info}
           resultData={result.data}
@@ -286,10 +342,11 @@ const Research = () => {
           <div className="font-title text-center text-lg text-violet-600 p-1">
             {serveyPeriod ? (
               <>
-                2022년 2학기 활동인원조사가 진행중입니다!
+                {researchData.surveyName}가 진행중입니다!
                 <br />
                 <span className="text-sm text-gray-400">
-                  응답 기간 : 7/22~7/29
+                  응답 기간 : {researchData.startDate.split('-').join('/')}~
+                  {researchData.endDate.split('-').join('/')}
                 </span>
               </>
             ) : (
@@ -321,7 +378,7 @@ const Research = () => {
                     <p className="mb-4  ">
                       현재 응답 :{' '}
                       <strong className="inline-block px-4 py-2 border shadow-inner rounded-md text-violet-400">
-                        활동
+                        {response?.state}
                       </strong>
                     </p>
                   </>
@@ -341,9 +398,9 @@ const Research = () => {
               </>
             ) : (
               <div className="text-center">
-                <p className="my-2">2022년 1학기 활동 여부</p>
+                <p className="my-2">{lastData.surveyName}에 응답한 내용</p>
                 <strong className="block px-4 py-2 border shadow-inner rounded-md text-violet-400">
-                  활동
+                  {lastData.replyId}
                 </strong>
                 <div className="h-12"></div>
               </div>
@@ -368,4 +425,8 @@ const Research = () => {
   );
 };
 
-export default Research;
+const mapStateToProps = (state, OwnProps) => {
+  return { state };
+};
+
+export default connect(mapStateToProps)(Research);

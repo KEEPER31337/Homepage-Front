@@ -6,33 +6,42 @@ const buttons = [
   '활동',
   '휴면(군대)',
   '휴면(기타)',
+  '졸업',
   '탈퇴',
   '무응답자',
   '통계',
 ];
 
-const ResultModal = ({ setOnResultModal, resultInfo, resultData }) => {
+const ResultModal = ({
+  onResultModal,
+  setOnResultModal,
+  resultInfo,
+  resultData,
+}) => {
   console.log(resultData);
   const [curButton, setCurButton] = useState(buttons[0]);
   const [activeData, setActiveData] = useState([]); //활동
   const [armyData, setArmyData] = useState([]); //휴면(군대)
   const [inactiveData, setInactiveData] = useState([]); //휴면(기타)
+  const [graduateData, setGraduateData] = useState([]); //졸업
   const [dropData, setDropData] = useState([]); //탈퇴회원
   const [noapplyData, setNoapplyData] = useState([]); //무응답
 
   useEffect(() => {
     setNoapplyData(resultData.filter((data) => data.isRespond === false));
-    setActiveData(resultData.filter((data) => data.respond === '1'));
-    setArmyData(resultData.filter((data) => data.respond === '2'));
-    setInactiveData(resultData.filter((data) => data.respond === '3'));
-    setDropData(resultData.filter((data) => data.respond === '4'));
-  }, []);
+    setActiveData(resultData.filter((data) => data.respond === '1L'));
+    setArmyData(resultData.filter((data) => data.respond === '2L'));
+    setInactiveData(resultData.filter((data) => data.respond === '3L'));
+    setGraduateData(resultData.filter((data) => data.respond === '4L'));
+    setDropData(resultData.filter((data) => data.respond === '5L'));
+  }, [onResultModal]);
   const getList = (button) => {
     if (button === buttons[0]) return activeData;
     else if (button === buttons[1]) return armyData;
     else if (button === buttons[2]) return inactiveData;
-    else if (button === buttons[3]) return dropData;
-    else if (button === buttons[4]) return noapplyData;
+    else if (button === buttons[3]) return graduateData;
+    else if (button === buttons[4]) return dropData;
+    else if (button === buttons[5]) return noapplyData;
   };
   return (
     <div className="font-basic border h-w-full flex justify-center fixed top-0 left-0 right-0 bottom-0 z-[99] bg-mainBlack bg-opacity-60">
@@ -57,7 +66,7 @@ const ResultModal = ({ setOnResultModal, resultInfo, resultData }) => {
           <div className="flex flex-wrap justify-center text-xs gap-2 mb-4">
             {buttons.map((button, index) => (
               <>
-                {button === buttons[5] ? (
+                {button === buttons[6] ? (
                   <button
                     key={index}
                     className={
@@ -91,7 +100,7 @@ const ResultModal = ({ setOnResultModal, resultInfo, resultData }) => {
           </div>
           <div
             className={
-              curButton === buttons[5]
+              curButton === buttons[6]
                 ? 'border rounded-md h-full flex flex-col justify-center p-2'
                 : 'hidden'
             }
@@ -132,6 +141,17 @@ const ResultModal = ({ setOnResultModal, resultInfo, resultData }) => {
                   >
                     휴면(기타)
                   </span>
+                  <span
+                    style={{
+                      width:
+                        (100 * graduateData.length) /
+                          (resultData.length - noapplyData.length) +
+                        '%',
+                    }}
+                    className="block bg-red-300 p-1"
+                  >
+                    졸업
+                  </span>
                   <span className="grow bg-red-300 p-1">탈퇴</span>
                 </span>
                 <span
@@ -169,13 +189,13 @@ const ResultModal = ({ setOnResultModal, resultInfo, resultData }) => {
                 <p className="pl-4 text-xs">
                   [ {activeData.length}명 활동 |{' '}
                   {armyData.length + inactiveData.length}명 휴면 |{' '}
-                  {dropData.length}명 탈퇴 ]
+                  {graduateData.length}명 졸업 | {dropData.length}명 탈퇴 ]
                 </p>
                 <p className="">무응답자 : {noapplyData.length}명</p>
               </p>
             </div>
           </div>
-          {curButton !== buttons[5] ? (
+          {curButton !== buttons[6] ? (
             <>
               <div className="sticky top-0 w-full h-[2em] bg-mainWhite">
                 <div className="mx-auto px-4 w-full sm:w-[40vw] max-w-full flex items-center text-center text-sm font-bold">

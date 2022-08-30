@@ -3,33 +3,92 @@ import { connect } from 'react-redux';
 
 //local
 import clerkAPI from 'API/v1/clerk';
-import { getNow } from './ResearchUtil';
+import { getNow, getTime } from './ResearchUtil';
 
 const CreateFormModal = ({
   isModify,
+  onCreateModal,
   setOnCreateModal,
   researchData,
   setResearchData,
   state,
 }) => {
+  const [formData, setFormData] = useState(researchData);
   const token = state.member.token;
   const myStatus = state.member.memberInfo.jobs;
 
   const registerHandler = () => {
-    if (!isModify) {
+    if (isModify) {
       //수정
+      clerkAPI
+        .modifyResearch({
+          token: token,
+          surveyId: researchData.surveyId,
+          surveyName: `${formData.year}년 ${formData.season} 활동조사`,
+          openTime: [
+            ...formData.startDate.split('-'),
+            ...formData.startTime.split(':'),
+            979593000,
+          ].map((el) => Number(el)),
+          closeTime: [
+            ...formData.endDate.split('-'),
+            ...formData.endTime.split(':'),
+            979593000,
+          ].map((el) => Number(el)),
+          description: formData.description,
+          isVisible: formData.isVisible,
+        })
+        .then((res) => {
+          if (res.success) {
+            console.log('활동인원조사 수정 성공');
+            setOnCreateModal(false);
+          }
+        });
     } else {
       //생성
-      clerkAPI.createResearch({
-        token: token,
-        surveyName: '2023년 1학기 활동조사',
-        openTime: [2022, 8, 25, 23, 26, 14, 979593000],
-        closeTime: [2022, 8, 27, 23, 26, 14, 979593000],
-        description: '2023년 1학기 키퍼 회원의 활동 조사를 위한 설문조사',
-        isVisible: false,
-      });
+      clerkAPI
+        .createResearch({
+          token: token,
+          surveyName: `${formData.year}년 ${formData.season} 활동조사`,
+          openTime: [
+            ...formData.startDate.split('-'),
+            ...formData.startTime.split(':'),
+            979593000,
+          ].map((el) => Number(el)),
+          closeTime: [
+            ...formData.endDate.split('-'),
+            ...formData.endTime.split(':'),
+            979593000,
+          ].map((el) => Number(el)),
+          description: formData.description,
+          isVisible: formData.isVisible,
+        })
+        .then((res) => {
+          if (res.success) {
+            console.log('활동인원조사 생성 성공');
+            setOnCreateModal(false);
+          }
+        });
     }
   };
+  useEffect(() => {
+    console.log(isModify);
+    if (!isModify) {
+      //수정하는 게 아니라면 초기값으로 설정
+      setFormData({
+        year: '',
+        season: '1학기',
+        startDate: getNow(),
+        startTime: getTime(),
+        endDate: getNow(),
+        endTime: getTime(),
+        description: '테스트테스트',
+        isVisible: true,
+      });
+    } else {
+      setFormData(researchData);
+    }
+  }, [onCreateModal]);
   return (
     <div className="font-basic border h-w-full flex justify-center fixed top-0 left-0 right-0 bottom-0 z-[99] bg-mainBlack bg-opacity-60">
       <div className="my-auto text-sm sm:text-base h-[50vh] flex flex-col">
@@ -48,6 +107,7 @@ const CreateFormModal = ({
           className="max-w-2xl w-[95vw] sm:w-[70vw] h-full bg-slate-200 rounded-b-lg flex flex-col justify-center"
           onSubmit={(e) => {
             e.preventDefault();
+            registerHandler();
           }}
         >
           <div className="flex flex-col items-center h-full overflow-auto">
@@ -59,9 +119,9 @@ const CreateFormModal = ({
                   id="year"
                   className="mt-1 inline-block px-3 w-[5em] py-2 text-sm border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 rounded-md dark:bg-mainBlack dark:border-darkComponent"
                   placeholder="연도"
-                  defaultValue={researchData?.year}
+                  defaultValue={formData?.year}
                   onChange={(e) =>
-                    setResearchData({ ...researchData, year: e.target.value })
+                    setFormData({ ...formData, year: e.target.value })
                   }
                   required
                 />
@@ -69,15 +129,15 @@ const CreateFormModal = ({
                 <select
                   className="mt-1 inline-block pl-3 pr-10 py-2 text-sm border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 rounded-md dark:bg-mainBlack dark:border-darkComponent"
                   onChange={(e) =>
-                    setResearchData({ ...researchData, season: e.target.value })
+                    setFormData({ ...formData, season: e.target.value })
                   }
-                  defaultValue={researchData?.season}
+                  defaultValue={formData?.season}
                   required
                 >
-                  <option value="1">1학기</option>
-                  <option value="2">여름방학</option>
-                  <option value="3">2학기</option>
-                  <option value="4">겨울방학</option>
+                  <option value="1학기">1학기</option>
+                  <option value="여름방학">여름방학</option>
+                  <option value="2학기">2학기</option>
+                  <option value="겨울방학">겨울방학</option>
                 </select>
               </div>
               <div className="flex items-center gap-2">
@@ -88,13 +148,11 @@ const CreateFormModal = ({
                       type="date"
                       className="mt-1 inline-block px-3 py-2 mr-1 border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 text-sm rounded-md dark:bg-mainBlack dark:border-darkComponent"
                       defaultValue={
-                        researchData?.startDate
-                          ? researchData.startDate
-                          : getNow()
+                        formData?.startDate ? formData.startDate : getNow()
                       }
                       onChange={(e) =>
-                        setResearchData({
-                          ...researchData,
+                        setFormData({
+                          ...formData,
                           startDate: e.target.value,
                         })
                       }
@@ -103,10 +161,10 @@ const CreateFormModal = ({
                     <input
                       type="time"
                       className="mt-1 inline-block px-1 py-1 border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 text-xs rounded-md dark:bg-mainBlack dark:border-darkComponent"
-                      defaultValue={researchData?.startTime}
+                      defaultValue={formData?.startTime}
                       onBlur={(e) =>
-                        setResearchData({
-                          ...researchData,
+                        setFormData({
+                          ...formData,
                           startTime: e.target.value,
                         })
                       }
@@ -120,13 +178,11 @@ const CreateFormModal = ({
                         type="date"
                         className="mt-1 inline-block px-3 py-2 mr-1 border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 text-sm rounded-md dark:bg-mainBlack dark:border-darkComponent"
                         defaultValue={
-                          researchData?.endDate
-                            ? researchData.endDate
-                            : getNow()
+                          formData?.endDate ? formData.endDate : getNow()
                         }
                         onChange={(e) =>
-                          setResearchData({
-                            ...researchData,
+                          setFormData({
+                            ...formData,
                             endDate: e.target.value,
                           })
                         }
@@ -135,10 +191,10 @@ const CreateFormModal = ({
                       <input
                         type="time"
                         className="mt-1 inline-block px-1 py-1 border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 text-xs rounded-md dark:bg-mainBlack dark:border-darkComponent"
-                        defaultValue={researchData?.endTime}
+                        defaultValue={formData?.endTime}
                         onBlur={(e) =>
-                          setResearchData({
-                            ...researchData,
+                          setFormData({
+                            ...formData,
                             endTime: e.target.value,
                           })
                         }
@@ -153,12 +209,12 @@ const CreateFormModal = ({
                 <textarea
                   className="resize-none w-full mt-1 inline-block px-3 py-2 text-sm border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 rounded-md dark:bg-mainBlack dark:border-darkComponent"
                   defaultValue={
-                    researchData?.description ? researchData.description : ''
+                    formData?.description ? formData.description : ''
                   }
                   placeholder="설문 소개"
                   onBlur={(e) =>
-                    setResearchData({
-                      ...researchData,
+                    setFormData({
+                      ...formData,
                       description: e.target.value,
                     })
                   }
@@ -175,14 +231,13 @@ const CreateFormModal = ({
                 <input
                   type="checkbox"
                   className=" mt-1 inline-block text-sm text-violet-400 border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 rounded-md checked:bg-violet-400 dark:bg-mainBlack dark:border-darkComponent"
-                  checked={researchData?.isVisible ? true : false}
+                  //checked={researchData?.isVisible ? true : false}
                   onChange={(e) =>
-                    setResearchData({
-                      ...researchData,
-                      isVisible: !e.target.value,
+                    setFormData({
+                      ...formData,
+                      isVisible: !e.target.checked,
                     })
                   }
-                  required
                 />
               </div>
             </div>
@@ -198,7 +253,6 @@ const CreateFormModal = ({
             <button
               type="submit"
               className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-violet-400 hover:bg-violet-500 focus:outline-none"
-              onClick={() => registerHandler()}
             >
               {isModify ? '수정하기' : '등록하기'}
             </button>
