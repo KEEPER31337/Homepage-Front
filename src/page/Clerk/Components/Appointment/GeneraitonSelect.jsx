@@ -20,7 +20,7 @@ const GeneraitonSelect = ({ setGen }) => {
       <div onChange={changeGeneration}>
         <select
           defaultValue="13"
-          className="text-md border-2 border-amber-200 rounded-lg  focus:border-amber-300 focus:ring-amber-300"
+          className="text-md border-2 dark:border-violet-200 dark:focus:border-violet-300 dark:focus:ring-violet-300 dark:bg-darkPoint border-amber-200 rounded-lg  focus:border-amber-300 focus:ring-amber-300"
         >
           {generation.map((g) => (
             <option key={g.id} value={g.id}>
