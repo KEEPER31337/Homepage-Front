@@ -420,7 +420,7 @@ const Research = ({ state }) => {
           </div>
         </div>
         {isAdmin ? (
-          <div name="관리자페이지 리스트" className="">
+          <div name="관리자페이지 리스트" className="py-4">
             <ResearchList
               setOnCreateModal={setOnCreateModal}
               selectedSurvey={selectedSurvey}
