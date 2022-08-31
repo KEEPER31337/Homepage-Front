@@ -9,7 +9,6 @@
     "@material/textfield": "^14.0.0",
     "@mui/x-date-pickers": "^5.0.0-beta.6",
     "@reduxjs/toolkit": "^1.7.1",
-    "@tailwindcss/forms": "^0.4.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -22,6 +21,7 @@
     "aos": "^2.3.4",
     "axios": "^0.25.0",
     "babel-polyfill": "^6.26.0",
+    "bootstrap": "^5.2.0-beta1",
     "cors": "^2.8.5",
     "dayjs": "^1.10.7",
     "dotenv": "^16.0.0",
@@ -89,7 +89,8 @@
     ]
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.2",
+    "@tailwindcss/forms": "^0.5.2",
+    "autoprefixer": "^10.4.5",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "customize-cra": "^1.0.0",
     "eslint": "^8.15.0",
@@ -98,7 +99,7 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.5.0",
-    "postcss": "^8.4.5",
+    "postcss": "^8.4.16",
     "react-app-rewired": "^2.2.1",
     "serve": "^13.0.2",
     "tailwindcss": "^3.0.15"
