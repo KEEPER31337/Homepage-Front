@@ -3,7 +3,12 @@ import resolveConfig from 'tailwindcss/resolveConfig';
 
 import ReasonModal from '../Point/ReasonModal';
 import { compareName, compareRanking } from '../ReasonOfPoint/PointUtil';
-
+import firstGradeBadge from 'assets/img/ctfImg/badge_grade_first.gif';
+import firstGradeBadgeDark from 'assets/img/ctfImg/badge_grade_first_dark.gif';
+import secondGradeBadge from 'assets/img/ctfImg/badge_grade_second.png';
+import secondGradeBadgeDark from 'assets/img/ctfImg/badge_grade_second_dark.png';
+import thirdGradeBadge from 'assets/img/ctfImg/badge_grade_third.png';
+import thirdGradeBadgeDark from 'assets/img/ctfImg/badge_grade_third_dark.png';
 const testData = [
   {
     date: '2022-08-16',
@@ -106,6 +111,8 @@ const PointTable = ({ curSort, pointData, setPointData }) => {
     });
   };
 
+  const isDark = true;
+
   useEffect(() => {
     window.addEventListener('resize', handleResize);
     return () => {
@@ -146,12 +153,12 @@ const PointTable = ({ curSort, pointData, setPointData }) => {
             key={index}
             className={
               (curSort === '랭킹' && data.plusP && index < 3
-                ? 'border-mainYellow'
-                : '') +
+                ? 'border-2 border-slate-300 bg-slate-100 font-bold'
+                : 'border') +
               (curSort === '랭킹' && data.plusP - data.minusP < -9
                 ? ' border-red-400'
-                : '') +
-              ' border rounded-md flex w-full mt-1'
+                : ' ') +
+              ' rounded-md flex w-full mt-1'
             }
             onClick={() => {
               setModalData({ ...data, no: index + 1 });
@@ -159,15 +166,54 @@ const PointTable = ({ curSort, pointData, setPointData }) => {
             }}
             disabled={window.innerWidth > parseInt(smWidth, 10)}
           >
-            <td className="min-w-[2em] w-[2em] p-1">{index + 1}</td>
+            <td className="min-w-[2em] w-[2em] p-1">
+              {curSort === '랭킹' && data.plusP ? (
+                index === 0 ? (
+                  <img
+                    className=""
+                    src={isDark ? firstGradeBadgeDark : firstGradeBadge}
+                  />
+                ) : index === 1 ? (
+                  <img
+                    className=""
+                    src={isDark ? secondGradeBadgeDark : secondGradeBadge}
+                  />
+                ) : index === 2 ? (
+                  <img
+                    className=""
+                    src={isDark ? thirdGradeBadgeDark : thirdGradeBadge}
+                  />
+                ) : (
+                  index + 1
+                )
+              ) : (
+                index + 1
+              )}
+            </td>
             <div className="flex w-full">
               <td className="min-w-[7em] w-full sm:w-[7em] p-1">{data.name}</td>
               {/**모바일에서 내역을 클릭하면 모달창으로 사유를 띄워주도록*/}
               <td className="hidden sm:block sm:w-full p-1">{data.reason}</td>
-              <td className="min-w-[3em] sm:w-[6em] p-1 border-x">
+              <td
+                className={
+                  (curSort === '랭킹' && data.plusP && index < 3
+                    ? 'border-slate-400'
+                    : '') +
+                  (curSort === '랭킹' && data.plusP - data.minusP < -9
+                    ? ' border-red-400'
+                    : ' ') +
+                  ' min-w-[3em] sm:w-[6em] p-1 border-x'
+                }
+              >
                 {data.plusP !== 0 ? data.plusP : ''}
               </td>
-              <td className="min-w-[3em] sm:w-[6em] p-1">
+              <td
+                className={
+                  (curSort === '랭킹' && data.plusP - data.minusP < -9
+                    ? ' text-red-500'
+                    : ' ') + ' min-w-[3em] sm:w-[6em] p-1'
+                }
+              >
                 {data.minusP !== 0 ? data.minusP : ''}
               </td>
             </div>
