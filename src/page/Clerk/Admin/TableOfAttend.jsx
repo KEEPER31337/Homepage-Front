@@ -2,21 +2,47 @@ import { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Dialog, Transition } from '@headlessui/react';
 
-import AuthUser from 'shared/AuthUser';
 import Header from '../Components/TableOfAttend/TableOfAttendHeader';
 import TableContent from '../Components/TableOfAttend/TableContent';
+import cleckAPI from 'API/v1/clerk.js';
 
 const TableOfAttend = ({ member }) => {
   let [isOpen, setIsOpen] = useState(false);
-  const [date, setDate] = useState();
+  const [date, setDate] = useState('');
 
-  function closeModal() {
+  const closeBtn = () => {
     setIsOpen(false);
-  }
+  };
+
+  const appendBtn = () => {
+    setIsOpen(false);
+    cleckAPI
+      .createSeminar({ token: member.token, openTime: date + ' 00:00:00' })
+      .then((data) => {
+        console.log('생성 ', data);
+      });
+  };
 
   const getNow = () => {
     return new Date().toISOString().substring(0, 10);
   };
+
+  // const timestamp = () => {
+  //   var today = new Date();
+  //   today.setHours(today.getHours() + 9);
+  //   return today.toISOString().replace('T', ' ').substring(0, 19);
+  // };
+
+  useEffect(() => {
+    cleckAPI
+      .getSeminarsList({
+        token: member.token,
+      })
+      .then((data) => {
+        console.log('seminar list : ', data);
+      });
+    console.log('세연', getNow());
+  }, []);
 
   return (
     <>
@@ -30,7 +56,7 @@ const TableOfAttend = ({ member }) => {
         </div>
       </div>
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={closeModal}>
+        <Dialog as="div" className="relative z-10" onClose={closeBtn}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -67,6 +93,7 @@ const TableOfAttend = ({ member }) => {
                     <input
                       type="date"
                       className="mt-1 inline-block px-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 sm:text-sm rounded-md dark:bg-mainBlack dark:border-darkComponent"
+                      onChange={(event) => setDate(event.target.value)}
                       defaultValue={getNow()}
                       required
                     />
@@ -76,14 +103,14 @@ const TableOfAttend = ({ member }) => {
                     <button
                       type="button"
                       className="mx-2 inline-flex justify-center rounded-md border border-transparent bg-violet-100 px-4 py-2 text-sm font-medium text-violet-900 hover:bg-violet-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2"
-                      onClick={closeModal}
+                      onClick={closeBtn}
                     >
                       취소
                     </button>
                     <button
                       type="button"
                       className="inline-flex justify-center rounded-md border border-transparent bg-violet-100 px-4 py-2 text-sm font-medium text-violet-900 hover:bg-violet-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2"
-                      onClick={closeModal}
+                      onClick={appendBtn}
                     >
                       추가
                     </button>
