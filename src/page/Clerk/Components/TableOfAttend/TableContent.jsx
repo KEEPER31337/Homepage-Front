@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import { Dialog, Transition } from '@headlessui/react';
 
@@ -14,11 +14,12 @@ import {
 
 const reasons = ['출석', '지각', '결석', '개인 사정'];
 
-const TableContent = ({ member }) => {
+const TableContent = ({ member, state }) => {
   const { height, width } = useWindowDimensions();
   const [size, setSize] = useState(0);
   const [visible, setVisible] = useState(false);
   const [select, setSelect] = useState('출석');
+  const isDark = state.darkMode?.isDark;
   const [content, setContent] = useState({
     name: '',
     user: '',
@@ -27,6 +28,8 @@ const TableContent = ({ member }) => {
   useEffect(() => {
     setSize(dates.length + 1);
   }, []);
+
+  console.log('dark ', isDark);
 
   const clicked = (idx, idx2) => {
     console.log(idx, idx2);
@@ -98,10 +101,14 @@ const TableContent = ({ member }) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
+            <div
+              className={
+                isDark
+                  ? 'fixed inset-0 bg-black bg-opacity-25'
+                  : 'fixed inset-0 bg-white bg-opacity-25'
+              }
+            />
           </Transition.Child>
-          {/* 뒷 배경에 회색 투명도 줌 */}
-
           <div className="fixed inset-0 overflow-y-auto">
             <div className="flex min-h-full items-center justify-center p-4 text-center">
               <Transition.Child
@@ -113,14 +120,24 @@ const TableContent = ({ member }) => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-100"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <div className="w-full flex flex-col justify-center items-center">
+                <Dialog.Panel
+                  className={
+                    isDark
+                      ? 'w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all'
+                      : 'w-full max-w-md transform overflow-hidden rounded-2xl bg-black text-violet-400 p-6 text-left align-middle shadow-xl transition-all'
+                  }
+                >
+                  <div className="w-full flex flex-col justify-center items-center ">
                     <div className="text-xl text-bold">{content.name}</div>
                     <div className="text-lg">{content.user}</div>
                     <div className="w-full flex flex-row justify-center items-center">
                       <div>사유</div>
                       <select
-                        className="w-1/2 m-2 text-sm border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 rounded-md dark:bg-mainBlack dark:border-darkComponent"
+                        className={
+                          isDark
+                            ? 'w-1/2 m-2 text-sm border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 rounded-md bg-mainWhite text-mainBlack'
+                            : 'w-1/2 m-2 text-sm border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 rounded-md bg-mainBlack text-violet-200'
+                        }
                         onChange={(e) => setSelect(e.target.value)}
                         value={select}
                         required
@@ -136,7 +153,11 @@ const TableContent = ({ member }) => {
                       rows="4"
                       cols="30"
                       placeholder="개인 사정 사유"
-                      className="border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 rounded-md dark:bg-mainBlack dark:border-darkComponent"
+                      className={
+                        isDark
+                          ? 'border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 rounded-md bg-mainWhite text-mainBlack'
+                          : 'border-gray-200 focus:outline-none focus:ring-violet-400 focus:border-violet-400 rounded-md bg-mainBlack text-violet-200'
+                      }
                     ></textarea>
                   </div>
                   <div className="mt-4 w-full flex justify-end">
@@ -166,7 +187,7 @@ const TableContent = ({ member }) => {
 };
 
 const mapStateToProps = (state) => {
-  return { member: state.member };
+  return { member: state.member, state: state };
 };
 
 const mapDispatchToProps = (dispatch, OwnProps) => {
