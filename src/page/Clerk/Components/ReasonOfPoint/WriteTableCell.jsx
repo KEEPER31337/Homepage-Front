@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+
+import memberAPI from 'API/v1/member';
 
 const Preason = [
   { no: 1, text: '각종 대외발표', point: 2 },
@@ -17,9 +20,20 @@ const Mreason = [
   { no: 5, text: '기타', point: '' },
 ];
 
-const WriteTableCell = ({ no, appendData, setAppendData }) => {
+const WriteTableCell = ({ no, appendData, setAppendData, state }) => {
   const [isETC, setIsETC] = useState(false);
   const [oneData, setOneData] = useState(appendData[no - 1]);
+  const [searchMemberList, setSearchMemberList] = useState([]); //자동완성으로 보이는 회원들 리스트
+  const token = state.member.token;
+
+  const searchHandler = (e) => {
+    memberAPI.searchMember({ token, keyword: e.target.value }).then((res) => {
+      console.log(res);
+      //TODO api 처리
+      //setSearchMemberList(res.data)
+    });
+  };
+
   useEffect(() => {
     //한 셀의 데이터 변경시 최종 데이터 리스트 업데이트
     setAppendData(
@@ -99,10 +113,12 @@ const WriteTableCell = ({ no, appendData, setAppendData }) => {
             <input
               type="text"
               className="inline-block px-3 py-2 w-full text-base border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 sm:text-sm rounded-md dark:bg-mainBlack dark:border-darkComponent"
-              onChange={(e) =>
+              onChange={(e) => {
                 //TODO 검색하는 기능의 함수로 대체하고 setOneData()은 엔터키를 누르거나 사용자를 선택했을 때 동작하도록
-                setOneData({ ...oneData, name: e.target.value })
-              }
+                setOneData({ ...oneData, name: e.target.value });
+                searchHandler(e);
+              }}
+              required
             />
           </td>
           <td className="min-w-[6em] w-[6em] sm:w-[10em] p-1">
@@ -168,6 +184,7 @@ const WriteTableCell = ({ no, appendData, setAppendData }) => {
               onChange={(e) =>
                 setOneData({ ...oneData, point: e.target.value })
               }
+              required
             />
             점
           </td>
@@ -231,4 +248,9 @@ const WriteTableCell = ({ no, appendData, setAppendData }) => {
   );
 };
 
-export default WriteTableCell;
+const mapStateToProps = (state, OwnProps) => {
+  return {
+    state,
+  };
+};
+export default connect(mapStateToProps)(WriteTableCell);

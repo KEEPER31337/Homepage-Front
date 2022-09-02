@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import resolveConfig from 'tailwindcss/resolveConfig';
+import { connect } from 'react-redux';
 
 import ReasonModal from '../Point/ReasonModal';
 import { compareName, compareRanking } from '../ReasonOfPoint/PointUtil';
@@ -9,6 +10,7 @@ import secondGradeBadge from 'assets/img/ctfImg/badge_grade_second.png';
 import secondGradeBadgeDark from 'assets/img/ctfImg/badge_grade_second_dark.png';
 import thirdGradeBadge from 'assets/img/ctfImg/badge_grade_third.png';
 import thirdGradeBadgeDark from 'assets/img/ctfImg/badge_grade_third_dark.png';
+import clerkAPI from 'API/v1/clerk';
 const testData = [
   {
     date: '2022-08-16',
@@ -96,7 +98,7 @@ const testData = [
   },
 ];
 
-const PointTable = ({ curSort, pointData, setPointData }) => {
+const PointTable = ({ curSort, pointData, setPointData, state }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const [windowSize, setWindowSize] = useState({
@@ -111,7 +113,8 @@ const PointTable = ({ curSort, pointData, setPointData }) => {
     });
   };
 
-  const isDark = true;
+  const isDark = state.darkMode;
+  const token = state.member.token;
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
@@ -120,6 +123,10 @@ const PointTable = ({ curSort, pointData, setPointData }) => {
     };
   }, []);
   useEffect(() => {
+    clerkAPI.getPointOfMember(token).then((res) => {
+      console.log(res);
+      //TODO api 연동
+    });
     setPointData(testData);
   }, [curSort]);
 
@@ -224,4 +231,9 @@ const PointTable = ({ curSort, pointData, setPointData }) => {
   );
 };
 
-export default PointTable;
+const mapStateToProps = (state, OwnProps) => {
+  return {
+    state,
+  };
+};
+export default connect(mapStateToProps)(PointTable);

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import resolveConfig from 'tailwindcss/resolveConfig';
+import { connect } from 'react-redux';
 
+import clerkAPI from 'API/v1/clerk';
 import ReasonModal from './ReasonModal';
 const testData = [
   {
@@ -46,13 +48,17 @@ const testData = [
     minusP: 0,
   },
 ];
-const ViewTable = ({ curYear, recordData, setRecordData }) => {
+const ViewTable = ({ curYear, recordData, setRecordData, state }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [modalData, setModalData] = useState({});
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
-  }); //탭 크기가 변할때마다 페이지를 재렌더링하기위한 state
+  });
+
+  const token = state.member.token;
+
+  //탭 크기가 변할때마다 페이지를 재렌더링하기위한 state
   const smWidth = resolveConfig().theme.screens.sm;
   const handleResize = () => {
     setWindowSize({
@@ -67,7 +73,11 @@ const ViewTable = ({ curYear, recordData, setRecordData }) => {
     };
   }, []);
   useEffect(() => {
-    console.log(curYear);
+    clerkAPI.getPointOfYear({ token, year: curYear }).then((res) => {
+      console.log(res);
+      //TODO api 적용
+      //setRecordData(res.data)
+    });
     setRecordData(testData);
   }, [curYear]);
 
@@ -126,4 +136,9 @@ const ViewTable = ({ curYear, recordData, setRecordData }) => {
   );
 };
 
-export default ViewTable;
+const mapStateToProps = (state, OwnProps) => {
+  return {
+    state,
+  };
+};
+export default connect(mapStateToProps)(ViewTable);

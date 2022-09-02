@@ -333,6 +333,26 @@ async function getCommonMembers() {
     return error.response.data;
   }
 }
+//회원정보 검색
+async function searchMember({ token, keyword }) {
+  const url = API_URL + '/v1/admin/members/ids';
+  const data = {
+    keyword,
+  };
+  const options = {
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  try {
+    const response = await axios.get(url, data, options);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error.response;
+  }
+}
 
 export default {
   getAllMembers,
@@ -355,4 +375,5 @@ export default {
   getUsersFollowCnt,
   getOthersPosts,
   getCommonMembers,
+  searchMember,
 };

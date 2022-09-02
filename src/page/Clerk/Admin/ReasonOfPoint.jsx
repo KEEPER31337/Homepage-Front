@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import AuthUser from 'shared/AuthUser';
 import { PlusCircleIcon } from '@heroicons/react/solid';
+import { connect } from 'react-redux';
 
+import clerkAPI from 'API/v1/clerk';
 import WriteTable from '../Components/ReasonOfPoint/WriteTable';
 import ViewTable from '../Components/ReasonOfPoint/ViewTable';
 import { getNow } from '../Components/ReasonOfPoint/PointUtil';
 
 const years = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
 
-const ReasonOfPoint = () => {
+const ReasonOfPoint = ({ state }) => {
   const [appendData, setAppendData] = useState([]);
   const [recordData, setRecordData] = useState([]);
   const [curYear, setCurYear] = useState();
+
+  const token = state?.member?.token;
 
   const addData = () => {
     setAppendData([
@@ -27,7 +31,17 @@ const ReasonOfPoint = () => {
       },
     ]);
   };
+  const saveHandler = () => {
+    clerkAPI.addPoint({ token }).then((res) => {
+      console.log(res);
+      //TODO api 연동하기(api 함수 수정 후 적용)
+    });
+  };
   useEffect(() => {
+    clerkAPI.getPointYearList({ token }).then((res) => {
+      console.log(res);
+      //TODO api 연동하기
+    });
     setCurYear(years[0]);
   }, []);
   useEffect(() => {
@@ -38,9 +52,13 @@ const ReasonOfPoint = () => {
     <AuthUser>
       <div className="flex flex-1 justify-center min-h-screen">
         <div className="flex flex-col gap-y-4 w-full p-2 bg-gray-100 sm:bg-transparent">
-          <div
+          <form
             name="상벌점 추가 폼"
             className="flex flex-col gap-y-2 rounded-md border w-full p-2 bg-mainWhite sm:bg-gray-100"
+            onSubmit={(e) => {
+              e.preventDefault();
+              saveHandler();
+            }}
           >
             <p className="text-2xl">상벌점 내역 추가하기</p>
             <div className="rounded-md flex flex-col gap-y-2 p-2 bg-mainWhite">
@@ -58,13 +76,13 @@ const ReasonOfPoint = () => {
             </div>
             <div className="flex justify-end items-center">
               <button
-                type="button"
+                type="submit"
                 className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-violet-300 hover:bg-violet-400 focus:outline-none"
               >
                 내역 저장하기
               </button>
             </div>
-          </div>
+          </form>
           <div
             name="상벌점 추가 내역"
             className="flex flex-col gap-y-2 rounded-md border w-full p-2  bg-mainWhite sm:bg-gray-100"
@@ -104,4 +122,9 @@ const ReasonOfPoint = () => {
   );
 };
 
-export default ReasonOfPoint;
+const mapStateToProps = (state, OwnProps) => {
+  return {
+    state,
+  };
+};
+export default connect(mapStateToProps)(ReasonOfPoint);
