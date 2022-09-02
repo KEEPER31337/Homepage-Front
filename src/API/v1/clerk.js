@@ -36,6 +36,122 @@ async function changeType({ token, memberId, typeId }) {
   }
 }
 /**활동 인원 조사 페이지 */
+
+//설문조사 응답
+async function researchReply({
+  token,
+  surveyId,
+  memberId,
+  replyId,
+  excuse,
+  replyTime,
+}) {
+  const url = API_URL + '/v1/clerk/surveys/' + surveyId;
+  const data = {
+    memberId,
+    replyId,
+    excuse,
+    replyTime,
+  };
+  const options = {
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  try {
+    const response = await axios.post(url, data, options);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error.response;
+  }
+}
+//설문 응답 수정
+async function researchReplyModify({
+  token,
+  surveyId,
+  memberId,
+  replyId,
+  excuse,
+  replyTime,
+}) {
+  const url = API_URL + '/v1/clerk/surveys/' + surveyId;
+  const data = {
+    memberId,
+    replyId,
+    excuse,
+    replyTime,
+  };
+  const options = {
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  try {
+    const response = await axios.patch(url, data, options);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error.response;
+  }
+}
+//설문 정보 조회
+async function getReply({ token, surveyId, memberId }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/clerk/surveys/information/' + surveyId,
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error.response;
+  }
+}
+//공개 상태의 설문 조회(현재 진행중이고 공개상태인 설문 조회)
+async function getRunningResearch({ token }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/clerk/surveys/visible/ongoing',
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error.response;
+  }
+}
+//가장 최근에 종료된 설문 조회
+async function getLastResearch({ token }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/clerk/surveys/visible/closed',
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error.response;
+  }
+}
+//----이 아래부터 관리자권한-----
 //설문조사 개설
 async function createResearch({
   token,
@@ -153,10 +269,11 @@ async function close({ token, surveyId }) {
     return error.response;
   }
 }
+
 //설문조사 응답자 목록 조회
 async function getRespondents({ token, surveyId }) {
   const options = {
-    method: 'DELETE',
+    method: 'GET',
     url: API_URL + '/v1/admin/clerk/surveys/' + surveyId + '/respondents',
     headers: {
       Authorization: token,
@@ -171,126 +288,12 @@ async function getRespondents({ token, surveyId }) {
     return error.response;
   }
 }
-//설문조사 응답
-async function researchReply({
-  token,
-  surveyId,
-  memberId,
-  replyId,
-  excuse,
-  replyTime,
-}) {
-  const url = API_URL + '/v1/clerk/surveys/' + surveyId;
-  const data = {
-    memberId,
-    replyId,
-    excuse,
-    replyTime,
-  };
-  const options = {
-    headers: {
-      Authorization: token,
-    },
-  };
-
-  try {
-    const response = await axios.post(url, data, options);
-    return response.data;
-  } catch (error) {
-    console.log(error);
-    return error.response;
-  }
-}
-//설문 응답 수정
-async function researchReplyModify({
-  token,
-  surveyId,
-  memberId,
-  replyId,
-  excuse,
-  replyTime,
-}) {
-  const url = API_URL + '/v1/clerk/surveys/' + surveyId;
-  const data = {
-    memberId,
-    replyId,
-    excuse,
-    replyTime,
-  };
-  const options = {
-    headers: {
-      Authorization: token,
-    },
-  };
-
-  try {
-    const response = await axios.patch(url, data, options);
-    return response.data;
-  } catch (error) {
-    console.log(error);
-    return error.response;
-  }
-}
-//설문 정보 조회
-async function getReply({ token, surveyId, memberId }) {
+//설문 목록 가져오기
+async function getResearchList({ token, page, size }) {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/clerk/surveys/' + surveyId + '/members/' + memberId,
-    headers: {
-      Authorization: token,
-    },
-  };
-
-  try {
-    const response = await axios(options);
-    return response.data;
-  } catch (error) {
-    console.log(error);
-    return error.response;
-  }
-}
-//공개 상태의 설문 조회(현재 진행중이고 공개상태인 설문 조회)
-async function getRunningResearch({ token }) {
-  const options = {
-    method: 'GET',
-    url: API_URL + '/v1/clerk/surveys/visible',
-    headers: {
-      Authorization: token,
-    },
-  };
-
-  try {
-    const response = await axios(options);
-    return response.data;
-  } catch (error) {
-    console.log(error);
-    return error.response;
-  }
-}
-//비공개 상태의 설문 조회(가장 최근에 종료된 설문 조회)
-async function getLastResearch({ token, memberId }) {
-  const options = {
-    method: 'GET',
-    url: API_URL + '/v1/clerk/surveys/closed/members/' + memberId,
-    headers: {
-      Authorization: token,
-    },
-  };
-
-  try {
-    const response = await axios(options);
-    return response.data;
-  } catch (error) {
-    console.log(error);
-    return error.response;
-  }
-}
-
-//종료된 설문 정보 조회(진행중&진행예정인 설문 조회)
-async function getFutureResearch({ token }) {
-  const options = {
-    method: 'GET',
-    url: API_URL + '/v1/admin/clerk/surveys/inVisible',
+    url:
+      API_URL + '/v1/admin/clerk/surveys/list?page=' + page + '&size=' + size,
     headers: {
       Authorization: token,
     },
@@ -310,16 +313,16 @@ async function getFutureResearch({ token }) {
 export default {
   getTypeMemberList,
   changeType,
+  researchReply,
+  researchReplyModify,
+  getReply,
+  getRunningResearch,
+  getLastResearch,
   createResearch,
   modifyResearch,
   removeResearch,
   open,
   close,
   getRespondents,
-  researchReply,
-  researchReplyModify,
-  getFutureResearch,
-  getLastResearch,
-  getRunningResearch,
-  getReply,
+  getResearchList,
 };
