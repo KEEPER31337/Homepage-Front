@@ -17,6 +17,8 @@ const ResultModal = ({
   setOnResultModal,
   resultInfo,
   resultData,
+  noapplyData,
+  memberList,
 }) => {
   console.log(resultData);
   const [curButton, setCurButton] = useState(buttons[0]);
@@ -25,15 +27,14 @@ const ResultModal = ({
   const [inactiveData, setInactiveData] = useState([]); //휴면(기타)
   const [graduateData, setGraduateData] = useState([]); //졸업
   const [dropData, setDropData] = useState([]); //탈퇴회원
-  const [noapplyData, setNoapplyData] = useState([]); //무응답
 
+  useEffect(() => {}, []);
   useEffect(() => {
-    setNoapplyData(resultData.filter((data) => data.isRespond === false));
-    setActiveData(resultData.filter((data) => data.respond === '1L'));
-    setArmyData(resultData.filter((data) => data.respond === '2L'));
-    setInactiveData(resultData.filter((data) => data.respond === '3L'));
-    setGraduateData(resultData.filter((data) => data.respond === '4L'));
-    setDropData(resultData.filter((data) => data.respond === '5L'));
+    setActiveData(resultData.filter((data) => data.reply === '활동'));
+    setArmyData(resultData.filter((data) => data.reply === '휴면(군대)'));
+    setInactiveData(resultData.filter((data) => data.reply === '휴면(기타)'));
+    setGraduateData(resultData.filter((data) => data.reply === '졸업'));
+    setDropData(resultData.filter((data) => data.reply === '탈퇴'));
   }, [onResultModal]);
   const getList = (button) => {
     if (button === buttons[0]) return activeData;
@@ -45,9 +46,10 @@ const ResultModal = ({
   };
   return (
     <div className="font-basic border h-w-full flex justify-center fixed top-0 left-0 right-0 bottom-0 z-[99] bg-mainBlack bg-opacity-60">
+      {console.log(noapplyData)}
       <div className="my-auto text-sm sm:text-base">
         <div className="rounded-t-lg relative p-3 pr-8 bg-mainWhite font-bold dark:bg-darkPoint dark:text-gray-200">
-          {resultInfo.year}년 {resultInfo.season} KEEPER 활동인원조사 집계결과
+          {resultInfo.surveyName} 집계결과
           <button
             className="text-2xl absolute top-2 right-[15px] w-5 font-bold text-center text-gray-400 bg-transparent"
             onClick={() => {
@@ -106,72 +108,101 @@ const ResultModal = ({
             }
           >
             <div className="flex flex-col justify-center h-full">
+              <div className="flex gap-2 text-xs">
+                <div className=" flex gap-1 items-center">
+                  <span className="inline-block rounded-full bg-green-300 h-2 w-2"></span>
+                  활동
+                </div>
+                <div className=" flex gap-1 items-center">
+                  <span className="inline-block rounded-full bg-yellow-300 h-2 w-2"></span>
+                  휴면(군대)
+                </div>
+                <div className=" flex gap-1 items-center">
+                  <span className="inline-block rounded-full bg-orange-300 h-2 w-2"></span>
+                  휴면(기타)
+                </div>
+                <div className=" flex gap-1 items-center">
+                  <span className="inline-block rounded-full bg-blue-300 h-2 w-2"></span>
+                  졸업
+                </div>
+                <div className=" flex gap-1 items-center">
+                  <span className="inline-block rounded-full bg-red-300 h-2 w-2"></span>
+                  탈퇴
+                </div>
+                <div className=" flex gap-1 items-center">
+                  <span className="inline-block rounded-full bg-gray-300 h-2 w-2"></span>
+                  무응답
+                </div>
+              </div>
               <div className="flex gap-1  bg-slate-100 w-full mt-2 p-2 text-center text-xs">
                 <span className="flex gap-1 p-1 grow rounded-md ring-1 ring-slate-400">
                   <span
                     style={{
                       width:
-                        (100 * activeData.length) /
-                          (resultData.length - noapplyData.length) +
-                        '%',
+                        (100 * activeData.length) / resultData.length + '%',
+                      display: activeData.length === 0 ? 'none' : 'block',
                     }}
+                    name="활동"
                     className="block bg-green-300 p-1"
-                  >
-                    활동
-                  </span>
+                  ></span>
+                  <span
+                    style={{
+                      width: (100 * armyData.length) / resultData.length + '%',
+                      display: armyData.length === 0 ? 'none' : 'block',
+                    }}
+                    name="휴면(군대)"
+                    className="bg-yellow-300 p-1"
+                  ></span>
                   <span
                     style={{
                       width:
-                        (100 * armyData.length) /
-                          (resultData.length - noapplyData.length) +
-                        '%',
+                        (100 * inactiveData.length) / resultData.length + '%',
+                      display: inactiveData.length === 0 ? 'none' : 'block',
                     }}
-                    className="block bg-yellow-300 p-1"
-                  >
-                    휴면(군대)
-                  </span>
+                    name="휴면(기타)"
+                    className="block bg-orange-300 p-1"
+                  ></span>
                   <span
                     style={{
                       width:
-                        (100 * inactiveData.length) /
-                          (resultData.length - noapplyData.length) +
-                        '%',
+                        (100 * graduateData.length) / resultData.length + '%',
+                      display: graduateData.length === 0 ? 'none' : 'block',
                     }}
-                    className="block bg-yellow-300 p-1"
-                  >
-                    휴면(기타)
-                  </span>
+                    name="졸업"
+                    className="block bg-blue-300 p-1"
+                  ></span>
                   <span
                     style={{
-                      width:
-                        (100 * graduateData.length) /
-                          (resultData.length - noapplyData.length) +
-                        '%',
+                      width: (100 * dropData.length) / resultData.length + '%',
+                      display: dropData.length === 0 ? 'none' : 'block',
                     }}
-                    className="block bg-red-300 p-1"
-                  >
-                    졸업
-                  </span>
-                  <span className="grow bg-red-300 p-1">탈퇴</span>
+                    name="탈퇴"
+                    className="grow bg-red-300 p-1"
+                  ></span>
                 </span>
                 <span
                   style={{
-                    width: (100 * noapplyData.length) / resultData.length + '%',
+                    width:
+                      (100 * noapplyData?.length) / memberList.length + '%',
+                    display: noapplyData?.length === 0 ? 'none' : 'block',
                   }}
-                  className="flex py-1"
+                  className="flex bg-gray-300 py-1"
                 >
-                  <span className="grow bg-gray-300 p-1">무응답</span>
+                  <span className=""></span>
                 </span>
               </div>
               <div className="flex gap-1 w-full text-center text-xs sm:text-sm text-slate-400">
                 <span className="grow">
-                  응답자({resultData.length - noapplyData.length}명)
+                  응답자({memberList.length - noapplyData?.length}명)
                 </span>
                 <span
                   style={{
-                    width: (100 * noapplyData.length) / resultData.length + '%',
+                    width:
+                      (100 * noapplyData?.length) / memberList.length + '%',
+                    display: noapplyData.length === 0 ? 'none' : '',
                   }}
                 >
+                  {console.log((100 * noapplyData?.length) / memberList.length)}
                   무응답자({noapplyData.length}명)
                 </span>
               </div>
@@ -180,11 +211,11 @@ const ResultModal = ({
               <span className="text-center min-w-[10em] p-2">
                 활동인원조사 대상자
                 <br />
-                {resultData.length}명
+                {memberList.length}명
               </span>
               <p className="border-l flex flex-col w-full p-2 items-start">
                 <p className="">
-                  응답자 : {resultData.length - noapplyData.length}명
+                  응답자 : {memberList.length - noapplyData.length}명
                 </p>
                 <p className="pl-4 text-xs">
                   [ {activeData.length}명 활동 |{' '}
@@ -226,19 +257,19 @@ const ResultModal = ({
                         {curButton === buttons[2] ? (
                           <>
                             <span className="w-[10em] text-center">
-                              {data.name}
+                              {data.realName}
                             </span>
                             <span className="border-b border-slate-400 w-full text-sm text-center">
-                              {data.reason}
+                              {data.excuse}
                             </span>
                           </>
                         ) : (
                           <span className="w-full text-center">
-                            {data.name}
+                            {data.realName ? data.realName : data.nickName}
                           </span>
                         )}
                         <span className="w-[5em] text-right text-slate-400 text-xs">
-                          {data.unitNo}기
+                          {data.generation}기
                         </span>
                       </p>
                     </>

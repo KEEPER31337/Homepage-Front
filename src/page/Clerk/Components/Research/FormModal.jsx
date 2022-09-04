@@ -24,24 +24,24 @@ const FormModal = ({
   const replyHandler = () => {
     console.log(response);
     console.log(myReply);
+    console.log({
+      token,
+      surveyId: researchData.surveyId,
+      replyId: Number(myReply.state),
+      excuse: myReply.reason,
+    });
     if (isRespond) {
       //응답 수정
       clerkAPI
         .researchReplyModify({
           token,
           surveyId: researchData.surveyId,
-          memberId,
-          replyId: parseInt(myReply.state),
+          replyId: Number(myReply.state),
           excuse: myReply.reason,
-          replyTime: [
-            ...getNow().split('-'),
-            ...getTime().split(':'),
-            979593000,
-          ].map((el) => Number(el)),
         })
         .then((res) => {
           console.log(res);
-          if (res.success) setOnResearchModal(false);
+          if (res?.success) setOnResearchModal(false);
         });
     } else {
       //응답
@@ -49,14 +49,8 @@ const FormModal = ({
         .researchReply({
           token,
           surveyId: researchData.surveyId,
-          memberId,
-          replyId: parseInt(myReply.state),
+          replyId: Number(myReply.state),
           excuse: myReply.reason,
-          replyTime: [
-            ...getNow().split('-'),
-            ...getTime().split(':'),
-            979593000,
-          ].map((el) => Number(el)),
         })
         .then((res) => {
           console.log(res);
@@ -69,7 +63,7 @@ const FormModal = ({
       //이미 응답한 경우
       setMyReply(response);
     } else {
-      setMyReply({ state: '1L', reason: '' });
+      setMyReply({ state: '1', reason: '' });
     }
   }, [onResearchModal]);
   return (
@@ -108,14 +102,14 @@ const FormModal = ({
                   value={myReply?.state}
                   required
                 >
-                  <option value="1L">활동</option>
-                  <option value="2L">휴면(군대)</option>
-                  <option value="3L">휴면(기타)</option>
-                  <option value="4L">졸업</option>
-                  <option value="5L">탈퇴</option>
+                  <option value="1">활동</option>
+                  <option value="2">휴면(군대)</option>
+                  <option value="3">휴면(기타)</option>
+                  <option value="4">졸업</option>
+                  <option value="5">탈퇴</option>
                 </select>
               </div>
-              {myReply?.state === '3L' ? (
+              {myReply?.state === '3' ? (
                 <div className="flex items-center gap-2">
                   <span className="min-w-[6em] px-2 font-bold">
                     휴면 사유

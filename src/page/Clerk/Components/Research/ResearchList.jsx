@@ -10,92 +10,281 @@ import {
 } from '@heroicons/react/outline';
 
 import clerkAPI from 'API/v1/clerk';
+import memberAPI from 'API/v1/member';
 import { getNow, getTime, getProgress } from './ResearchUtil';
 
+const size = 5;
+const testData = [
+  {
+    no: 1,
+    name: '가가가',
+    unitNo: 12,
+    isRespond: true,
+    respond: '1',
+    reason: '',
+  },
+  {
+    no: 2,
+    name: '나나나',
+    unitNo: 11,
+    isRespond: false,
+    respond: '',
+    reason: '',
+  },
+  {
+    no: 3,
+    name: '라라라',
+    unitNo: 11,
+    isRespond: true,
+    respond: '2',
+    reason: '',
+  },
+  {
+    no: 4,
+    name: '마마마',
+    unitNo: 12,
+    isRespond: true,
+    respond: '3',
+    reason: 'ㅁㅁㅁㅁㅁㅁ',
+  },
+  {
+    no: 5,
+    name: '다다다',
+    unitNo: 12.5,
+    isRespond: true,
+    respond: '1',
+    reason: '',
+  },
+  {
+    no: 6,
+    name: '사사사',
+    unitNo: 10,
+    isRespond: true,
+    respond: '4',
+    reason: '',
+  },
+  {
+    no: 7,
+    name: '아아아',
+    unitNo: 10.5,
+    isRespond: false,
+    respond: '',
+    reason: '',
+  },
+  {
+    no: 8,
+    name: '하하하',
+    unitNo: 12,
+    isRespond: false,
+    respond: '',
+    reason: '',
+  },
+  {
+    no: 9,
+    name: '차차차',
+    unitNo: 12,
+    isRespond: true,
+    respond: '4',
+    reason: '',
+  },
+  {
+    no: 10,
+    name: '으으으',
+    unitNo: 11,
+    isRespond: true,
+    respond: '4',
+    reason: '',
+  },
+  {
+    no: 11,
+    name: '므므므',
+    unitNo: 12,
+    isRespond: true,
+    respond: '3',
+    reason: 'ㅁㅁㅁㅁㅇㄹㅇㄹㄴ',
+  },
+  {
+    no: 12,
+    name: '자자자',
+    unitNo: 12.5,
+    isRespond: false,
+    respond: '',
+    reason: '',
+  },
+  {
+    no: 13,
+    name: '카카카',
+    unitNo: 10,
+    isRespond: true,
+    respond: '1',
+    reason: '',
+  },
+  {
+    no: 14,
+    name: '박박박',
+    unitNo: 10,
+    isRespond: false,
+    respond: '',
+    reason: '',
+  },
+  {
+    no: 15,
+    name: '김김김',
+    unitNo: 10.5,
+    isRespond: true,
+    respond: '2',
+    reason: '',
+  },
+  {
+    no: 16,
+    name: '이이이',
+    unitNo: 11,
+    isRespond: true,
+    respond: '2',
+    reason: '',
+  },
+  {
+    no: 17,
+    name: '안안안',
+    unitNo: 11,
+    isRespond: false,
+    respond: '',
+    reason: '',
+  },
+  {
+    no: 18,
+    name: '송송송',
+    unitNo: 11.5,
+    isRespond: true,
+    respond: '1',
+    reason: '',
+  },
+  {
+    no: 19,
+    name: '장장장',
+    unitNo: 12.5,
+    isRespond: true,
+    respond: '4',
+    reason: '',
+  },
+  {
+    no: 20,
+    name: '루루루',
+    unitNo: 12,
+    isRespond: true,
+    respond: '1',
+    reason: '',
+  },
+  {
+    no: 21,
+    name: '백백백',
+    unitNo: 11,
+    isRespond: true,
+    respond: '2',
+    reason: '',
+  },
+  {
+    no: 22,
+    name: '임임임',
+    unitNo: 11.5,
+    isRespond: true,
+    respond: '1',
+    reason: '',
+  },
+  {
+    no: 23,
+    name: '정정정정',
+    unitNo: 11,
+    isRespond: true,
+    respond: '3',
+    reason: 'ㄴㄹㅇㄹㄴㄹ',
+  },
+  {
+    no: 24,
+    name: '고양이',
+    unitNo: 12,
+    isRespond: true,
+    respond: '2',
+    reason: '',
+  },
+  {
+    no: 25,
+    name: '멍멍이',
+    unitNo: 10,
+    isRespond: true,
+    respond: '4',
+    reason: '',
+  },
+];
 const ResearchList = ({
   setOnCreateModal,
-  selectedSurvey,
   setSelectedSurvey,
   setIsModify,
+  setResult,
+  setOnResultModal,
+  isChanged,
+  setIsChanged,
+  memberList,
+  setMemberList,
   state,
 }) => {
   const token = state.member.token;
   const jobs = state.member?.memberInfo?.jobs;
   const [surveyList, setSurveyList] = useState([]);
+  const [curPage, setCurPage] = useState(0);
+  const [isLast, setIsLast] = useState();
+
   const openHandler = (surveyId) => {
     clerkAPI.open({ token, surveyId }).then((res) => {
-      console.log(res);
+      //console.log(res);
+      setIsChanged(!isChanged);
     });
   };
   const closeHandler = (surveyId) => {
     clerkAPI.close({ token, surveyId }).then((res) => {
-      console.log(res);
+      //console.log(res);
+      setCurPage(curPage);
+      setIsChanged(!isChanged);
     });
   };
-  useEffect(() => {
-    setSurveyList([
-      {
-        surveyId: 7,
-        surveyName: '2021년 2학기 설문',
-        year: 2021,
-        season: '2학기',
-        description: 'aaaa',
-        startDate: '2022-09-10',
-        startTime: '12:00:00',
-        endDate: '2022-09-30',
-        endTime: '12:00:00',
-        isVisible: false,
-      },
-      {
-        surveyId: 6,
-        surveyName: '2021년 여름방학 설문',
-        year: 2021,
-        season: '여름방학',
-        description: 'bbb',
-        startDate: '2022-08-01',
-        startTime: '12:00:00',
-        endDate: '2022-09-10',
-        endTime: '12:00:00',
-        isVisible: true,
-      },
-      {
-        surveyId: 5,
-        surveyName: '2021년 1학기 설문',
-        year: 2021,
-        season: '1학기',
-        description: 'ccc',
-        startDate: '2022-08-01',
-        startTime: '12:00:00',
-        endDate: '2022-08-20',
-        endTime: '12:00:00',
-        isVisible: true,
-      },
 
-      {
-        surveyId: 4,
-        surveyName: '2020년 겨울방학 활동인원조사',
-        year: 2020,
-        season: '겨울방학',
-        description: 'dddd',
-        startDate: '2022-08-01',
-        startTime: '12:00:00',
-        endDate: '2022-08-20',
-        endTime: '12:00:00',
-        isVisible: true,
-      },
-      {
-        surveyId: 3,
-        surveyName: '2020년 2학기 설문',
-        year: 2020,
-        season: '2학기',
-        description: 'eeeee',
-        startDate: '2022-08-01',
-        startTime: '12:00:00',
-        endDate: '2022-08-20',
-        endTime: '12:00:00',
-        isVisible: true,
-      },
-    ]);
+  const deleteHandler = (surveyId) => {
+    clerkAPI.removeResearch({ token, surveyId }).then((res) => {
+      //console.log(res);
+      setIsChanged(!isChanged);
+    });
+  };
+
+  const viewHandler = (survey) => {
+    clerkAPI
+      .getRespondents({ token, surveyId: survey.surveyId })
+      .then((res) => {
+        setResult({
+          info: survey,
+          data: res?.list,
+          noApply: memberList.filter((data) => {
+            return !res?.list.some((el) => el.memberId === data.id);
+          }),
+        });
+        setOnResultModal(true);
+      });
+  };
+  useEffect(() => {
+    clerkAPI.getResearchList({ token, page: curPage, size }).then((res) => {
+      setSurveyList(res.page.content);
+      setIsLast(res.page.last);
+    });
+  }, [curPage, isChanged]);
+
+  useEffect(() => {
+    setCurPage(0);
+    clerkAPI.getResearchList({ token, page: curPage, size }).then((res) => {
+      setSurveyList(res.page.content);
+      setIsLast(res.page.last);
+    });
+    memberAPI.getAllMembers().then((res) => {
+      setMemberList(res.list);
+    });
   }, []);
   return (
     <>
@@ -137,39 +326,29 @@ const ResearchList = ({
                 key={index}
                 className="w-full flex justify-center border-2 rounded-lg bg-slate-50 p-1 gap-1 items-center"
               >
-                {getProgress(
-                  survey.startDate,
-                  survey.startTime,
-                  survey.endDate,
-                  survey.endTime
-                ) === 'P' ? (
-                  <div className="py-3 w-10 h-10 text-[3px] rounded-full bg-yellow-400 text-mainWhite">
+                {getProgress(survey.openTime, survey.closeTime) === 'P' ? (
+                  <div className="py-3 flex-none w-10 h-10 text-[3px] rounded-full bg-yellow-400 text-mainWhite">
                     예정
                   </div>
-                ) : getProgress(
-                    survey.startDate,
-                    survey.startTime,
-                    survey.endDate,
-                    survey.endTime
-                  ) === 'R' ? (
-                  <div className="py-3 w-10 h-10 text-[3px] rounded-full bg-green-400 text-mainWhite">
+                ) : getProgress(survey.openTime, survey.closeTime) === 'R' ? (
+                  <div className="py-3 flex-none w-10 h-10 text-[3px] rounded-full bg-green-400 text-mainWhite">
                     진행중
                   </div>
                 ) : (
-                  <div className="py-3 w-10 h-10 text-[3px] rounded-full bg-gray-400 text-mainWhite">
+                  <div className="py-3 flex-none w-10 h-10 text-[3px] rounded-full bg-gray-400 text-mainWhite">
                     종료
                   </div>
                 )}
                 <div className="w-[80%] min-w-[15em]">
                   <div className="text-center relative">
-                    <div>{survey.surveyName}</div>
+                    <div>{survey?.surveyName}</div>
                     <div className="text-gray-500 text-xs">
-                      {survey.startDate.split('-').join('/')}~
-                      {survey.endDate.split('-').join('/')}
+                      {survey.openTime.split('T')[0].split('-').join('/')}~
+                      {survey.closeTime.split('T')[0].split('-').join('/')}
                       {survey.isVisible ? (
                         <EyeIcon
                           className={
-                            'absolute right-0 bottom-0 inline-block text-blue-400 h-5 w-5 hover:cursor-pointer'
+                            'absolute right-1 bottom-0 inline-block text-blue-400 h-5 w-5 hover:cursor-pointer'
                           }
                           aria-hidden="true"
                           onClick={() => closeHandler(survey.surveyId)}
@@ -177,7 +356,7 @@ const ResearchList = ({
                       ) : (
                         <EyeOffIcon
                           className={
-                            'absolute right-0 bottom-0 inline-block text-gray-400 h-5 w-5 hover:cursor-pointer'
+                            'absolute right-1 bottom-0 inline-block text-gray-400 h-5 w-5 hover:cursor-pointer'
                           }
                           aria-hidden="true"
                           onClick={() => openHandler(survey.surveyId)}
@@ -208,7 +387,12 @@ const ResearchList = ({
                       </svg>
                       수정하기
                     </button>
-                    <button className="border rounded-md bg-gray-100 w-full hover:bg-gray-200 active:shadow-none focus:outline-none focus:ring-0">
+                    <button
+                      className="border rounded-md bg-gray-100 w-full hover:bg-gray-200 active:shadow-none focus:outline-none focus:ring-0"
+                      onClick={() => {
+                        deleteHandler(survey.surveyId);
+                      }}
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
@@ -225,9 +409,81 @@ const ResearchList = ({
                     </button>
                   </div>
                 </div>
+                <button
+                  className="border-2 border-gray-300 rounded-md w-[5rem] flex flex-col gap-1 p-1 items-center bg-white text-gray-400 text-sm"
+                  onClick={() => {
+                    viewHandler(survey);
+                  }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"
+                    />
+                  </svg>
+                  집계결과
+                </button>
               </div>
             ))
           )}
+          <div className="w-full flex justify-end gap-1 text-violet-400 font-bold">
+            <button
+              className={
+                (curPage === 0
+                  ? 'text-gray-400 bg-gray-200'
+                  : 'hover:bg-slate-100') +
+                ' border-2 rounded-md shrink active:shadow-none focus:outline-none focus:ring-0'
+              }
+              onClick={() => {
+                setCurPage(curPage - 1);
+              }}
+              disabled={curPage <= 0}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
+            <button
+              className={
+                (isLast ? 'text-gray-400 bg-gray-200' : 'hover:bg-slate-100') +
+                ' border-2 rounded-md shrink active:shadow-none focus:outline-none focus:ring-0'
+              }
+              onClick={() => {
+                setCurPage(curPage + 1);
+              }}
+              disabled={isLast}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </>

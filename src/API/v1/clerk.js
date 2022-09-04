@@ -38,20 +38,11 @@ async function changeType({ token, memberId, typeId }) {
 /**활동 인원 조사 페이지 */
 
 //설문조사 응답
-async function researchReply({
-  token,
-  surveyId,
-  memberId,
-  replyId,
-  excuse,
-  replyTime,
-}) {
+async function researchReply({ token, surveyId, replyId, excuse }) {
   const url = API_URL + '/v1/clerk/surveys/' + surveyId;
   const data = {
-    memberId,
     replyId,
     excuse,
-    replyTime,
   };
   const options = {
     headers: {
@@ -68,20 +59,11 @@ async function researchReply({
   }
 }
 //설문 응답 수정
-async function researchReplyModify({
-  token,
-  surveyId,
-  memberId,
-  replyId,
-  excuse,
-  replyTime,
-}) {
+async function researchReplyModify({ token, surveyId, replyId, excuse }) {
   const url = API_URL + '/v1/clerk/surveys/' + surveyId;
   const data = {
-    memberId,
     replyId,
     excuse,
-    replyTime,
   };
   const options = {
     headers: {
@@ -292,8 +274,7 @@ async function getRespondents({ token, surveyId }) {
 async function getResearchList({ token, page, size }) {
   const options = {
     method: 'GET',
-    url:
-      API_URL + '/v1/admin/clerk/surveys/list?page=' + page + '&size=' + size,
+    url: API_URL + '/v1/admin/clerk/surveys?page=' + page + '&size=' + size,
     headers: {
       Authorization: token,
     },

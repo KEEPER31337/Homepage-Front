@@ -31,13 +31,28 @@ const isClerk = (jobs) => {
     return true;
   return false;
 };
-const getProgress = (startDate, startTime, endDate, endTime) => {
+const getProgress = (openTime, closeTime) => {
   //현재 종료됐는지 진행중인지 예정인지 여부
   const now = new Date();
-  const start = new Date(startDate + 'T' + startTime);
-  const end = new Date(endDate + 'T' + endTime);
+  const start = new Date(openTime);
+  const end = new Date(closeTime);
   if (now < start) return 'P'; //예정
   else if (now > end) return 'E'; //종료
   else return 'R';
 };
-export { makeSurveyName, makeTime, getNow, getTime, isClerk, getProgress };
+const replyIdToReply = (replyId) => {
+  if (replyId === 1) return '활동';
+  else if (replyId === 2) return '휴면(군대)';
+  else if (replyId === 3) return '휴면(기타)';
+  else if (replyId === 4) return '졸업';
+  else if (replyId === 5) return '탈퇴';
+};
+export {
+  makeSurveyName,
+  makeTime,
+  getNow,
+  getTime,
+  isClerk,
+  getProgress,
+  replyIdToReply,
+};
