@@ -4,50 +4,7 @@ import { connect } from 'react-redux';
 
 import clerkAPI from 'API/v1/clerk';
 import ReasonModal from './ReasonModal';
-const testData = [
-  {
-    date: '2022-08-16',
-    name: '김김김',
-    reason: '무단결석',
-    plusP: 0,
-    minusP: 2,
-  },
-  {
-    date: '2022-08-16',
-    name: '이이이',
-    reason: '회비 미납부',
-    plusP: 0,
-    minusP: 1,
-  },
-  {
-    date: '2022-08-16',
-    name: '아무개',
-    reason: '각종 대외발표',
-    plusP: 2,
-    minusP: 0,
-  },
-  {
-    date: '2022-08-22',
-    name: '정정정',
-    reason: '무단결석',
-    plusP: 0,
-    minusP: 2,
-  },
-  {
-    date: '2022-08-22',
-    name: '박박박',
-    reason: '지각 2회',
-    plusP: 0,
-    minusP: 2,
-  },
-  {
-    date: '2022-08-22',
-    name: '김김김',
-    reason: '그냥',
-    plusP: 1,
-    minusP: 0,
-  },
-];
+
 const ViewTable = ({ curYear, recordData, setRecordData, state }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [modalData, setModalData] = useState({});
@@ -74,11 +31,9 @@ const ViewTable = ({ curYear, recordData, setRecordData, state }) => {
   }, []);
   useEffect(() => {
     clerkAPI.getPointOfYear({ token, year: curYear }).then((res) => {
-      console.log(res);
-      //TODO api 적용
-      //setRecordData(res.data)
+      //console.log(res);
+      if (res?.success) setRecordData(res.list);
     });
-    setRecordData(testData);
   }, [curYear]);
 
   return (
@@ -104,33 +59,41 @@ const ViewTable = ({ curYear, recordData, setRecordData, state }) => {
             <th className="min-w-[3em] sm:w-[6em] px-1">벌점</th>
           </div>
         </tr>
-        {recordData.map((data, index) => (
-          <button
-            key={index}
-            className="flex border-b w-full"
-            onClick={() => {
-              setModalData({ ...data, no: index + 1 });
-              setIsOpen(true);
-            }}
-            disabled={window.innerWidth > parseInt(smWidth, 10)}
-          >
-            <td className="min-w-[2em] w-[2em] p-1">{index + 1}</td>
-            <div className="flex w-full">
-              <td className="min-w-[7em] w-[7em] p-1">{data.date}</td>
-              <td className="min-w-[4em] w-full p-1">{data.name}</td>
-              {/**모바일에서 내역을 클릭하면 모달창으로 사유를 띄워주도록*/}
-              <td className="hidden sm:block sm:w-full p-1 text-left">
-                {data.reason}
-              </td>
-              <td className="min-w-[3em] sm:w-[6em] p-1 border-x">
-                {data.plusP !== 0 ? data.plusP : ''}
-              </td>
-              <td className="min-w-[3em] sm:w-[6em] p-1">
-                {data.minusP !== 0 ? data.minusP : ''}
-              </td>
-            </div>
-          </button>
-        ))}
+        {recordData?.length !== 0 ? (
+          recordData.map((data, index) => (
+            <button
+              key={index}
+              className="flex border-b w-full"
+              onClick={() => {
+                setModalData({ ...data, no: index + 1 });
+                setIsOpen(true);
+              }}
+              disabled={window.innerWidth > parseInt(smWidth, 10)}
+            >
+              <td className="min-w-[2em] w-[2em] p-1">{index + 1}</td>
+              <div className="flex w-full">
+                <td className="min-w-[7em] w-[7em] p-1">{data.date}</td>
+                <td className="min-w-[4em] w-full p-1">
+                  {data.awarderRealName}
+                </td>
+                {/**모바일에서 내역을 클릭하면 모달창으로 사유를 띄워주도록*/}
+                <td className="hidden sm:block sm:w-full p-1 text-left">
+                  {data.detail}
+                </td>
+                <td className="min-w-[3em] sm:w-[6em] p-1 border-x">
+                  {data.isMerit ? data.merit : ''}
+                </td>
+                <td className="min-w-[3em] sm:w-[6em] p-1">
+                  {!data.isMerit ? data.merit : ''}
+                </td>
+              </div>
+            </button>
+          ))
+        ) : (
+          <div className="flex items-center justify-center h-20 text-slate-300 ">
+            상벌점 내역이 존재하지 않습니다
+          </div>
+        )}
       </table>
     </div>
   );

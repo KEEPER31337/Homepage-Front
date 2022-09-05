@@ -8,12 +8,11 @@ import WriteTable from '../Components/ReasonOfPoint/WriteTable';
 import ViewTable from '../Components/ReasonOfPoint/ViewTable';
 import { getNow } from '../Components/ReasonOfPoint/PointUtil';
 
-const years = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
-
 const ReasonOfPoint = ({ state }) => {
   const [appendData, setAppendData] = useState([]);
   const [recordData, setRecordData] = useState([]);
   const [curYear, setCurYear] = useState();
+  const [yearList, setYearList] = useState([]);
 
   const token = state?.member?.token;
 
@@ -40,9 +39,9 @@ const ReasonOfPoint = ({ state }) => {
   useEffect(() => {
     clerkAPI.getPointYearList({ token }).then((res) => {
       console.log(res);
-      //TODO api 연동하기
+      setYearList(res.list);
+      setCurYear(yearList[0]);
     });
-    setCurYear(years[0]);
   }, []);
   useEffect(() => {
     console.log(appendData);
@@ -91,7 +90,7 @@ const ReasonOfPoint = ({ state }) => {
             <div name="연도 선택"></div>
             <div className="flex flex-col gap-y-2 pl-2">
               <div className="flex flex-wrap gap-2 justify-center p-4">
-                {years.map((year, index) => (
+                {yearList?.map((year, index) => (
                   <button
                     key={index}
                     className={
