@@ -134,8 +134,8 @@ const ResultModal = ({
                   무응답
                 </div>
               </div>
-              <div className="flex gap-1  bg-slate-100 w-full mt-2 p-2 text-center text-xs">
-                <span className="flex gap-1 p-1 grow rounded-md ring-1 ring-slate-400">
+              <div className="flex gap-1  bg-slate-100 w-full mt-2 p-2 text-center text-xs h-10">
+                <span className="flex gap-1 p-[1px] grow rounded-sm ring-1 ring-slate-400 ring-offset-1">
                   <span
                     style={{
                       width:
@@ -243,37 +243,43 @@ const ResultModal = ({
                 </div>
               </div>
               <div className="rounded-md flex flex-col w-full h-full items-center bg-slate-200 overflow-auto">
-                <div className="mx-auto border w-full sm:w-[40vw] max-w-full px-2">
-                  {getList(curButton).map((data, index) => (
-                    <>
-                      <p
-                        key={index}
-                        className="min-h-[2.5em] border border-slate-400 rounded-md flex items-center p-2 my-2 gap-2"
-                      >
-                        <span className="w-[2em] border-r border-slate-400">
-                          {index + 1}
-                        </span>
-
-                        {curButton === buttons[2] ? (
-                          <>
-                            <span className="w-[10em] text-center">
-                              {data.realName}
-                            </span>
-                            <span className="border-b border-slate-400 w-full text-sm text-center">
-                              {data.excuse}
-                            </span>
-                          </>
-                        ) : (
-                          <span className="w-full text-center">
-                            {data.realName ? data.realName : data.nickName}
+                <div className="mx-auto border w-full sm:w-[40vw] max-w-full h-full px-2">
+                  {getList(curButton)?.length !== 0 ? (
+                    getList(curButton).map((data, index) => (
+                      <>
+                        <p
+                          key={index}
+                          className="min-h-[2.5em] border border-slate-400 rounded-md flex items-center p-2 my-2 gap-2"
+                        >
+                          <span className="w-[2em] border-r border-slate-400">
+                            {index + 1}
                           </span>
-                        )}
-                        <span className="w-[5em] text-right text-slate-400 text-xs">
-                          {data.generation}기
-                        </span>
-                      </p>
-                    </>
-                  ))}
+
+                          {curButton === buttons[2] ? (
+                            <>
+                              <span className="w-[10em] text-center">
+                                {data.realName}
+                              </span>
+                              <span className="underline underline-offset-2 decoration-slate-400 w-full text-sm text-center">
+                                {data.excuse}
+                              </span>
+                            </>
+                          ) : (
+                            <span className="w-full text-center">
+                              {data.realName ? data.realName : data.nickName}
+                            </span>
+                          )}
+                          <span className="w-[5em] text-right text-slate-400 text-xs">
+                            {data.generation}기
+                          </span>
+                        </p>
+                      </>
+                    ))
+                  ) : (
+                    <div className="h-full flex justify-center items-center text-slate-400">
+                      해당 문항에 응답한 회원이 없습니다.
+                    </div>
+                  )}
                 </div>
               </div>
             </>

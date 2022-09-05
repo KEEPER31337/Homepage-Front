@@ -15,16 +15,29 @@ const CreateFormModal = ({
   state,
 }) => {
   console.log(selectedSurvey);
-  const [formData, setFormData] = useState({
-    year: parseInt(selectedSurvey.surveyName.split(' ')[0]),
-    season: selectedSurvey.surveyName.split(' ')[1],
-    startDate: selectedSurvey.openTime.split('T')[0],
-    startTime: selectedSurvey.openTime.split('T')[1],
-    endDate: selectedSurvey.closeTime.split('T')[0],
-    endTime: selectedSurvey.closeTime.split('T')[1],
-    isVisible: selectedSurvey.isVisible,
-    description: selectedSurvey.description,
-  });
+  const [formData, setFormData] = useState(
+    isModify
+      ? {
+          year: parseInt(selectedSurvey.surveyName?.split(' ')[0]),
+          season: selectedSurvey.surveyName.split(' ')[1],
+          startDate: selectedSurvey.openTime.split('T')[0],
+          startTime: selectedSurvey.openTime.split('T')[1],
+          endDate: selectedSurvey.closeTime.split('T')[0],
+          endTime: selectedSurvey.closeTime.split('T')[1],
+          isVisible: selectedSurvey.isVisible,
+          description: selectedSurvey.description,
+        }
+      : {
+          year: '',
+          season: '1학기',
+          startDate: getNow(),
+          startTime: getTime(),
+          endDate: getNow(),
+          endTime: getTime(),
+          isVisible: true,
+          description: '',
+        }
+  );
   const token = state.member.token;
 
   const registerHandler = () => {

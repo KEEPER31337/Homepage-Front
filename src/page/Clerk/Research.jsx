@@ -188,7 +188,7 @@ const Research = ({ state }) => {
                   <p className="my-2">{lastData.surveyName}에 응답한 내용</p>
                   <strong className="block px-4 py-2 border shadow-inner rounded-md text-violet-400">
                     {lastData.replyId ? (
-                      ''
+                      replyIdToReply(lastData.replyId)
                     ) : (
                       <span className="text-gray-400">무응답</span>
                     )}
