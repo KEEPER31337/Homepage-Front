@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import memberAPI from 'API/v1/member';
 
-const GenerationSelect = ({ token, setGen }) => {
-  const [generation, setGeneration] = useState([]);
-  const [initGen, setInitGen] = useState();
+const GenerationSelect = ({ token, gen, setGen }) => {
+  //모든 기수 불러오기
+  const [generationList, setGenerationList] = useState([]);
+
   useEffect(() => {
     memberAPI
       .getGenerations({
@@ -12,8 +13,16 @@ const GenerationSelect = ({ token, setGen }) => {
       })
       .then((data) => {
         if (data.success) {
-          setGeneration(data.list);
-          setInitGen(data.list[0]);
+          setGenerationList(data.list);
+        }
+      });
+    memberAPI
+      .getGenerations({
+        token: token,
+      })
+      .then((data) => {
+        if (data.success) {
+          setGen(data.list[0]);
         }
       });
   }, []);
@@ -21,21 +30,21 @@ const GenerationSelect = ({ token, setGen }) => {
   const changeGeneration = (e) => {
     setGen(parseInt(e.target.value));
   };
-  console.log(String(initGen));
+
   return (
     <div className="flex items-center ">
       <div onChange={changeGeneration}>
         <select
-          defaultValue={String(initGen)}
+          defaultValue={gen}
           className="text-md border-2 border-amber-200 rounded-md  focus:border-amber-200 focus:ring-amber-200"
         >
-          {generation.map((gen, index) => (
-            <option key={index} value={gen}>
-              {gen}기
+          {generationList.map((item, index) => (
+            <option key={index} value={item}>
+              {item}기
             </option>
           ))}
         </select>
-      </div>{' '}
+      </div>
     </div>
   );
 };
