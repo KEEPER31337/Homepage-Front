@@ -334,6 +334,23 @@ async function getCommonMembers() {
   }
 }
 
+// 모든 기수
+async function getGenerations({ token }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/members/generations',
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 export default {
   getAllMembers,
   getMember,
@@ -355,4 +372,5 @@ export default {
   getUsersFollowCnt,
   getOthersPosts,
   getCommonMembers,
+  getGenerations,
 };

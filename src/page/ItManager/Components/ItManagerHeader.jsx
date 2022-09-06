@@ -67,7 +67,7 @@ const ItManagerHeader = ({ darkMode, member }) => {
                   <div className="absolute top-0 right-0  p-2">
                     <button
                       type="button"
-                      className="ml-1 flex items-center justify-center h-10 w-10 p-1 rounded  bg-violet-200"
+                      className="ml-1 flex items-center justify-center h-10 w-10 p-1 rounded  bg-slate-200"
                       onClick={() => setSidebarOpen(false)}
                     >
                       <XIcon
@@ -83,7 +83,7 @@ const ItManagerHeader = ({ darkMode, member }) => {
                     {categories.map((item) =>
                       !item.auth || jobs?.some((i) => item.auth.includes(i)) ? (
                         <Link to={item.href} key={item.name}>
-                          <div className="group flex items-center my-3 px-3 py-3 text-violet-200 font-bold rounded-md hover:text-mainWhite hover:bg-violet-200">
+                          <div className="group flex items-center my-3 px-3 py-3 text-slate-800 font-bold rounded-md hover:text-mainWhite hover:bg-slate-300">
                             <item.icon
                               className="mr-4 flex-shrink-0 h-6 w-6 "
                               aria-hidden="true"
@@ -115,7 +115,7 @@ const ItManagerHeader = ({ darkMode, member }) => {
               {categories.map((item) =>
                 !item.auth || jobs?.some((i) => item.auth.includes(i)) ? (
                   <Link to={item.href} key={item.name}>
-                    <div className="group flex items-center my-3 px-3 py-3 text-violet-200 font-bold rounded-md hover:text-mainWhite hover:bg-violet-200">
+                    <div className="group flex items-center my-3 px-3 py-3 text-slate-800 font-bold rounded-md hover:text-mainWhite hover:bg-slate-300">
                       <item.icon
                         className="mr-4 flex-shrink-0 h-6 w-6 "
                         aria-hidden="true"
@@ -136,7 +136,7 @@ const ItManagerHeader = ({ darkMode, member }) => {
         <button
           ref={cancelButtonRef}
           type="button"
-          className="p-1 rounded-r-lg border-gray-200 text-gray-500 bg-violet-200 lg:hidden"
+          className="p-1 rounded-r-lg border-gray-200 text-gray-500 bg-slate-200 lg:hidden"
           onClick={() => setSidebarOpen(true)}
         >
           <span className="sr-only">Open sidebar</span>
