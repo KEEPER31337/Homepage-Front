@@ -54,17 +54,17 @@ const PointTable = ({ curSort, pointData, setPointData, state }) => {
       ) : (
         ''
       )}
-      <table className="w-full text-center">
-        <tr className="flex border-b-2 w-full">
-          <th className="min-w-[2em] w-[2em] px-1">No</th>
+      <div className="w-full text-center">
+        <p className="flex border-b-2 w-full font-bold">
+          <p className="min-w-[2em] w-[2em] px-1">No</p>
           <div className="flex w-full">
-            <th className="min-w-[7em] w-full sm:w-[7em] px-1">이름</th>
+            <p className="min-w-[7em] w-full sm:w-[7em] px-1">이름</p>
             {/**모바일에서 내역을 클릭하면 모달창으로 사유를 띄워주도록*/}
-            <th className="hidden sm:block sm:w-full px-1">사유</th>
-            <th className="min-w-[3em] sm:w-[6em] px-1">상점</th>
-            <th className="min-w-[3em] sm:w-[6em] px-1">벌점</th>
+            <p className="hidden sm:block sm:w-full px-1">사유</p>
+            <p className="min-w-[3em] sm:w-[6em] px-1">상점</p>
+            <p className="min-w-[3em] sm:w-[6em] px-1">벌점</p>
           </div>
-        </tr>
+        </p>
         {pointData?.length !== 0 ? (
           (curSort === '명부'
             ? pointData.sort(compareName)
@@ -87,8 +87,8 @@ const PointTable = ({ curSort, pointData, setPointData, state }) => {
               }}
               disabled={window.innerWidth > parseInt(smWidth, 10)}
             >
-              <td className="min-w-[2em] w-[2em] p-1">
-                {curSort === '랭킹' && data.plusP ? (
+              <p className="min-w-[2em] w-[2em] p-1 my-auto">
+                {curSort === '랭킹' && data.totalMerit ? (
                   index === 0 ? (
                     <img
                       className=""
@@ -110,35 +110,46 @@ const PointTable = ({ curSort, pointData, setPointData, state }) => {
                 ) : (
                   index + 1
                 )}
-              </td>
+              </p>
               <div className="flex w-full">
-                <td className="min-w-[7em] w-full sm:w-[7em] p-1">
-                  {data.name}
-                </td>
+                <p className="min-w-[7em] w-full sm:w-[7em] p-1 flex items-center justify-center">
+                  {data.realName}
+                </p>
                 {/**모바일에서 내역을 클릭하면 모달창으로 사유를 띄워주도록*/}
-                <td className="hidden sm:block sm:w-full p-1">{data.reason}</td>
-                <td
+                <p className="hidden sm:block sm:w-full p-1">
+                  {Object.keys(data.detailsWithCount)
+                    .map((key) => key + ' ' + data.detailsWithCount[key] + '회')
+                    .join(', ')}
+                </p>
+                <p
                   className={
-                    (curSort === '랭킹' && data.plusP && index < 3
+                    (curSort === '랭킹' && data.totalMerit && index < 3
                       ? 'border-slate-400'
                       : '') +
-                    (curSort === '랭킹' && data.plusP - data.minusP < -9
+                    (curSort === '랭킹' &&
+                    data.totalMerit - data.totalDemerit < -9
                       ? ' border-red-400'
                       : ' ') +
-                    ' min-w-[3em] sm:w-[6em] p-1 border-x'
+                    ' min-w-[3em] sm:w-[6em] p-1 border-x flex items-center justify-center'
                   }
                 >
-                  {data.plusP !== 0 ? data.plusP : ''}
-                </td>
-                <td
+                  {data.totalMerit > data.totalDemerit
+                    ? data.totalMerit - data.totalDemerit
+                    : ''}
+                </p>
+                <p
                   className={
-                    (curSort === '랭킹' && data.plusP - data.minusP < -9
+                    (curSort === '랭킹' &&
+                    data.totalMerit - data.totalDemerit < -9
                       ? ' text-red-500'
-                      : ' ') + ' min-w-[3em] sm:w-[6em] p-1'
+                      : ' ') +
+                    ' min-w-[3em] sm:w-[6em] p-1 flex items-center justify-center'
                   }
                 >
-                  {data.minusP !== 0 ? data.minusP : ''}
-                </td>
+                  {data.totalMerit < data.totalDemerit
+                    ? data.totalDemerit - data.totalMerit
+                    : ''}
+                </p>
               </div>
             </button>
           ))
@@ -147,7 +158,7 @@ const PointTable = ({ curSort, pointData, setPointData, state }) => {
             상벌점 정보를 불러오는데 실패했습니다.
           </div>
         )}
-      </table>
+      </div>
     </div>
   );
 };
