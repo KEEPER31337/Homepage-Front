@@ -1,38 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import memberAPI from 'API/v1/member';
-
-const Preason = [
-  { no: 1, text: '각종 대외발표', point: 2 },
-  { no: 2, text: '우수 기술문서 작성', point: 3 },
-  { no: 3, text: '연 2개 이상의 기술문서 작성', point: 3 },
-  { no: 4, text: '우수 스터디 진행', point: 3 },
-  { no: 5, text: '개근상', point: 3 },
-  { no: 6, text: '전공 관련 대회 입상', point: 5 },
-  { no: 7, text: '기타', point: '' },
-];
-const Mreason = [
-  { no: 1, text: '무단 결석', point: 3 },
-  { no: 2, text: '지각 2회', point: 3 },
-  { no: 3, text: '회비 미납부', point: 1 },
-  { no: 4, text: '기술문서 불참', point: 5 },
-  { no: 5, text: '기타', point: '' },
-];
-
-const WriteTableCell = ({ no, appendData, setAppendData, state }) => {
-  const [isETC, setIsETC] = useState(false);
+const WriteTableCell = ({
+  no,
+  appendData,
+  setAppendData,
+  Preason,
+  Mreason,
+  memberList,
+  isChanged,
+  state,
+}) => {
   const [oneData, setOneData] = useState(appendData[no - 1]);
-  const [searchMemberList, setSearchMemberList] = useState([]); //자동완성으로 보이는 회원들 리스트
+  const [searchMemberList, setSearchMemberList] = useState(memberList); //자동완성으로 보이는 회원들 리스트
+  const [selectedMember, setSelectedMember] = useState();
+  const [keyword, setKeyword] = useState('');
   const token = state.member.token;
 
   const searchHandler = (e) => {
-    memberAPI.searchMember({ token, keyword: e.target.value }).then((res) => {
-      console.log(res);
-      //TODO api 처리
-      //setSearchMemberList(res.data)
-    });
+    setSearchMemberList(
+      memberList.filter((member) => member?.nickName.includes(keyword))
+    );
   };
+  useEffect(() => {
+    setOneData(appendData[0]);
+    setSelectedMember(null);
+    setKeyword('');
+  }, [isChanged]);
 
   useEffect(() => {
     //한 셀의 데이터 변경시 최종 데이터 리스트 업데이트
@@ -46,61 +40,46 @@ const WriteTableCell = ({ no, appendData, setAppendData, state }) => {
 
   //pm이 바뀔 때
   useEffect(() => {
-    setOneData({ ...oneData, reason: '1' });
     if (oneData.pm === 'p') {
-      if (oneData.reason === '7') {
-        setIsETC(true);
-      } else {
-        setIsETC(false);
-      }
-      const point = Preason[Number(oneData.reason) - 1]?.point;
-      setOneData({ ...oneData, reason: '1', point: point });
+      setOneData({
+        ...oneData,
+        index: 0,
+        typeId: Preason[0]?.id,
+        point: Preason[0]?.merit,
+      });
     } else {
-      if (oneData.reason === '5') {
-        setIsETC(true);
-      } else {
-        setIsETC(false);
-      }
-      const point = Mreason[Number(oneData.reason) - 1]?.point;
-      setOneData({ ...oneData, reason: '1', point: point });
+      setOneData({
+        ...oneData,
+        index: 0,
+        typeId: Mreason[0]?.id,
+        point: Mreason[0]?.merit,
+      });
     }
   }, [oneData.pm]);
-
-  //isEtc가 바뀔 때마다
-  useEffect(() => {
-    setOneData({ ...oneData, etcReason: '' });
-  }, [isETC]);
 
   //reason이 바뀔 때 point 값도 같이 업데이트 되도록
   useEffect(() => {
     if (oneData.pm === 'p') {
-      if (oneData.reason === '7') {
-        setIsETC(true);
-      } else {
-        setIsETC(false);
-      }
-      const point = Preason[Number(oneData.reason) - 1]?.point;
-      setOneData({ ...oneData, point: point });
+      setOneData({ ...oneData, point: Preason[oneData.index]?.merit });
     } else {
-      if (oneData.reason === '5') {
-        setIsETC(true);
-      } else {
-        setIsETC(false);
-      }
-      const point = Mreason[Number(oneData.reason) - 1]?.point;
-      setOneData({ ...oneData, point: point });
+      setOneData({ ...oneData, point: Mreason[oneData.index]?.merit });
     }
-  }, [oneData.reason]);
+  }, [oneData.typeId]);
+
+  //회원정보 선택 시 데이터 업데이트
+  useEffect(() => {
+    setOneData({ ...oneData, member: selectedMember });
+  }, [selectedMember]);
 
   return (
-    <tr
+    <p
       key={no}
       className="flex w-full items-center border mt-1 shadow-sm rounded-md"
     >
-      <td className=" min-w-[2em] p-1 text-center">{no}</td>
-      <tbody className="flex flex-col w-full">
+      <p className=" min-w-[2em] p-1 text-center">{no}</p>
+      <div className="flex flex-col w-full">
         <div className="flex w-full">
-          <td className="border-x min-w-[7em] p-1">
+          <p className="border-x min-w-[7em] p-1">
             <input
               type="date"
               className="w-full inline-block px-1 py-2 text-xs border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 rounded-md dark:bg-mainBlack dark:border-darkComponent"
@@ -108,20 +87,60 @@ const WriteTableCell = ({ no, appendData, setAppendData, state }) => {
               onChange={(e) => setOneData({ ...oneData, date: e.target.value })}
               required
             />
-          </td>
-          <td className="border-x min-w-[7em] w-full sm:w-[10em] p-1">
+          </p>
+          <p className="border-x min-w-[7em] w-full sm:w-[10em] p-1">
             <input
               type="text"
-              className="inline-block px-3 py-2 w-full text-base border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 sm:text-sm rounded-md dark:bg-mainBlack dark:border-darkComponent"
+              className={
+                (selectedMember ? 'text-violet-400 font-bold' : '') +
+                ' peer inline-block px-3 py-2 w-full text-base border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 sm:text-sm rounded-md dark:bg-mainBlack dark:border-darkComponent'
+              }
+              value={selectedMember ? selectedMember.nickName : keyword}
               onChange={(e) => {
-                //TODO 검색하는 기능의 함수로 대체하고 setOneData()은 엔터키를 누르거나 사용자를 선택했을 때 동작하도록
-                setOneData({ ...oneData, name: e.target.value });
+                setKeyword(e.target.value);
                 searchHandler(e);
+              }}
+              onFocus={(e) => {
+                searchHandler(e);
+              }}
+              onKeyUp={(e) => {
+                //selectedMember가 설정된 상태에서 backspace 키를 누른 경우
+                if (selectedMember && e.keyCode === 8) setSelectedMember();
               }}
               required
             />
-          </td>
-          <td className="min-w-[6em] w-[6em] sm:w-[10em] p-1">
+
+            <div className="absolute z-[99] border-2 rounded-md shadow-md mt-1 bg-mainWhite w-[50vw] max-w-[20em] max-h-[10em] p-1 gap-1 grid-cols-1 sm:grid-cols-2 overflow-y-auto hidden peer-focus:grid hover:grid">
+              {searchMemberList?.length !== 0 ? (
+                searchMemberList.map((member, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    className="border rounded-sm p-1 flex hover:bg-slate-50"
+                    onClick={(e) => {
+                      console.log(member);
+                      setSelectedMember(member);
+                    }}
+                  >
+                    <div className="border shrink rounded-full h-8 w-8 overflow-hidden">
+                      <img src={member.thumbnailPath} alt="thumbnail" />
+                    </div>
+                    <div className="grow px-1 flex justify-center items-center h-full">
+                      {member?.nickName}
+                    </div>
+                    <div className="shrink flex items-end text-gray-300 text-xs ">
+                      {member?.generation}기
+                    </div>
+                  </button>
+                ))
+              ) : (
+                <div className="w-full text-center text-slate-400">
+                  회원이 없습니다.
+                </div>
+              )}
+            </div>
+          </p>
+          <p className="min-w-[6em] w-[6em] sm:w-[10em] p-1">
             <select
               className={
                 (oneData.pm === 'p' ? 'text-green-500' : 'text-red-500') +
@@ -138,56 +157,40 @@ const WriteTableCell = ({ no, appendData, setAppendData, state }) => {
                 상점
               </option>
             </select>
-          </td>
-          <td className="hidden sm:flex flex-col gap-1 border-x w-full p-1">
+          </p>
+          <p className="hidden sm:flex flex-col gap-1 border-x w-full p-1">
             <select
               className="w-full  pl-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 sm:text-sm rounded-md dark:bg-mainBlack dark:border-darkComponent"
-              onChange={(e) =>
-                setOneData({ ...oneData, reason: e.target.value })
-              }
-              value={oneData.reason}
+              onChange={(e) => {
+                console.log(e.target.selectedIndex);
+                setOneData({
+                  ...oneData,
+                  index: e.target.selectedIndex,
+                  typeId: e.target.value,
+                });
+              }}
+              value={oneData.typeId}
               required
             >
               {oneData.pm === 'p'
-                ? Preason.map((reason) => (
-                    <option key={reason.no} value={reason.no}>
-                      {reason.text}
+                ? Preason.map((reason, index) => (
+                    <option key={index} value={reason.id}>
+                      {reason.detail}
                     </option>
                   ))
-                : Mreason.map((reason) => (
-                    <option key={reason.no} value={reason.no}>
-                      {reason.text}
+                : Mreason.map((reason, index) => (
+                    <option key={index} value={reason.id}>
+                      {reason.detail}
                     </option>
                   ))}
             </select>
-            {isETC ? (
-              <input
-                type="text"
-                className="inline-block px-3 py-2 w-full text-sm border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 sm:text-xs rounded-md dark:bg-mainBlack dark:border-darkComponent"
-                placeholder="기타 사유"
-                value={oneData.etcReason}
-                onChange={(e) =>
-                  setOneData({ ...oneData, etcReason: e.target.value })
-                }
-              />
-            ) : (
-              ''
-            )}
-          </td>
-          <td className="hidden sm:block min-w-[6em] w-[6em] p-1">
-            <input
-              type="number"
-              min="0"
-              max="10"
-              className="inline-block pl-3 pr-0 w-[4em] py-2 text-base border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 sm:text-sm rounded-md dark:bg-mainBlack dark:border-darkComponent"
-              value={oneData.point}
-              onChange={(e) =>
-                setOneData({ ...oneData, point: e.target.value })
-              }
-              required
-            />
+          </p>
+          <p className="hidden sm:flex min-w-[6em] w-[6em] p-1 justify-center items-center">
+            {oneData.pm === 'p'
+              ? Preason[oneData.index]?.merit
+              : Mreason[oneData.index]?.merit}
             점
-          </td>
+          </p>
         </div>
         <div
           name="모바일 사유"
@@ -198,53 +201,37 @@ const WriteTableCell = ({ no, appendData, setAppendData, state }) => {
             <select
               className="w-full inline-block pl-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 sm:text-sm rounded-md dark:bg-mainBlack dark:border-darkComponent"
               onChange={(e) =>
-                setOneData({ ...oneData, reason: e.target.value })
+                setOneData({
+                  ...oneData,
+                  index: e.target.selectedIndex,
+                  typeId: e.target.value,
+                })
               }
-              value={oneData.reason}
+              value={oneData.typeId}
               required
             >
               {oneData.pm === 'p'
-                ? Preason.map((reason) => (
-                    <option key={reason.no} value={reason.no}>
-                      {reason.text}
+                ? Preason.map((reason, index) => (
+                    <option key={index} value={reason.id}>
+                      {reason.detail}
                     </option>
                   ))
-                : Mreason.map((reason) => (
-                    <option key={reason.no} value={reason.no}>
-                      {reason.text}
+                : Mreason.map((reason, index) => (
+                    <option key={index} value={reason.id}>
+                      {reason.detail}
                     </option>
                   ))}
             </select>
-            {isETC ? (
-              <input
-                type="text"
-                className="inline-block px-3 py-2 w-full text-sm border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 sm:text-xs rounded-md dark:bg-mainBlack dark:border-darkComponent"
-                placeholder="기타 사유"
-                value={oneData.etcReason}
-                onChange={(e) =>
-                  setOneData({ ...oneData, etcReason: e.target.value })
-                }
-              />
-            ) : (
-              ''
-            )}
           </div>
-          <td className="min-w-[4em] w-[4em] flex items-center px-1">
-            <input
-              type="number"
-              min="0"
-              max="10"
-              className="inline-block pl-2 pr-0 w-full py-2 text-base border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 sm:text-sm rounded-md dark:bg-mainBlack dark:border-darkComponent"
-              value={oneData.point}
-              onChange={(e) =>
-                setOneData({ ...oneData, point: e.target.value })
-              }
-            />
+          <p className="min-w-[4em] w-[4em] flex items-center px-1 justify-center">
+            {oneData.pm === 'p'
+              ? Preason[oneData.index]?.merit
+              : Mreason[oneData.index]?.merit}
             점
-          </td>
+          </p>
         </div>
-      </tbody>
-    </tr>
+      </div>
+    </p>
   );
 };
 
