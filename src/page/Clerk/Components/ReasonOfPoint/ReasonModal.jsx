@@ -1,13 +1,5 @@
 //모바일에서만 보일 상벌점 내역 사유
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import {
-  PlusSmIcon,
-  PaperClipIcon,
-  CogIcon,
-  XIcon,
-  PlusIcon,
-} from '@heroicons/react/solid';
+import React, { useRef } from 'react';
 
 //local
 

@@ -1,13 +1,6 @@
 //상벌점 타입 편집창
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import {
-  PlusSmIcon,
-  PaperClipIcon,
-  CogIcon,
-  XIcon,
-  PlusIcon,
-} from '@heroicons/react/solid';
+import { PlusIcon } from '@heroicons/react/solid';
 import { connect } from 'react-redux';
 
 import clerkAPI from 'API/v1/clerk';
@@ -51,9 +44,8 @@ const TypeModal = ({
     if (isOpen && outside.current === e.target) setIsOpen(false);
   };
   const submitHandler = () => {
-    //TODO 저장하기 처리
-    console.log('add', addData);
-    console.log('remove', removeData);
+    //console.log('add', addData);
+    //console.log('remove', removeData);
     if (addData.length !== 0)
       clerkAPI
         .addPointType({
@@ -67,14 +59,19 @@ const TypeModal = ({
           }),
         })
         .then((res) => {
-          console.log(res);
+          //console.log(res);
           if (removeData.length !== 0) {
             clerkAPI
               .removePointType({ token, typeIds: removeData })
               .then((res) => {
-                console.log(res);
-                setIsChanged(!isChanged);
-                setIsOpen(false);
+                //console.log(res);
+                if (res?.success) {
+                  setIsChanged(!isChanged);
+                  setIsOpen(false);
+                } else
+                  alert(
+                    '상벌점 정보를 수정하는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
+                  );
               });
           } else {
             setIsChanged(!isChanged);
@@ -84,9 +81,14 @@ const TypeModal = ({
     else {
       if (removeData.length !== 0)
         clerkAPI.removePointType({ token, typeIds: removeData }).then((res) => {
-          console.log(res);
-          setIsChanged(!isChanged);
-          setIsOpen(false);
+          //console.log(res);
+          if (res?.success) {
+            setIsChanged(!isChanged);
+            setIsOpen(false);
+          } else
+            alert(
+              '상벌점 정보를 수정하는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
+            );
         });
       else {
         setIsChanged(!isChanged);
@@ -125,8 +127,8 @@ const TypeModal = ({
       ref={outside}
       onClick={(e) => handleModalClose(e)}
     >
-      {console.log(viewMerit)}
-      {console.log(viewDemerit)}
+      {/*console.log(viewMerit)*/}
+      {/*console.log(viewDemerit)*/}
       <div className="flex flex-col w-[80vw] h-[80vh] p-2 my-auto text-sm sm:text-base">
         <div className="h-[2em] rounded-t-lg relative p-1 px-2 bg-mainWhite font-bold dark:bg-darkPoint dark:text-gray-200">
           상벌점 사유 수정하기

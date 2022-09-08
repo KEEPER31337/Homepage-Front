@@ -35,7 +35,10 @@ const ViewTable = ({
     if (window.confirm('정말로 해당 내역을 삭제하시겠습니까?')) {
       clerkAPI.removePoint({ token, meritId }).then((res) => {
         if (res?.success) setIsChanged(!isChanged);
-        else alert('내역 삭제 실패! 새로고침 후 다시 실행해주세요.');
+        else
+          alert(
+            '상벌점 내역을 삭제하는데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
+          );
       });
     }
   };
@@ -48,8 +51,14 @@ const ViewTable = ({
   useEffect(() => {
     clerkAPI.getPointOfYear({ token, year: curYear }).then((res) => {
       //console.log(res);
-      if (res?.success) setRecordData(res.list);
-      setIsModify(false);
+      if (res?.success) {
+        setRecordData(res.list);
+        setIsModify(false);
+      } else
+        alert(
+          curYear +
+            '년의 상벌점 내역을 불러오는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
+        );
     });
   }, [curYear, isChanged]);
 

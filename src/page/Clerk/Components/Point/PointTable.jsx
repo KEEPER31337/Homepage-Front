@@ -38,8 +38,12 @@ const PointTable = ({ curSort, pointData, setPointData, state }) => {
   }, []);
   useEffect(() => {
     clerkAPI.getPointOfMember({ token }).then((res) => {
-      console.log(res);
-      if (res.success) setPointData(res.list);
+      //console.log(res);
+      if (res?.success) setPointData(res.list);
+      else
+        alert(
+          '회원별 상벌점 누계 정보를 불러오는데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
+        );
     });
   }, [curSort]);
 

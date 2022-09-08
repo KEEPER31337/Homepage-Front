@@ -38,7 +38,7 @@ const ReasonOfPoint = ({ state }) => {
     ]);
   };
   const saveHandler = () => {
-    console.log(appendData);
+    //console.log(appendData);
     clerkAPI
       .addPoint({
         token,
@@ -51,56 +51,86 @@ const ReasonOfPoint = ({ state }) => {
         }),
       })
       .then((res) => {
-        console.log(res);
-        //TODO api 연동하기(api 함수 수정 후 적용)
-        setAppendData([
-          {
-            no: 1,
-            member: null,
-            pm: 'm',
-            typeId: Mreason[0].id,
-            index: 0,
-            point: Mreason[0].merit,
-            date: getNow(),
-          },
-        ]);
+        //console.log(res);
+        if (res?.success) {
+          setAppendData([
+            {
+              no: 1,
+              member: null,
+              pm: 'm',
+              typeId: Mreason[0].id,
+              index: 0,
+              point: Mreason[0].merit,
+              date: getNow(),
+            },
+          ]);
 
-        setTimeout(() => setIsChanged(!isChanged), 0);
+          setTimeout(() => setIsChanged(!isChanged), 0);
+        } else
+          alert(
+            '상벌점 내역을 저장하는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
+          );
       });
   };
   useEffect(() => {
     clerkAPI.getPointYearList({ token }).then((res) => {
-      console.log(res);
-      setYearList(res.list);
+      //console.log(res);
+      if (res?.success) setYearList(res.list);
+      else
+        alert(
+          '연도 목록을 불러오는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
+        );
     });
     clerkAPI.getPointType({ token }).then((res) => {
-      console.log(res);
-      setPreason(res?.list?.filter((reason) => reason.isMerit));
-      setMreason(res?.list?.filter((reason) => !reason.isMerit));
+      //console.log(res);
+      if (res?.success) {
+        setPreason(res?.list?.filter((reason) => reason.isMerit));
+        setMreason(res?.list?.filter((reason) => !reason.isMerit));
+      } else
+        alert(
+          '상벌점 정보를 불러오는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
+        );
     });
     memberAPI.getCommonMembers().then((res) => {
-      console.log(res);
+      //console.log(res);
       if (res?.success) setMemberList(res.list);
+      else
+        alert(
+          '회원 정보 목록을 불러오는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
+        );
     });
   }, []);
   useEffect(() => {
     clerkAPI.getPointYearList({ token }).then((res) => {
-      console.log(res);
-      setYearList(res.list);
+      //console.log(res);
+      if (res?.success) setYearList(res.list);
+      else
+        alert(
+          '연도 목록을 불러오는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
+        );
     });
     clerkAPI.getPointType({ token }).then((res) => {
-      console.log(res);
-      setPreason(res?.list?.filter((reason) => reason.isMerit));
-      setMreason(res?.list?.filter((reason) => !reason.isMerit));
+      //console.log(res);
+      if (res?.success) {
+        setPreason(res?.list?.filter((reason) => reason.isMerit));
+        setMreason(res?.list?.filter((reason) => !reason.isMerit));
+      } else
+        alert(
+          '상벌점 정보를 불러오는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
+        );
     });
     memberAPI.getCommonMembers().then((res) => {
-      console.log(res);
+      //console.log(res);
       if (res?.success) setMemberList(res.list);
+      else
+        alert(
+          '회원 정보 목록을 불러오는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
+        );
     });
   }, [isChanged]);
 
   useEffect(() => {
-    console.log(appendData);
+    //console.log(appendData);
   }, [appendData]);
   useEffect(() => {
     if (yearList?.length !== 0) setCurYear(yearList[yearList.length - 1]);

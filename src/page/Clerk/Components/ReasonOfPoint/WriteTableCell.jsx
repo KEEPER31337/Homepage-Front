@@ -15,7 +15,6 @@ const WriteTableCell = ({
   const [searchMemberList, setSearchMemberList] = useState(memberList); //자동완성으로 보이는 회원들 리스트
   const [selectedMember, setSelectedMember] = useState();
   const [keyword, setKeyword] = useState('');
-  const token = state.member.token;
 
   const searchHandler = (e) => {
     setSearchMemberList(
@@ -118,7 +117,7 @@ const WriteTableCell = ({
                     type="button"
                     className="border rounded-sm p-1 flex hover:bg-slate-50"
                     onClick={(e) => {
-                      console.log(member);
+                      //console.log(member);
                       setSelectedMember(member);
                     }}
                   >
@@ -162,7 +161,7 @@ const WriteTableCell = ({
             <select
               className="w-full  pl-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 sm:text-sm rounded-md dark:bg-mainBlack dark:border-darkComponent"
               onChange={(e) => {
-                console.log(e.target.selectedIndex);
+                //console.log(e.target.selectedIndex);
                 setOneData({
                   ...oneData,
                   index: e.target.selectedIndex,
