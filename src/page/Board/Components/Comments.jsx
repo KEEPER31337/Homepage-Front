@@ -29,7 +29,7 @@ const Comments = ({
   const [likedComments, setLikedComments] = useState([]); //좋아요 표시한 댓글들의 id 리스트
   const [numComments, setNumComments] = useState(10); //현재 보여주는 댓글 개수(대댓글 제외, 페이지네이션 목적)
   const [realCommentNum, setRealCommentNum] = useState(0); //이 게시글의 총 댓글 수(대댓글 제외)
-  const isDark = state.darkMode;
+  const isDark = state.darkMode?.isDark;
   const token = state.member.token;
   const myId = state.member?.memberInfo?.id;
 
