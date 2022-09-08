@@ -19,10 +19,10 @@ const JobList = ({ member, list, selectJob, setSelectJob, update }) => {
       });
   }, [update]);
   const checked =
-    'h-fit w-full flex flex-row border-b mb-1 border-slate-200 bg-slate-100 rounded-md cursor-pointer';
+    'h-fit w-full flex flex-row border-b mb-1 border-slate-200 dark:border-violet-200 bg-slate-100  dark:bg-black rounded-md cursor-pointer';
 
   const notChecked =
-    'h-fit w-full flex flex-row border-b mb-1 border-slate-200 bg-white  rounded-md hover:bg-slate-100 cursor-pointer';
+    'h-fit w-full flex flex-row border-b mb-1 border-slate-200 dark:border-darkPoint bg-white dark:bg-darkPoint rounded-md hover:bg-slate-100 cursor-pointer';
   return (
     <>
       {jobMembers.length === 0 ? (
@@ -32,12 +32,15 @@ const JobList = ({ member, list, selectJob, setSelectJob, update }) => {
           }}
           className={selectJob === list.id ? checked : notChecked}
         >
-          <div className="flex items-center justify-start text-indigo-900 w-1/2">
-            <img src={list.badgePath} className="inline-block w-9 h-9 mr-2" />
+          <div className="flex items-center justify-start text-indigo-900 dark:text-white w-1/2">
+            <img
+              src={list.badgePath}
+              className="inline-block w-9 h-9 mr-4 rounded-md bg-white"
+            />
             {list.name.slice(5)}
           </div>
-          <div className="flex items-center justify-start w-1/2 ml-4 text-slate-800">
-            <div className="text-slate-400 text-sm ">추가해주세요</div>
+          <div className="flex items-center justify-start w-1/2 ml-4 text-slate-800 dark:text-white">
+            <div className="text-slate-400  text-sm ">추가해주세요</div>
           </div>
         </div>
       ) : (
@@ -49,14 +52,14 @@ const JobList = ({ member, list, selectJob, setSelectJob, update }) => {
               }}
               className={selectJob === list.id ? checked : notChecked}
             >
-              <div className="flex items-center justify-start text-indigo-900 w-1/2">
+              <div className="flex items-center justify-start text-indigo-900 dark:text-white w-1/2">
                 <img
                   src={list.badgePath}
-                  className="inline-block w-9 h-9  mr-2"
+                  className="inline-block w-9 h-9 rounded-md bg-white mr-4"
                 />
                 {list.name.slice(5)}
               </div>
-              <div className="flex items-center justify-start w-1/2 ml-4 text-slate-800">
+              <div className="flex items-center justify-start w-1/2 ml-4 text-slate-800 dark:text-white">
                 <div className="text-slate-400 text-sm mr-2">
                   {cccclist.generation}기
                 </div>

@@ -8,37 +8,39 @@ import {
 } from 'react';
 import { useSelector } from 'react-redux';
 
+//local
 import ChangeMemberJob from '../Components/ReviseAppointment/ChangeMemberJob';
 import Header from '../Components/ReviseAppointment/Header';
 import getContentData from '../Components/ReviseAppointment/GetContentData';
 // API
 import itmanagerAPI from 'API/v1/itmanager';
 import memberAPI from 'API/v1/member';
+
 const CreatorModal = forwardRef(
   ({ member, selectJob, update, setUpdate }, ref) => {
-    const [isOpen, setIsOpen] = useState(false);
-
     //redux 연결
     const token = useSelector((store) => store.member.token);
 
+    //modal 관련
+    const [isOpen, setIsOpen] = useState(false);
+    const openModal = () => {
+      setIsOpen(true);
+    };
     const closeModal = () => {
       setIsOpen(false);
       setUpdate(!update);
     };
-
-    const openModal = () => {
-      setIsOpen(true);
-    };
-
     useImperativeHandle(ref, () => ({
       open: () => {
         openModal();
       },
     }));
 
+    //modal창에 띄워줄 현재 클릭한 직책 인원
     const [jobMemberList, setJobMemberList] = useState([]);
 
-    const [gen, setGen] = useState(13);
+    //modal창에 기수별 모든 키퍼 인원
+    const [gen, setGen] = useState();
     const genMemberList = getContentData({ member, gen });
 
     useEffect(() => {
@@ -52,7 +54,9 @@ const CreatorModal = forwardRef(
             setJobMemberList(data.list);
           }
         });
+    }, [selectJob]);
 
+    useEffect(() => {
       memberAPI
         .getGenerations({
           token: token,
@@ -62,7 +66,7 @@ const CreatorModal = forwardRef(
             setGen(data.list[0]);
           }
         });
-    }, [selectJob]);
+    }, []);
 
     return (
       <>
@@ -97,20 +101,28 @@ const CreatorModal = forwardRef(
                   leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                   leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                 >
-                  <Dialog.Panel className="font-basic relative inline-block bg-white rounded-lg  h-[60vh]   ">
+                  <Dialog.Panel className="font-basic relative inline-block bg-white rounded-lg  h-[50vh]   ">
                     <Header
                       selectJob={selectJob}
                       jobMemberList={jobMemberList}
                       setJobMemberList={setJobMemberList}
+                      gen={gen}
                       setGen={setGen}
                     />
-                    {/* 기수 관련 */}
                     <ChangeMemberJob
                       selectJob={selectJob}
                       genMemberList={genMemberList}
                       jobMemberList={jobMemberList}
                       setJobMemberList={setJobMemberList}
                     />
+                    <div className="bg-white rounded-b-lg text-lg flex justify-center p-2">
+                      <div
+                        onClick={closeModal}
+                        className="bg-white w-24 hover:bg-slate-100 cursor-pointer rounded-lg p-2"
+                      >
+                        완료
+                      </div>
+                    </div>
                   </Dialog.Panel>
                 </Transition.Child>
               </div>

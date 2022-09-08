@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Header from './Header';
 import Content from './Content';
-import getContentData from './ReviseGetContentData';
 
 // api
 import clerkAPI from 'API/v1/clerk';
@@ -14,9 +13,90 @@ const SLEEP = 3; // 휴면회원
 const GRADUATE = 4; // 졸업
 const QUIT = 5; //탈퇴
 
-const Appointment = ({ member }) => {
+const ReviseAppointment = ({ member }) => {
   const [gen, setGen] = useState(13); // 2 == 초기엔 활동인원
-  const [non, regular, sleep, graduate, quit] = getContentData({ member, gen });
+
+  const [non, setNon] = useState([]); //비회원
+  const [regular, setRegular] = useState([]); //정회원 == 활동
+  const [sleep, setSleep] = useState([]); //휴면
+  const [graduate, setGraduate] = useState([]); // 졸업
+  const [quit, setQuit] = useState([]); //틸퇴
+
+  const [GenRegular, setGenRegular] = useState([]);
+  const [GenSleep, setGenSleep] = useState([]);
+  const [GenGraduate, setGenGraduate] = useState([]);
+  const [GenNon, setGenNon] = useState([]);
+  const [GenQuit, setGenQuit] = useState([]);
+
+  useEffect(() => {
+    clerkAPI
+      .getTypeMemberList({
+        token: member.token,
+        typeId: NON,
+      })
+      .then((data) => {
+        if (data.success) {
+          setNon(data.list);
+          setGenNon(data.list.filter((data) => data.generation === gen));
+        }
+      });
+
+    clerkAPI
+      .getTypeMemberList({
+        token: member.token,
+        typeId: REGULAR,
+      })
+      .then((data) => {
+        if (data.success) {
+          setRegular(data.list);
+          setGenRegular(data.list.filter((data) => data.generation === gen));
+        }
+      });
+
+    clerkAPI
+      .getTypeMemberList({
+        token: member.token,
+        typeId: SLEEP,
+      })
+      .then((data) => {
+        if (data.success) {
+          setSleep(data.list);
+          setGenSleep(data.list.filter((data) => data.generation === gen));
+        }
+      });
+
+    clerkAPI
+      .getTypeMemberList({
+        token: member.token,
+        typeId: GRADUATE,
+      })
+      .then((data) => {
+        if (data.success) {
+          setGraduate(data.list);
+          setGenGraduate(data.list.filter((data) => data.generation === gen));
+        }
+      });
+
+    clerkAPI
+      .getTypeMemberList({
+        token: member.token,
+        typeId: QUIT,
+      })
+      .then((data) => {
+        if (data.success) {
+          setQuit(data.list);
+          setGenQuit(data.list.filter((data) => data.generation === gen));
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    setGenNon(non.filter((data) => data.generation === gen));
+    setGenRegular(regular.filter((data) => data.generation === gen));
+    setGenSleep(sleep.filter((data) => data.generation === gen));
+    setGenGraduate(graduate.filter((data) => data.generation === gen));
+    setGenQuit(quit.filter((data) => data.generation === gen));
+  }, [gen]);
 
   //선택한 사람들 직책 변경
   const [changeItems, setChangeItems] = useState(new Set());
@@ -24,8 +104,10 @@ const Appointment = ({ member }) => {
   const navigate = useNavigate();
 
   const reviseClick = () => {
+    //TODO API 들어오면 다시
     setChangeItems(changeItems);
-    changeItems.forEach((item) =>
+
+    for (let item of changeItems) {
       clerkAPI
         .changeType({
           token: member.token,
@@ -34,13 +116,12 @@ const Appointment = ({ member }) => {
         })
         .then((data) => {
           if (data.success) {
-            console.log('--');
+            console.log('타입 바뀐댱');
           }
-        })
-    );
+        });
+    }
 
     navigate('/clerk');
-    // window.location.reload();
   };
 
   return (
@@ -50,33 +131,29 @@ const Appointment = ({ member }) => {
         <div className=" grid grid-cols-4 md:grid-cols-5 p-2 w-full h-fit text-center">
           <Content
             type={NON}
-            typeMemberList={non}
+            typeMemberList={GenNon}
             changeItems={changeItems}
-            //  AllmemberList={currentMemberList}
           />
         </div>
         <div className=" grid grid-cols-4 md:grid-cols-5 p-2 w-full h-fit text-center">
           <Content
             type={REGULAR}
-            typeMemberList={regular}
+            typeMemberList={GenRegular}
             changeItems={changeItems}
-            //  AllmemberList={currentMemberList}
           />
         </div>
         <div className=" grid grid-cols-4 md:grid-cols-5 p-2 w-full h-fit text-center">
           <Content
             type={SLEEP}
-            typeMemberList={sleep}
+            typeMemberList={GenSleep}
             changeItems={changeItems}
-            //  AllmemberList={currentMemberList}
           />
         </div>
         <div className=" grid grid-cols-4 md:grid-cols-5 p-2 w-full h-fit text-center">
           <Content
             type={GRADUATE}
-            typeMemberList={graduate}
+            typeMemberList={GenGraduate}
             changeItems={changeItems}
-            //  AllmemberList={currentMemberList}
           />
         </div>
       </div>
@@ -97,4 +174,4 @@ const mapStateToProps = (state, OwnProps) => {
   return { member: state.member };
 };
 
-export default connect(mapStateToProps)(Appointment);
+export default connect(mapStateToProps)(ReviseAppointment);

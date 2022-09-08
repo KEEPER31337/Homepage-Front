@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { connect } from 'react-redux';
 import itmanagerAPI from 'API/v1/itmanager';
+import AlertModal from '../AlertModal.jsx';
 const CreateBtn = ({
   token,
   member,
@@ -8,7 +9,8 @@ const CreateBtn = ({
   jobMemberList,
   setJobMemberList,
 }) => {
-  // "멤버 id" + "job id" => 직책 삭제
+  //출제자 추가버튼 모달 관련
+  const alertModalRef = useRef({});
 
   const createHandler = () => {
     if (jobMemberList.findIndex((item) => item.memberId == member.id) == -1) {
@@ -28,33 +30,12 @@ const CreateBtn = ({
                 memberId: member.id,
               })
             );
-          } else {
           }
         });
+    } else {
+      alertModalRef.current.open();
     }
   };
-
-  //   const addMember = (author) => {
-  //   //이미 출제자인사람 추가하기 막음
-  //   if (creatorList.findIndex((cmember) => cmember.id == author.id) == -1) {
-  //     ctfAPI
-  //       .addAuthor({
-  //         memberId: author.id,
-  //         token: token,
-  //       })
-  //       .then((data) => {
-  //         if (data.success) {
-  //           // console.log(data);
-  //           ctfAPI.getAuthor({ token: token }).then((data) => {
-  //             setJobMemberList(data.list);
-  //           });
-  //         } else {
-  //           // console.log(data);
-  //           alert('출제자 지정 중 오류가 발생하였습니다.');
-  //         }
-  //       });
-  //   }
-  // };
 
   return (
     <div
@@ -68,11 +49,15 @@ const CreateBtn = ({
         <div className="text-sm text-slate-400">{member.generation}기</div>
         <div className="px-2 ">{member.nickName}</div>
       </div>
+      <AlertModal
+        msg="이미 추가한 사람입니다!"
+        ref={alertModalRef}
+      ></AlertModal>
     </div>
   );
 };
 
-const mapStateToProps = (state, OwnProps) => {
+const mapStateToProps = (state) => {
   return { token: state.member.token };
 };
 
