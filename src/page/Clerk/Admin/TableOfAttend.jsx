@@ -1,26 +1,63 @@
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { Dialog, Transition } from '@headlessui/react';
 
 import Header from '../Components/TableOfAttend/TableOfAttendHeader';
 import TableContent from '../Components/TableOfAttend/TableContent';
-import cleckAPI from 'API/v1/clerk.js';
+import AuthModal from '../Components/AuthModal';
+import clerkAPI from 'API/v1/clerk.js';
 
 const TableOfAttend = ({ member, darkMode }) => {
   let [isOpen, setIsOpen] = useState(false);
   const [date, setDate] = useState('');
   const isDark = darkMode?.isDark;
+  const [page, setPage] = useState(0);
+  const [userSize, setUserSize] = useState(15);
+
+  const auth = ['ROLE_회장', 'ROLE_부회장', 'ROLE_서기'];
+  const jobs = member?.memberInfo?.jobs;
+  const ModalRef = useRef({});
+  useEffect(() => {
+    if (!jobs?.some((i) => auth.includes(i))) {
+      ModalRef.current.open();
+    }
+  }, []);
 
   const closeBtn = () => {
     setIsOpen(false);
   };
 
+  console.log(page);
+
   const appendBtn = () => {
     setIsOpen(false);
-    cleckAPI
+    clerkAPI
       .createSeminar({ token: member.token, openTime: date + ' 00:00:00' })
       .then((data) => {
-        console.log('생성 ', data);
+        if (data.success) {
+          clerkAPI
+            .getAllSeminarAttend({
+              token: member.token,
+              page: 0,
+              size: 40,
+              seasonStartDate: '2022-01-01',
+              seasonEndDate: '2023-10-26',
+            })
+            .then((data) => {
+              //console.log(data);
+            });
+          clerkAPI
+            .getSeminarsList({
+              token: member.token,
+            })
+            .then((data) => {
+              //console.log(data);
+            });
+        }
+        if (!data.success) {
+          //TODO 생성안됐을때 toast같은거 띄워주기
+          //console.log(data);
+        }
       });
   };
 
@@ -28,24 +65,20 @@ const TableOfAttend = ({ member, darkMode }) => {
     return new Date().toISOString().substring(0, 10);
   };
 
-  useEffect(() => {
-    cleckAPI
-      .getSeminarsList({
-        token: member.token,
-      })
-      .then((data) => {
-        console.log('seminar list : ', data);
-      });
-    console.log('세연', getNow());
-  }, []);
-
   return (
     <>
-      <div className="w-4/5 flex flex-col flex-1">
-        <div className="h-full w-full flex container mx-auto justify-center items-center">
-          <div className="flex flex-col justify-center items-center w-4/5">
-            <Header setIsOpen={setIsOpen} />
-            <TableContent />
+      <div className="w-full h-screen flex justify-center">
+        <div className="w-full flex mx-2">
+          <div className="flex flex-col justify-center items-center w-full">
+            <div className="flex justify-center lg:justify-start w-full">
+              <Header
+                setIsOpen={setIsOpen}
+                page={page}
+                setPage={setPage}
+                userSize={userSize}
+              />
+            </div>
+            <TableContent page={page} userSize={userSize} />
           </div>
         </div>
       </div>
@@ -135,6 +168,7 @@ const TableOfAttend = ({ member, darkMode }) => {
           </div>
         </Dialog>
       </Transition>
+      <AuthModal ref={ModalRef}>접근 권한이 없습니다.</AuthModal>
     </>
   );
 };

@@ -11,7 +11,13 @@ import { connect } from 'react-redux';
 
 // local
 import Logo from 'assets/img/keeper_logo.png';
-import { categoriesAll, categoriesHidden } from '../category';
+import {
+  categoriesForAll,
+  categoriesForBoss,
+  categoriesForClerk,
+  categoriesForCM,
+  categoriesHidden,
+} from '../category';
 import SignInBoxMobile from './SignInBoxMobile';
 import UserBoxMobile from './UserBoxMobile';
 
@@ -24,10 +30,19 @@ const HeaderMobile = ({ member }) => {
     if (index === openTab) setOpenTab(-1);
     else setOpenTab(index);
   };
-
+  const jobs = member?.memberInfo?.jobs;
   useEffect(() => {
-    if (member.token) setCategories(categoriesAll);
-    else setCategories(categoriesHidden);
+    if (jobs?.some((role) => role === 'ROLE_회장' || role === 'ROLE_부회장')) {
+      setCategories(categoriesForBoss);
+    } else if (jobs?.some((role) => role === 'ROLE_서기')) {
+      setCategories(categoriesForClerk);
+    } else if (jobs?.some((role) => role === 'ROLE_전산관리자')) {
+      setCategories(categoriesForCM);
+    } else if (member.token) {
+      setCategories(categoriesForAll);
+    } else {
+      setCategories(categoriesHidden);
+    }
   }, [member]);
 
   return (

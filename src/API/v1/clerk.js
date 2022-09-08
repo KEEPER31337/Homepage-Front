@@ -73,6 +73,23 @@ async function createSeminar({ token, openTime }) {
   }
 }
 
+// 세미나 삭제
+async function deleteSeminar({ token, seminarId }) {
+  const options = {
+    method: 'DELETE',
+    url: API_URL + '/v1/admin/clerk/seminars/' + seminarId,
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 // 세미나 출석 상태 목록 조회
 async function getSeminarAttendance({ token }) {
   const options = {
@@ -91,11 +108,16 @@ async function getSeminarAttendance({ token }) {
 }
 
 // 전체 세미나 출석 목록 조회
-async function getAllSeminarAttend({ token, page, size }) {
+async function getAllSeminarAttend({ token, page, size, seasonStartDate, seasonEndDate }) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/admin/clerk/seminars/attendances',
-    params: { page: page, size: size },
+    params: { 
+      page: page, 
+      size: size,
+      seasonStartDate : seasonStartDate,
+      seasonEndDate : seasonEndDate,
+    },
     headers: {
       Authorization: token,
     },
@@ -113,7 +135,6 @@ async function getSomeSeminarAttend({ token, seminarId }) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/admin/clerk/seminars/'+seminarId+'/attendances',
-    params: { seminarId: seminarId },
     headers: {
       Authorization: token,
     },
@@ -169,7 +190,7 @@ async function getAttendConditions({ token, seminarId, attendanceCloseTime, late
   const options = {
     method: 'GET',
     url: API_URL + '/v1/admin/clerk/attendance/conditions',
-    params: { seminarId: seminarId, attendanceCloseTime: attendanceCloseTime, latenessCloseTime: latenessCloseTime },
+    params: { seminarId, attendanceCloseTime, latenessCloseTime },
     headers: {
       Authorization: token,
     },
@@ -187,6 +208,7 @@ export default {
   changeType,
   getSeminarsList,
   createSeminar,
+  deleteSeminar,
   getSeminarAttendance,
   getAllSeminarAttend,
   getSomeSeminarAttend,
