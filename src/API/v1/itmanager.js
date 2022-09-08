@@ -3,10 +3,10 @@ import axios from 'axios';
 const API_URL = process.env.REACT_APP_API_URL;
 
 // ROLE목록 불러오기
-async function getRoleList({ token }) {
+async function getRole({ token }) {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/admin/sysadmin/jobs',
+    url: API_URL + '/v1/admin/system-admin/jobs',
     headers: {
       Authorization: token,
     },
@@ -19,26 +19,10 @@ async function getRoleList({ token }) {
   }
 }
 // 직업 별 회원 불러오기
-async function getRoleMemberList({ token, jobId }) {
+async function getRoleMember({ token, jobId }) {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/admin/clerk/members/jobs/' + jobId,
-    headers: {
-      Authorization: token,
-    },
-  };
-  try {
-    const response = await axios(options);
-    return response.data;
-  } catch (error) {
-    return error.response.data;
-  }
-}
-// 직업 별 회원 불러오기
-async function getAllRoleMemberList({ token, jobId }) {
-  const options = {
-    method: 'GET',
-    url: API_URL + '/v1/admin/sysadmin/jobs/members',
+    url: API_URL + '/v1/admin/system-admin/members/jobs/' + jobId,
     headers: {
       Authorization: token,
     },
@@ -51,16 +35,30 @@ async function getAllRoleMemberList({ token, jobId }) {
   }
 }
 
+// 모든 직헙 회원 불러오기
+async function getAllRoleMember({ token }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/admin/system-admin/jobs/members',
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
 // 직책 등록
 async function addRole({ token, memberId, jobId }) {
   const options = {
     method: 'POST',
-    url: API_URL + '/v1/admin/clerk/members/' + memberId + '/jobs',
+    url:
+      API_URL + '/v1/admin/system-admin/members/' + memberId + '/jobs/' + jobId,
     headers: {
       Authorization: token,
-    },
-    data: {
-      jobId: jobId,
     },
   };
   try {
@@ -72,46 +70,12 @@ async function addRole({ token, memberId, jobId }) {
 }
 
 // 직책
+
 async function deleteRole({ token, memberId, jobId }) {
   const options = {
     method: 'DELETE',
-    url: API_URL + '/v1/admin/clerk/members/' + memberId + '/jobs',
-    headers: {
-      Authorization: token,
-    },
-    data: {
-      jobId: jobId,
-    },
-  };
-  try {
-    const response = await axios(options);
-    return response.data;
-  } catch (error) {
-    return error.response.data;
-  }
-}
-// 직업 별 회원 불러오기
-async function getTypeMemberList({ token, typeId }) {
-  const options = {
-    method: 'GET',
-    url: API_URL + '/v1/admin/clerk/members/types/' + typeId,
-    headers: {
-      Authorization: token,
-    },
-  };
-  try {
-    const response = await axios(options);
-    return response.data;
-  } catch (error) {
-    return error.response.data;
-  }
-}
-
-// 직책
-async function changeType({ token, memberId, typeId }) {
-  const options = {
-    method: 'PUT',
-    url: API_URL + '/v1/admin/clerk/members/' + memberId + '/types/' + typeId,
+    url:
+      API_URL + '/v1/admin/system-admin/members/' + memberId + '/jobs/' + jobId,
     headers: {
       Authorization: token,
     },
@@ -125,11 +89,9 @@ async function changeType({ token, memberId, typeId }) {
 }
 
 export default {
-  getRoleList,
-  getRoleMemberList,
-  getAllRoleMemberList,
+  getRole,
+  getRoleMember,
+  getAllRoleMember,
   addRole,
   deleteRole,
-  getTypeMemberList,
-  changeType,
 };

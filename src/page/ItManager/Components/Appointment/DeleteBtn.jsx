@@ -1,29 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Modal from 'react-awesome-modal';
-import ctfAPI from 'API/v1/ctf';
-import { connect } from 'react-redux';
+import { XIcon } from '@heroicons/react/outline';
 
-const DeleteBtn = ({ challengeId, checkedItemHandler }) => {
-  // 탈퇴 눌렀을때 뜨는 모달
-  const [bChecked, setChecked] = useState(false);
-  //   const [checkedItems, setCheckedItems] = useState(new Set());
-
-  const checkHandler = ({ target }) => {
-    setChecked(!bChecked);
-    checkedItemHandler(challengeId, target.checked);
-  };
-
+const DeleteBtn = ({ member, selectJob }) => {
   return (
-    <input
-      type="checkbox"
-      checked={bChecked}
-      onChange={(e) => checkHandler(e)}
-      className="w-6 h-6 checked:bg-amber-300 text-yellow-400 bg-gray-100 rounded-md border-gray-300 focus:ring-amber-500 dark:focus:ring-amber-500 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-    />
+    <div className="bg-white  flex flex-row justify-between items-center p-1 text-slate-800 rounded-2xl ">
+      <div className="flex items-center">
+        <div className="text-sm px-2 text-slate-400">{member.generation}기</div>
+        <div>{member.nickName}</div>
+      </div>
+    </div>
   );
 };
-const mapStateToProps = (state, OwnProps) => {
-  return { member: state.member };
-};
 
-export default connect(mapStateToProps)(DeleteBtn);
+export default DeleteBtn;

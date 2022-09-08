@@ -1,13 +1,5 @@
 //모바일에서만 보일 상벌점 내역 사유
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import {
-  PlusSmIcon,
-  PaperClipIcon,
-  CogIcon,
-  XIcon,
-  PlusIcon,
-} from '@heroicons/react/solid';
+import React, { useRef } from 'react';
 
 //local
 
@@ -36,7 +28,7 @@ const ReasonModal = ({ isOpen, setIsOpen, modalData }) => {
           </button>
         </div>
         <form
-          className="h-full bg-mainWhite rounded-b-lg flex flex-col justify-center"
+          className="h-full bg-mainWhite rounded-b-lg pb-4 flex flex-col justify-center"
           onSubmit={(e) => {
             e.preventDefault();
           }}
@@ -49,19 +41,19 @@ const ReasonModal = ({ isOpen, setIsOpen, modalData }) => {
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-[5em] font-bold">이름</span>
-                {modalData.name}
+                {modalData.awarderRealName}
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-[5em] font-bold">상/벌점</span>
-                {modalData.plusP ? (
+                {modalData.isMerit ? (
                   <>
                     <span className="text-green-400">상점</span>
-                    {modalData.plusP}점
+                    {modalData.merit}점
                   </>
                 ) : (
                   <>
                     <span className="text-red-400">벌점</span>
-                    {modalData.minusP}점
+                    {modalData.merit}점
                   </>
                 )}
               </div>
@@ -70,11 +62,11 @@ const ReasonModal = ({ isOpen, setIsOpen, modalData }) => {
                 <span className="w-[5em] font-bold">상벌점 사유</span>
                 <span
                   className={
-                    (modalData.plusP ? 'text-green-500' : 'text-red-500') +
-                    ' font-bold'
+                    (modalData.isMerit ? 'text-green-500' : 'text-red-500') +
+                    ' font-bold max-w-[15em]'
                   }
                 >
-                  {modalData.reason}
+                  {modalData.detail}
                 </span>
               </div>
             </div>
