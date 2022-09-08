@@ -73,21 +73,22 @@ const WriteTableCell = ({
   return (
     <p
       key={no}
-      className="flex w-full items-center border mt-1 shadow-sm rounded-md"
+      className="flex w-full items-center border mt-1 shadow-sm rounded-md dark:border-gray-600"
     >
       <p className=" min-w-[2em] p-1 text-center">{no}</p>
       <div className="flex flex-col w-full">
         <div className="flex w-full">
-          <p className="border-x min-w-[7em] p-1">
+          <p className="border-x min-w-[7em] p-1 dark:border-gray-600">
             <input
               type="date"
               className="w-full inline-block px-1 py-2 text-xs border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 rounded-md dark:bg-mainBlack dark:border-darkComponent"
               value={oneData.date}
               onChange={(e) => setOneData({ ...oneData, date: e.target.value })}
+              menu-class="w-100"
               required
             />
           </p>
-          <p className="border-x min-w-[7em] w-full sm:w-[10em] p-1">
+          <p className="border-x min-w-[7em] w-full sm:w-[10em] p-1 dark:border-gray-600">
             <input
               type="text"
               className={
@@ -109,19 +110,19 @@ const WriteTableCell = ({
               required
             />
 
-            <div className="absolute z-[99] border-2 rounded-md shadow-md mt-1 bg-mainWhite w-[50vw] max-w-[20em] max-h-[10em] p-1 gap-1 grid-cols-1 sm:grid-cols-2 overflow-y-auto hidden peer-focus:grid hover:grid">
+            <div className="absolute z-[99] border-2 rounded-md shadow-md mt-1 bg-mainWhite w-[50vw] max-w-[20em] max-h-[10em] p-1 gap-1 grid-cols-1 sm:grid-cols-2 overflow-y-auto hidden peer-focus:grid hover:grid dark:bg-darkPoint dark:border-gray-600">
               {searchMemberList?.length !== 0 ? (
                 searchMemberList.map((member, index) => (
                   <button
                     key={index}
                     type="button"
-                    className="border rounded-sm p-1 flex hover:bg-slate-50"
+                    className="border rounded-sm p-1 flex hover:bg-slate-50 dark:border-gray-600 dark:hover:bg-darkComponent"
                     onClick={(e) => {
                       //console.log(member);
                       setSelectedMember(member);
                     }}
                   >
-                    <div className="border shrink rounded-full h-8 w-8 overflow-hidden">
+                    <div className="border shrink rounded-full h-8 w-8 overflow-hidden dark:border-gray-600">
                       <img src={member.thumbnailPath} alt="thumbnail" />
                     </div>
                     <div className="grow px-1 flex justify-center items-center h-full">
@@ -157,7 +158,7 @@ const WriteTableCell = ({
               </option>
             </select>
           </p>
-          <p className="hidden sm:flex flex-col gap-1 border-x w-full p-1">
+          <p className="hidden sm:flex flex-col gap-1 border-x w-full p-1 dark:border-gray-600">
             <select
               className="w-full  pl-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 sm:text-sm rounded-md dark:bg-mainBlack dark:border-darkComponent"
               onChange={(e) => {
@@ -193,7 +194,7 @@ const WriteTableCell = ({
         </div>
         <div
           name="모바일 사유"
-          className="flex border-t border-l bg-slate-100 p-1 items-center sm:hidden"
+          className="flex border-t border-l bg-slate-100 p-1 items-center sm:hidden dark:bg-darkComponent dark:border-gray-600"
         >
           <span className="w-[4em] text-center font-bold">사유</span>
           <div className="flex flex-col w-full gap-1">

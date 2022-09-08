@@ -16,10 +16,10 @@ const Point = () => {
   return (
     <AuthUser>
       <div className="flex flex-1 justify-center min-h-screen">
-        <div className="flex flex-col gap-y-4 w-full p-2 bg-gray-100 sm:bg-transparent">
+        <div className="flex flex-col gap-y-4 w-full p-2 bg-gray-100 sm:bg-transparent dark:bg-transparent">
           <div
             name="상벌점 추가 내역"
-            className="flex flex-col gap-y-2 rounded-md border w-full p-2  bg-mainWhite sm:bg-gray-100"
+            className="flex flex-col gap-y-2 rounded-md border w-full p-2  bg-mainWhite sm:bg-gray-100 dark:bg-darkComponent dark:text-mainWhite dark:border-transparent"
           >
             <p className="text-2xl">회원별 상벌점 누계</p>
             <div name="연도 선택"></div>
@@ -30,8 +30,8 @@ const Point = () => {
                     key={index}
                     className={
                       (curSort === way
-                        ? 'ring-2 ring-violet-400 ring-offset-4 ring-offset-gray-100 bg-violet-400'
-                        : 'bg-violet-200 hover:bg-violet-400') +
+                        ? 'ring-2 ring-violet-400 ring-offset-4 ring-offset-gray-100 bg-violet-400 dark:ring-offset-darkComponent dark:ring-violet-600 dark:bg-violet-600'
+                        : 'bg-violet-200 hover:bg-violet-400 dark:bg-violet-400 dark:hover:bg-violet-500 dark:border-2 dark:border-violet-600') +
                       ' shadow-sm rounded-md p-1 px-4 focus:outline-none'
                     }
                     onClick={() => {
