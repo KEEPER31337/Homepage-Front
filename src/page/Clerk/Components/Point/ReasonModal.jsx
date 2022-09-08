@@ -29,7 +29,7 @@ const ReasonModal = ({ isOpen, setIsOpen, modalData }) => {
           </button>
         </div>
         <form
-          className="h-full bg-mainWhite rounded-b-lg flex flex-col justify-center"
+          className="h-full bg-mainWhite rounded-b-lg flex flex-col justify-center dark:bg-darkPoint"
           onSubmit={(e) => {
             e.preventDefault();
           }}
@@ -54,7 +54,10 @@ const ReasonModal = ({ isOpen, setIsOpen, modalData }) => {
                   }
                 >
                   {Object.keys(modalData.detailsWithCount)
-                    .map((key) => key + ' ' + data.detailsWithCount[key] + '회')
+                    .map(
+                      (key) =>
+                        key + ' ' + modalData.detailsWithCount[key] + '회'
+                    )
                     .join(', ')}
                 </span>
               </div>

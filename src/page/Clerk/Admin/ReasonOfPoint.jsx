@@ -9,6 +9,7 @@ import WriteTable from '../Components/ReasonOfPoint/WriteTable';
 import ViewTable from '../Components/ReasonOfPoint/ViewTable';
 import TypeModal from '../Components/ReasonOfPoint/TypeModal';
 import { getNow } from '../Components/ReasonOfPoint/PointUtil';
+import '../Components/ReasonOfPoint/reason.css';
 
 const ReasonOfPoint = ({ state }) => {
   const [appendData, setAppendData] = useState();
@@ -151,10 +152,10 @@ const ReasonOfPoint = ({ state }) => {
         ''
       )}
       <div className="flex flex-1 justify-center min-h-screen">
-        <div className="flex flex-col gap-y-4 w-full p-2 bg-gray-100 sm:bg-transparent">
+        <div className="flex flex-col gap-y-4 w-full p-2 bg-gray-100 sm:bg-transparent dark:bg-mainBlack">
           <form
             name="상벌점 추가 폼"
-            className="flex flex-col gap-y-2 rounded-md border w-full p-2 bg-mainWhite sm:bg-gray-100"
+            className="flex flex-col gap-y-2 rounded-md border w-full p-2 bg-mainWhite sm:bg-gray-100 dark:bg-darkComponent dark:border-transparent dark:text-mainWhite"
             onSubmit={(e) => {
               e.preventDefault();
               saveHandler();
@@ -164,7 +165,7 @@ const ReasonOfPoint = ({ state }) => {
               상벌점 내역 추가하기
               <button
                 type="button"
-                className="text-xs border-2 border-gray-300 rounded-xl py-1 px-2 hover:bg-gray-200 focus:outline-none"
+                className="text-xs border-2 border-gray-300 rounded-xl py-1 px-2 hover:bg-gray-200 focus:outline-none dark:bg-transparent dark:border-gray-600 dark:hover:bg-darkPoint"
                 onClick={() => {
                   setOnTypeModal(true);
                 }}
@@ -186,7 +187,7 @@ const ReasonOfPoint = ({ state }) => {
                 상벌점 사유 리스트 편집하기
               </button>
             </p>
-            <div className="rounded-md flex flex-col gap-y-2 p-2 bg-mainWhite">
+            <div className="rounded-md flex flex-col gap-y-2 p-2 bg-mainWhite dark:bg-darkPoint">
               <WriteTable
                 appendData={appendData}
                 setAppendData={setAppendData}
@@ -196,7 +197,7 @@ const ReasonOfPoint = ({ state }) => {
                 isChanged={isChanged}
               />
               <button
-                className="flex border rounded-xl justify-center p-1 shadow-sm focus:outline-none"
+                className="flex border rounded-xl justify-center p-1 shadow-sm focus:outline-none dark:border-gray-600"
                 onClick={() => addData()}
                 type="button"
               >
@@ -207,7 +208,7 @@ const ReasonOfPoint = ({ state }) => {
             <div className="flex justify-end items-center">
               <button
                 type="submit"
-                className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-violet-300 hover:bg-violet-400 focus:outline-none"
+                className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-violet-300 hover:bg-violet-400 focus:outline-none dark:bg-violet-500 dark:hover:bg-violet-400"
               >
                 내역 저장하기
               </button>
@@ -215,10 +216,9 @@ const ReasonOfPoint = ({ state }) => {
           </form>
           <div
             name="상벌점 추가 내역"
-            className="flex flex-col gap-y-2 rounded-md border w-full p-2  bg-mainWhite sm:bg-gray-100"
+            className="flex flex-col gap-y-2 rounded-md border w-full p-2  bg-mainWhite sm:bg-gray-100 dark:bg-darkComponent dark:border-transparent dark:text-mainWhite"
           >
             <p className="text-2xl">상벌점 내역</p>
-            <div name="연도 선택"></div>
             <div className="flex flex-col gap-y-2 pl-2">
               <div className="flex flex-wrap gap-2 justify-center p-4">
                 {yearList?.map((year, index) => (
@@ -226,8 +226,8 @@ const ReasonOfPoint = ({ state }) => {
                     key={index}
                     className={
                       (curYear === year
-                        ? 'ring-2 ring-violet-400 ring-offset-4 ring-offset-gray-100 bg-violet-400'
-                        : 'bg-violet-200 hover:bg-violet-400') +
+                        ? 'ring-2 ring-violet-400 ring-offset-4 ring-offset-gray-100 bg-violet-400 dark:ring-offset-darkComponent dark:ring-violet-600 dark:bg-violet-600'
+                        : 'bg-violet-200 hover:bg-violet-400 dark:bg-violet-400 dark:hover:bg-violet-500 dark:border-2 dark:border-violet-600') +
                       ' shadow-sm rounded-md p-1 px-4 focus:outline-none'
                     }
                     onClick={() => {

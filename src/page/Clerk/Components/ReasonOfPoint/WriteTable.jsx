@@ -26,7 +26,7 @@ const WriteTable = ({
   }, []);
   return (
     <div className="w-full">
-      <p className="flex border-b text-left font-bold">
+      <p className="flex border-b text-left font-bold dark:border-gray-600">
         <p className="min-w-[2em] w-[2em] px-1">No</p>
         <div className="flex w-full">
           <p className="min-w-[7em] px-1">날짜</p>

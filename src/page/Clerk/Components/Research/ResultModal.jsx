@@ -45,7 +45,7 @@ const ResultModal = ({
     else if (button === buttons[5]) return noapplyData;
   };
   return (
-    <div className="font-basic border h-w-full flex justify-center fixed top-0 left-0 right-0 bottom-0 z-[99] bg-mainBlack bg-opacity-60">
+    <div className="font-basic border h-w-full flex justify-center fixed top-0 left-0 right-0 bottom-0 z-[99] bg-mainBlack bg-opacity-60 dark:text-mainWhite">
       {/*console.log(noapplyData)*/}
       <div className="my-auto text-sm sm:text-base">
         <div className="rounded-t-lg relative p-3 pr-8 bg-mainWhite font-bold dark:bg-darkPoint dark:text-gray-200">
@@ -60,7 +60,7 @@ const ResultModal = ({
           </button>
         </div>
         <form
-          className="relative max-w-2xl w-[95vw] sm:w-[80vw] h-[60vh] p-4 bg-mainWhite rounded-b-lg flex flex-col justify-center"
+          className="relative max-w-2xl w-[95vw] sm:w-[80vw] h-[60vh] p-4 bg-mainWhite rounded-b-lg flex flex-col justify-center dark:bg-darkComponent"
           onSubmit={(e) => {
             e.preventDefault();
           }}
@@ -73,8 +73,8 @@ const ResultModal = ({
                     key={index}
                     className={
                       (curButton === button
-                        ? 'ring-2 ring-red-400 ring-offset-4 bg-red-400'
-                        : 'bg-red-200 hover:bg-red-400') +
+                        ? 'ring-2 ring-red-400 ring-offset-4 bg-red-400 dark:ring-offset-darkComponent dark:ring-red-600 dark:bg-red-600'
+                        : 'bg-red-200 hover:bg-red-400 dark:bg-red-400 dark:hover:bg-red-500 dark:border-2 dark:border-red-600') +
                       ' ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm font-medium rounded-xl text-white focus:outline-none'
                     }
                     onClick={() => setCurButton(button)}
@@ -87,8 +87,8 @@ const ResultModal = ({
                     key={index}
                     className={
                       (curButton === button
-                        ? 'ring-2 ring-violet-400 ring-offset-4 bg-violet-400'
-                        : 'bg-violet-200 hover:bg-violet-400') +
+                        ? 'ring-2 ring-violet-400 ring-offset-4 bg-violet-400 dark:ring-offset-darkComponent dark:ring-violet-600 dark:bg-violet-600'
+                        : 'bg-violet-200 hover:bg-violet-400 dark:bg-violet-400 dark:hover:bg-violet-500 dark:border-2 dark:border-violet-600') +
                       ' ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm font-medium rounded-xl text-white focus:outline-none'
                     }
                     onClick={() => setCurButton(button)}
@@ -103,7 +103,7 @@ const ResultModal = ({
           <div
             className={
               curButton === buttons[6]
-                ? 'border rounded-md h-full flex flex-col justify-center p-2'
+                ? 'border rounded-md h-full flex flex-col justify-center p-2 dark:border-gray-600'
                 : 'hidden'
             }
           >
@@ -134,8 +134,8 @@ const ResultModal = ({
                   무응답
                 </div>
               </div>
-              <div className="flex gap-1  bg-slate-100 w-full mt-2 p-2 text-center text-xs h-10">
-                <span className="flex gap-1 p-[1px] grow rounded-sm ring-1 ring-slate-400 ring-offset-1">
+              <div className="rounded-md flex gap-1 bg-slate-100 w-full mt-2 p-2 text-center text-xs h-10 dark:bg-darkPoint">
+                <span className="flex gap-1 p-[1px] grow rounded-sm ring-1 ring-slate-400 ring-offset-1 dark:ring-offset-darkPoint">
                   <span
                     style={{
                       width:
@@ -207,13 +207,13 @@ const ResultModal = ({
                 </span>
               </div>
             </div>
-            <div className="border-t flex items-center px-4 pt-2">
+            <div className="border-t flex items-center px-4 pt-2 dark:border-gray-600">
               <span className="text-center min-w-[10em] p-2">
                 활동인원조사 대상자
                 <br />
                 {memberList.length}명
               </span>
-              <p className="border-l flex flex-col w-full p-2 items-start">
+              <p className="border-l flex flex-col w-full p-2 items-start dark:border-gray-600">
                 <p className="">
                   응답자 : {memberList.length - noapplyData.length}명
                 </p>
@@ -228,7 +228,7 @@ const ResultModal = ({
           </div>
           {curButton !== buttons[6] ? (
             <>
-              <div className="sticky top-0 w-full h-[2em] bg-mainWhite">
+              <div className="sticky top-0 w-full h-[2em] bg-mainWhite dark:bg-darkComponent">
                 <div className="mx-auto px-4 w-full sm:w-[40vw] max-w-full flex items-center text-center text-sm font-bold">
                   <span className="w-[2em]">No.</span>
                   {curButton === buttons[2] ? (
@@ -242,8 +242,8 @@ const ResultModal = ({
                   <span className="w-[5em] text-right">기수</span>
                 </div>
               </div>
-              <div className="rounded-md flex flex-col w-full h-full items-center bg-slate-200 overflow-auto">
-                <div className="mx-auto border w-full sm:w-[40vw] max-w-full h-full px-2">
+              <div className="rounded-md flex flex-col w-full h-full items-center bg-slate-200 overflow-auto dark:bg-gray-600">
+                <div className="mx-auto w-full sm:w-[40vw] max-w-full h-full px-2">
                   {getList(curButton)?.length !== 0 ? (
                     getList(curButton).map((data, index) => (
                       <>

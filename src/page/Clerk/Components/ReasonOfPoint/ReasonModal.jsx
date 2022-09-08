@@ -28,7 +28,7 @@ const ReasonModal = ({ isOpen, setIsOpen, modalData }) => {
           </button>
         </div>
         <form
-          className="h-full bg-mainWhite rounded-b-lg pb-4 flex flex-col justify-center"
+          className="h-full bg-mainWhite rounded-b-lg pb-4 flex flex-col justify-center dark:bg-darkPoint"
           onSubmit={(e) => {
             e.preventDefault();
           }}
