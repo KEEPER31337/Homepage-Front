@@ -335,18 +335,17 @@ async function getCommonMembers() {
 }
 //회원정보 검색
 async function searchMember({ token, keyword }) {
-  const url = API_URL + '/v1/admin/members/ids';
-  const data = {
-    keyword,
-  };
   const options = {
+    method: 'GET',
+    url: API_URL + `/v1/admin/members/ids`,
+    params: { keyword: keyword },
     headers: {
       Authorization: token,
     },
   };
 
   try {
-    const response = await axios.get(url, data, options);
+    const response = await axios(options);
     return response.data;
   } catch (error) {
     console.log(error);

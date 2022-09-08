@@ -37,13 +37,8 @@ async function changeType({ token, memberId, typeId }) {
 }
 /**상벌점 페이지 ===================================================================*/
 //상벌점 내역 추가
-async function addPoint({ token, date, memberId, meritTypeId }) {
+async function addPoint({ token, data }) {
   const url = API_URL + '/v1/admin/clerk/merits';
-  const data = {
-    date,
-    memberId,
-    meritTypeId,
-  };
   const options = {
     headers: {
       Authorization: token,
@@ -52,6 +47,24 @@ async function addPoint({ token, date, memberId, meritTypeId }) {
 
   try {
     const response = await axios.post(url, data, options);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error.response;
+  }
+}
+//상벌점 내역 삭제
+async function removePoint({ token, meritId }) {
+  const options = {
+    method: 'DELETE',
+    url: API_URL + '/v1/admin/clerk/merits/' + meritId,
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  try {
+    const response = await axios(options);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -132,13 +145,9 @@ async function getPointType({ token }) {
 }
 
 //상벌점 타입 추가
-async function addPointType({ token, merit, isMerit, detail }) {
+async function addPointType({ token, modifyData }) {
   const url = API_URL + '/v1/admin/clerk/merits/types';
-  const data = {
-    merit,
-    isMerit,
-    detail,
-  };
+  const data = modifyData;
   const options = {
     headers: {
       Authorization: token,
@@ -153,15 +162,35 @@ async function addPointType({ token, merit, isMerit, detail }) {
     return error.response;
   }
 }
+//상벌점 타입 삭제
+async function removePointType({ token, typeIds }) {
+  const options = {
+    method: 'DELETE',
+    url: API_URL + '/v1/admin/clerk/merits/types?typeIds=' + typeIds,
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error.response;
+  }
+}
 
 /**================================================================================ */
 export default {
   getTypeMemberList,
   changeType,
   addPoint,
+  removePoint,
   getPointOfMember,
   getPointOfYear,
   getPointYearList,
   getPointType,
   addPointType,
+  removePointType,
 };
