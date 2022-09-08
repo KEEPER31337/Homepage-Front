@@ -5,7 +5,7 @@ const Header = ({ selectJob, jobMemberList, setGen, setJobMemberList }) => {
   //console.log(jobMemberList[0]);
   return (
     <div className="flex flex-row items-center justify-between rounded-t-lg bg-amber-200 w-full">
-      <div className=" grid grid-cols-2   lg:grid-cols-4 w-full h-fit p-1">
+      <div className=" grid grid-cols-2 lg:grid-cols-4 w-full h-fit p-1">
         {jobMemberList.map(
           (member) => (
             <DeleteBtn

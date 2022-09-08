@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Header from '../Components/Appointment/Header';
 import Content from '../Components/Appointment/Content';
-import getContentData from '../Components/Appointment/GetContentData';
 
 // api
 import clerkAPI from 'API/v1/clerk';
@@ -17,41 +16,120 @@ const QUIT = 5; //탈퇴
 
 const Appointment = ({ member }) => {
   const [gen, setGen] = useState(13); // 2 == 초기엔 활동인원
-  const [non, regular, sleep, graduate, quit] = getContentData({ member, gen });
-  console.log(non, regular, sleep, graduate, quit);
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const reviseClick = () => {
     navigate('/clerk/revise');
   };
+
+  const [non, setNon] = useState([]); //비회원
+  const [regular, setRegular] = useState([]); //정회원 == 활동
+  const [sleep, setSleep] = useState([]); //휴면
+  const [graduate, setGraduate] = useState([]); // 졸업
+  const [quit, setQuit] = useState([]); //틸퇴
+
+  const [GenRegular, setGenRegular] = useState([]);
+  const [GenSleep, setGenSleep] = useState([]);
+  const [GenGraduate, setGenGraduate] = useState([]);
+  const [GenNon, setGenNon] = useState([]);
+  const [GenQuit, setGenQuit] = useState([]);
+
+  useEffect(() => {
+    clerkAPI
+      .getTypeMemberList({
+        token: member.token,
+        typeId: NON,
+      })
+      .then((data) => {
+        if (data.success) {
+          setNon(data.list);
+          setGenNon(data.list.filter((data) => data.generation === gen));
+        }
+      });
+
+    clerkAPI
+      .getTypeMemberList({
+        token: member.token,
+        typeId: REGULAR,
+      })
+      .then((data) => {
+        if (data.success) {
+          setRegular(data.list);
+          setGenRegular(data.list.filter((data) => data.generation === gen));
+        }
+      });
+
+    clerkAPI
+      .getTypeMemberList({
+        token: member.token,
+        typeId: SLEEP,
+      })
+      .then((data) => {
+        if (data.success) {
+          setSleep(data.list);
+          setGenSleep(data.list.filter((data) => data.generation === gen));
+        }
+      });
+
+    clerkAPI
+      .getTypeMemberList({
+        token: member.token,
+        typeId: GRADUATE,
+      })
+      .then((data) => {
+        if (data.success) {
+          setGraduate(data.list);
+          setGenGraduate(data.list.filter((data) => data.generation === gen));
+        }
+      });
+
+    clerkAPI
+      .getTypeMemberList({
+        token: member.token,
+        typeId: QUIT,
+      })
+      .then((data) => {
+        if (data.success) {
+          setQuit(data.list);
+          setGenQuit(data.list.filter((data) => data.generation === gen));
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    setGenNon(non.filter((data) => data.generation === gen));
+    setGenRegular(regular.filter((data) => data.generation === gen));
+    setGenSleep(sleep.filter((data) => data.generation === gen));
+    setGenGraduate(graduate.filter((data) => data.generation === gen));
+    setGenQuit(quit.filter((data) => data.generation === gen));
+  }, [gen]);
+
   return (
-    <AuthUser>
-      <div className="bg-white dark:bg-darkPoint font-basic flex shadow-md rounded-md flex-1 flex-col items-center justify-between m-2">
-        <Header setGen={setGen} />
-        <div className="bg-white dark:bg-darkPoint w-full h-[60vh] scrollbar-hide overflow-y-scroll flex flex-col text-center ">
-          <div className=" grid grid-cols-4 md:grid-cols-5 p-2 w-full h-fit text-center">
-            <Content type={NON} typeMemberList={non} />
-          </div>
-          <div className=" grid grid-cols-4 md:grid-cols-5 p-2 w-full h-fit text-center">
-            <Content type={REGULAR} typeMemberList={regular} />
-          </div>
-          <div className=" grid grid-cols-4 md:grid-cols-5 p-2 w-full h-fit text-center">
-            <Content type={SLEEP} typeMemberList={sleep} />
-          </div>
-          <div className=" grid grid-cols-4 md:grid-cols-5 p-2 w-full h-fit text-center">
-            <Content type={GRADUATE} typeMemberList={graduate} />
-          </div>
+    <div className="bg-white dark:bg-darkPoint font-basic flex shadow-md rounded-md flex-1 flex-col items-center justify-between m-2">
+      <Header setGen={setGen} />
+      <div className="bg-white dark:bg-darkPoint w-full h-[60vh] scrollbar-hide overflow-y-scroll flex flex-col text-center ">
+        <div className=" grid grid-cols-4 md:grid-cols-5 p-2 w-full h-fit text-center">
+          <Content type={NON} typeMemberList={GenNon} />
         </div>
-        <div className="w-full bg-white dark:bg-darkPoint rounded-md items-center flex justify-end p-2">
-          <div
-            className="text-center dark:bg-violet-200 dark:hover:bg-violet-300 dark:border-violet-400 bg-amber-200 hover:bg-amber-300 border-b-4  border-amber-400 w-20 p-1 rounded-md cursor-pointer"
-            onClick={reviseClick}
-          >
-            수정
-          </div>
-        </div>{' '}
+        <div className=" grid grid-cols-4 md:grid-cols-5 p-2 w-full h-fit text-center">
+          <Content type={REGULAR} typeMemberList={GenRegular} />
+        </div>
+        <div className=" grid grid-cols-4 md:grid-cols-5 p-2 w-full h-fit text-center">
+          <Content type={SLEEP} typeMemberList={GenSleep} />
+        </div>
+        <div className=" grid grid-cols-4 md:grid-cols-5 p-2 w-full h-fit text-center">
+          <Content type={GRADUATE} typeMemberList={GenGraduate} />
+        </div>
       </div>
-    </AuthUser>
+      <div className="w-full bg-white dark:bg-darkPoint rounded-md items-center flex justify-end p-2">
+        <div
+          className="text-center dark:bg-violet-200 dark:hover:bg-violet-300 dark:border-violet-400 bg-amber-200 hover:bg-amber-300 border-b-4  border-amber-400 w-20 p-1 rounded-md cursor-pointer"
+          onClick={reviseClick}
+        >
+          수정
+        </div>
+      </div>
+    </div>
   );
 };
 

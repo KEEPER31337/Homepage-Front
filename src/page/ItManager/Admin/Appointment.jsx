@@ -47,8 +47,8 @@ const Appointment = ({ member }) => {
 
   return (
     <>
-      <div className="  font-basic flex flex-1 md:flex-row flex-col h-[75vh] items-center md:justify-start  justify-center p-4">
-        <div className="bg-white rounded-sm shadow border border-indigo-50 p-2 md:ml-32 md:w-6/12 w-full h-full flex flex-col text-center justify-between ">
+      <div className="dark:text-white  font-basic flex flex-1 md:flex-row flex-col h-[75vh] items-center md:justify-start  justify-center p-4">
+        <div className="bg-white dark:bg-darkPoint dark:border-violet-200  rounded-sm shadow border border-indigo-50 p-2 md:ml-32 md:w-6/12 w-full h-full flex flex-col text-center justify-between ">
           <div className=" overflow-y-auto">
             {job.map((list) => (
               <JobList
@@ -63,7 +63,7 @@ const Appointment = ({ member }) => {
           {/* TODO 수정할 직책 안눌렀을시, 눌러주세요 modal 뜨게 */}
           <div
             onClick={handleCreator}
-            className="items-center flex flex-row justify-center rounded-md  hover:bg-slate-100 mt-4 p-1 w-full  cursor-pointer"
+            className="items-center flex flex-row justify-center rounded-md  hover:bg-slate-100 dark:hover:bg-black mt-4 p-1 w-full  cursor-pointer"
           >
             {selectJob === -1 ? (
               <div className="text-lg h-9">관리할 직책을 선택해주세요!</div>

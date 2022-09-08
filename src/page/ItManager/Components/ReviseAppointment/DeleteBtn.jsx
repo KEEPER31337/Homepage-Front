@@ -40,7 +40,7 @@ const DeleteBtn = ({
       });
   };
   return (
-    <div className="bg-white  flex flex-row justify-between items-center p-1 my-[3px] mx-[2px] text-slate-800 rounded-2xl ">
+    <div className="bg-white flex flex-row justify-between items-center p-1 my-[3px] mx-[2px] text-slate-800 rounded-2xl ">
       <div className="flex items-center">
         <div className="text-sm px-2 text-slate-400">{generation}기</div>
         <div>{nickName}</div>
