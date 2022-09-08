@@ -59,7 +59,7 @@ const PointTable = ({ curSort, pointData, setPointData, state }) => {
         ''
       )}
       <div className="w-full text-center">
-        <p className="flex border-b-2 w-full font-bold">
+        <p className="flex border-b-2 w-full font-bold dark:border-gray-600">
           <p className="min-w-[2em] w-[2em] px-1">No</p>
           <div className="flex w-full">
             <p className="min-w-[7em] w-full sm:w-[7em] px-1">이름</p>
