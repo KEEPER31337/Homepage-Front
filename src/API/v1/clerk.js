@@ -35,6 +35,152 @@ async function changeType({ token, memberId, typeId }) {
     return error.response.data;
   }
 }
+/**상벌점 페이지 ===================================================================*/
+//상벌점 내역 추가
+async function addPoint({ token, data }) {
+  const url = API_URL + '/v1/admin/clerk/merits';
+  const options = {
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  try {
+    const response = await axios.post(url, data, options);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error.response;
+  }
+}
+//상벌점 내역 삭제
+async function removePoint({ token, meritId }) {
+  const options = {
+    method: 'DELETE',
+    url: API_URL + '/v1/admin/clerk/merits/' + meritId,
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error.response;
+  }
+}
+//회원별 상벌점 누계 조회
+async function getPointOfMember({ token }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/admin/clerk/merits/total',
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error.response;
+  }
+}
+//연도별 상벌점 내역 조회
+async function getPointOfYear({ token, year }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/admin/clerk/merits?year=' + year,
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error.response;
+  }
+}
+//상벌점 내역 연도 리스트 조회
+async function getPointYearList({ token }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/admin/clerk/merits/years',
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error.response;
+  }
+}
+//상벌점 타입 목록 조회
+async function getPointType({ token }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/admin/clerk/merits/types',
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error.response;
+  }
+}
+
+//상벌점 타입 추가
+async function addPointType({ token, modifyData }) {
+  const url = API_URL + '/v1/admin/clerk/merits/types';
+  const data = modifyData;
+  const options = {
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  try {
+    const response = await axios.post(url, data, options);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error.response;
+  }
+}
+//상벌점 타입 삭제
+async function removePointType({ token, typeIds }) {
+  const options = {
+    method: 'DELETE',
+    url: API_URL + '/v1/admin/clerk/merits/types?typeIds=' + typeIds,
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error.response;
+  }
+}
+
 
 // 세미나 목록 조회
 async function getSeminarsList({ token }) {
@@ -185,6 +331,14 @@ async function getAttendConditions({ token, seminarId, attendanceCloseTime, late
 export default {
   getTypeMemberList,
   changeType,
+  addPoint,
+  removePoint,
+  getPointOfMember,
+  getPointOfYear,
+  getPointYearList,
+  getPointType,
+  addPointType,
+  removePointType,
   getSeminarsList,
   createSeminar,
   getSeminarAttendance,
@@ -193,4 +347,5 @@ export default {
   reviseAttend,
   getRecentSeminar,
   getAttendConditions,
+
 };

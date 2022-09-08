@@ -2,10 +2,6 @@ import React, { useState, useEffect } from 'react';
 import AuthUser from 'shared/AuthUser';
 
 import PointTable from '../Components/Point/PointTable';
-import {
-  compareName,
-  compareRanking,
-} from '../Components/ReasonOfPoint/PointUtil';
 
 const ways = ['명부', '랭킹'];
 
