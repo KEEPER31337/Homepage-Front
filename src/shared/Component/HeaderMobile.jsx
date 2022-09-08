@@ -11,13 +11,7 @@ import { connect } from 'react-redux';
 
 // local
 import Logo from 'assets/img/keeper_logo.png';
-import {
-  categoriesForAll,
-  categoriesForBoss,
-  categoriesForClerk,
-  categoriesForCM,
-  categoriesHidden,
-} from '../category';
+import { categoriesAll, categoriesHidden } from '../category';
 import SignInBoxMobile from './SignInBoxMobile';
 import UserBoxMobile from './UserBoxMobile';
 
@@ -32,14 +26,8 @@ const HeaderMobile = ({ member }) => {
   };
   const jobs = member?.memberInfo?.jobs;
   useEffect(() => {
-    if (jobs?.some((role) => role === 'ROLE_회장' || role === 'ROLE_부회장')) {
-      setCategories(categoriesForBoss);
-    } else if (jobs?.some((role) => role === 'ROLE_서기')) {
-      setCategories(categoriesForClerk);
-    } else if (jobs?.some((role) => role === 'ROLE_전산관리자')) {
-      setCategories(categoriesForCM);
-    } else if (member.token) {
-      setCategories(categoriesForAll);
+    if (member.token) {
+      setCategories(categoriesAll);
     } else {
       setCategories(categoriesHidden);
     }
@@ -109,30 +97,35 @@ const HeaderMobile = ({ member }) => {
                       show={openTab === index}
                     >
                       {item.subs.map((subItem, subIndex) =>
-                        subItem.external ? (
-                          <a
-                            key={subIndex}
-                            href={subItem.href}
-                            className="-m-3 py-3 px-8 flex items-center rounded-md hover:bg-gray-50"
-                          >
-                            <Popover.Button className="w-full text-left">
-                              <span className="ml-3 text-base font-semibold text-mainYellow">
-                                {subItem.name}
-                              </span>
-                            </Popover.Button>
-                          </a>
+                        !subItem.auth ||
+                        jobs?.some((i) => subItem.auth.includes(i)) ? (
+                          subItem.external ? (
+                            <a
+                              key={subIndex}
+                              href={subItem.href}
+                              className="-m-3 py-3 px-8 flex items-center rounded-md hover:bg-gray-50"
+                            >
+                              <Popover.Button className="w-full text-left">
+                                <span className="ml-3 text-base font-semibold text-mainYellow">
+                                  {subItem.name}
+                                </span>
+                              </Popover.Button>
+                            </a>
+                          ) : (
+                            <Link
+                              key={subIndex}
+                              to={subItem.href}
+                              className="-m-3 py-3 px-8 flex items-center rounded-md hover:bg-gray-50"
+                            >
+                              <Popover.Button className="w-full text-left">
+                                <span className="ml-3 text-base font-semibold text-mainYellow">
+                                  {subItem.name}
+                                </span>
+                              </Popover.Button>
+                            </Link>
+                          )
                         ) : (
-                          <Link
-                            key={subIndex}
-                            to={subItem.href}
-                            className="-m-3 py-3 px-8 flex items-center rounded-md hover:bg-gray-50"
-                          >
-                            <Popover.Button className="w-full text-left">
-                              <span className="ml-3 text-base font-semibold text-mainYellow">
-                                {subItem.name}
-                              </span>
-                            </Popover.Button>
-                          </Link>
+                          <Fragment key={index}></Fragment>
                         )
                       )}
                     </Transition>

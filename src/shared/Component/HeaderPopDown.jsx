@@ -41,7 +41,7 @@ const PopDown = ({ category, member, initialize }) => {
               <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
                 <div className="relative grid gap-6 bg-mainYellow px-5 py-6 sm:gap-8 sm:p-8">
                   {category.subs.map((item, index) =>
-                    !item.auth || jobs?.includes(item.auth) ? (
+                    !item.auth || jobs?.some((i) => item.auth.includes(i)) ? (
                       item.external ? (
                         <a
                           key={index}
