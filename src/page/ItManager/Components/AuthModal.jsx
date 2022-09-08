@@ -1,24 +1,32 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, useState, forwardRef, useImperativeHandle } from 'react';
+import {
+  Fragment,
+  useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+} from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
-const AlertModal = forwardRef(({ msg }, ref) => {
-  //modal 관련
-  const [isOpen, setIsOpen] = useState(false);
-  const openModal = () => {
-    setIsOpen(true);
-  };
+const AuthModal = forwardRef((props, ref) => {
+  //사이드 바에는 권한 없는 경우 뜨지 않지만 url로 접근할 수 있음 이 경우
+  //권한 가진 사람만 들어올 수 있다는 모달 뜨고 선거 선택 페이지로 이동
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
   const closeModal = () => {
-    setIsOpen(false);
+    setOpen(false);
+    navigate('/');
   };
   useImperativeHandle(ref, () => ({
     open: () => {
-      openModal();
+      setOpen(true);
     },
   }));
 
   return (
     <>
-      <Transition appear show={isOpen} as={Fragment}>
+      <Transition appear show={open} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
           <Transition.Child
             as={Fragment}
@@ -60,7 +68,7 @@ const AlertModal = forwardRef(({ msg }, ref) => {
                       ></path>
                     </svg>
                     <h3 className="mb-5 text-md font-basic text-gray-800 dark:text-gray-400">
-                      {msg}
+                      {props.children}
                     </h3>
                     {/* 이거 없으면 focusTrap워닝 */}
                     <button onClick={closeModal} />
@@ -75,4 +83,4 @@ const AlertModal = forwardRef(({ msg }, ref) => {
   );
 });
 
-export default AlertModal;
+export default AuthModal;

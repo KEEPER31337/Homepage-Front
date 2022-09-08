@@ -16,7 +16,7 @@ import getContentData from '../Components/ReviseAppointment/GetContentData';
 import itmanagerAPI from 'API/v1/itmanager';
 import memberAPI from 'API/v1/member';
 
-const CreatorModal = forwardRef(
+const EditModal = forwardRef(
   ({ member, selectJob, update, setUpdate }, ref) => {
     //redux 연결
     const token = useSelector((store) => store.member.token);
@@ -134,4 +134,4 @@ const CreatorModal = forwardRef(
   }
 );
 
-export default CreatorModal;
+export default EditModal;

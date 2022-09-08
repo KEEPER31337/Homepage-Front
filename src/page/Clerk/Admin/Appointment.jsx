@@ -2,8 +2,11 @@ import React, { useEffect, useState, useRef } from 'react';
 import AuthUser from 'shared/AuthUser';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+
+//local
 import Header from '../Components/Appointment/Header';
 import Content from '../Components/Appointment/Content';
+import AuthModal from '../Components/AuthModal';
 
 // api
 import clerkAPI from 'API/v1/clerk';
@@ -15,12 +18,8 @@ const GRADUATE = 4; // 졸업
 const QUIT = 5; //탈퇴
 
 const Appointment = ({ member }) => {
+  //TODO 기수 API불러와서, 최신순으로!!
   const [gen, setGen] = useState(13); // 2 == 초기엔 활동인원
-
-  const navigate = useNavigate();
-  const reviseClick = () => {
-    navigate('/clerk/revise');
-  };
 
   const [non, setNon] = useState([]); //비회원
   const [regular, setRegular] = useState([]); //정회원 == 활동
@@ -34,6 +33,18 @@ const Appointment = ({ member }) => {
   const [GenNon, setGenNon] = useState([]);
   const [GenQuit, setGenQuit] = useState([]);
 
+  //권한없으면 경고창과 함께 메인페이지로
+  const auth = ['ROLE_회장', 'ROLE_부회장', 'ROLE_서기'];
+  const jobs = member?.memberInfo?.jobs;
+  const ModalRef = useRef({});
+
+  useEffect(() => {
+    if (!jobs?.some((i) => auth.includes(i))) {
+      ModalRef.current.open();
+    }
+  }, []);
+
+  //활동상태별 인원 불러오기 api
   useEffect(() => {
     clerkAPI
       .getTypeMemberList({
@@ -46,7 +57,6 @@ const Appointment = ({ member }) => {
           setGenNon(data.list.filter((data) => data.generation === gen));
         }
       });
-
     clerkAPI
       .getTypeMemberList({
         token: member.token,
@@ -58,7 +68,6 @@ const Appointment = ({ member }) => {
           setGenRegular(data.list.filter((data) => data.generation === gen));
         }
       });
-
     clerkAPI
       .getTypeMemberList({
         token: member.token,
@@ -70,7 +79,6 @@ const Appointment = ({ member }) => {
           setGenSleep(data.list.filter((data) => data.generation === gen));
         }
       });
-
     clerkAPI
       .getTypeMemberList({
         token: member.token,
@@ -82,7 +90,6 @@ const Appointment = ({ member }) => {
           setGenGraduate(data.list.filter((data) => data.generation === gen));
         }
       });
-
     clerkAPI
       .getTypeMemberList({
         token: member.token,
@@ -103,6 +110,11 @@ const Appointment = ({ member }) => {
     setGenGraduate(graduate.filter((data) => data.generation === gen));
     setGenQuit(quit.filter((data) => data.generation === gen));
   }, [gen]);
+
+  const navigate = useNavigate();
+  const reviseClick = () => {
+    navigate('/clerk/revise');
+  };
 
   return (
     <div className="bg-white dark:bg-darkPoint font-basic flex shadow-md rounded-md flex-1 flex-col items-center justify-between m-2">
@@ -129,6 +141,7 @@ const Appointment = ({ member }) => {
           수정
         </div>
       </div>
+      <AuthModal ref={ModalRef}>접근 권한이 없습니다.</AuthModal>
     </div>
   );
 };
