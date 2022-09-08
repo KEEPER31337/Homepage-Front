@@ -2,14 +2,28 @@ import React, { useEffect, useState, useRef } from 'react';
 import AuthUser from 'shared/AuthUser';
 
 import { connect } from 'react-redux';
-import CreatorModal from './CreatorModal.jsx';
+import EditModal from './EditModal.jsx';
 import JobList from '../Components/Appointment/JobList';
+import AuthModal from '../Components/AuthModal';
+
 import itmanagerAPI from 'API/v1/itmanager';
 
 const Appointment = ({ member }) => {
+  //권한없으면 경고창과 함께 메인페이지로
+  const auth = ['ROLE_회장', 'ROLE_부회장', 'ROLE_서기'];
+  const jobs = member?.memberInfo?.jobs;
+  const ModalRef = useRef({});
+
+  useEffect(() => {
+    if (!jobs?.some((i) => auth.includes(i))) {
+      ModalRef.current.open();
+    }
+  }, []);
+
   const [update, setUpdate] = useState(false);
   const [job, setJob] = useState([]);
   const [selectJob, setSelectJob] = useState(-1);
+
   useEffect(() => {
     itmanagerAPI
       .getRole({
@@ -22,12 +36,12 @@ const Appointment = ({ member }) => {
       });
   }, []);
 
-  //출제자 추가버튼 모달 관련
-  const creatorModalRef = useRef({});
+  //직책 관리 모달 관련
+  const EditModalRef = useRef({});
   const handleCreator = () => {
     if (selectJob === -1) {
     } else {
-      creatorModalRef.current.open();
+      EditModalRef.current.open();
     }
   };
 
@@ -76,15 +90,16 @@ const Appointment = ({ member }) => {
               </>
             )}
           </div>
-          <CreatorModal
+          <EditModal
             member={member}
             selectJob={selectJob} //JOB id 넘겨줌
-            ref={creatorModalRef}
+            ref={EditModalRef}
             update={update}
             setUpdate={setUpdate}
-          ></CreatorModal>
+          ></EditModal>
         </div>
       </div>
+      <AuthModal ref={ModalRef}>접근 권한이 없습니다.</AuthModal>
     </>
   );
 };

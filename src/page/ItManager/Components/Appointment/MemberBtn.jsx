@@ -1,7 +1,6 @@
 import React from 'react';
-import { XIcon } from '@heroicons/react/outline';
 
-const DeleteBtn = ({ member }) => {
+const MemberBtn = ({ member }) => {
   return (
     <div className="bg-white  flex flex-row justify-between items-center p-1 text-slate-800 rounded-2xl ">
       <div className="flex items-center">
@@ -12,4 +11,4 @@ const DeleteBtn = ({ member }) => {
   );
 };
 
-export default DeleteBtn;
+export default MemberBtn;

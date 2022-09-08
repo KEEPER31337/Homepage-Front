@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { XIcon } from '@heroicons/react/outline';
 import { connect } from 'react-redux';
 import itmanagerAPI from 'API/v1/itmanager';
