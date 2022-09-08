@@ -2,12 +2,10 @@ import React, { useEffect, useState, useRef } from 'react';
 import AuthUser from 'shared/AuthUser';
 
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { CogIcon } from '@heroicons/react/outline';
 import CreatorModal from './CreatorModal.jsx';
 import JobList from '../Components/Appointment/JobList';
 import itmanagerAPI from 'API/v1/itmanager';
-import memberAPI from 'API/v1/member';
+
 const Appointment = ({ member }) => {
   const [update, setUpdate] = useState(false);
   const [job, setJob] = useState([]);
@@ -54,13 +52,12 @@ const Appointment = ({ member }) => {
               <JobList
                 key={list.id}
                 list={list}
-                selectJob={selectJob} //현재 클릭한 직책
+                selectJob={selectJob}
                 setSelectJob={setSelectJob}
                 update={update}
               />
             ))}
           </div>
-          {/* TODO 수정할 직책 안눌렀을시, 눌러주세요 modal 뜨게 */}
           <div
             onClick={handleCreator}
             className="items-center flex flex-row justify-center rounded-md  hover:bg-slate-100 dark:hover:bg-black mt-4 p-1 w-full  cursor-pointer"
