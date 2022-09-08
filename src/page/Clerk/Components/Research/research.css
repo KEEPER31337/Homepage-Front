@@ -4,6 +4,10 @@
   margin: 0;
 }
 
+.entirePage {
+  min-height: calc(100vh - 90px);
+}
+
 /*스크롤바*/
 
 .overflow-auto::-webkit-scrollbar {

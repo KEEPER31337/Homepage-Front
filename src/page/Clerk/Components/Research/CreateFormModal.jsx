@@ -84,7 +84,7 @@ const CreateFormModal = ({
   };
 
   return (
-    <div className="font-basic border h-w-full flex justify-center fixed top-0 left-0 right-0 bottom-0 z-[99] bg-mainBlack bg-opacity-60">
+    <div className="font-basic border h-w-full flex justify-center fixed top-0 left-0 right-0 bottom-0 z-[99] bg-mainBlack bg-opacity-60 dark:text-mainWhite">
       <div className="my-auto text-sm sm:text-base h-[50vh] flex flex-col">
         <div className="h-[3em] rounded-t-lg relative p-3 pr-8 bg-mainWhite font-bold dark:bg-darkPoint dark:text-gray-200">
           KEEPER 활동인원조사 {isModify ? '수정하기' : '등록하기'}
@@ -99,7 +99,7 @@ const CreateFormModal = ({
           </button>
         </div>
         <form
-          className="max-w-2xl w-[95vw] sm:w-[70vw] h-full bg-slate-200 rounded-b-lg flex flex-col justify-center"
+          className="max-w-2xl w-[95vw] sm:w-[70vw] h-full bg-slate-200 rounded-b-lg flex flex-col justify-center dark:bg-darkComponent"
           onSubmit={(e) => {
             e.preventDefault();
             registerHandler();
@@ -225,7 +225,7 @@ const CreateFormModal = ({
 
                 <input
                   type="checkbox"
-                  className=" mt-1 inline-block text-sm text-violet-400 border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 rounded-md checked:bg-violet-400 dark:bg-mainBlack dark:border-darkComponent"
+                  className=" mt-1 inline-block text-sm text-violet-400 border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 rounded-md checked:bg-violet-400 dark:bg-mainBlack dark:border-darkComponent dark:ring-offset-darkComponent"
                   defaultChecked={!formData.isVisible}
                   onChange={(e) =>
                     setFormData({
@@ -247,7 +247,7 @@ const CreateFormModal = ({
             </button>
             <button
               type="submit"
-              className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-violet-400 hover:bg-violet-500 focus:outline-none"
+              className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-violet-400 hover:bg-violet-500 focus:outline-none dark:bg-violet-500 dark:hover:bg-violet-400"
             >
               {isModify ? '수정하기' : '등록하기'}
             </button>
