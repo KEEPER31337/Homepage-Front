@@ -14,7 +14,7 @@ const CreateFormModal = ({
   setIsChanged,
   state,
 }) => {
-  console.log(selectedSurvey);
+  //console.log(selectedSurvey);
   const [formData, setFormData] = useState(
     isModify
       ? {
@@ -55,10 +55,11 @@ const CreateFormModal = ({
         })
         .then((res) => {
           if (res?.success) {
-            console.log('활동인원조사 수정 성공');
+            //console.log('활동인원조사 수정 성공');
             setIsChanged(!isChanged);
             setOnCreateModal(false);
-          }
+          } else
+            alert('활동인원조사 수정 실패! 새로고침 후 다시 실행해주세요.');
         });
     } else {
       //생성
@@ -72,11 +73,12 @@ const CreateFormModal = ({
           isVisible: formData.isVisible,
         })
         .then((res) => {
-          if (res.success) {
-            console.log('활동인원조사 생성 성공');
+          if (res?.success) {
+            //console.log('활동인원조사 생성 성공');
             setIsChanged(!isChanged);
             setOnCreateModal(false);
-          }
+          } else
+            alert('활동인원조사 생성 실패! 새로고침 후 다시 실행해주세요.');
         });
     }
   };
@@ -86,7 +88,7 @@ const CreateFormModal = ({
       <div className="my-auto text-sm sm:text-base h-[50vh] flex flex-col">
         <div className="h-[3em] rounded-t-lg relative p-3 pr-8 bg-mainWhite font-bold dark:bg-darkPoint dark:text-gray-200">
           KEEPER 활동인원조사 {isModify ? '수정하기' : '등록하기'}
-          {console.log(formData)}
+          {/*console.log(formData)*/}
           <button
             className="text-2xl absolute top-2 right-[15px] w-5 font-bold text-center text-gray-400 bg-transparent"
             onClick={() => {

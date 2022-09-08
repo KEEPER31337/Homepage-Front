@@ -80,18 +80,24 @@ const Research = ({ state }) => {
                 state: data.replyId,
                 reason: data.excuse,
               });
-            }
+            } else
+              alert(
+                '활동인원조사 정보를 불러오는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
+              );
           });
       } else {
         setServeyPeriod(false);
         clerkAPI.getLastResearch({ token }).then((res) => {
-          console.log('가장 최근에 종료된 설문 : ', res);
+          //console.log('가장 최근에 종료된 설문 : ', res);
           if (res.success && res.data != -1) {
             setLastData({
               surveyName: res.data.surveyName,
               replyId: res.data.replyId,
             });
-          }
+          } else
+            alert(
+              '활동인원조사 정보를 불러오는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
+            );
         });
       }
     });

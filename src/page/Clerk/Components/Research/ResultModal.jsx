@@ -20,7 +20,7 @@ const ResultModal = ({
   noapplyData,
   memberList,
 }) => {
-  console.log(resultData);
+  //console.log(resultData);
   const [curButton, setCurButton] = useState(buttons[0]);
   const [activeData, setActiveData] = useState([]); //활동
   const [armyData, setArmyData] = useState([]); //휴면(군대)
@@ -46,7 +46,7 @@ const ResultModal = ({
   };
   return (
     <div className="font-basic border h-w-full flex justify-center fixed top-0 left-0 right-0 bottom-0 z-[99] bg-mainBlack bg-opacity-60">
-      {console.log(noapplyData)}
+      {/*console.log(noapplyData)*/}
       <div className="my-auto text-sm sm:text-base">
         <div className="rounded-t-lg relative p-3 pr-8 bg-mainWhite font-bold dark:bg-darkPoint dark:text-gray-200">
           {resultInfo.surveyName} 집계결과
@@ -202,7 +202,7 @@ const ResultModal = ({
                     display: noapplyData.length === 0 ? 'none' : '',
                   }}
                 >
-                  {console.log((100 * noapplyData?.length) / memberList.length)}
+                  {/*console.log((100 * noapplyData?.length) / memberList.length)*/}
                   무응답자({noapplyData.length}명)
                 </span>
               </div>

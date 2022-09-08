@@ -22,14 +22,14 @@ const FormModal = ({
   const token = state.member.token;
   const memberId = state.member.memberInfo.id;
   const replyHandler = () => {
-    console.log(response);
-    console.log(myReply);
-    console.log({
+    //console.log(response);
+    //console.log(myReply);
+    /*console.log({
       token,
       surveyId: researchData.surveyId,
       replyId: Number(myReply.state),
       excuse: myReply.reason,
-    });
+    });*/
     if (isRespond) {
       //응답 수정
       clerkAPI
@@ -40,8 +40,12 @@ const FormModal = ({
           excuse: myReply.reason,
         })
         .then((res) => {
-          console.log(res);
+          //console.log(res);
           if (res?.success) setOnResearchModal(false);
+          else
+            alert(
+              '활동인원조사 응답 수정 실패! 새로고침 후 다시 실행해주세요.'
+            );
         });
     } else {
       //응답
@@ -53,8 +57,9 @@ const FormModal = ({
           excuse: myReply.reason,
         })
         .then((res) => {
-          console.log(res);
+          //console.log(res);
           if (res.success) setOnResearchModal(false);
+          else alert('활동인원조사 응답 실패! 새로고침 후 다시 실행해주세요.');
         });
     }
   };

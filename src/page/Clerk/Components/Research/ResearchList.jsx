@@ -14,208 +14,7 @@ import memberAPI from 'API/v1/member';
 import { getNow, getTime, getProgress } from './ResearchUtil';
 
 const size = 5;
-const testData = [
-  {
-    no: 1,
-    name: '가가가',
-    unitNo: 12,
-    isRespond: true,
-    respond: '1',
-    reason: '',
-  },
-  {
-    no: 2,
-    name: '나나나',
-    unitNo: 11,
-    isRespond: false,
-    respond: '',
-    reason: '',
-  },
-  {
-    no: 3,
-    name: '라라라',
-    unitNo: 11,
-    isRespond: true,
-    respond: '2',
-    reason: '',
-  },
-  {
-    no: 4,
-    name: '마마마',
-    unitNo: 12,
-    isRespond: true,
-    respond: '3',
-    reason: 'ㅁㅁㅁㅁㅁㅁ',
-  },
-  {
-    no: 5,
-    name: '다다다',
-    unitNo: 12.5,
-    isRespond: true,
-    respond: '1',
-    reason: '',
-  },
-  {
-    no: 6,
-    name: '사사사',
-    unitNo: 10,
-    isRespond: true,
-    respond: '4',
-    reason: '',
-  },
-  {
-    no: 7,
-    name: '아아아',
-    unitNo: 10.5,
-    isRespond: false,
-    respond: '',
-    reason: '',
-  },
-  {
-    no: 8,
-    name: '하하하',
-    unitNo: 12,
-    isRespond: false,
-    respond: '',
-    reason: '',
-  },
-  {
-    no: 9,
-    name: '차차차',
-    unitNo: 12,
-    isRespond: true,
-    respond: '4',
-    reason: '',
-  },
-  {
-    no: 10,
-    name: '으으으',
-    unitNo: 11,
-    isRespond: true,
-    respond: '4',
-    reason: '',
-  },
-  {
-    no: 11,
-    name: '므므므',
-    unitNo: 12,
-    isRespond: true,
-    respond: '3',
-    reason: 'ㅁㅁㅁㅁㅇㄹㅇㄹㄴ',
-  },
-  {
-    no: 12,
-    name: '자자자',
-    unitNo: 12.5,
-    isRespond: false,
-    respond: '',
-    reason: '',
-  },
-  {
-    no: 13,
-    name: '카카카',
-    unitNo: 10,
-    isRespond: true,
-    respond: '1',
-    reason: '',
-  },
-  {
-    no: 14,
-    name: '박박박',
-    unitNo: 10,
-    isRespond: false,
-    respond: '',
-    reason: '',
-  },
-  {
-    no: 15,
-    name: '김김김',
-    unitNo: 10.5,
-    isRespond: true,
-    respond: '2',
-    reason: '',
-  },
-  {
-    no: 16,
-    name: '이이이',
-    unitNo: 11,
-    isRespond: true,
-    respond: '2',
-    reason: '',
-  },
-  {
-    no: 17,
-    name: '안안안',
-    unitNo: 11,
-    isRespond: false,
-    respond: '',
-    reason: '',
-  },
-  {
-    no: 18,
-    name: '송송송',
-    unitNo: 11.5,
-    isRespond: true,
-    respond: '1',
-    reason: '',
-  },
-  {
-    no: 19,
-    name: '장장장',
-    unitNo: 12.5,
-    isRespond: true,
-    respond: '4',
-    reason: '',
-  },
-  {
-    no: 20,
-    name: '루루루',
-    unitNo: 12,
-    isRespond: true,
-    respond: '1',
-    reason: '',
-  },
-  {
-    no: 21,
-    name: '백백백',
-    unitNo: 11,
-    isRespond: true,
-    respond: '2',
-    reason: '',
-  },
-  {
-    no: 22,
-    name: '임임임',
-    unitNo: 11.5,
-    isRespond: true,
-    respond: '1',
-    reason: '',
-  },
-  {
-    no: 23,
-    name: '정정정정',
-    unitNo: 11,
-    isRespond: true,
-    respond: '3',
-    reason: 'ㄴㄹㅇㄹㄴㄹ',
-  },
-  {
-    no: 24,
-    name: '고양이',
-    unitNo: 12,
-    isRespond: true,
-    respond: '2',
-    reason: '',
-  },
-  {
-    no: 25,
-    name: '멍멍이',
-    unitNo: 10,
-    isRespond: true,
-    respond: '4',
-    reason: '',
-  },
-];
+
 const ResearchList = ({
   setOnCreateModal,
   setSelectedSurvey,
@@ -236,54 +35,84 @@ const ResearchList = ({
 
   const openHandler = (surveyId) => {
     clerkAPI.open({ token, surveyId }).then((res) => {
-      //console.log(res);
-      setIsChanged(!isChanged);
+      if (res?.success) setIsChanged(!isChanged);
+      else
+        alert(
+          '공개 전환 api 요청이 실패하였습니다. 새로고침 후 다시 실행해주세요.'
+        );
     });
   };
   const closeHandler = (surveyId) => {
     clerkAPI.close({ token, surveyId }).then((res) => {
-      //console.log(res);
-      setCurPage(curPage);
-      setIsChanged(!isChanged);
+      if (res?.success) {
+        setCurPage(curPage);
+        setIsChanged(!isChanged);
+      } else
+        alert(
+          '공개 전환 api 요청이 실패하였습니다. 새로고침 후 다시 실행해주세요.'
+        );
     });
   };
 
   const deleteHandler = (surveyId) => {
-    clerkAPI.removeResearch({ token, surveyId }).then((res) => {
-      //console.log(res);
-      setIsChanged(!isChanged);
-    });
+    if (window.confirm('해당 활동인원조사를 정말로 삭제하시겠습니까?')) {
+      clerkAPI.removeResearch({ token, surveyId }).then((res) => {
+        //console.log(res);
+        if (res?.success) setIsChanged(!isChanged);
+        else alert('활동인원조사 삭제 실패! 새로고침 후 다시 실행해주세요.');
+      });
+    }
   };
 
   const viewHandler = (survey) => {
     clerkAPI
       .getRespondents({ token, surveyId: survey.surveyId })
       .then((res) => {
-        setResult({
-          info: survey,
-          data: res?.list,
-          noApply: memberList.filter((data) => {
-            return !res?.list.some((el) => el.memberId === data.id);
-          }),
-        });
-        setOnResultModal(true);
+        if (res?.success) {
+          setResult({
+            info: survey,
+            data: res?.list,
+            noApply: memberList.filter((data) => {
+              return !res?.list.some((el) => el.memberId === data.id);
+            }),
+          });
+          setOnResultModal(true);
+        } else
+          alert(
+            '집계 결과를 불러오는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
+          );
       });
   };
   useEffect(() => {
     clerkAPI.getResearchList({ token, page: curPage, size }).then((res) => {
-      setSurveyList(res.page.content);
-      setIsLast(res.page.last);
+      if (res?.success) {
+        setSurveyList(res.page.content);
+        setIsLast(res.page.last);
+      } else
+        alert(
+          '활동인원조사 목록을 불러오는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
+        );
     });
   }, [curPage, isChanged]);
 
   useEffect(() => {
     setCurPage(0);
     clerkAPI.getResearchList({ token, page: curPage, size }).then((res) => {
-      setSurveyList(res.page.content);
-      setIsLast(res.page.last);
+      if (res?.success) {
+        setSurveyList(res.page.content);
+        setIsLast(res.page.last);
+      } else
+        alert(
+          '활동인원조사 목록을 불러오는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
+        );
     });
     memberAPI.getAllMembers().then((res) => {
-      setMemberList(res.list);
+      if (res?.success) {
+        setMemberList(res.list);
+      } else
+        alert(
+          '회원 정보 목록을 불러오는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
+        );
     });
   }, []);
   return (
