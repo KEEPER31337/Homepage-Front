@@ -13,27 +13,15 @@ import HeaderPopDown from './Component/HeaderPopDown';
 import SignInBox from './Component/SignInBox';
 import Logo from 'assets/img/keeper_logo.png';
 import DarkModeSwitch from 'shared/DarkModeSwitch';
-import {
-  categoriesForAll,
-  categoriesForBoss,
-  categoriesForClerk,
-  categoriesForCM,
-  categoriesHidden,
-} from './category';
+import { categoriesAll, categoriesHidden } from './category';
 import UserBox from './Component/UserBox';
 
 const Header = ({ member }) => {
   const [categories, setCategories] = useState([]);
   const jobs = member?.memberInfo?.jobs;
   useEffect(() => {
-    if (jobs?.some((role) => role === 'ROLE_회장' || role === 'ROLE_부회장')) {
-      setCategories(categoriesForBoss);
-    } else if (jobs?.some((role) => role === 'ROLE_서기')) {
-      setCategories(categoriesForClerk);
-    } else if (jobs?.some((role) => role === 'ROLE_전산관리자')) {
-      setCategories(categoriesForCM);
-    } else if (member.token) {
-      setCategories(categoriesForAll);
+    if (member.token) {
+      setCategories(categoriesAll);
     } else {
       setCategories(categoriesHidden);
     }
