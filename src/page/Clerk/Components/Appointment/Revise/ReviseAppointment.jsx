@@ -125,31 +125,31 @@ const ReviseAppointment = ({ member }) => {
   };
 
   return (
-    <div className="font-basic dark:bg-darkPoint flex shadow-md rounded-md flex-1 flex-col items-center justify-between m-2">
+    <div className="font-basic w-full dark:bg-darkPoint flex shadow-md rounded-md flex-1 flex-col items-center justify-between p-2">
       <Header setGen={setGen} />
       <div className="bg-white dark:bg-darkPoint w-full h-[60vh] scrollbar-hide overflow-y-scroll flex flex-col text-center ">
-        <div className=" grid grid-cols-4 md:grid-cols-5 p-2 w-full h-fit text-center">
+        <div className=" grid sm:grid-cols-4 md:grid-cols-5  grid-cols-2 p-2 w-full h-fit text-center">
           <Content
             type={NON}
             typeMemberList={GenNon}
             changeItems={changeItems}
           />
         </div>
-        <div className=" grid grid-cols-4 md:grid-cols-5 p-2 w-full h-fit text-center">
+        <div className=" grid sm:grid-cols-4 md:grid-cols-5  grid-cols-2 p-2 w-full h-fit text-center">
           <Content
             type={REGULAR}
             typeMemberList={GenRegular}
             changeItems={changeItems}
           />
         </div>
-        <div className=" grid grid-cols-4 md:grid-cols-5 p-2 w-full h-fit text-center">
+        <div className=" grid sm:grid-cols-4 md:grid-cols-5  grid-cols-2 p-2 w-full h-fit text-center">
           <Content
             type={SLEEP}
             typeMemberList={GenSleep}
             changeItems={changeItems}
           />
         </div>
-        <div className=" grid grid-cols-4 md:grid-cols-5 p-2 w-full h-fit text-center">
+        <div className=" grid sm:grid-cols-4 md:grid-cols-5  grid-cols-2 p-2 w-full h-fit text-center">
           <Content
             type={GRADUATE}
             typeMemberList={GenGraduate}

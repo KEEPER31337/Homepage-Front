@@ -59,8 +59,8 @@ const Appointment = ({ member, isDark }) => {
 
   return (
     <>
-      <div className="dark:text-white  font-basic flex flex-1 md:flex-row flex-col h-[75vh] items-center md:justify-start  justify-center p-4">
-        <div className="bg-white dark:bg-darkPoint dark:border-violet-200  rounded-sm shadow border border-indigo-50 p-2 md:ml-32 md:w-6/12 w-full h-full flex flex-col text-center justify-between ">
+      <div className="dark:text-white  font-basic flex flex-1 md:flex-row flex-col h-[75vh] items-center  justify-center p-4">
+        <div className="bg-white dark:bg-darkPoint dark:border-violet-200  rounded-sm shadow border border-indigo-50   md:w-6/12 w-full h-full flex flex-col text-center justify-between ">
           <div className="scrollbar-hide overflow-y-scroll">
             {job.map((list) => (
               <JobList

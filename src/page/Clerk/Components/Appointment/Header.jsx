@@ -15,7 +15,7 @@ const Header = ({ setGen }) => {
 
   return (
     <div className="flex w-full dark:text-white dark:bg-violet-200  bg-amber-200 justify-between p-2  text-lg rounded-t-md">
-      <div className="flex flex-row  items-center">
+      <div className="grid sm:grid-cols-5 grid-cols-3  items-center">
         <div className="dark:border-violet-300 border-amber-300 flex flex-row justify-center items-center dark:bg-darkPoint bg-white w-24 text-center border-b-4 p-1 mr-1 rounded-md ">
           <div>비회원</div>
           <div className="bg-slate-200  ml-2 w-3 h-3 rounded-3xl "></div>
