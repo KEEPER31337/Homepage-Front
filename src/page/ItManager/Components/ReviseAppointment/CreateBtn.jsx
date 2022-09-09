@@ -8,6 +8,7 @@ const CreateBtn = ({
   selectJob,
   jobMemberList,
   setJobMemberList,
+  isDark,
 }) => {
   //출제자 추가버튼 모달 관련
   const alertModalRef = useRef({});
@@ -40,7 +41,11 @@ const CreateBtn = ({
   return (
     <div
       onClick={createHandler}
-      className="bg-white hover:bg-slate-100 h-fit  flex flex-row justify-start  mt-1 mx-[2px] text-slate-800 rounded"
+      className={
+        isDark
+          ? 'bg-white hover:bg-slate-100 h-fit  flex flex-row justify-start  mt-1 mx-[2px] text-slate-800 rounded'
+          : 'bg-darkPoint hover:bg-black h-fit  flex flex-row justify-start  mt-1 mx-[2px] text-white rounded'
+      }
     >
       <div className="p-1">
         <img src={member.thumbnailPath} className="h-9 w-9 rounded" />

@@ -17,7 +17,7 @@ import itmanagerAPI from 'API/v1/itmanager';
 import memberAPI from 'API/v1/member';
 
 const EditModal = forwardRef(
-  ({ member, selectJob, update, setUpdate }, ref) => {
+  ({ member, isDark, selectJob, update, setUpdate, darkMode }, ref) => {
     //redux 연결
     const token = useSelector((store) => store.member.token);
 
@@ -108,17 +108,29 @@ const EditModal = forwardRef(
                       setJobMemberList={setJobMemberList}
                       gen={gen}
                       setGen={setGen}
+                      isDark={isDark}
                     />
                     <ChangeMemberJob
                       selectJob={selectJob}
                       genMemberList={genMemberList}
                       jobMemberList={jobMemberList}
                       setJobMemberList={setJobMemberList}
+                      isDark={isDark}
                     />
-                    <div className="bg-white rounded-b-lg text-lg flex justify-center p-2">
+                    <div
+                      className={
+                        isDark
+                          ? 'bg-white rounded-b-lg text-lg flex justify-center p-2'
+                          : 'bg-darkPoint text-white rounded-b-lg text-lg flex justify-center p-2'
+                      }
+                    >
                       <div
                         onClick={closeModal}
-                        className="bg-white w-24 hover:bg-slate-100 cursor-pointer rounded-lg p-2"
+                        className={
+                          isDark
+                            ? 'bg-white w-24 hover:bg-slate-100 cursor-pointer rounded-lg p-2'
+                            : 'bg-darkPoint w-24 hover:bg-black cursor-pointer rounded-lg p-2'
+                        }
                       >
                         완료
                       </div>

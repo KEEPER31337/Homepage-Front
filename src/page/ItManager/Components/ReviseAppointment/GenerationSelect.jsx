@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import memberAPI from 'API/v1/member';
 
-const GenerationSelect = ({ token, gen, setGen }) => {
+const GenerationSelect = ({ token, gen, setGen, isDark }) => {
   //모든 기수 불러오기
   const [generationList, setGenerationList] = useState([]);
 
@@ -36,7 +36,11 @@ const GenerationSelect = ({ token, gen, setGen }) => {
       <div onChange={changeGeneration}>
         <select
           defaultValue={gen}
-          className="text-md border-2 border-amber-200 rounded-md  focus:border-amber-200 focus:ring-amber-200"
+          className={
+            isDark
+              ? 'text-md border-2  border-amber-200 rounded-md  focus:border-amber-200 focus:ring-amber-200'
+              : 'text-md border-2 bg-darkPoint text-white border-violet-200 rounded-md  focus:border-violet-200 focus:ring-violet-200'
+          }
         >
           {generationList.map((item, index) => (
             <option key={index} value={item}>

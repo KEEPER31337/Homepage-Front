@@ -7,6 +7,8 @@ import AlertModal from '../AlertModal.jsx';
 const DeleteBtn = ({
   token,
   member,
+
+  isDark,
   selectJob,
   jobMemberList,
   setJobMemberList,
@@ -34,13 +36,23 @@ const DeleteBtn = ({
     }
   };
   return (
-    <div className="bg-white flex flex-row justify-between items-center p-1 my-[3px] mx-[2px] text-slate-800 rounded-2xl ">
+    <div
+      className={
+        isDark
+          ? 'bg-white flex flex-row justify-between items-center p-1 my-[3px] mx-[2px] text-slate-800 rounded-2xl '
+          : 'bg-darkComponent flex flex-row justify-between items-center p-1 my-[3px] mx-[2px] text-white rounded-2xl '
+      }
+    >
       <div className="flex items-center">
         <div className="text-sm px-2 text-slate-400">{member.generation}기</div>
         <div>{member.nickName}</div>
       </div>
       <XIcon
-        className="h-6 w-6 hover:bg-amber-200 rounded-2xl text-amber-300 hover:text-white cursor-pointer"
+        className={
+          isDark
+            ? 'h-6 w-6 hover:bg-amber-200 rounded-2xl text-amber-300 hover:text-white cursor-pointer'
+            : 'h-6 w-6 hover:bg-violet-200 rounded-2xl text-violet-300 hover:text-white cursor-pointer'
+        }
         aria-hidden="true"
         onClick={deleteHandler}
       />
