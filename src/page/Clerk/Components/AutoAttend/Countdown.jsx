@@ -2,45 +2,50 @@ import React, { useState, useEffect } from 'react';
 //카운트다운
 
 const Countdown = (props) => {
-    const [minute,setminute] = useState(0);
-    const [seconds,setseconds] = useState(props.minutes);
     const [lateT,setLateT] = useState(props.lateT)
     const [admitT,setAdmitT] = useState(props.admitT)
+    const [minutes,setMinutes] = useState(localStorage.getItem("min"));
+    const [seconds,setSeconds] = useState(localStorage.getItem("sec"));
+
     useEffect(() => {
         const countdown = setInterval(() => {
           if (parseInt(seconds) > 0) {
-            setseconds(parseInt(seconds) - 1);
+            setSeconds(parseInt(seconds) - 1);
+            localStorage.setItem("sec",seconds);
           }
           if (parseInt(seconds) === 0) {
-            if (parseInt(minute) === 0) {
+            if (parseInt(minutes) === 0) {
                 if (parseInt(admitT)=== 0) {
                     clearInterval(countdown); 
                 }
                 else {
                     setAdmitT(0); 
-                    setminute(lateT);
+                    setMinutes(lateT);
+                    localStorage.setItem("min",minutes);
                 }
             } else {
-              setminute(parseInt(minute) - 1);
-              setseconds(59);
+              setMinutes(parseInt(minutes) - 1);
+              localStorage.setItem("min",minutes);
+              setSeconds(59);
+              localStorage.setItem("sec",seconds);
             }
           }
         }, 1000);
         return () => clearInterval(countdown);
-    }, [seconds, minute, admitT]);
+    }, [seconds, minutes, admitT]);
 
     return (
         <div className="flex flex-1 justify-center w-full">
             {
             admitT ?
             <div>
-                <div>출석: {minute}:{seconds < 10 ? `0${seconds}` : seconds }</div>
+                <div>출석: {localStorage.getItem("min")}:{localStorage.getItem("sec") < 10 ? `0${localStorage.getItem("sec")}` : localStorage.getItem("sec") }</div>
                 <div>지각: {lateT}:00</div>
             </div>
  :
             <div>
                 <div>출석: 0:00</div>
-                <div>지각: {minute}:{seconds < 10 ? `0${seconds}` : seconds }</div>
+                <div>지각: {localStorage.getItem("min")}:{localStorage.getItem("sec") < 10 ? `0${localStorage.getItem("sec")}` : localStorage.getItem("sec") }</div>
             </div>
           }
         </div>
