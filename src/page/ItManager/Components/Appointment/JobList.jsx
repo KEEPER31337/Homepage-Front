@@ -44,6 +44,7 @@ const JobList = ({ member, list, selectJob, setSelectJob, update }) => {
         <>
           {jobMembers.map((cccclist) => (
             <div
+              key={cccclist.memberId}
               onClick={() => {
                 setSelectJob(list.id);
               }}

@@ -23,7 +23,6 @@ const CreateBtn = ({
         })
         .then((data) => {
           if (data.success) {
-            console.log(data);
             setJobMemberList(
               jobMemberList.concat({
                 generation: member.generation,

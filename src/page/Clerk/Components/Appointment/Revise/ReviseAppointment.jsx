@@ -144,7 +144,6 @@ const ReviseAppointment = ({ member }) => {
         })
         .then((data) => {
           if (data.success) {
-            console.log('타입 바뀐댱');
           }
         });
     }

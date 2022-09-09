@@ -66,7 +66,6 @@ const CheckContent = ({ type, member, changeItems }) => {
       default:
         break;
     }
-    console.log(changeItems);
   };
 
   const [tooltip, setTooltip] = useState(false);
