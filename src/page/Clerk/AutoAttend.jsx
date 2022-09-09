@@ -5,11 +5,12 @@ import { Link } from 'react-router-dom';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ReactCodeInput from 'react-code-input';
+import { useNavigate } from 'react-router-dom';
 
 //local
-import attendAPI from 'API/v1/clerkSeminar';
+import attendAPI from 'API/v1/clerk';
 
-const AutoAttend = ({member}) => {
+const AutoAttend = ({state}) => {
   const props = {
     inputStyle: {
       fontFamily: 'monospace',
@@ -39,15 +40,27 @@ const AutoAttend = ({member}) => {
       border: '2px solid red'
     }
   }
+
   const [auth, setAuth] = useState(['ROLE_회장']);
   const [boss,setBoss] = useState(false);
   const [admitT,setAdmitT] = useState(3);
   const [lateT, setLateT] = useState(5);
   const [startDate, setStartDate] = useState(new Date());
   const [seminarId, setSeminarId] = useState(0);
-  const [startTime, setStartTime] = useState('');
-  const jobs = member?.memberInfo?.jobs;
-  //const token = state.member.token;
+  const token = state.member.token;
+  const jobs = state.member?.memberInfo?.jobs;
+  const [code,setCode] = useState('');
+  const date = [startDate.getFullYear(),startDate.getMonth()+1,startDate.getDate()]
+  let reformatedDate = '';
+  const reformatDate = date.map((date) => {
+    if (parseInt(date)<10) date = '0' + date;
+    reformatedDate = reformatedDate + date; 
+  });
+  console.log(reformatedDate);
+  const getNow = () => {
+    return new Date().toISOString().substring(0, 10);
+  };
+  console.log(new Date().toISOString().substring(0, 10));
   localStorage.removeItem("code"); //local에 저장된 code 값 지우기
   localStorage.removeItem("min");
   localStorage.removeItem("sec");
@@ -56,9 +69,34 @@ const AutoAttend = ({member}) => {
       setBoss(true);
     }
   }, []);
+  useEffect(() => {
+    console.log("Asdf")
+    attendAPI
+    .getSeminarsList({
+      token: token,
+    })
+    .then((res) => {
+      console.log(res);
+    })
+    attendAPI
+      .getSeminarByDate({
+        searchDate: getNow(),
+        token: token,
+      })
+      .then((res) => {
+        if (res.success) {
+          console.log(res.msg);
+          console.log(res);
+          console.log("seminarcode:", res.data.attendanceCode);
+        }
+        else console.log(res.msg);
+      });
+  },[]);
+  useEffect(() => {
+    navigate("/startAttend", {state: {admitT,lateT,startDate}});
+  }, [code]);
 
   const onSubmit = (event) => {
-    
     event.preventDefault();
   }
   const admitChange = (event) => {
@@ -67,36 +105,30 @@ const AutoAttend = ({member}) => {
   const lateChange = (event) => {
     setLateT(event.target.value);
   }
-  setStartDate(new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, '')); 
-  console.log(startDate)
-  console.log(startDate.getMinutes())
+  const navigate = useNavigate();
   const loadSeminarByDate = () => { //API요청값 맞춰 날짜 포맷 변환
     let resDate = '';
-    const date = [startDate.getFullYear(),startDate.getMonth(),startDate.getDate()]
-    setStartDate(new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, '')); 
     
-    const reformatDate = date.map((date) => {
-      if (parseInt(date)<10) date = '0' + date;
-      resDate = resDate + date; 
-    });
-    attendAPI
-      .getSeminarByDate({
-          searchDate: resDate,
-          token: token,
-    })
-    attendAPI
-      .createSeminar({
-        openTime: startDate,
-      })
-      .then((res) => {
-        console.log(res.msg);
-        if(res.success) {
-          setSeminarId(res.data.id);
-          console.log(res.data.id);
-        }
-      })
+    const currentTime = startDate.toISOString().replace("T", " ").replace(/\..*/, '')
+    const attendanceCloseTime = new Date(startDate.getTime() + admitT*60000).toISOString().replace("T", " ").replace(/\..*/, '');
+    const latenessCloseTime = new Date(startDate.getTime() + admitT*60000 + lateT*60000).toISOString().replace("T", " ").replace(/\..*/, '');
+    console.log("current time:",currentTime); 
+    console.log("attendanceCloseTime:", attendanceCloseTime);
+    console.log("latenessCloseTime:", latenessCloseTime);
 
 
+          attendAPI
+          .startSeminarAttend({
+            token: token,
+            seminarId: res.data.id,
+            attendanceCloseTime: attendanceCloseTime,
+            latenessCloseTime: latenessCloseTime,
+          })
+          .then((res) => {
+            console.log("code:", res.data.attendanceCode);
+            setCode(res.data.attendanceCode)
+          })
+ 
 
   }
   return (
@@ -137,23 +169,13 @@ const AutoAttend = ({member}) => {
                         <option value={20}>20분</option>
                     </select> 
                   </span>
-                  <button
-                      type="submit"
+                    
+                      <button
                       className="w-full mt-4 px-4 py-2 bg-violet-200 leading-6 rounded-md border border-transparent text-white focus:outline-none 
                       hover:bg-violet-300 items-center w-full justify-center items-center font-bold focus:outline-none"
                       onClick={loadSeminarByDate}
-                  >
-                    <Link 
-                      to ="/startAttend" 
-                      className="links"
-                      state={{
-                        admitT: admitT,
-                        lateT: lateT,
-                      }}
-                    >
-                      출석시작
-                    </Link>
-                  </button>
+                      > 출석시작</button>
+
                 </form>
               </div>              
             </div>
@@ -187,7 +209,7 @@ const AutoAttend = ({member}) => {
 
 
 const mapStateToProps = (state) => {
-  return { member: state.member };
+  return { state:state };
 };
 
 const mapDispatchToProps = (dispatch, OwnProps) => {
