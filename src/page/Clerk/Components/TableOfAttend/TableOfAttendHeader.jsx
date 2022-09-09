@@ -3,10 +3,16 @@ import { connect } from 'react-redux';
 
 import { ArrowSmLeftIcon, ArrowSmRightIcon } from '@heroicons/react/outline';
 
-import { seminars, userttt } from './testdata';
 import clerkAPI from 'API/v1/clerk';
 
-const Header = ({ member, setIsOpen, page, setPage, userSize }) => {
+const Header = ({
+  member,
+  setAppendModalOpen,
+  setSearchModalOpen,
+  page,
+  setPage,
+  userSize,
+}) => {
   const [userLength, setUserLength] = useState(0);
   useEffect(() => {
     clerkAPI
@@ -21,22 +27,23 @@ const Header = ({ member, setIsOpen, page, setPage, userSize }) => {
       });
   }, []);
 
-  const closeModal = () => {
-    setIsOpen(true);
+  const openAppendModal = () => {
+    setAppendModalOpen(true);
+  };
+  const openSearchModal = () => {
+    setSearchModalOpen(true);
   };
 
   const clickLeft = () => {
     if (page > 0) {
       setPage(page - 1);
     }
-    console.log(page);
   };
 
   const clickRight = () => {
     if ((page + 1) * userSize < userLength) {
       setPage(page + 1);
     }
-    console.log(page);
   };
 
   const btnClassname =
@@ -44,23 +51,36 @@ const Header = ({ member, setIsOpen, page, setPage, userSize }) => {
 
   return (
     <div className="flex justify-between w-[80%] sm:w-[90%] lg:w-[95%]">
-      <button onClick={closeModal} className={btnClassname + 'w-28 h-10 p-2'}>
-        세미나 추가
-      </button>
+      <div className="flex flex-row mb-1">
+        <button
+          onClick={openAppendModal}
+          className={btnClassname + 'w-28 h-10 p-2 mr-2 text-sm sm:text-base'}
+        >
+          세미나 추가
+        </button>
+        <button
+          onClick={openSearchModal}
+          className={btnClassname + 'w-28 h-10 p-2 text-sm sm:text-base'}
+        >
+          세미나 조회
+        </button>
+      </div>
       <div className="flex flex-row mb-1">
         <button
           className={
             btnClassname + 'flex-shrink-0 h-10 w-10 mx-2 px-2 pt-2 pb-3'
           }
+          onClick={clickLeft}
         >
-          <ArrowSmLeftIcon aria-hidden="true" onClick={clickLeft} />
+          <ArrowSmLeftIcon aria-hidden="true" />
         </button>
         <button
           className={
             btnClassname + 'flex-shrink-0 h-10 w-10 mx-2 px-2 pt-2 pb-3'
           }
+          onClick={clickRight}
         >
-          <ArrowSmRightIcon aria-hidden="true" onClick={clickRight} />
+          <ArrowSmRightIcon aria-hidden="true" />
         </button>
       </div>
     </div>
