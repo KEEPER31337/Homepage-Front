@@ -6,6 +6,7 @@ import Content from './Content';
 
 // api
 import clerkAPI from 'API/v1/clerk';
+import memberAPI from 'API/v1/member';
 
 const NON = 1; //비회원
 const REGULAR = 2; // 정회원
@@ -29,63 +30,90 @@ const ReviseAppointment = ({ member }) => {
   const [GenQuit, setGenQuit] = useState([]);
 
   useEffect(() => {
-    clerkAPI
-      .getTypeMemberList({
+    memberAPI
+      .getGenerations({
         token: member.token,
-        typeId: NON,
       })
-      .then((data) => {
-        if (data.success) {
-          setNon(data.list);
-          setGenNon(data.list.filter((data) => data.generation === gen));
-        }
-      });
+      .then((gendata) => {
+        if (gendata.success) {
+          setGen(gendata.list[0]);
 
-    clerkAPI
-      .getTypeMemberList({
-        token: member.token,
-        typeId: REGULAR,
-      })
-      .then((data) => {
-        if (data.success) {
-          setRegular(data.list);
-          setGenRegular(data.list.filter((data) => data.generation === gen));
-        }
-      });
-
-    clerkAPI
-      .getTypeMemberList({
-        token: member.token,
-        typeId: SLEEP,
-      })
-      .then((data) => {
-        if (data.success) {
-          setSleep(data.list);
-          setGenSleep(data.list.filter((data) => data.generation === gen));
-        }
-      });
-
-    clerkAPI
-      .getTypeMemberList({
-        token: member.token,
-        typeId: GRADUATE,
-      })
-      .then((data) => {
-        if (data.success) {
-          setGraduate(data.list);
-          setGenGraduate(data.list.filter((data) => data.generation === gen));
-        }
-      });
-
-    clerkAPI
-      .getTypeMemberList({
-        token: member.token,
-        typeId: QUIT,
-      })
-      .then((data) => {
-        if (data.success) {
-          setQuit(data.list);
-          setGenQuit(data.list.filter((data) => data.generation === gen));
+          //gen 받아와졌을때, 인원 불러오기
+          clerkAPI
+            .getTypeMemberList({
+              token: member.token,
+              typeId: NON,
+            })
+            .then((data) => {
+              if (data.success) {
+                setNon(data.list);
+                setGenNon(
+                  data.list.filter(
+                    (data) => data.generation === gendata.list[0]
+                  )
+                );
+              }
+            });
+          clerkAPI
+            .getTypeMemberList({
+              token: member.token,
+              typeId: REGULAR,
+            })
+            .then((data) => {
+              if (data.success) {
+                setRegular(data.list);
+                setGenRegular(
+                  data.list.filter(
+                    (data) => data.generation === gendata.list[0]
+                  )
+                );
+              }
+            });
+          clerkAPI
+            .getTypeMemberList({
+              token: member.token,
+              typeId: SLEEP,
+            })
+            .then((data) => {
+              if (data.success) {
+                setSleep(data.list);
+                setGenSleep(
+                  data.list.filter(
+                    (data) => data.generation === gendata.list[0]
+                  )
+                );
+              }
+            });
+          clerkAPI
+            .getTypeMemberList({
+              token: member.token,
+              typeId: GRADUATE,
+            })
+            .then((data) => {
+              if (data.success) {
+                setGraduate(data.list);
+                setGenGraduate(
+                  data.list.filter(
+                    (data) => data.generation === gendata.list[0]
+                  )
+                );
+              }
+            });
+          clerkAPI
+            .getTypeMemberList({
+              token: member.token,
+              typeId: QUIT,
+            })
+            .then((data) => {
+              if (data.success) {
+                setQuit(data.list);
+                setGenQuit(
+                  data.list.filter(
+                    (data) => data.generation === gendata.list[0]
+                  )
+                );
+              }
+            });
         }
       });
   }, []);
