@@ -1,15 +1,10 @@
-#year::-webkit-inner-spin-button,
-#year::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.entirePage {
-  min-height: calc(100vh - 90px);
+/*date형 input의 아이콘 변경*/
+input[type='date']::-webkit-calendar-picker-indicator {
+  color: rgba(0, 0, 0, 0);
+  background: url('/src/assets/svg/calender.svg');
 }
 
 /*스크롤바*/
-
 .overflow-auto::-webkit-scrollbar {
   width: 5px;
   position: absolute;

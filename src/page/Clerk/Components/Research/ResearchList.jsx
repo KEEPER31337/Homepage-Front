@@ -1,13 +1,6 @@
-import { Fragment, useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Dialog, Transition } from '@headlessui/react';
+import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import {
-  EyeIcon,
-  EyeOffIcon,
-  PlusIcon,
-  WrenchIcon,
-} from '@heroicons/react/outline';
+import { EyeIcon, EyeOffIcon, PlusIcon } from '@heroicons/react/outline';
 
 import clerkAPI from 'API/v1/clerk';
 import memberAPI from 'API/v1/member';
@@ -117,10 +110,10 @@ const ResearchList = ({
   }, []);
   return (
     <>
-      <div className="flex flex-col gap-2 border rounded-md p-2 text-center">
+      <div className="flex flex-col gap-2 border rounded-md p-2 text-center dark:border-gray-600">
         역대 설문 목록
         <button
-          className="w-full border border-gray-400 rounded-xl shadow-md p-1 px-2 bg-violet-100 text-xs hover:bg-violet-200 active:shadow-none focus:outline-none focus:ring-0"
+          className="w-full border border-gray-400 rounded-xl shadow-md p-1 px-2 bg-violet-100 text-xs hover:bg-violet-200 active:shadow-none focus:outline-none focus:ring-0 dark:bg-violet-500 dark:hover:bg-violet-400 dark:border-transparent"
           onClick={() => {
             setIsModify(false);
             setSelectedSurvey({
@@ -130,14 +123,16 @@ const ResearchList = ({
               startTime: getTime(),
               endDate: getNow(),
               endTime: getTime(),
-              description: '테스트테스트',
+              description: '',
               isVisible: true,
             });
             setOnCreateModal(true);
           }}
         >
           <PlusIcon
-            className={'inline-block text-violet-400 h-4 w-4 '}
+            className={
+              'inline-block text-violet-400 h-4 w-4 dark:text-violet-200'
+            }
             aria-hidden="true"
           />
           활동인원조사 폼 만들기
@@ -153,7 +148,7 @@ const ResearchList = ({
             surveyList.map((survey, index) => (
               <div
                 key={index}
-                className="w-full flex justify-center border-2 rounded-lg bg-slate-50 p-1 gap-1 items-center"
+                className="w-full flex justify-center border-2 rounded-lg bg-slate-50 p-1 gap-1 items-center dark:bg-darkPoint dark:border-gray-600"
               >
                 {getProgress(survey.openTime, survey.closeTime) === 'P' ? (
                   <div className="py-3 flex-none w-10 h-10 text-[3px] rounded-full bg-yellow-400 text-mainWhite">
@@ -164,7 +159,7 @@ const ResearchList = ({
                     진행중
                   </div>
                 ) : (
-                  <div className="py-3 flex-none w-10 h-10 text-[3px] rounded-full bg-gray-400 text-mainWhite">
+                  <div className="py-3 flex-none w-10 h-10 text-[3px] rounded-full bg-gray-400 text-mainWhite dark:bg-gray-600">
                     종료
                   </div>
                 )}
@@ -195,7 +190,7 @@ const ResearchList = ({
                   </div>
                   <div className="text-xs flex gap-2">
                     <button
-                      className="border rounded-md bg-gray-100 w-full hover:bg-gray-200 active:shadow-none focus:outline-none focus:ring-0"
+                      className="border rounded-md bg-gray-100 w-full hover:bg-gray-200 active:shadow-none focus:outline-none focus:ring-0 dark:bg-darkPoint dark:hover:bg-darkComponent dark:border-gray-600"
                       onClick={() => {
                         setIsModify(true);
                         setSelectedSurvey(survey);
@@ -217,7 +212,7 @@ const ResearchList = ({
                       수정하기
                     </button>
                     <button
-                      className="border rounded-md bg-gray-100 w-full hover:bg-gray-200 active:shadow-none focus:outline-none focus:ring-0"
+                      className="border rounded-md bg-gray-100 w-full hover:bg-gray-200 active:shadow-none focus:outline-none focus:ring-0 dark:bg-darkPoint dark:hover:bg-darkComponent dark:border-gray-600"
                       onClick={() => {
                         deleteHandler(survey.surveyId);
                       }}
@@ -239,7 +234,7 @@ const ResearchList = ({
                   </div>
                 </div>
                 <button
-                  className="border-2 border-gray-300 rounded-md w-[5rem] flex flex-col gap-1 p-1 items-center bg-white text-gray-400 text-sm"
+                  className="border-2 border-gray-300 rounded-md w-[5rem] flex flex-col gap-1 p-1 items-center bg-white text-gray-400 text-sm dark:bg-mainBlack dark:border-gray-600"
                   onClick={() => {
                     viewHandler(survey);
                   }}
@@ -267,9 +262,9 @@ const ResearchList = ({
             <button
               className={
                 (curPage === 0
-                  ? 'text-gray-400 bg-gray-200'
-                  : 'hover:bg-slate-100') +
-                ' border-2 rounded-md shrink active:shadow-none focus:outline-none focus:ring-0'
+                  ? 'text-gray-400 bg-gray-200 dark:bg-gray-600'
+                  : 'hover:bg-slate-100 dark:hover:bg-darkComponent') +
+                ' border-2 rounded-md shrink active:shadow-none focus:outline-none focus:ring-0 dark:border-gray-600'
               }
               onClick={() => {
                 setCurPage(curPage - 1);
@@ -291,8 +286,10 @@ const ResearchList = ({
             </button>
             <button
               className={
-                (isLast ? 'text-gray-400 bg-gray-200' : 'hover:bg-slate-100') +
-                ' border-2 rounded-md shrink active:shadow-none focus:outline-none focus:ring-0'
+                (isLast
+                  ? 'text-gray-400 bg-gray-200 dark:bg-gray-600'
+                  : 'hover:bg-slate-100 dark:hover:bg-darkComponent') +
+                ' border-2 rounded-md shrink active:shadow-none focus:outline-none focus:ring-0 dark:border-gray-600'
               }
               onClick={() => {
                 setCurPage(curPage + 1);

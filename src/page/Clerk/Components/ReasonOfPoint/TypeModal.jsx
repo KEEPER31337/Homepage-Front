@@ -123,14 +123,14 @@ const TypeModal = ({
   }, [addData]);
   return (
     <div
-      className="font-basic h-w-full flex justify-center fixed top-0 left-0 right-0 bottom-0 z-[99] bg-mainBlack bg-opacity-60"
+      className="font-basic h-w-full flex justify-center fixed top-0 left-0 right-0 bottom-0 z-[99] bg-mainBlack bg-opacity-60 dark:text-mainWhite"
       ref={outside}
       onClick={(e) => handleModalClose(e)}
     >
       {/*console.log(viewMerit)*/}
       {/*console.log(viewDemerit)*/}
       <div className="flex flex-col w-[80vw] h-[80vh] p-2 my-auto text-sm sm:text-base">
-        <div className="h-[2em] rounded-t-lg relative p-1 px-2 bg-mainWhite font-bold dark:bg-darkPoint dark:text-gray-200">
+        <div className="h-[2em] rounded-t-lg relative p-2 px-4 bg-mainWhite font-bold dark:bg-darkPoint dark:text-gray-200">
           상벌점 사유 수정하기
           <button
             className="text-2xl absolute -top-[3px] right-1 w-5 font-bold text-center text-gray-400 "
@@ -141,7 +141,7 @@ const TypeModal = ({
             &times;
           </button>
         </div>
-        <div className="h-full bg-mainWhite rounded-b-lg pb-4 flex flex-col justify-center">
+        <div className="h-full bg-mainWhite rounded-b-lg p-4 pb-4 flex flex-col justify-center dark:bg-darkPoint">
           <div className="flex flex-col gap-2 justify-center items-center h-full p-2">
             <div className="flex w-full gap-2 text-center font-bold">
               <div className="text-green-400 w-full underline decoration-green-400 underline-offset-4">
@@ -152,7 +152,7 @@ const TypeModal = ({
               </div>
             </div>
             <div className="flex w-full gap-2">
-              <div className="border-2 rounded-md w-full h-[40vh] overflow-y-auto">
+              <div className="border-2 rounded-md w-full h-[40vh] overflow-auto dark:border-gray-600">
                 {viewMerit.map((reason, index) => (
                   <div
                     key={index}
@@ -161,19 +161,22 @@ const TypeModal = ({
                         ? 'bg-green-100'
                         : reason?.dflag
                         ? 'bg-red-100'
-                        : 'group') + ' flex p-1 border-b relative'
+                        : 'group') +
+                      ' flex p-1 border-b relative dark:border-gray-600'
                     }
                   >
-                    <p className="w-[2em] text-center my-auto font-bold">
+                    <p className="w-[2em] text-center my-auto font-bold text-gray-400">
                       {index + 1}
                     </p>
-                    <p className="border-x w-full px-2">{reason.detail}</p>
+                    <p className="border-x w-full px-2  dark:border-gray-600">
+                      {reason.detail}
+                    </p>
                     <p className="w-[3em] text-center my-auto">
                       {reason.merit}점
                     </p>
-                    <div className="absolute top-0 right-0 justify-center items-center w-full h-full bg-slate-300 bg-opacity-50 group-hover:flex hidden">
+                    <div className="absolute top-0 right-0 justify-center items-center w-full h-full bg-slate-300 bg-opacity-50 group-hover:flex hidden dark:bg-slate-600 dark:bg-opacity-50">
                       <button
-                        className="w-[6em] p-1 text-center text-xs bg-red-400 text-mainWhite rounded-md border hover:bg-red-600 focus:outline-none"
+                        className="w-[6em] p-1 text-center text-xs bg-red-400 text-mainWhite rounded-md border hover:bg-red-600 focus:outline-none dark:border-gray-600"
                         onClick={() => {
                           //ui 수정
                           setViewMerit(
@@ -192,29 +195,32 @@ const TypeModal = ({
                   </div>
                 ))}
               </div>
-              <div className="border-2 rounded-md w-full h-[40vh] overflow-y-auto">
+              <div className="border-2 rounded-md w-full h-[40vh] overflow-auto dark:border-gray-600">
                 {viewDemerit.map((reason, index) => (
                   <div
                     key={index}
                     className={
                       (reason?.nflag
-                        ? 'bg-green-100'
+                        ? 'bg-green-100 dark:bg-green-600'
                         : reason?.dflag
-                        ? 'bg-red-100'
-                        : 'group') + ' flex p-1 border-b relative'
+                        ? 'bg-red-100 dark:bg-red-600'
+                        : 'group') +
+                      ' flex p-1 border-b relative dark:border-gray-600'
                     }
                   >
-                    <p className="w-[2em] text-center my-auto font-bold">
+                    <p className="w-[2em] text-center my-auto font-bold text-gray-400">
                       {index + 1}
                     </p>
-                    <p className="border-x w-full px-2">{reason.detail}</p>
+                    <p className="border-x w-full px-2 dark:border-gray-600">
+                      {reason.detail}
+                    </p>
 
                     <p className="w-[3em] text-center my-auto">
                       {reason.merit}점
                     </p>
-                    <div className="absolute top-0 right-0 justify-center items-center w-full h-full bg-slate-300 bg-opacity-50 group-hover:flex hidden">
+                    <div className="absolute top-0 right-0 justify-center items-center w-full h-full bg-slate-300 bg-opacity-50 group-hover:flex hidden dark:bg-slate-600 dark:bg-opacity-50">
                       <button
-                        className="w-[6em] p-1 text-center text-xs bg-red-400 text-mainWhite rounded-md border hover:bg-red-600 focus:outline-none"
+                        className="w-[6em] p-1 text-center text-xs bg-red-400 text-mainWhite rounded-md border hover:bg-red-600 focus:outline-none dark:border-gray-600"
                         onClick={() => {
                           //ui 수정
                           setViewDemerit(
@@ -245,7 +251,7 @@ const TypeModal = ({
                   ]);
                   setAddData([...addData, { ...newMerit, isMerit: true }]);
                 }}
-                className="flex p-2 border-b w-full gap-2"
+                className="flex p-2 border-b w-full gap-2 dark:border-gray-600"
               >
                 <p className="grow">
                   <input
@@ -277,7 +283,7 @@ const TypeModal = ({
                     type="submit"
                     className="w-[2em] text-center my-auto font-bold focus:outline-none"
                   >
-                    <PlusIcon className="text-violet-400 rounded-md border-2 hover:bg-slate-50" />
+                    <PlusIcon className="text-violet-400 rounded-md border-2 hover:bg-slate-50 dark:border-gray-600 hover:bg-darkComponent" />
                   </button>
                 </p>
               </form>
@@ -291,7 +297,7 @@ const TypeModal = ({
                   ]);
                   setAddData([...addData, { ...newDemerit, isMerit: false }]);
                 }}
-                className="flex p-2 border-b w-full gap-2"
+                className="flex p-2 border-b w-full gap-2 dark:border-gray-600"
               >
                 <p className="grow">
                   <input
@@ -323,7 +329,7 @@ const TypeModal = ({
                     type="submit"
                     className="w-[2em] text-center my-auto font-bold focus:outline-none"
                   >
-                    <PlusIcon className="text-violet-400 rounded-md border-2 hover:bg-slate-50 focus:outline-none" />
+                    <PlusIcon className="text-violet-400 rounded-md border-2 hover:bg-slate-50 focus:outline-none dark:border-gray-600 hover:bg-darkComponent" />
                   </button>
                 </p>
               </form>
@@ -338,7 +344,7 @@ const TypeModal = ({
             </button>
             <button
               type="button"
-              className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-violet-400 hover:bg-violet-500 focus:outline-none"
+              className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-violet-400 hover:bg-violet-500 focus:outline-none dark:bg-violet-600 dark:hover:bg-violet-400"
               onClick={() => {
                 submitHandler();
               }}

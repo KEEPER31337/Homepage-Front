@@ -48,7 +48,7 @@ const PointTable = ({ curSort, pointData, setPointData, state }) => {
   }, [curSort]);
 
   return (
-    <div className="bg-mainWhite rounded-md p-2">
+    <div className="bg-mainWhite rounded-md p-2 dark:bg-darkPoint">
       {isOpen ? (
         <ReasonModal
           isOpen={isOpen}
@@ -59,7 +59,7 @@ const PointTable = ({ curSort, pointData, setPointData, state }) => {
         ''
       )}
       <div className="w-full text-center">
-        <p className="flex border-b-2 w-full font-bold">
+        <p className="flex border-b-2 w-full font-bold dark:border-gray-600">
           <p className="min-w-[2em] w-[2em] px-1">No</p>
           <div className="flex w-full">
             <p className="min-w-[7em] w-full sm:w-[7em] px-1">이름</p>
@@ -78,12 +78,12 @@ const PointTable = ({ curSort, pointData, setPointData, state }) => {
               key={index}
               className={
                 (curSort === '랭킹' && data.totalMerit && index < 3
-                  ? 'border-2 border-slate-300 bg-slate-100 font-bold'
+                  ? 'border-2 border-slate-300 bg-slate-100 font-bold dark:bg-darkComponent'
                   : 'border') +
                 (curSort === '랭킹' && data.totalMerit - data.totalDemerit < -9
                   ? ' border-red-400'
-                  : ' ') +
-                ' rounded-md flex w-full mt-1'
+                  : ' dark:border-gray-600') +
+                ' rounded-md flex w-full mt-1 '
               }
               onClick={() => {
                 setModalData({ ...data, no: index + 1 });
@@ -116,11 +116,11 @@ const PointTable = ({ curSort, pointData, setPointData, state }) => {
                 )}
               </p>
               <div className="flex w-full">
-                <p className="min-w-[7em] w-full sm:w-[7em] p-1 flex items-center justify-center">
+                <p className="min-w-[7em] w-full sm:w-[7em] p-1 flex items-center justify-center text-violet-400">
                   {data.realName}
                 </p>
                 {/**모바일에서 내역을 클릭하면 모달창으로 사유를 띄워주도록*/}
-                <p className="hidden sm:block sm:w-full p-1">
+                <p className="hidden sm:block sm:w-full p-1 dark:text-gray-300">
                   {Object.keys(data.detailsWithCount)
                     .map((key) => key + ' ' + data.detailsWithCount[key] + '회')
                     .join(', ')}
@@ -133,23 +133,15 @@ const PointTable = ({ curSort, pointData, setPointData, state }) => {
                     (curSort === '랭킹' &&
                     data.totalMerit - data.totalDemerit < -9
                       ? ' border-red-400'
-                      : ' ') +
-                    ' min-w-[3em] sm:w-[6em] p-1 border-x flex items-center justify-center'
+                      : ' dark:border-gray-600') +
+                    ' min-w-[3em] sm:w-[6em] p-1 border-x flex items-center justify-center text-green-400'
                   }
                 >
                   {data.totalMerit > data.totalDemerit
                     ? data.totalMerit - data.totalDemerit
                     : ''}
                 </p>
-                <p
-                  className={
-                    (curSort === '랭킹' &&
-                    data.totalMerit - data.totalDemerit < -9
-                      ? ' text-red-500'
-                      : ' ') +
-                    ' min-w-[3em] sm:w-[6em] p-1 flex items-center justify-center'
-                  }
-                >
+                <p className="min-w-[3em] sm:w-[6em] p-1 flex items-center justify-center text-red-400">
                   {data.totalMerit < data.totalDemerit
                     ? data.totalDemerit - data.totalMerit
                     : ''}

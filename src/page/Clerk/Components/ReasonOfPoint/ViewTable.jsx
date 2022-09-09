@@ -54,11 +54,7 @@ const ViewTable = ({
       if (res?.success) {
         setRecordData(res.list);
         setIsModify(false);
-      } else
-        alert(
-          curYear +
-            '년의 상벌점 내역을 불러오는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
-        );
+      }
     });
   }, [curYear, isChanged]);
 
@@ -66,7 +62,7 @@ const ViewTable = ({
     <>
       <div className="flex justify-end text-xs">
         <button
-          className="border border-slate-400 flex items-center p-1 rounded-md hover:bg-gray-200 focus:outline-none"
+          className="border border-slate-400 flex items-center p-1 rounded-md hover:bg-gray-200 focus:outline-none dark:hover:bg-darkPoint"
           onClick={() => {
             setIsModify(!isModify);
           }}
@@ -110,7 +106,7 @@ const ViewTable = ({
           )}
         </button>
       </div>
-      <div className="bg-mainWhite rounded-md p-2">
+      <div className="bg-mainWhite rounded-md p-2 dark:bg-darkPoint">
         {isOpen ? (
           <ReasonModal
             isOpen={isOpen}
@@ -122,11 +118,13 @@ const ViewTable = ({
         )}
 
         <div className="w-full text-center">
-          <p className="flex  w-full font-bold">
-            <p className="border-b-2 min-w-[2em] w-[2em] px-1">No</p>
-            <div className="border-b-2 flex w-full">
+          <p className="flex w-full font-bold">
+            <p className="border-b-2 min-w-[2em] w-[2em] px-1 dark:border-gray-600">
+              No
+            </p>
+            <div className="border-x border-b-2 flex w-full dark:border-gray-600">
               <p className="min-w-[7em] w-[7em] px-1">날짜</p>
-              <p className="min-w-[4em] w-full px-1">이름</p>
+              <p className="min-w-[6em] w-full sm:w-[6em]  px-1">이름</p>
               {/**모바일에서 내역을 클릭하면 모달창으로 사유를 띄워주도록*/}
               <p className="hidden sm:block sm:w-full px-1">사유</p>
               <p className="min-w-[3em] sm:w-[6em] px-1">상점</p>
@@ -136,40 +134,39 @@ const ViewTable = ({
           </p>
           {recordData?.length !== 0 ? (
             recordData.map((data, index) => (
-              <button
-                key={index}
-                className="flex w-full"
-                onClick={() => {
-                  setModalData({ ...data, no: index + 1 });
-                  setIsOpen(true);
-                }}
-                disabled={window.innerWidth > parseInt(smWidth, 10)}
-              >
-                <p className="border-b min-w-[2em] w-[2em] p-1 my-auto">
-                  {index + 1}
-                </p>
-                <div className="border-b border-r flex w-full">
-                  <p className="min-w-[7em] w-[7em] p-1 flex items-center justify-center">
-                    {data.date}
-                  </p>
-                  <p className="min-w-[4em] w-full p-1 flex items-center justify-center">
-                    {data.awarderRealName}
-                  </p>
-                  {/**모바일에서 내역을 클릭하면 모달창으로 사유를 띄워주도록*/}
-                  <p className="hidden sm:block sm:w-full p-1 text-left">
-                    {data.detail}
-                  </p>
-                  <p className="min-w-[3em] sm:w-[6em] p-1 border-x flex items-center justify-center">
-                    {data.isMerit ? data.merit : ''}
-                  </p>
-                  <p className="min-w-[3em] sm:w-[6em] p-1 flex items-center justify-center">
-                    {!data.isMerit ? data.merit : ''}
-                  </p>
-                </div>
+              <div key={index} className="flex">
+                <button
+                  className="flex w-full border-b dark:border-gray-600"
+                  onClick={() => {
+                    setModalData({ ...data, no: index + 1 });
+                    setIsOpen(true);
+                  }}
+                  disabled={window.innerWidth > parseInt(smWidth, 10)}
+                >
+                  <p className="min-w-[2em] w-[2em] p-1 my-auto">{index + 1}</p>
+                  <div className="border-x flex w-full dark:border-gray-600">
+                    <p className="min-w-[7em] w-[7em] p-1 flex items-center justify-center text-gray-400">
+                      {data.date}
+                    </p>
+                    <p className="min-w-[6em] w-full sm:w-[6em] p-1 flex items-center justify-center text-violet-400 font-bold">
+                      {data.awarderRealName}
+                    </p>
+                    {/**모바일에서 내역을 클릭하면 모달창으로 사유를 띄워주도록*/}
+                    <p className="hidden sm:block sm:w-full p-1 text-left">
+                      {data.detail}
+                    </p>
+                    <p className="min-w-[3em] sm:w-[6em] p-1 border-x flex items-center justify-center text-green-400 dark:border-gray-600">
+                      {data.isMerit ? data.merit : ''}
+                    </p>
+                    <p className="min-w-[3em] sm:w-[6em] p-1 flex items-center justify-center text-red-400">
+                      {!data.isMerit ? data.merit : ''}
+                    </p>
+                  </div>
+                </button>
                 {isModify ? (
                   <p className="my-auto flex justify-center items-center min-w-[3em] sm:w-[3em]">
                     <button
-                      className="border rounded-md px-1 bg-slate-100 hover:bg-slate-200 focus:outline-none"
+                      className="border rounded-md px-1 bg-slate-100 hover:bg-slate-200 focus:outline-none dark:border-gray-600 dark:bg-darkComponent dark:hover:bg-gray-600"
                       onClick={() => {
                         removeHandler(data.meritLogId);
                       }}
@@ -193,7 +190,7 @@ const ViewTable = ({
                 ) : (
                   ''
                 )}
-              </button>
+              </div>
             ))
           ) : (
             <div className="flex items-center justify-center h-20 text-slate-300 ">
