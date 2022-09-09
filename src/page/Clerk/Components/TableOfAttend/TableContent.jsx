@@ -10,10 +10,17 @@ import {
   gridAttend,
   gridGis,
 } from './datesClassname';
-import { seminars, userttt } from './testdata';
 import clerkAPI from 'API/v1/clerk';
+import noticeImg from 'assets/img/notice_violet.png';
 
-const TableContent = ({ member, state, page, userSize }) => {
+const TableContent = ({
+  member,
+  state,
+  page,
+  userSize,
+  season,
+  appendChange,
+}) => {
   const { height, width } = useWindowDimensions();
   const [seminarSize, setSeminarSize] = useState(0);
   const [userLength, setUserLength] = useState(0);
@@ -27,11 +34,13 @@ const TableContent = ({ member, state, page, userSize }) => {
   const [select, setSelect] = useState('');
   const isDark = state.darkMode?.isDark;
   const [content, setContent] = useState({
+    attendanceId: 0,
+    statusId: 1,
     name: '',
     user: '',
   });
-  const [attendanceId, setAttendanceId] = useState(0);
   const [absenceExcuse, setAbsenceExcuse] = useState('');
+  const [deleteChange, setDeleteChange] = useState(0);
 
   const [allAttend, setAllAttend] = useState([]);
   const [users, setUsers] = useState([]);
@@ -40,54 +49,41 @@ const TableContent = ({ member, state, page, userSize }) => {
   useEffect(() => {
     // 전체 세미나 출석 조회 && 출석 이유 조회 && 활동회원 조회
     clerkAPI
-      .getAllSeminarAttend({
-        token: member.token,
-        page: 0,
-        size: 40,
-        seasonStartDate: '2022-01-01',
-        seasonEndDate: '2023-10-26',
-      })
-      .then((data) => {
-        console.log(data.page.content);
-        setAllAttend(data.page.content);
-        setSeminarSize(data.page.content.length);
-      });
-    clerkAPI
       .getSeminarAttendance({
         token: member.token,
       })
       .then((data) => {
         if (data.success) {
           setReasons(data.list);
-          setSelect(data.list[0]);
+          setSelect(data.list[0].seminarAttendanceStatusType);
         }
-      });
-    clerkAPI
-      .getTypeMemberList({
-        token: member.token,
-        typeId: 2,
-      })
-      .then((data) => {
-        if (data.success) {
-          setSemiUsers(data.list);
-        }
-      });
-    clerkAPI
-      .deleteSeminar({
-        token: member.token,
-        seminarId: 6,
-      })
-      .then((data) => {
-        if (data.success) {
-          console.log(data);
-        }
-      })
-      .then(() => {
-        clerkAPI
-          .getSeminarsList({ token: member.token })
-          .then((data) => console.log(data));
       });
   }, []);
+
+  useEffect(() => {
+    clerkAPI
+      .getAllSeminarAttend({
+        token: member.token,
+        page: 0,
+        size: 40,
+        seasonStartDate: season.seasonStart,
+        seasonEndDate: season.seasonEnd,
+      })
+      .then((data) => {
+        if (data.success) {
+          setAllAttend(data.page.content);
+          setSeminarSize(data.page.content.length);
+
+          const max = data.page.content?.reduce((prev, current) => {
+            return prev.sortedSeminarAttendances.length >
+              current.sortedSeminarAttendances.length
+              ? prev
+              : current;
+          });
+          setSemiUsers(max.sortedSeminarAttendances);
+        }
+      });
+  }, [season, appendChange, deleteChange]);
 
   useEffect(() => {
     setUsers(
@@ -101,22 +97,23 @@ const TableContent = ({ member, state, page, userSize }) => {
     setUserLength(users.length + 1);
   }, [users]);
 
-  const clicked = (idx, idx2) => {
-    setContent({
-      name: seminars[idx2 - 1].seminarName,
-      user: users[idx].realName,
-    });
+  const clicked = (idx, idx2, attendId) => {
+    setContent((prev) => ({
+      ...prev,
+      attendanceId: attendId,
+      name: allAttend[idx].seminarName,
+      user: users[idx2].memberName,
+    }));
     setVisible(true);
   };
 
-  const Child = ({ idx, idx2, atten, attendID }) => {
+  const Child = ({ idx, idx2, atten, attendId }) => {
     return (
       <div
         className={gridAttend[idx2 + 2][idx + 3]}
         key={(idx + 1) * 1000 + idx2}
         onClick={() => {
-          clicked(idx, idx2);
-          setAttendanceId(attendID);
+          clicked(idx, idx2, attendId);
         }}
       >
         {atten}
@@ -134,16 +131,35 @@ const TableContent = ({ member, state, page, userSize }) => {
 
   const editBtn = () => {
     setVisible(false);
-    clerkAPI.reviseAttend({
-      token: member.token,
-      attendanceId: attendanceId,
-      seminarAttendanceStatusId: select,
-      absenceExcuse: absenceExcuse,
-    });
+    clerkAPI
+      .reviseAttend({
+        token: member.token,
+        attendanceId: content.attendanceId,
+        seminarAttendanceStatusId: content.statusId,
+        absenceExcuse: absenceExcuse,
+      })
+      .then((data) => {
+        if (data.success) {
+          clerkAPI
+            .getAllSeminarAttend({
+              token: member.token,
+              page: 0,
+              size: 40,
+              seasonStartDate: season.seasonStart,
+              seasonEndDate: season.seasonEnd,
+            })
+            .then((data) => {
+              if (data.success) {
+                setAllAttend(data.page.content);
+              }
+            });
+        } else {
+          alert('실패했다!');
+        }
+      });
   };
 
   const deleteSemianrBtn = (seminar) => {
-    console.log('seminar', seminar);
     setDeleteSeminar({
       seminarId: seminar.seminarId,
       seminarName: seminar.seminarName,
@@ -162,69 +178,92 @@ const TableContent = ({ member, state, page, userSize }) => {
         seminarId: deleteSemianr.seminarId,
       })
       .then((data) => {
-        console.log(data);
+        if (data.success) {
+          setDeleteChange(deleteChange + 1);
+        } else {
+          alert('삭제 안됐다!');
+        }
       });
     setDeleteSeminar((data) => ({ ...data, visible: false }));
   };
 
+  const selected = (status) => {
+    setSelect(status);
+    reasons.map((reason) => {
+      if (reason.seminarAttendanceStatusType === status) {
+        setContent((prev) => ({ ...prev, statusId: reason.id }));
+      }
+    });
+  };
+
   return (
     <>
-      <div className="relative rounded-xl overflow-auto w-full h-full">
-        <div className="absolute w-full">
-          <div className="overflow-hidden w-full">
-            <div className={gridAll[userLength][seminarSize]}>
-              <div className="row-start-[1] col-start-[1] bg-violet-100 sticky left-0 flex items-center justify-center">
-                기수
-              </div>
-              <div className="row-start-[1] col-start-[2] bg-violet-100 sticky left-[60px] flex items-center justify-center">
-                이름
-              </div>
-              {allAttend?.map((seminar, idx) => (
-                <div
-                  key={idx}
-                  className={gridDate[idx + 3]}
-                  onClick={() => {
-                    deleteSemianrBtn(seminar);
-                  }}
-                >
-                  {width < 640
-                    ? seminar.seminarName.substr(5)
-                    : seminar.seminarName}
+      {allAttend.length === 0 ? (
+        <div className="pt-5 grid place-items-center mr-20">
+          <img className="h-24 w-24" src={noticeImg} />
+          <div className="flex whitespace-pre text-center dark:text-slate-200 text-4xl m-2 font-bold">
+            <div className="text-violet-300 ">세미나 생성 </div>
+            부탁드립니다.
+          </div>
+        </div>
+      ) : (
+        <div className="relative rounded-xl overflow-auto w-full h-full flex justify-center">
+          <div className="absolute max-w-full w-fit h-full">
+            <div className="overflow-hidden w-full rounded-xl border-2 border-violet-100">
+              <div className={gridAll[userLength][seminarSize]}>
+                <div className="row-start-[1] col-start-[1] bg-violet-100 sticky left-0 flex items-center justify-center">
+                  기수
                 </div>
-              ))}
-              {users.map((user, idx) => (
-                <div className={gridGis[idx + 2]} key={idx}>
-                  {user?.generation}
+                <div className="row-start-[1] col-start-[2] bg-violet-100 sticky left-[60px] flex items-center justify-center">
+                  이름
                 </div>
-              ))}
+                {allAttend?.map((seminar, idx) => (
+                  <div
+                    key={idx}
+                    className={gridDate[idx + 3]}
+                    onClick={() => {
+                      deleteSemianrBtn(seminar);
+                    }}
+                  >
+                    {width < 640
+                      ? seminar.seminarName.substr(5)
+                      : seminar.seminarName}
+                  </div>
+                ))}
+                {users.map((user, idx) => (
+                  <div className={gridGis[idx + 2]} key={idx}>
+                    {user?.generation}
+                  </div>
+                ))}
 
-              {users.map((user, idx) => (
-                <div className={gridUser[idx + 2]} key={idx}>
-                  {user?.realName}
-                </div>
-              ))}
+                {users.map((user, idx) => (
+                  <div className={gridUser[idx + 2]} key={idx}>
+                    {user?.memberName}
+                  </div>
+                ))}
 
-              {allAttend?.map((seminar, idx) =>
-                seminar?.sortedSeminarAttendances?.map((user, idx2) =>
-                  users.map((userSorted, idx3) => {
-                    if (userSorted?.memberId === user.memberId) {
-                      return (
-                        <Child
-                          key={idx * 1000 + idx3}
-                          atten={user?.attendanceStatusType}
-                          attendID={user?.attendanceId}
-                          idx={idx}
-                          idx2={idx3}
-                        />
-                      );
-                    }
-                  })
-                )
-              )}
+                {allAttend?.map((seminar, idx) =>
+                  seminar?.sortedSeminarAttendances?.map((user, idx2) =>
+                    users.map((userSorted, idx3) => {
+                      if (userSorted?.memberId === user.memberId) {
+                        return (
+                          <Child
+                            key={idx * 1000 + idx3}
+                            atten={user?.attendanceStatusType}
+                            attendId={user?.attendanceId}
+                            idx={idx}
+                            idx2={idx3}
+                          />
+                        );
+                      }
+                    })
+                  )
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
       <Transition appear show={visible} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeBtn}>
           <Transition.Child
@@ -273,12 +312,16 @@ const TableContent = ({ member, state, page, userSize }) => {
                             ? 'w-1/2 m-2 text-sm border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 rounded-md bg-mainWhite text-mainBlack'
                             : 'w-1/2 m-2 text-sm border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 rounded-md bg-mainBlack text-violet-200'
                         }
-                        onChange={(e) => setSelect(e.target.value)}
+                        onChange={(e) => selected(e.target.value)}
                         value={select}
                         required
                       >
                         {reasons.map((reason, idx) => (
-                          <option key={idx} className="text-sm">
+                          <option
+                            key={idx}
+                            value={reason.seminarAttendanceStatusType}
+                            className="text-sm"
+                          >
                             {reason.seminarAttendanceStatusType}
                           </option>
                         ))}
