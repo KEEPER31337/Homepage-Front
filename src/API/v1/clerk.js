@@ -36,6 +36,24 @@ async function changeType({ token, memberId, typeId }) {
   }
 }
 
+// 직책 일괄 변경
+async function changeAllType({ token, list }) {
+  const options = {
+    method: 'PUT',
+    url: API_URL + '/v1/admin/clerk/members/types',
+    data: list,
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 /**상벌점 페이지 ===================================================================*/
 //상벌점 내역 추가
 async function addPoint({ token, data }) {
@@ -181,7 +199,6 @@ async function removePointType({ token, typeIds }) {
   }
 }
 
-
 // 세미나 목록 조회
 async function getSeminarsList({ token }) {
   const options = {
@@ -254,15 +271,21 @@ async function getSeminarAttendance({ token }) {
 }
 
 // 전체 세미나 출석 목록 조회
-async function getAllSeminarAttend({ token, page, size, seasonStartDate, seasonEndDate }) {
+async function getAllSeminarAttend({
+  token,
+  page,
+  size,
+  seasonStartDate,
+  seasonEndDate,
+}) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/admin/clerk/seminars/attendances',
-    params: { 
-      page: page, 
+    params: {
+      page: page,
       size: size,
-      seasonStartDate : seasonStartDate,
-      seasonEndDate : seasonEndDate,
+      seasonStartDate: seasonStartDate,
+      seasonEndDate: seasonEndDate,
     },
     headers: {
       Authorization: token,
@@ -280,7 +303,7 @@ async function getAllSeminarAttend({ token, page, size, seasonStartDate, seasonE
 async function getSomeSeminarAttend({ token, seminarId }) {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/admin/clerk/seminars/'+seminarId+'/attendances',
+    url: API_URL + '/v1/admin/clerk/seminars/' + seminarId + '/attendances',
     headers: {
       Authorization: token,
     },
@@ -294,7 +317,12 @@ async function getSomeSeminarAttend({ token, seminarId }) {
 }
 
 //세미나 출석 수정
-async function reviseAttend({ token, attendanceId, seminarAttendanceStatusId, absenceExcuse }) {
+async function reviseAttend({
+  token,
+  attendanceId,
+  seminarAttendanceStatusId,
+  absenceExcuse,
+}) {
   const options = {
     method: 'PATCH',
     url: API_URL + '/v1/admin/clerk/seminars/attendances/' + attendanceId,
@@ -332,7 +360,12 @@ async function getRecentSeminar({ token }) {
 }
 
 // 세미나 출석 조건 조회
-async function getAttendConditions({ token, seminarId, attendanceCloseTime, latenessCloseTime }) {
+async function getAttendConditions({
+  token,
+  seminarId,
+  attendanceCloseTime,
+  latenessCloseTime,
+}) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/admin/clerk/attendance/conditions',
@@ -357,7 +390,7 @@ async function researchReply({ token, surveyId, replyId, excuse }) {
     replyId,
     excuse,
   };
-const options = {
+  const options = {
     headers: {
       Authorization: token,
     },
@@ -379,13 +412,13 @@ async function researchReplyModify({ token, surveyId, replyId, excuse }) {
     excuse,
   };
   const options = {
-  headers: {
+    headers: {
       Authorization: token,
     },
   };
   try {
-const response = await axios.patch(url, data, options);
- return response.data;
+    const response = await axios.patch(url, data, options);
+    return response.data;
   } catch (error) {
     console.log(error);
     return error.response;
@@ -474,7 +507,7 @@ async function createResearch({
   };
 
   try {
-const response = await axios.post(url, data, options);
+    const response = await axios.post(url, data, options);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -500,14 +533,14 @@ async function modifyResearch({
     description,
     isVisible,
   };
- const options = {
+  const options = {
     headers: {
       Authorization: token,
     },
   };
   try {
-const response = await axios.patch(url, data, options);
-return response.data;
+    const response = await axios.patch(url, data, options);
+    return response.data;
   } catch (error) {
     console.log(error);
     return error.response;
@@ -519,7 +552,7 @@ async function removeResearch({ token, surveyId }) {
   const options = {
     method: 'DELETE',
     url: API_URL + '/v1/admin/clerk/surveys/' + surveyId,
-headers: {
+    headers: {
       Authorization: token,
     },
   };
@@ -542,11 +575,11 @@ async function open({ token, surveyId }) {
       Authorization: token,
     },
   };
-try {
+  try {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-   console.log(error);
+    console.log(error);
     return error.response;
   }
 }
@@ -555,11 +588,11 @@ async function close({ token, surveyId }) {
   const options = {
     method: 'PATCH',
     url: API_URL + '/v1/admin/clerk/surveys/' + surveyId + '/close',
- headers: {
+    headers: {
       Authorization: token,
     },
   };
-try {
+  try {
     const response = await axios(options);
     return response.data;
   } catch (error) {
@@ -577,7 +610,7 @@ async function getRespondents({ token, surveyId }) {
       Authorization: token,
     },
   };
-try {
+  try {
     const response = await axios(options);
     return response.data;
   } catch (error) {
@@ -590,7 +623,7 @@ async function getResearchList({ token, page, size }) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/admin/clerk/surveys?page=' + page + '&size=' + size,
-headers: {
+    headers: {
       Authorization: token,
     },
   };
@@ -637,4 +670,5 @@ export default {
   close,
   getRespondents,
   getResearchList,
+  changeAllType,
 };

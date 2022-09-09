@@ -135,20 +135,16 @@ const ReviseAppointment = ({ member }) => {
     //TODO API 들어오면 다시
     setChangeItems(changeItems);
 
-    for (let item of changeItems) {
-      clerkAPI
-        .changeType({
-          token: member.token,
-          memberId: item.memberId,
-          typeId: item.type,
-        })
-        .then((data) => {
-          if (data.success) {
-          }
-        });
-    }
-
-    navigate('/clerk');
+    clerkAPI
+      .changeAllType({
+        token: member.token,
+        list: Array.from(changeItems),
+      })
+      .then((data) => {
+        if (data.success) {
+          navigate('/clerk');
+        }
+      });
   };
 
   return (
