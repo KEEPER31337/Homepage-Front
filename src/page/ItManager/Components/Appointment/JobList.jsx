@@ -32,11 +32,8 @@ const JobList = ({ member, list, selectJob, setSelectJob, update }) => {
           }}
           className={selectJob === list.id ? checked : notChecked}
         >
-          <div className="flex items-center justify-start text-indigo-900 dark:text-white w-1/2">
-            <img
-              src={list.badgePath}
-              className="inline-block w-9 h-9 mr-4 rounded-md bg-white"
-            />
+          <div className="flex items-center justify-start text-indigo-900 dark:text-white w-1/2 p-[2px]">
+            <img src={list.badgePath} className="inline-block w-9 h-9 mr-4 " />
             {list.name.slice(5)}
           </div>
           <div className="flex items-center justify-start w-1/2 ml-4 text-slate-800 dark:text-white">
@@ -47,15 +44,16 @@ const JobList = ({ member, list, selectJob, setSelectJob, update }) => {
         <>
           {jobMembers.map((cccclist) => (
             <div
+              key={cccclist.memberId}
               onClick={() => {
                 setSelectJob(list.id);
               }}
               className={selectJob === list.id ? checked : notChecked}
             >
-              <div className="flex items-center justify-start text-indigo-900 dark:text-white w-1/2">
+              <div className="flex items-center justify-start text-indigo-900 dark:text-white w-1/2 p-[2px]">
                 <img
                   src={list.badgePath}
-                  className="inline-block w-9 h-9 rounded-md bg-white mr-4"
+                  className="inline-block w-9 h-9  mr-4"
                 />
                 {list.name.slice(5)}
               </div>

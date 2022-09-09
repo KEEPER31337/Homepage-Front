@@ -6,6 +6,7 @@ import Content from './Content';
 
 // api
 import clerkAPI from 'API/v1/clerk';
+import memberAPI from 'API/v1/member';
 
 const NON = 1; //비회원
 const REGULAR = 2; // 정회원
@@ -29,63 +30,90 @@ const ReviseAppointment = ({ member }) => {
   const [GenQuit, setGenQuit] = useState([]);
 
   useEffect(() => {
-    clerkAPI
-      .getTypeMemberList({
+    memberAPI
+      .getGenerations({
         token: member.token,
-        typeId: NON,
       })
-      .then((data) => {
-        if (data.success) {
-          setNon(data.list);
-          setGenNon(data.list.filter((data) => data.generation === gen));
-        }
-      });
+      .then((gendata) => {
+        if (gendata.success) {
+          setGen(gendata.list[0]);
 
-    clerkAPI
-      .getTypeMemberList({
-        token: member.token,
-        typeId: REGULAR,
-      })
-      .then((data) => {
-        if (data.success) {
-          setRegular(data.list);
-          setGenRegular(data.list.filter((data) => data.generation === gen));
-        }
-      });
-
-    clerkAPI
-      .getTypeMemberList({
-        token: member.token,
-        typeId: SLEEP,
-      })
-      .then((data) => {
-        if (data.success) {
-          setSleep(data.list);
-          setGenSleep(data.list.filter((data) => data.generation === gen));
-        }
-      });
-
-    clerkAPI
-      .getTypeMemberList({
-        token: member.token,
-        typeId: GRADUATE,
-      })
-      .then((data) => {
-        if (data.success) {
-          setGraduate(data.list);
-          setGenGraduate(data.list.filter((data) => data.generation === gen));
-        }
-      });
-
-    clerkAPI
-      .getTypeMemberList({
-        token: member.token,
-        typeId: QUIT,
-      })
-      .then((data) => {
-        if (data.success) {
-          setQuit(data.list);
-          setGenQuit(data.list.filter((data) => data.generation === gen));
+          //gen 받아와졌을때, 인원 불러오기
+          clerkAPI
+            .getTypeMemberList({
+              token: member.token,
+              typeId: NON,
+            })
+            .then((data) => {
+              if (data.success) {
+                setNon(data.list);
+                setGenNon(
+                  data.list.filter(
+                    (data) => data.generation === gendata.list[0]
+                  )
+                );
+              }
+            });
+          clerkAPI
+            .getTypeMemberList({
+              token: member.token,
+              typeId: REGULAR,
+            })
+            .then((data) => {
+              if (data.success) {
+                setRegular(data.list);
+                setGenRegular(
+                  data.list.filter(
+                    (data) => data.generation === gendata.list[0]
+                  )
+                );
+              }
+            });
+          clerkAPI
+            .getTypeMemberList({
+              token: member.token,
+              typeId: SLEEP,
+            })
+            .then((data) => {
+              if (data.success) {
+                setSleep(data.list);
+                setGenSleep(
+                  data.list.filter(
+                    (data) => data.generation === gendata.list[0]
+                  )
+                );
+              }
+            });
+          clerkAPI
+            .getTypeMemberList({
+              token: member.token,
+              typeId: GRADUATE,
+            })
+            .then((data) => {
+              if (data.success) {
+                setGraduate(data.list);
+                setGenGraduate(
+                  data.list.filter(
+                    (data) => data.generation === gendata.list[0]
+                  )
+                );
+              }
+            });
+          clerkAPI
+            .getTypeMemberList({
+              token: member.token,
+              typeId: QUIT,
+            })
+            .then((data) => {
+              if (data.success) {
+                setQuit(data.list);
+                setGenQuit(
+                  data.list.filter(
+                    (data) => data.generation === gendata.list[0]
+                  )
+                );
+              }
+            });
         }
       });
   }, []);
@@ -116,7 +144,6 @@ const ReviseAppointment = ({ member }) => {
         })
         .then((data) => {
           if (data.success) {
-            console.log('타입 바뀐댱');
           }
         });
     }
@@ -125,31 +152,31 @@ const ReviseAppointment = ({ member }) => {
   };
 
   return (
-    <div className="font-basic dark:bg-darkPoint flex shadow-md rounded-md flex-1 flex-col items-center justify-between m-2">
+    <div className="font-basic w-full dark:bg-darkPoint flex shadow-md rounded-md flex-1 flex-col items-center justify-between p-2">
       <Header setGen={setGen} />
       <div className="bg-white dark:bg-darkPoint w-full h-[60vh] scrollbar-hide overflow-y-scroll flex flex-col text-center ">
-        <div className=" grid grid-cols-4 md:grid-cols-5 p-2 w-full h-fit text-center">
+        <div className=" grid sm:grid-cols-4 md:grid-cols-5  grid-cols-2 p-2 w-full h-fit text-center">
           <Content
             type={NON}
             typeMemberList={GenNon}
             changeItems={changeItems}
           />
         </div>
-        <div className=" grid grid-cols-4 md:grid-cols-5 p-2 w-full h-fit text-center">
+        <div className=" grid sm:grid-cols-4 md:grid-cols-5  grid-cols-2 p-2 w-full h-fit text-center">
           <Content
             type={REGULAR}
             typeMemberList={GenRegular}
             changeItems={changeItems}
           />
         </div>
-        <div className=" grid grid-cols-4 md:grid-cols-5 p-2 w-full h-fit text-center">
+        <div className=" grid sm:grid-cols-4 md:grid-cols-5  grid-cols-2 p-2 w-full h-fit text-center">
           <Content
             type={SLEEP}
             typeMemberList={GenSleep}
             changeItems={changeItems}
           />
         </div>
-        <div className=" grid grid-cols-4 md:grid-cols-5 p-2 w-full h-fit text-center">
+        <div className=" grid sm:grid-cols-4 md:grid-cols-5  grid-cols-2 p-2 w-full h-fit text-center">
           <Content
             type={GRADUATE}
             typeMemberList={GenGraduate}

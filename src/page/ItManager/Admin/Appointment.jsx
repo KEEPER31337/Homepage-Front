@@ -8,7 +8,7 @@ import AuthModal from '../Components/AuthModal';
 
 import itmanagerAPI from 'API/v1/itmanager';
 
-const Appointment = ({ member }) => {
+const Appointment = ({ member, isDark }) => {
   //권한없으면 경고창과 함께 메인페이지로
   const auth = ['ROLE_회장', 'ROLE_부회장', 'ROLE_서기'];
   const jobs = member?.memberInfo?.jobs;
@@ -59,9 +59,9 @@ const Appointment = ({ member }) => {
 
   return (
     <>
-      <div className="dark:text-white  font-basic flex flex-1 md:flex-row flex-col h-[75vh] items-center md:justify-start  justify-center p-4">
-        <div className="bg-white dark:bg-darkPoint dark:border-violet-200  rounded-sm shadow border border-indigo-50 p-2 md:ml-32 md:w-6/12 w-full h-full flex flex-col text-center justify-between ">
-          <div className=" overflow-y-auto">
+      <div className="dark:text-white  font-basic flex flex-1 md:flex-row flex-col h-[75vh] items-center  justify-center p-4">
+        <div className="bg-white dark:bg-darkPoint dark:border-violet-200  rounded-sm shadow border border-indigo-50   md:w-6/12 w-full h-full flex flex-col text-center justify-between ">
+          <div className="scrollbar-hide overflow-y-scroll">
             {job.map((list) => (
               <JobList
                 key={list.id}
@@ -92,6 +92,7 @@ const Appointment = ({ member }) => {
           </div>
           <EditModal
             member={member}
+            isDark={isDark}
             selectJob={selectJob} //JOB id 넘겨줌
             ref={EditModalRef}
             update={update}
@@ -105,7 +106,7 @@ const Appointment = ({ member }) => {
 };
 
 const mapStateToProps = (state, OwnProps) => {
-  return { member: state.member };
+  return { member: state.member, isDark: state.darkMode.isDark };
 };
 
 export default connect(mapStateToProps)(Appointment);
