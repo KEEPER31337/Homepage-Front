@@ -6,6 +6,9 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ReactCodeInput from 'react-code-input';
 
+//local
+import attendAPI from 'API/v1/clerkSeminar';
+
 const AutoAttend = ({member}) => {
   const props = {
     inputStyle: {
@@ -41,12 +44,19 @@ const AutoAttend = ({member}) => {
   const [admitT,setAdmitT] = useState(3);
   const [lateT, setLateT] = useState(5);
   const [startDate, setStartDate] = useState(new Date());
+  const [seminarId, setSeminarId] = useState(0);
+  const [startTime, setStartTime] = useState('');
   const jobs = member?.memberInfo?.jobs;
+  //const token = state.member.token;
+  localStorage.removeItem("code"); //local에 저장된 code 값 지우기
+  localStorage.removeItem("min");
+  localStorage.removeItem("sec");
   useEffect(() => {
     if (jobs?.some((i) => auth.includes(i))) {
       setBoss(true);
     }
   }, []);
+
   const onSubmit = (event) => {
     
     event.preventDefault();
@@ -56,6 +66,38 @@ const AutoAttend = ({member}) => {
   }
   const lateChange = (event) => {
     setLateT(event.target.value);
+  }
+  setStartDate(new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, '')); 
+  console.log(startDate)
+  console.log(startDate.getMinutes())
+  const loadSeminarByDate = () => { //API요청값 맞춰 날짜 포맷 변환
+    let resDate = '';
+    const date = [startDate.getFullYear(),startDate.getMonth(),startDate.getDate()]
+    setStartDate(new Date(+new Date() + 3240 * 10000).toISOString().replace("T", " ").replace(/\..*/, '')); 
+    
+    const reformatDate = date.map((date) => {
+      if (parseInt(date)<10) date = '0' + date;
+      resDate = resDate + date; 
+    });
+    attendAPI
+      .getSeminarByDate({
+          searchDate: resDate,
+          token: token,
+    })
+    attendAPI
+      .createSeminar({
+        openTime: startDate,
+      })
+      .then((res) => {
+        console.log(res.msg);
+        if(res.success) {
+          setSeminarId(res.data.id);
+          console.log(res.data.id);
+        }
+      })
+
+
+
   }
   return (
     <AuthUser>
@@ -99,6 +141,7 @@ const AutoAttend = ({member}) => {
                       type="submit"
                       className="w-full mt-4 px-4 py-2 bg-violet-200 leading-6 rounded-md border border-transparent text-white focus:outline-none 
                       hover:bg-violet-300 items-center w-full justify-center items-center font-bold focus:outline-none"
+                      onClick={loadSeminarByDate}
                   >
                     <Link 
                       to ="/startAttend" 
