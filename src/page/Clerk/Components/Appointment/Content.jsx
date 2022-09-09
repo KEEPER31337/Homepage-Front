@@ -35,7 +35,10 @@ const Content = ({ type, typeMemberList }) => {
   return (
     <>
       {typeMemberList.map((member) => (
-        <div className="bg-white h-fit relative flex flex-row justify-start m-[2px] text-slate-800 rounded ">
+        <div
+          key={member.memberId}
+          className="bg-white dark:bg-darkPoint dark:text-white h-fit relative flex flex-row justify-start m-[2px] text-slate-800 rounded "
+        >
           <div className="p-1 ">
             <img src={member.profileImagePath} className="h-9 w-9 rounded " />
           </div>

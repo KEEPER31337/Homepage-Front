@@ -2,96 +2,111 @@ import React, { useEffect, useState, useRef } from 'react';
 import AuthUser from 'shared/AuthUser';
 
 import { connect } from 'react-redux';
+import EditModal from './EditModal.jsx';
+import JobList from '../Components/Appointment/JobList';
+import AuthModal from '../Components/AuthModal';
 
-import Job from '../Components/Appointment/Job';
-import ChangeMemberJob from '../Components/Appointment/ChangeMemberJob';
-
-//api
 import itmanagerAPI from 'API/v1/itmanager';
 
-const Appointment = ({ member }) => {
-  const [allMemberList, setAllMemberList] = useState([
-    {
-      memberId: 1327,
-      nickName: '이다은',
-      generation: 11,
-      profileImagePath: 'http://localhost:8080/v1/util/thumbnail/1399',
-      hasJobs: [
-        {
-          id: 1,
-          name: 'ROLE_회장',
-          badgePath: 'https://keeper.or.kr/v1/util/thumbnail/11',
-        },
-        {
-          id: 1,
-          name: 'ROLE_회장',
-          badgePath: 'https://keeper.or.kr/v1/util/thumbnail/11',
-        },
-      ],
-    },
-  ]);
+const Appointment = ({ member, isDark }) => {
+  //권한없으면 경고창과 함께 메인페이지로
+  const auth = ['ROLE_회장', 'ROLE_부회장', 'ROLE_서기'];
+  const jobs = member?.memberInfo?.jobs;
+  const ModalRef = useRef({});
 
   useEffect(() => {
-    //TODO api 이름 현재파일이랑 통일
+    if (!jobs?.some((i) => auth.includes(i))) {
+      ModalRef.current.open();
+    }
+  }, []);
+
+  const [update, setUpdate] = useState(false);
+  const [job, setJob] = useState([]);
+  const [selectJob, setSelectJob] = useState(-1);
+
+  useEffect(() => {
     itmanagerAPI
-      .getAllRoleMemberList({
+      .getRole({
         token: member.token,
       })
       .then((data) => {
         if (data.success) {
-          setAllMemberList(data.list);
+          setJob(data.list);
         }
-        console.log(data);
       });
   }, []);
 
-  //Member 컴포넌트에서 전달받은 정보 -> 2번째 박스에 넣어줄거임
-  const [job, setJob] = useState(1);
+  //직책 관리 모달 관련
+  const EditModalRef = useRef({});
+  const handleCreator = () => {
+    if (selectJob === -1) {
+    } else {
+      EditModalRef.current.open();
+    }
+  };
+
+  const [selectJobName, setSelectJobName] = useState('');
+  const [selectJobBadge, setSelectJobBadge] = useState('');
+
+  useEffect(() => {
+    job.map((list) => {
+      if (list.id === selectJob) {
+        setSelectJobName(list.name);
+        setSelectJobBadge(list.badgePath);
+      }
+    });
+  }, [selectJob]);
 
   return (
-    <AuthUser>
-      <div className="font-basic flex flex-1 md:flex-row flex-col items-center justify-between p-2">
-        <div className="bg-violet-50 p-2 md:w-3/12 w-11/12 h-full flex flex-col text-center ">
-          {allMemberList.map((list) => (
-            <Job key={list.memberId} list={list} job={job} setJob={setJob} />
-          ))}
-        </div>
-        <div className="bg-violet-50 ml-2 md:w-9/12 w-full h-full flex flex-col text-center">
-          {/* type선택 헤더로 나누기 */}
-          {/* <div className="bg-violet-300 flex flex-row justify-end w-full h-fit p-1">
-            <div className="h-fit w-fit  flex flex-row border-b-2 border-violet-200 bg-white hover:bg-violet-100 rounded-lg ">
-              <div className="flex items-center justify-center w-full p-1">
-                활동인원
-              </div>
-            </div>
-            <div className="h-fit w-fit  flex flex-row border-b-2 border-violet-200 bg-white hover:bg-violet-100 rounded-lg ">
-              <div className="flex items-center justify-center w-full p-1">
-                휴면
-              </div>
-            </div>
-          </div> */}
-
-          {/* <ChangeMemberJob
-            // key={selectedMemberInfo.memberId}
-            job={job}
-            // setAllMemberList={setAllMemberList}
-          /> */}
+    <>
+      <div className="dark:text-white  font-basic flex flex-1 md:flex-row flex-col h-[75vh] items-center  justify-center p-4">
+        <div className="bg-white dark:bg-darkPoint dark:border-violet-200  rounded-sm shadow border border-indigo-50   md:w-6/12 w-full h-full flex flex-col text-center justify-between ">
+          <div className="scrollbar-hide overflow-y-scroll">
+            {job.map((list) => (
+              <JobList
+                key={list.id}
+                list={list}
+                selectJob={selectJob}
+                setSelectJob={setSelectJob}
+                update={update}
+              />
+            ))}
+          </div>
+          <div
+            onClick={handleCreator}
+            className="items-center flex flex-row justify-center rounded-md  hover:bg-slate-100 dark:hover:bg-black mt-4 p-1 w-full  cursor-pointer"
+          >
+            {selectJob === -1 ? (
+              <div className="text-lg h-9">관리할 직책을 선택해주세요!</div>
+            ) : (
+              <>
+                <div className="text-lg ">
+                  {selectJobName.slice(5)}직책 관리하기
+                </div>
+                <img
+                  src={selectJobBadge}
+                  className="inline-block w-9 h-9 ml-1"
+                />
+              </>
+            )}
+          </div>
+          <EditModal
+            member={member}
+            isDark={isDark}
+            selectJob={selectJob} //JOB id 넘겨줌
+            ref={EditModalRef}
+            update={update}
+            setUpdate={setUpdate}
+          ></EditModal>
         </div>
       </div>
-    </AuthUser>
+      <AuthModal ref={ModalRef}>접근 권한이 없습니다.</AuthModal>
+    </>
   );
 };
 
 const mapStateToProps = (state, OwnProps) => {
-  return { member: state.member };
+  return { member: state.member, isDark: state.darkMode.isDark };
 };
 
-const mapDispatchToProps = (dispatch, OwnProps) => {
-  return {
-    updateInfo: ({ token, memberInfo }) => {
-      dispatch(actionMember.updateInfo({ token, memberInfo }));
-    },
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Appointment);
+export default connect(mapStateToProps)(Appointment);

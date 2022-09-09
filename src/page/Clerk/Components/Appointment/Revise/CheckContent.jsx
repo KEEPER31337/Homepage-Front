@@ -66,51 +66,50 @@ const CheckContent = ({ type, member, changeItems }) => {
       default:
         break;
     }
-    console.log(changeItems);
   };
 
   const [tooltip, setTooltip] = useState(false);
 
   return (
     <div
-      className="bg-white hover:bg-slate-100 h-fit relative flex flex-row justify-start m-[2px] text-slate-800 rounded "
+      className="bg-white dark:bg-darkPoint dark:text-white hover:bg-slate-100 h-fit relative flex flex-row justify-start m-[2px] text-slate-800 rounded "
       onMouseEnter={() => setTooltip(true)}
       onMouseLeave={() => setTooltip(false)}
     >
       {tooltip && (
-        <div className="absolute right-0 top-0 flex flex-col bg-white shadow-md border  w-fit h-fit z-10">
+        <div className="absolute dark:bg-darkPoint dark:text-white right-0 top-0 flex flex-col bg-white shadow-md border  w-fit h-fit z-10">
           <button
             onClick={checkHandler}
             value="1"
-            className="  hover:bg-slate-200  w-16 h-fit p-1"
+            className="dark:hover:bg-slate-500  hover:bg-slate-200  w-16 h-fit p-1"
           >
             비회원
           </button>
           <button
             onClick={checkHandler}
             value="2"
-            className="hover:bg-emerald-300  w-16 h-fit p-1"
+            className=" dark:hover:bg-emerald-600 hover:bg-emerald-300  w-16 h-fit p-1"
           >
             정회원
           </button>
           <button
             onClick={checkHandler}
             value="3"
-            className="hover:bg-amber-300  w-16 h-fit p-1"
+            className="dark:hover:bg-amber-400 hover:bg-amber-300  w-16 h-fit p-1"
           >
             휴면
           </button>
           <button
             onClick={checkHandler}
             value="4"
-            className="hover:bg-slate-600 hover:text-white w-16 h-fit p-1"
+            className="dark:hover:bg-slate-800 hover:bg-slate-600 hover:text-white w-16 h-fit p-1"
           >
             졸업
           </button>
           <button
             onClick={checkHandler}
             value="5"
-            className=" hover:bg-red-400 rounded-b-sm w-16  h-fit p-1 "
+            className="dark:hover:bg-red-600 hover:bg-red-400 rounded-b-sm w-16  h-fit p-1 "
           >
             탈퇴
           </button>

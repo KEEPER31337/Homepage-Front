@@ -18,9 +18,13 @@ import UserBox from './Component/UserBox';
 
 const Header = ({ member }) => {
   const [categories, setCategories] = useState([]);
+  const jobs = member?.memberInfo?.jobs;
   useEffect(() => {
-    if (member.token) setCategories(categoriesAll);
-    else setCategories(categoriesHidden);
+    if (member.token) {
+      setCategories(categoriesAll);
+    } else {
+      setCategories(categoriesHidden);
+    }
   }, [member]);
 
   return (

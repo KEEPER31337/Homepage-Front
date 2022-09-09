@@ -1,31 +1,84 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 
 import { ArrowSmLeftIcon, ArrowSmRightIcon } from '@heroicons/react/outline';
 
-const Header = ({ setIsOpen }) => {
-  const closeModal = () => {
-    setIsOpen(true);
+import clerkAPI from 'API/v1/clerk';
+
+const Header = ({
+  member,
+  setAppendModalOpen,
+  setSearchModalOpen,
+  page,
+  setPage,
+  userSize,
+}) => {
+  const [userLength, setUserLength] = useState(0);
+  useEffect(() => {
+    clerkAPI
+      .getTypeMemberList({
+        token: member.token,
+        typeId: 2,
+      })
+      .then((data) => {
+        if (data.success) {
+          setUserLength(data.list.length);
+        }
+      });
+  }, []);
+
+  const openAppendModal = () => {
+    setAppendModalOpen(true);
+  };
+  const openSearchModal = () => {
+    setSearchModalOpen(true);
+  };
+
+  const clickLeft = () => {
+    if (page > 0) {
+      setPage(page - 1);
+    }
+  };
+
+  const clickRight = () => {
+    if ((page + 1) * userSize < userLength) {
+      setPage(page + 1);
+    }
   };
 
   const btnClassname =
-    'bg-violet-100 border-violet-300 border-b-4 rounded-xl hover:bg-violet-200 hover:text-white mx-2 mt-2 mb-1';
+    'bg-violet-100 border-violet-300 border-b-4 rounded-xl hover:bg-violet-200 hover:text-white mt-2 mb-1';
 
   return (
-    <div className="flex justify-between w-full">
-      <button
-        onClick={closeModal}
-        className={btnClassname + 'w-28 h-10 px-2 py-2'}
-      >
-        세미나 추가
-      </button>
+    <div className="flex justify-between w-[80%] sm:w-[90%] lg:w-[95%]">
       <div className="flex flex-row mb-1">
         <button
-          className={btnClassname + 'flex-shrink-0 h-10 w-10  px-2 pt-2 pb-3'}
+          onClick={openAppendModal}
+          className={btnClassname + 'w-28 h-10 p-2 mr-2 text-sm sm:text-base'}
+        >
+          세미나 추가
+        </button>
+        <button
+          onClick={openSearchModal}
+          className={btnClassname + 'w-28 h-10 p-2 text-sm sm:text-base'}
+        >
+          세미나 조회
+        </button>
+      </div>
+      <div className="flex flex-row mb-1">
+        <button
+          className={
+            btnClassname + 'flex-shrink-0 h-10 w-10 mx-2 px-2 pt-2 pb-3'
+          }
+          onClick={clickLeft}
         >
           <ArrowSmLeftIcon aria-hidden="true" />
         </button>
         <button
-          className={btnClassname + 'flex-shrink-0 h-10 w-10  px-2 pt-2 pb-3'}
+          className={
+            btnClassname + 'flex-shrink-0 h-10 w-10 mx-2 px-2 pt-2 pb-3'
+          }
+          onClick={clickRight}
         >
           <ArrowSmRightIcon aria-hidden="true" />
         </button>
@@ -34,5 +87,16 @@ const Header = ({ setIsOpen }) => {
   );
 };
 
-export default Header;
-/* className="flex-shrink-0 h-10 w-10 bg-violet-100 border-violet-300 rounded-xl border-b-4 px-2 pt-2 pb-3 hover:bg-violet-200 hover:text-white mx-2 mt-2 mb-1" */
+const mapStateToProps = (state) => {
+  return { member: state.member, darkMode: state.darkMode };
+};
+
+const mapDispatchToProps = (dispatch, OwnProps) => {
+  return {
+    updateInfo: ({ token, memberInfo }) => {
+      dispatch(actionMember.updateInfo({ token, memberInfo }));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
