@@ -80,10 +80,7 @@ const Research = ({ state }) => {
                 state: data.replyId,
                 reason: data.excuse,
               });
-            } else
-              alert(
-                '활동인원조사 정보를 불러오는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
-              );
+            }
           });
       } else {
         setServeyPeriod(false);
@@ -94,10 +91,7 @@ const Research = ({ state }) => {
               surveyName: res.data.surveyName,
               replyId: res.data.replyId,
             });
-          } else
-            alert(
-              '활동인원조사 정보를 불러오는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
-            );
+          }
         });
       }
     });
@@ -201,7 +195,7 @@ const Research = ({ state }) => {
                       {isRespond ? '다시 ' : ''}응답하기
                     </button>
                   </>
-                ) : lastData ? (
+                ) : lastData?.surveyName ? (
                   <div className="text-center">
                     <p className="my-2">{lastData.surveyName}에 응답한 내용</p>
                     <strong className="block px-4 py-2 border shadow-inner rounded-md text-violet-400 dark:border-gray-600">

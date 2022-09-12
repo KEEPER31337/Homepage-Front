@@ -1,20 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import AuthUser from 'shared/AuthUser';
+import { connect } from 'react-redux';
 
+import AuthModal from '../Components/AuthModal';
 import PointTable from '../Components/Point/PointTable';
 
 const ways = ['명부', '랭킹'];
 
-const Point = () => {
+const Point = ({ state }) => {
   const [pointData, setPointData] = useState([]);
   const [curSort, setCurSort] = useState(ways[0]);
-
+  const token = state?.member?.token;
+  const auth = ['ROLE_회장', 'ROLE_부회장', 'ROLE_서기'];
+  const jobs = state?.member?.memberInfo?.jobs;
+  const ModalRef = useRef({});
   useEffect(() => {
     setCurSort(ways[0]);
   }, []);
+  useEffect(() => {
+    if (!jobs?.some((i) => auth.includes(i))) {
+      ModalRef.current.open();
+    }
+  }, []);
 
   return (
-    <AuthUser>
+    <>
       <div className="flex flex-1 justify-center min-h-screen">
         <div className="flex flex-col gap-y-4 w-full p-2 bg-gray-100 sm:bg-transparent dark:bg-transparent">
           <div
@@ -52,8 +62,14 @@ const Point = () => {
           </div>
         </div>
       </div>
-    </AuthUser>
+      <AuthModal ref={ModalRef}>접근 권한이 없습니다.</AuthModal>
+    </>
   );
 };
 
-export default Point;
+const mapStateToProps = (state, OwnProps) => {
+  return {
+    state,
+  };
+};
+export default connect(mapStateToProps)(Point);
