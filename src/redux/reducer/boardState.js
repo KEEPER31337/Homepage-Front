@@ -7,7 +7,11 @@ const reducerBoardState = (state = initialState, action) => {
     case actionBoardState.changeMode.type:
       return { ...state, mode: action.payload };
     case actionBoardState.search.type:
-      return { ...state, keyword: action.payload };
+      return {
+        ...state,
+        type: action.payload.type,
+        keyword: action.payload.keyword,
+      };
     case actionBoardState.changePage.type:
       return { ...state, curPage: action.payload };
     case actionBoardState.initialize.type:
