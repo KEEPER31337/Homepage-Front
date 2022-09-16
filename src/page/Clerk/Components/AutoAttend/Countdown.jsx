@@ -1,59 +1,53 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 //카운트다운
 
 const Countdown = (props) => {
-    const [lateT,setLateT] = useState(props.lateT)
-    const [admitT,setAdmitT] = useState(props.admitT)
+    const startT = props.startT;
+    const lateT = props.lateT;
+    const admitT = props.admitT;
+    const [time, setTime] = useState(new Date());
+    const [timediff,setTimediff] = useState(0);
+    const [currentT,setCurrentT] = useState(new Date(admitT));
+    const [admitNotOver,setANO] = useState(true);
+    const id = useRef(null);
     
-    // const [minutes,setMinutes] = useState(localStorage.getItem("min"));
-    // const [seconds,setSeconds] = useState(localStorage.getItem("sec"));
+    useEffect(() => {
+        //console.log((new Date(new Date(new Date(lateT)-time)).toISOString().replace("T", " ").replace(/\..*/, '').substr(14,)))     
+        setTimediff((new Date(new Date(currentT-time)).toISOString().replace("T", " ").replace(/\..*/, '').substr(14,)));
+        if (timediff=="00:01") {
+            if(admitNotOver) {
+                setCurrentT(new Date(lateT));
+                setANO(false);
+            }
+            else {
+                clearInterval(id.current);}
+        }
+    }, [time]);
 
-    // useEffect(() => {
-    //     const countdown = setInterval(() => {
-    //       if (parseInt(seconds) > 0) {
-    //         setSeconds(parseInt(seconds) - 1);
-    //         localStorage.setItem("sec",seconds);
-    //       }
-    //       if (parseInt(seconds) === 0) {
-    //         if (parseInt(minutes) === 0) {
-    //             if (parseInt(admitT)=== 0) {
-    //                 clearInterval(countdown); 
-    //             }
-    //             else {
-    //                 setAdmitT(0); 
-    //                 setMinutes(lateT);
-    //                 localStorage.setItem("min",minutes);
-    //             }
-    //         } else {
-    //           setMinutes(parseInt(minutes) - 1);
-    //           localStorage.setItem("min",minutes);
-    //           setSeconds(59);
-    //           localStorage.setItem("sec",seconds);
-    //         }
-    //       }
-    //     }, 1000);
-    //     return () => clearInterval(countdown);
-    // }, [seconds, minutes, admitT]);
-
+    useEffect(() => {
+        id.current = setInterval(() => {
+          setTime(new Date());
+        }, 1000);
+        return (() => clearInterval(id.current))
+      }, []);    
 
 
     return (
         <div className="flex flex-1 justify-center w-full">
             {
-            admitT ?
-            <div>
-                <div>출석: {localStorage.getItem("min")}:{localStorage.getItem("sec") < 10 ? `0${localStorage.getItem("sec")}` : localStorage.getItem("sec") }</div>
-                <div>지각: {lateT}:00</div>
-            </div>
- :
-            <div>
-                <div>출석: 0:00</div>
-                <div>지각: {localStorage.getItem("min")}:{localStorage.getItem("sec") < 10 ? `0${localStorage.getItem("sec")}` : localStorage.getItem("sec") }</div>
-            </div>
-          }
+                admitNotOver ?
+                <div>
+                    <div>출석: {timediff}</div>
+                    <div>지각: {(new Date(new Date(new Date(lateT)-new Date(admitT))).toISOString().replace("T", " ").replace(/\..*/, '').substr(14,))}</div>
+                </div>
+    :
+                <div>
+                    <div>출석: 0:00</div>
+                    <div>지각: {timediff}</div>
+                </div>
+            }
         </div>
     );
 }
-
 
 export default Countdown;

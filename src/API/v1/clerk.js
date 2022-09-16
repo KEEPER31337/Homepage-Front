@@ -607,7 +607,7 @@ headers: {
 async function getSeminarByDate({ token, searchDate }) {
   const options = {
     method: 'GET',
-    url: API_URL + `/v1/clerk/seminars/search/ongoing?searchDate=${searchDate}`,
+    url: API_URL + `/v1/admin/clerk/seminars/search?searchDate=${searchDate}`,
     headers: {
       Authorization: token,
     },
