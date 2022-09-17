@@ -24,9 +24,12 @@ const AutoAttend = ({state}) => {
   const jobs = state.member?.memberInfo?.jobs;
   const [code,setCode] = useState('');
   const date = [startDate.getFullYear(),startDate.getMonth()+1,startDate.getDate()]
-  
+  const [seminarExist,setSeminarExist] = useState(false);
   const getNow = () => {
-    return startDate.toISOString().substring(0, 10);
+    //offset 안빼주면 다른 시간 뜸 (타임존문제)
+    let offset = new Date().getTimezoneOffset() * 60000; //ms단위라 60000곱해줌
+    return new Date(startDate.getTime()-offset).toISOString().replace("T", " ").replace(/\..*/, '').substring(0, 10);
+    //return startDate.toISOString().substring(0, 10);
   };
  
   useEffect(() => {
@@ -35,7 +38,41 @@ const AutoAttend = ({state}) => {
     }
   }, []);
 
+  useEffect(() => { //세미나가 시작했을 시 코드입력 페이지 전환
+    let currentT = new Date();
+    //offset 안빼주면 다른 시간 뜸 (타임존문제)
+    let offset = currentT.getTimezoneOffset() * 60000; //ms단위라 60000곱해줌
+    const currentTime = new Date(currentT.getTime()-offset).toISOString().replace("T", " ").replace(/\..*/, '');
+    setCT(currentTime);
+    console.log("searchDate:",currentTime.substr(0,10));
+
+    attendAPI.
+      getSeminar({
+        token: token,
+        searchDate: currentTime.substr(0,10),
+      })
+      .then((res) => {
+        if (res.success) {
+          console.log(res)
+          console.log(res.msg);
+          console.log(res.data.isExist);
+          if (res.data.isExist) 
+            setSeminarExist(true);
+        }
+        else console.log(res.msg);
+      })
+      
+    attendAPI
+      .getSeminarsList({
+        token: token,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+  },[])
+
   useEffect(() => { //해당 날짜 세미나 가져오기
+
     attendAPI
       .getSeminarByDate({
         searchDate: getNow(),
@@ -51,6 +88,13 @@ const AutoAttend = ({state}) => {
         else console.log(res.msg);
       });
   },[startDate]);
+
+  useEffect(() => {
+    console.log(seminarExist);
+    if (!jobs?.some((i) => auth.includes(i)) && seminarExist) {
+      navigate("/DoAttend", {state: {currentTime}});
+    }
+  },[seminarExist])
 
   useEffect(() => { //코드바뀌면 페이지 전환됨
     navigate("/startAttend", {state: {latenessCloseTime,attendanceCloseTime,currentTime,seminarId,code}});
@@ -150,15 +194,17 @@ const AutoAttend = ({state}) => {
               </div>              
             </div>
  :
-            <div>
-              출첵시작전
+            <div className="flex flex-col h-screen my-auto items-center">
+              <div className="m-32 dark:text-violet-200 text-violet-600">
+              출석 체크 시작 전
+              </div>
             </div>
+
           }
         </div>
       </div> 
     </AuthUser>
-    
-  );
+  );  
 };
 
 
