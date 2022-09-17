@@ -18,6 +18,7 @@ const StartAttend = ({member, state}) => {
   const [latenessCloseTime,setLCT] = useState(location.state.latenessCloseTime);
   const [code,setCode] = useState(location.state.code);
   const [currentTime, setCT] = useState(location.state.currentTime);
+  const [seminarId,setSeminarId] = useState(location.state.seminarId);
   const token = state.member.token;
   const jobs = member?.memberInfo?.jobs;
   useEffect(() => {
@@ -28,13 +29,13 @@ const StartAttend = ({member, state}) => {
 
     return (
       <AuthUser>
-        <div className="flex flex-1 justify-center w-full">
+        <div className="flex flex-1 justify-center w-full min-h-screen dark:bg-black">
           {
             boss ?
               <div className="w-3/4 mx-auto mt-32 text-xl font-bold text-center text-violet-300 space-y-8">
-                <label className="py-2 px-6 bg-violet-300 text-white rounded-3xl">인증코드</label><br/>
+                <label className="py-2 px-6 bg-violet-300 text-white rounded-3xl dark:text-black">인증코드</label><br/>
                 <div className="text-4xl">{code}</div><hr/>
-              <Countdown startT = {currentTime} admitT={attendanceCloseTime} lateT={latenessCloseTime} state={state} className=""/>
+              <Countdown startT = {currentTime} admitT={attendanceCloseTime} lateT={latenessCloseTime} state={state} seminarId={seminarId} className=""/>
             </div>
             :
             <div>???????</div>

@@ -25,6 +25,7 @@ const AutoAttend = ({state}) => {
   const [code,setCode] = useState('');
   const date = [startDate.getFullYear(),startDate.getMonth()+1,startDate.getDate()]
   const [seminarExist,setSeminarExist] = useState(false);
+  localStorage.setItem("admitNotOver",1); //Countdown 페이지에서 사용
   const getNow = () => {
     //offset 안빼주면 다른 시간 뜸 (타임존문제)
     let offset = new Date().getTimezoneOffset() * 60000; //ms단위라 60000곱해줌

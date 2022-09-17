@@ -76,7 +76,7 @@ const DoAttend = ({member, state}) => {
             attendanceCode: inputCode,
           })
           .then((res) => {
-            //console.log(res)
+            console.log(res)
             if (res.success) {
                 //alert (res.msg);
                 alert(res.data.attendanceStatus);}
@@ -86,22 +86,24 @@ const DoAttend = ({member, state}) => {
 
     return (
     <AuthUser>
-        <div className="container mx-auto p-4 bg-white">
-            <div className="flex flex-1 justify-center w-full">
+        <div className="min-h-screen dark:bg-black">
+        <div className="container mx-auto p-4 bg-white dark:bg-black">
+            <div className="flex flex-1 justify-center w-full ">
               <div className="w-3/4 mt-32 font-bold text-center text-violet-300 space-y-8">
-                <label className="py-2 px-6 bg-violet-300 text-white text-lg rounded-3xl">코드를 입력하세요</label><br/>
+                <label className="py-2 px-6 bg-violet-300 text-white text-lg rounded-3xl dark:text-black">코드를 입력하세요</label><br/>
                 <form className="flex flex-col mt-4">
                   <ReactCodeInput onChange={CodeInput} value="" type="text" fields={4} {...props} />
                   <button
                       onClick={onSubmit}
                       className="w-1/4 mx-auto mt-8 px-4 py-2 bg-violet-200 leading-6 rounded-md border border-transparent text-white focus:outline-none 
-                      hover:bg-violet-300 items-center w-full justify-center items-center font-bold focus:outline-none"
+                      hover:bg-violet-300 items-center w-full justify-center items-center font-bold focus:outline-none dark:text-black"
                   >
                     출석
                   </button>    
                 </form>
               </div>
             </div>
+          </div>
           </div>
     </AuthUser>
     );
