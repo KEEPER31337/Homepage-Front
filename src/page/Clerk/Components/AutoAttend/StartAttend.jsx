@@ -3,10 +3,9 @@ import Countdown from "./Countdown";
 
 import { connect } from 'react-redux';
 import { useLocation } from "react-router-dom"
+
 //local
-import attendAPI from 'API/v1/clerk';
 import AuthUser from "shared/AuthUser";
-import ReactCodeInput from 'react-code-input';
 
 //출석 시작 버튼을 눌렀을 때 뜨는 페이지
 const StartAttend = ({member, state}) => {
@@ -17,10 +16,9 @@ const StartAttend = ({member, state}) => {
   const [attendanceCloseTime,setACT] = useState(location.state.attendanceCloseTime);
   const [latenessCloseTime,setLCT] = useState(location.state.latenessCloseTime);
   const [code,setCode] = useState(location.state.code);
-  const [currentTime, setCT] = useState(location.state.currentTime);
   const [seminarId,setSeminarId] = useState(location.state.seminarId);
-  const token = state.member.token;
   const jobs = member?.memberInfo?.jobs;
+
   useEffect(() => {
     if (jobs?.some((i) => auth.includes(i))) {
       setBoss(true);
@@ -35,8 +33,8 @@ const StartAttend = ({member, state}) => {
               <div className="w-3/4 mx-auto mt-32 text-xl font-bold text-center text-violet-300 space-y-8">
                 <label className="py-2 px-6 bg-violet-300 text-white rounded-3xl dark:text-black">인증코드</label><br/>
                 <div className="text-4xl">{code}</div><hr/>
-              <Countdown startT = {currentTime} admitT={attendanceCloseTime} lateT={latenessCloseTime} state={state} seminarId={seminarId} className=""/>
-            </div>
+                <Countdown admitT={attendanceCloseTime} lateT={latenessCloseTime} state={state} seminarId={seminarId} className=""/>
+              </div>
             :
             <div>???????</div>
           }

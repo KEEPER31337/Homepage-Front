@@ -1,7 +1,6 @@
 import AuthUser from 'shared/AuthUser';
 import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -13,24 +12,21 @@ import attendAPI from 'API/v1/clerk';
 const AutoAttend = ({state}) => {
   const [auth, setAuth] = useState(['ROLE_회장']);
   const [boss,setBoss] = useState(false);
-  const [admitT,setAdmitT] = useState(1);
-  const [lateT, setLateT] = useState(1);
+  const [admitT,setAdmitT] = useState(1); //현재 시각 + admitT = 출석인정시각
+  const [lateT, setLateT] = useState(1); //현재 시각 + admitT + lateT = 지각인정시각
   const [attendanceCloseTime,setACT] = useState(new Date());
   const [latenessCloseTime,setLCT] = useState(new Date());
   const [currentTime,setCT] = useState(new Date());
   const [startDate, setStartDate] = useState(new Date());
   const [seminarId, setSeminarId] = useState(0);
+  const [code,setCode] = useState('');
+  const [seminarExist,setSeminarExist] = useState(false);
   const token = state.member.token;
   const jobs = state.member?.memberInfo?.jobs;
-  const [code,setCode] = useState('');
-  const date = [startDate.getFullYear(),startDate.getMonth()+1,startDate.getDate()]
-  const [seminarExist,setSeminarExist] = useState(false);
-  localStorage.setItem("admitNotOver",1); //Countdown 페이지에서 사용
   const getNow = () => {
-    //offset 안빼주면 다른 시간 뜸 (타임존문제)
-    let offset = new Date().getTimezoneOffset() * 60000; //ms단위라 60000곱해줌
+    //offset 빼줘야 옳은 시간이 뜬다.(타임존문제)
+    let offset = new Date().getTimezoneOffset() * 60000;
     return new Date(startDate.getTime()-offset).toISOString().replace("T", " ").replace(/\..*/, '').substring(0, 10);
-    //return startDate.toISOString().substring(0, 10);
   };
  
   useEffect(() => {
@@ -62,18 +58,9 @@ const AutoAttend = ({state}) => {
         }
         else console.log(res.msg);
       })
-      
-    attendAPI
-      .getSeminarsList({
-        token: token,
-      })
-      .then((res) => {
-        console.log(res);
-      })
   },[])
 
   useEffect(() => { //해당 날짜 세미나 가져오기
-
     attendAPI
       .getSeminarByDate({
         searchDate: getNow(),
@@ -97,6 +84,29 @@ const AutoAttend = ({state}) => {
     }
   },[seminarExist])
 
+  useEffect(() => {
+    console.log(seminarExist);
+    if (jobs?.some((i) => auth.includes(i)) && seminarExist) {
+      attendAPI
+      .getSeminarByDate({
+        searchDate: getNow(),
+        token: token,
+      })
+      .then((res) => {
+        if (res.success) {
+          let currentT = new Date();
+          let offset = currentT.getTimezoneOffset() * 60000; 
+          let latenessCloseTime = new Date(new Date(res.data.latenessCloseTime).getTime() - offset).toISOString().replace("T", " ").replace(/\..*/, '')
+          let attendanceCloseTime = new Date(new Date(res.data.attendanceCloseTime).getTime() - offset).toISOString().replace("T", " ").replace(/\..*/, '')
+          let seminarId = res.data.seminarId;
+          let code = res.data.attendanceCode;
+          navigate("/startAttend", {state: {latenessCloseTime,attendanceCloseTime,currentTime,seminarId,code}});
+        }
+        else console.log(res.msg);
+      });
+    }
+  },[seminarExist])
+
   useEffect(() => { //코드바뀌면 페이지 전환됨
     navigate("/startAttend", {state: {latenessCloseTime,attendanceCloseTime,currentTime,seminarId,code}});
   }, [code]);
@@ -112,7 +122,6 @@ const AutoAttend = ({state}) => {
   }
   const navigate = useNavigate();
   const loadSeminarByDate = () => { //버튼 누르면 API요청값 맞춰 날짜 포맷 변환
-    let resDate = '';
     //지각시간, 출석시간에서 버튼 누른 시간 빼주는 것으로 계산
     let currentT = new Date();
     //offset 안빼주면 다른 시간 뜸 (타임존문제)
@@ -121,10 +130,6 @@ const AutoAttend = ({state}) => {
     const currentTime = new Date(currentT.getTime()-offset).toISOString().replace("T", " ").replace(/\..*/, '');
     const attendanceCloseTime = new Date(new Date(currentT.getTime()-offset).getTime() + admitT*60000).toISOString().replace("T", " ").replace(/\..*/, '');
     const latenessCloseTime = new Date(new Date(currentT.getTime()-offset).getTime() + admitT*60000 + lateT*60000).toISOString().replace("T", " ").replace(/\..*/, '');
-    // console.log("current time:",currentTime); 
-    // console.log("attendanceCloseTime:", attendanceCloseTime);
-    // console.log("latenessCloseTime:", latenessCloseTime);
-
 
     attendAPI
     .startSeminarAttend({
@@ -142,8 +147,6 @@ const AutoAttend = ({state}) => {
       setCT(currentTime);
       setCode(res.data.attendanceCode);
     })
- 
-
   }
   return (
     <AuthUser>

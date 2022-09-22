@@ -54,7 +54,7 @@ const DoAttend = ({member, state}) => {
             .then((res) => { 
                 //console.log(res);
                 if(res.success) {
-                    console.log(res.msg);
+                    //console.log(res.msg);
                     setSeminarId(res.data.seminarId);
                 }
                 else console.log(res.msg);

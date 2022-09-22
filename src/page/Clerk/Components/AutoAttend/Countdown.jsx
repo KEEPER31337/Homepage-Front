@@ -1,47 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
+
+
 //카운트다운
-import attendAPI from 'API/v1/clerk';
 
 const Countdown = (props) => {
-    const startT = props.startT;
-    const lateT = props.lateT;
-    const admitT = props.admitT;
-    const seminarId = props.seminarId;
-    const [time, setTime] = useState(new Date());
-    const [timediff,setTimediff] = useState(0);
-    const [currentT,setCurrentT] = useState(new Date(admitT));
-    //const [admitNotOver,setANO] = useState(parseInt(localStorage.getItem("admitNotOver")));
-    const [admitNotOver,setANO] = useState(true);
-    const [attendStates,setAttendStates] = useState([]);
+    const lateT = props.lateT; //지각 인정 종료시각
+    const admitT = props.admitT; //출석 인정 종료시각
+    const [time, setTime] = useState(new Date()); //남은 인정 시간 구하기 위한 현재 시각
+    const [timediff,setTimediff] = useState(0); //남은 인정시간
     const id = useRef(null);
-    const state = props.state;
-    const token = state.member.token;
-    //console.log("admitnotover:",admitNotOver);
-
-   
 
     useEffect(() => {
-        //console.log((new Date(new Date(new Date(lateT)-time)).toISOString().replace("T", " ").replace(/\..*/, '').substr(14,)))     
-        setTimediff((new Date(new Date(currentT-time)).toISOString().replace("T", " ").replace(/\..*/, '').substr(14,)));
-        if (timediff=="00:01") {
-            if(admitNotOver) {
-                setCurrentT(new Date(lateT));
-                //localStorage.setItem("admitNotOver",false);
-                setANO(false);
-                //console.log("???:",localStorage.getItem("admitNotOver"));
-                //setANO(false);
+        if ((new Date(new Date(new Date(admitT)-time))).getTime() >= 0) {
+          setTimediff((new Date(new Date(new Date(admitT)-time)).toISOString().replace("T", " ").replace(/\..*/, '').substr(14,)));  
+          if(timediff == "00:01")
+            console.log("admit over");            
+        }
+        else {
+            setTimediff((new Date(new Date(new Date(lateT)-time)).toISOString().replace("T", " ").replace(/\..*/, '').substr(14,)));
+            if(timediff == "00:01" || (new Date(new Date(new Date(lateT)-time))).getTime() <= 0) {
+                clearInterval(id.current);
+                console.log("attend over");
             }
-            else { //출석 끝
-                clearInterval(id.current);}
-                attendAPI
-                .getTheSeminarAttendList({
-                    seminarId: seminarId,
-                    token: token,
-                })
-                .then((res) => {
-                    //console.log(res);
-                    setAttendStates([...res.list]);
-                })
         }
     }, [time]);
 
@@ -56,14 +36,14 @@ const Countdown = (props) => {
     return (
         <div className="flex flex-1 justify-center w-full">
             {
-                admitNotOver ?
+                (new Date(new Date(new Date(admitT)-time))).getTime() > 0 ? //아직 인정시간일 때
                 <div>
                     <div>출석: {timediff}</div>
                     <div>지각: {(new Date(new Date(new Date(lateT)-new Date(admitT))).toISOString().replace("T", " ").replace(/\..*/, '').substr(14,))}</div>
                 </div>
     :
                 <div>
-                    <div>출석: 0:00</div>
+                    <div>출석: 00:00</div>
                     <div>지각: {timediff}</div>
                 </div>
             }
