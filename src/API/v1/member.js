@@ -348,7 +348,6 @@ async function searchMember({ token, keyword }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    console.log(error);
     return error.response;
   }
 }

@@ -93,8 +93,8 @@ const TextEditer = (props) => {
 
   const uploadPostinghandler = (isTemp) => {
     setUploadAble(false);
-    console.log(thumbnailBase64);
-    console.log(thumbnail);
+    // console.log(thumbnailBase64);
+    // console.log(thumbnail);
     postAPI
       .create({
         title: text.title,

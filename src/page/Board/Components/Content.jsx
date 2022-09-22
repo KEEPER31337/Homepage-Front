@@ -65,7 +65,7 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
         token: token,
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setLikeChangeFlag(!likeChangeFlag);
       });
     setIsDisliked(!isDisliked);
@@ -99,7 +99,7 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
       };
       reader.readAsDataURL(data);
     });*/
-    console.log(board);
+    // console.log(board);
 
     postAPI
       .check({

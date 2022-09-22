@@ -105,7 +105,7 @@ const Boards = ({
   const postingSearchRef = useRef(null);
 
   const searchHandler = () => {
-    console.log('search');
+    // console.log('search');
     initialize();
     if (currentCategoryId) {
       postAPI
@@ -158,7 +158,7 @@ const Boards = ({
                 (res?.list?.length != 0 ? res.list[0]?.size : 0) / MAX_POSTS
               )
             );
-            console.log('2');
+            // console.log('2');
             changePage(curPage);
           }
           setBoardContent(res?.list);
@@ -170,7 +170,7 @@ const Boards = ({
     // 현재 페이지 변화에 따른 총 페이지 개수 갱신
     // 검색중이면 페이지네이션을 검색으로, 검색중이 아니면 기본으로 설정
     closeModal();
-    console.log('change');
+    // console.log('change');
 
     /**/ if (searchKeyword) {
       postAPI
@@ -216,7 +216,7 @@ const Boards = ({
           });
       }
     }
-    console.log(curPage, viewStyle, searchKeyword);
+    // console.log(curPage, viewStyle, searchKeyword);
   }, [curPage, viewStyle, searchKeyword, commentChangeFlag]); //currentPage 값이 변경될 때마다
 
   return (
