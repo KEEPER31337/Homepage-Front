@@ -5,6 +5,13 @@ import { Dialog, Transition } from '@headlessui/react';
 import useWindowDimensions from './WindowDimensions';
 import clerkAPI from 'API/v1/clerk';
 import noticeImg from 'assets/img/notice_violet.png';
+import {
+  gridAll,
+  gridDate,
+  gridUser,
+  gridAttend,
+  gridGis,
+} from './dataOfClassname';
 
 const TableContent = ({
   member,
@@ -101,9 +108,7 @@ const TableContent = ({
   const Child = ({ idx, idx2, atten, attendId }) => {
     return (
       <div
-        className={`row-start-[${idx2 + 2}] col-start-[${
-          idx + 3
-        }] text-gray-500 text-center border-violet-100 border-[0.5px] flex justify-center items-center`}
+        className={gridAttend[idx2 + 2][idx + 3]}
         key={(idx + 1) * 1000 + idx2}
         onClick={() => {
           clicked(idx, idx2, attendId);
@@ -204,9 +209,10 @@ const TableContent = ({
           <div className="absolute max-w-full w-fit h-full">
             <div className="overflow-hidden w-full rounded-xl border-2 border-violet-100">
               <div
-                className={`overflow-x-scroll grid grid-cols-[60px,repeat(${
-                  seminarSize + 1
-                },80px)] sm:grid-cols-[60px,100px,repeat(${seminarSize},150px)] grid-rows-[repeat(${userLength},32px)] max-h-2/3 border-2 border-violet-100 text-center w-full`}
+                className={gridAll[userLength][seminarSize]}
+                // {`overflow-x-scroll grid grid-cols-[60px,repeat(${
+                //   seminarSize + 1
+                // },80px)] sm:grid-cols-[60px,100px,repeat(${seminarSize},150px)] grid-rows-[repeat(${userLength},32px)] max-h-2/3 border-2 border-violet-100 text-center w-full`}
               >
                 <div className="row-start-[1] col-start-[1] bg-violet-100 sticky left-0 flex items-center justify-center">
                   기수
