@@ -41,7 +41,7 @@ const AutoAttend = ({state}) => {
     let offset = currentT.getTimezoneOffset() * 60000; //ms단위라 60000곱해줌
     const currentTime = new Date(currentT.getTime()-offset).toISOString().replace("T", " ").replace(/\..*/, '');
     setCT(currentTime);
-    console.log("searchDate:",currentTime.substr(0,10));
+    //console.log("searchDate:",currentTime.substr(0,10));
 
     attendAPI.
       getSeminar({
@@ -50,13 +50,11 @@ const AutoAttend = ({state}) => {
       })
       .then((res) => {
         if (res.success) {
-          console.log(res)
-          console.log(res.msg);
-          console.log(res.data.isExist);
+          //console.log(res.data.isExist);
           if (res.data.isExist) 
             setSeminarExist(true);
         }
-        else console.log(res.msg);
+        else alert("목록을 불러오는데 실패했습니다.");
       })
   },[])
 
@@ -68,24 +66,20 @@ const AutoAttend = ({state}) => {
       })
       .then((res) => {
         if (res.success) {
-          console.log("조회날짜:",getNow()),
-          console.log(res);
-          console.log("seminarId:",res.data.seminarId);
+          //console.log("조회날짜:",getNow()),
           setSeminarId(res.data.seminarId);
         }
-        else console.log(res.msg);
+        else alert("세미나를 생성해주세요");
       });
   },[startDate]);
 
   useEffect(() => {
-    console.log(seminarExist);
     if (!jobs?.some((i) => auth.includes(i)) && seminarExist) {
       navigate("/DoAttend", {state: {currentTime}});
     }
   },[seminarExist])
 
   useEffect(() => {
-    console.log(seminarExist);
     if (jobs?.some((i) => auth.includes(i)) && seminarExist) {
       attendAPI
       .getSeminarByDate({
@@ -102,7 +96,7 @@ const AutoAttend = ({state}) => {
           let code = res.data.attendanceCode;
           navigate("/startAttend", {state: {latenessCloseTime,attendanceCloseTime,currentTime,seminarId,code}});
         }
-        else console.log(res.msg);
+        else alert("세미나를 생성해주세요");
       });
     }
   },[seminarExist])
@@ -126,7 +120,7 @@ const AutoAttend = ({state}) => {
     let currentT = new Date();
     //offset 안빼주면 다른 시간 뜸 (타임존문제)
     let offset = currentT.getTimezoneOffset() * 60000; //ms단위라 60000곱해줌
-    console.log("버튼 누른 시간: ",new Date(currentT.getTime()-offset).toISOString().replace("T", " ").replace(/\..*/, ''))
+    //console.log("버튼 누른 시간: ",new Date(currentT.getTime()-offset).toISOString().replace("T", " ").replace(/\..*/, ''))
     const currentTime = new Date(currentT.getTime()-offset).toISOString().replace("T", " ").replace(/\..*/, '');
     const attendanceCloseTime = new Date(new Date(currentT.getTime()-offset).getTime() + admitT*60000).toISOString().replace("T", " ").replace(/\..*/, '');
     const latenessCloseTime = new Date(new Date(currentT.getTime()-offset).getTime() + admitT*60000 + lateT*60000).toISOString().replace("T", " ").replace(/\..*/, '');
@@ -139,9 +133,6 @@ const AutoAttend = ({state}) => {
       latenessCloseTime: latenessCloseTime,
     })
     .then((res) => {
-      console.log("code:", res.data.attendanceCode);
-      console.log("close time:", res.data.attendanceCloseTime);
-      console.log("late time:", res.data.latenessCloseTime);
       setACT(attendanceCloseTime);
       setLCT(latenessCloseTime);
       setCT(currentTime);

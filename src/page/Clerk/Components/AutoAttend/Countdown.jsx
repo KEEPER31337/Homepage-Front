@@ -13,14 +13,14 @@ const Countdown = (props) => {
     useEffect(() => {
         if ((new Date(new Date(new Date(admitT)-time))).getTime() >= 0) {
           setTimediff((new Date(new Date(new Date(admitT)-time)).toISOString().replace("T", " ").replace(/\..*/, '').substr(14,)));  
-          if(timediff == "00:01")
-            console.log("admit over");            
+          //if(timediff == "00:01")
+           // console.log("admit over");            
         }
         else {
             setTimediff((new Date(new Date(new Date(lateT)-time)).toISOString().replace("T", " ").replace(/\..*/, '').substr(14,)));
             if(timediff == "00:01" || (new Date(new Date(new Date(lateT)-time))).getTime() <= 0) {
                 clearInterval(id.current);
-                console.log("attend over");
+                //console.log("attend over");
             }
         }
     }, [time]);

@@ -44,7 +44,6 @@ const DoAttend = ({member, state}) => {
     const [today,setToday] = useState(location.state.currentTime.toString()); //바로 currnetT 스테이트 가져옴
     const [inputCode, setInputCode] = useState('');
     const [seminarId,setSeminarId] = useState();
-    console.log(today.substr(0,10));
     useEffect(() => {
         attendAPI
             .getSeminar({
@@ -57,18 +56,18 @@ const DoAttend = ({member, state}) => {
                     //console.log(res.msg);
                     setSeminarId(res.data.seminarId);
                 }
-                else console.log(res.msg);
+                else alert("목록을 불러오는데 실패했습니다.");
             });
     },[])
 
     const CodeInput = (event) => {
-        console.log(event);
+        //console.log(event);
         setInputCode(event);
       }
 
     const onSubmit = (event) => {
         event.preventDefault();
-        console.log(inputCode, seminarId);
+        //console.log(inputCode, seminarId);
         attendAPI.
           AttendSeminar({
             token: token,
@@ -76,11 +75,10 @@ const DoAttend = ({member, state}) => {
             attendanceCode: inputCode,
           })
           .then((res) => {
-            console.log(res)
             if (res.success) {
                 //alert (res.msg);
                 alert(res.data.attendanceStatus);}
-            else alert(res.msg);
+            else alert("세미나 출석 실패");
           })
       }
 
