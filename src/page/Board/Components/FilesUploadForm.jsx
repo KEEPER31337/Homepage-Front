@@ -78,8 +78,8 @@ const FilesUploadForm = ({
   };
 
   useEffect(() => {
-    console.log('origin:', originFiles);
-    console.log('new:', files);
+    // console.log('origin:', originFiles);
+    // console.log('new:', files);
   }, [files, originFiles]);
   useEffect(() => {
     if (modifyFlag) {
@@ -90,8 +90,8 @@ const FilesUploadForm = ({
   const onDrop = useCallback(
     (acceptedFiles) => {
       var temp = [...originFiles, ...files];
-      console.log(originFiles);
-      console.log(temp);
+      // console.log(originFiles);
+      // console.log(temp);
       var realAddFiles = []; //최종적으로 추가될 파일
       var notAddFiles = []; //중복된 파일
       acceptedFiles.forEach((newFile) => {
