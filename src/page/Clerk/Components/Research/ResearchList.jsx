@@ -42,7 +42,7 @@ const ResearchList = ({
         setIsChanged(!isChanged);
       } else
         alert(
-          '공개 전환 api 요청이 실패하였습니다. 새로고침 후 다시 실행해주세요.'
+          '비공개 전환 api 요청이 실패하였습니다. 새로고침 후 다시 실행해주세요.'
         );
     });
   };
@@ -81,10 +81,7 @@ const ResearchList = ({
       if (res?.success) {
         setSurveyList(res.page.content);
         setIsLast(res.page.last);
-      } else
-        alert(
-          '활동인원조사 목록을 불러오는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
-        );
+      }
     });
   }, [curPage, isChanged]);
 
@@ -94,18 +91,12 @@ const ResearchList = ({
       if (res?.success) {
         setSurveyList(res.page.content);
         setIsLast(res.page.last);
-      } else
-        alert(
-          '활동인원조사 목록을 불러오는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
-        );
+      }
     });
     memberAPI.getAllMembers().then((res) => {
       if (res?.success) {
         setMemberList(res.list);
-      } else
-        alert(
-          '회원 정보 목록을 불러오는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
-        );
+      }
     });
   }, []);
   return (

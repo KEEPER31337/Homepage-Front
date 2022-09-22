@@ -42,7 +42,7 @@ const CheckContent = ({ type, member, changeItems }) => {
     });
 
     changeItems.add({
-      type: parseInt(e.target.value),
+      typeId: parseInt(e.target.value),
       memberId: member.memberId,
     });
     //원래 있었으면 그건 delete해야함!!!!!!!

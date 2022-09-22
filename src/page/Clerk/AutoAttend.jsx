@@ -12,7 +12,6 @@ import attendAPI from 'API/v1/clerk';
 const AutoAttend = ({state}) => {
   const [auth, setAuth] = useState(['ROLE_회장']);
   const [boss,setBoss] = useState(false);
-  const [admitT,setAdmitT] = useState(1); //현재 시각 + admitT = 출석인정시각
   const [lateT, setLateT] = useState(1); //현재 시각 + admitT + lateT = 지각인정시각
   const [attendanceCloseTime,setACT] = useState(new Date());
   const [latenessCloseTime,setLCT] = useState(new Date());

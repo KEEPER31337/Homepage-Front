@@ -3,19 +3,19 @@ import { connect } from 'react-redux';
 import { Dialog, Transition } from '@headlessui/react';
 
 import useWindowDimensions from './WindowDimensions';
+import clerkAPI from 'API/v1/clerk';
+import noticeImg from 'assets/img/notice_violet.png';
 import {
   gridAll,
   gridDate,
   gridUser,
   gridAttend,
   gridGis,
-} from './datesClassname';
-import clerkAPI from 'API/v1/clerk';
-import noticeImg from 'assets/img/notice_violet.png';
+} from './dataOfClassname';
 
 const TableContent = ({
   member,
-  state,
+  isDark,
   page,
   userSize,
   season,
@@ -32,7 +32,6 @@ const TableContent = ({
   });
   const [reasons, setReasons] = useState([]);
   const [select, setSelect] = useState('');
-  const isDark = state.darkMode?.isDark;
   const [content, setContent] = useState({
     attendanceId: 0,
     statusId: 1,
@@ -47,7 +46,6 @@ const TableContent = ({
   const [semiUsers, setSemiUsers] = useState([]);
 
   useEffect(() => {
-    // 전체 세미나 출석 조회 && 출석 이유 조회 && 활동회원 조회
     clerkAPI
       .getSeminarAttendance({
         token: member.token,
@@ -210,7 +208,12 @@ const TableContent = ({
         <div className="relative rounded-xl overflow-auto w-full h-full flex justify-center">
           <div className="absolute max-w-full w-fit h-full">
             <div className="overflow-hidden w-full rounded-xl border-2 border-violet-100">
-              <div className={gridAll[userLength][seminarSize]}>
+              <div
+                className={gridAll[userLength][seminarSize]}
+                // {`overflow-x-scroll grid grid-cols-[60px,repeat(${
+                //   seminarSize + 1
+                // },80px)] sm:grid-cols-[60px,100px,repeat(${seminarSize},150px)] grid-rows-[repeat(${userLength},32px)] max-h-2/3 border-2 border-violet-100 text-center w-full`}
+              >
                 <div className="row-start-[1] col-start-[1] bg-violet-100 sticky left-0 flex items-center justify-center">
                   기수
                 </div>
@@ -220,7 +223,10 @@ const TableContent = ({
                 {allAttend?.map((seminar, idx) => (
                   <div
                     key={idx}
-                    className={gridDate[idx + 3]}
+                    // className={gridDate[idx + 3]}
+                    className={`row-start-[1] col-start-[${
+                      idx + 3
+                    }] bg-violet-100 flex justify-center items-center`}
                     onClick={() => {
                       deleteSemianrBtn(seminar);
                     }}
@@ -231,13 +237,25 @@ const TableContent = ({
                   </div>
                 ))}
                 {users.map((user, idx) => (
-                  <div className={gridGis[idx + 2]} key={idx}>
+                  <div
+                    // className={gridGis[idx + 2]}
+                    className={`row-start-[${
+                      idx + 2
+                    }] col-start-[1] sticky left-0 text-violet-400 text-center bg-white border-violet-100 border-[0.5px] dark:bg-black flex justify-center items-center`}
+                    key={idx}
+                  >
                     {user?.generation}
                   </div>
                 ))}
 
                 {users.map((user, idx) => (
-                  <div className={gridUser[idx + 2]} key={idx}>
+                  <div
+                    // className={gridUser[idx + 2]}
+                    className={`row-start-[${
+                      idx + 2
+                    }] col-start-[2] sticky left-[60px] text-violet-400 text-center bg-white border-violet-100 border-[0.5px] dark:bg-black flex justify-center items-center`}
+                    key={idx}
+                  >
                     {user?.memberName}
                   </div>
                 ))}
@@ -435,7 +453,7 @@ const TableContent = ({
 };
 
 const mapStateToProps = (state) => {
-  return { member: state.member, state: state };
+  return { member: state.member, isDark: state.darkMode?.isDark };
 };
 
 const mapDispatchToProps = (dispatch, OwnProps) => {

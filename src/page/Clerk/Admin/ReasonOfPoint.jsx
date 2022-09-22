@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import AuthUser from 'shared/AuthUser';
 import { PlusCircleIcon } from '@heroicons/react/solid';
 import { connect } from 'react-redux';
 
 import memberAPI from 'API/v1/member';
 import clerkAPI from 'API/v1/clerk';
+import AuthModal from '../Components/AuthModal';
 import WriteTable from '../Components/ReasonOfPoint/WriteTable';
 import ViewTable from '../Components/ReasonOfPoint/ViewTable';
 import TypeModal from '../Components/ReasonOfPoint/TypeModal';
@@ -23,6 +24,9 @@ const ReasonOfPoint = ({ state }) => {
   const [isChanged, setIsChanged] = useState(false);
 
   const token = state?.member?.token;
+  const auth = ['ROLE_회장', 'ROLE_부회장', 'ROLE_서기'];
+  const jobs = state?.member?.memberInfo?.jobs;
+  const ModalRef = useRef({});
 
   const addData = () => {
     setAppendData([
@@ -74,59 +78,42 @@ const ReasonOfPoint = ({ state }) => {
       });
   };
   useEffect(() => {
+    if (!jobs?.some((i) => auth.includes(i))) {
+      ModalRef.current.open();
+    }
+  }, []);
+  useEffect(() => {
     clerkAPI.getPointYearList({ token }).then((res) => {
       //console.log(res);
       if (res?.success) setYearList(res.list);
-      else
-        alert(
-          '연도 목록을 불러오는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
-        );
     });
     clerkAPI.getPointType({ token }).then((res) => {
       //console.log(res);
       if (res?.success) {
         setPreason(res?.list?.filter((reason) => reason.isMerit));
         setMreason(res?.list?.filter((reason) => !reason.isMerit));
-      } else
-        alert(
-          '상벌점 정보를 불러오는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
-        );
+      }
     });
     memberAPI.getCommonMembers().then((res) => {
       //console.log(res);
       if (res?.success) setMemberList(res.list);
-      else
-        alert(
-          '회원 정보 목록을 불러오는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
-        );
     });
   }, []);
   useEffect(() => {
     clerkAPI.getPointYearList({ token }).then((res) => {
       //console.log(res);
       if (res?.success) setYearList(res.list);
-      else
-        alert(
-          '연도 목록을 불러오는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
-        );
     });
     clerkAPI.getPointType({ token }).then((res) => {
       //console.log(res);
       if (res?.success) {
         setPreason(res?.list?.filter((reason) => reason.isMerit));
         setMreason(res?.list?.filter((reason) => !reason.isMerit));
-      } else
-        alert(
-          '상벌점 정보를 불러오는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
-        );
+      }
     });
     memberAPI.getCommonMembers().then((res) => {
       //console.log(res);
       if (res?.success) setMemberList(res.list);
-      else
-        alert(
-          '회원 정보 목록을 불러오는 데 실패하였습니다. 새로고침 후 다시 실행해주세요.'
-        );
     });
   }, [isChanged]);
 
@@ -138,7 +125,7 @@ const ReasonOfPoint = ({ state }) => {
   }, [yearList]);
 
   return (
-    <AuthUser>
+    <>
       {onTypeModal ? (
         <TypeModal
           isOpen={onTypeModal}
@@ -250,7 +237,8 @@ const ReasonOfPoint = ({ state }) => {
           </div>
         </div>
       </div>
-    </AuthUser>
+      <AuthModal ref={ModalRef}>접근 권한이 없습니다.</AuthModal>
+    </>
   );
 };
 
