@@ -239,7 +239,6 @@ async function voting({ token, eid, vid, candidateIds }) {
     },
   };
   try {
-    console.log(candidateIds);
     const response = await axios(options);
     return response.data;
   } catch (error) {

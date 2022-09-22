@@ -50,7 +50,7 @@ async function addPoint({ token, data }) {
     const response = await axios.post(url, data, options);
     return response.data;
   } catch (error) {
-    console.log(error);
+    
     return error.response;
   }
 }
@@ -68,7 +68,7 @@ async function removePoint({ token, meritId }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    console.log(error);
+    
     return error.response;
   }
 }
@@ -86,7 +86,7 @@ async function getPointOfMember({ token }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    console.log(error);
+    
     return error.response;
   }
 }
@@ -104,7 +104,7 @@ async function getPointOfYear({ token, year }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    console.log(error);
+    
     return error.response;
   }
 }
@@ -122,7 +122,7 @@ async function getPointYearList({ token }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    console.log(error);
+    
     return error.response;
   }
 }
@@ -140,7 +140,7 @@ async function getPointType({ token }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    console.log(error);
+    
     return error.response;
   }
 }
@@ -158,7 +158,7 @@ async function addPointType({ token, modifyData }) {
     const response = await axios.post(url, data, options);
     return response.data;
   } catch (error) {
-    console.log(error);
+    
     return error.response;
   }
 }
@@ -176,7 +176,7 @@ async function removePointType({ token, typeIds }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    console.log(error);
+    
     return error.response;
   }
 }
@@ -366,7 +366,7 @@ const options = {
     const response = await axios.post(url, data, options);
     return response.data;
   } catch (error) {
-    console.log(error);
+    
     return error.response;
   }
 }
@@ -387,7 +387,7 @@ async function researchReplyModify({ token, surveyId, replyId, excuse }) {
 const response = await axios.patch(url, data, options);
  return response.data;
   } catch (error) {
-    console.log(error);
+    
     return error.response;
   }
 }
@@ -406,7 +406,7 @@ async function getReply({ token, surveyId, memberId }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    console.log(error);
+    
     return error.response;
   }
 }
@@ -425,7 +425,7 @@ async function getRunningResearch({ token }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    console.log(error);
+    
     return error.response;
   }
 }
@@ -444,7 +444,7 @@ async function getLastResearch({ token }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    console.log(error);
+    
     return error.response;
   }
 }
@@ -477,7 +477,7 @@ async function createResearch({
 const response = await axios.post(url, data, options);
     return response.data;
   } catch (error) {
-    console.log(error);
+    
     return error.response;
   }
 }
@@ -509,7 +509,7 @@ async function modifyResearch({
 const response = await axios.patch(url, data, options);
 return response.data;
   } catch (error) {
-    console.log(error);
+    
     return error.response;
   }
 }
@@ -528,7 +528,7 @@ headers: {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    console.log(error);
+    
     return error.response;
   }
 }
@@ -546,7 +546,7 @@ try {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-   console.log(error);
+   
     return error.response;
   }
 }
@@ -563,7 +563,7 @@ try {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    console.log(error);
+    
     return error.response;
   }
 }
@@ -581,7 +581,7 @@ try {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    console.log(error);
+    
     return error.response;
   }
 }
@@ -598,7 +598,7 @@ headers: {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    console.log(error);
+    
     return error.response;
   }
 }
