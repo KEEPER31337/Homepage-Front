@@ -333,6 +333,41 @@ async function getCommonMembers() {
     return error.response.data;
   }
 }
+//회원정보 검색
+async function searchMember({ token, keyword }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + `/v1/admin/members/ids`,
+    params: { keyword: keyword },
+    headers: {
+      Authorization: token,
+    },
+  };
+
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response;
+  }
+}
+
+// 모든 기수
+async function getGenerations({ token }) {
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/members/generations',
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
 
 export default {
   getAllMembers,
@@ -355,4 +390,6 @@ export default {
   getUsersFollowCnt,
   getOthersPosts,
   getCommonMembers,
+  searchMember,
+  getGenerations,
 };
