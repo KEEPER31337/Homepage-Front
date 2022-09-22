@@ -363,9 +363,9 @@ const Comments = ({
                   className="border-b border-slate-200 px-2 py-1 flex w-full bg-slate-50 rounded-lg dark:bg-darkComponent dark:border-darkComponent"
                 >
                   <div className="border w-[3em] h-[3em] mr-2 rounded-full items-center shadow-md flex-shrink-0 text-divisionGray hidden sm:flex dark:border-gray-500 dark:text-gray-500">
-                    {comment.writerThumbnailPath ? (
+                    {childCom.writerThumbnailPath ? (
                       <img
-                        src={comment.writerThumbnailPath}
+                        src={childCom.writerThumbnailPath}
                         className="rounded-full"
                       />
                     ) : (

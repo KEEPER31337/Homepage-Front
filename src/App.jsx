@@ -49,7 +49,7 @@ const App = ({ member, isDark, signOut }) => {
 
   return (
     //TODO 다음에 다크모드로 기본 바꾸기
-    <div className={isDark ? 'light' : 'dark'}>
+    <div className={isDark ? 'dark' : 'light'}>
       <>
         <Header />
         <Suspense fallback={<Loading />}>
