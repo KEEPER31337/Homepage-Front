@@ -66,8 +66,11 @@ const PointTable = ({ curSort, pointData, setPointData, state }) => {
             {/**모바일에서 내역을 클릭하면 모달창으로 사유를 띄워주도록*/}
             <p className="hidden sm:block sm:w-full px-1">사유</p>
             <p className="min-w-[3em] sm:w-[6em] px-1">상점</p>
-            <p className="min-w-[3em] sm:w-[6em] px-1">벌점</p>
+            <p className="min-w-[3em] sm:w-[6em] border-r-2 px-1 dark:border-gray-600">
+              벌점
+            </p>
           </div>
+          <p className="min-w-[3em] sm:w-[6em] px-1">총점</p>
         </p>
         {pointData?.length !== 0 ? (
           (curSort === '명부'
@@ -76,77 +79,94 @@ const PointTable = ({ curSort, pointData, setPointData, state }) => {
           ).map((data, index) => (
             <button
               key={index}
-              className={
-                (curSort === '랭킹' && data.totalMerit && index < 3
-                  ? 'border-2 border-slate-300 bg-slate-100 font-bold dark:bg-darkComponent'
-                  : 'border') +
-                (curSort === '랭킹' && data.totalMerit - data.totalDemerit < -9
-                  ? ' border-red-400'
-                  : ' dark:border-gray-600') +
-                ' rounded-md flex w-full mt-1 '
-              }
+              className="w-full flex items-center"
               onClick={() => {
                 setModalData({ ...data, no: index + 1 });
                 setIsOpen(true);
               }}
               disabled={window.innerWidth > parseInt(smWidth, 10)}
             >
-              <p className="min-w-[2em] w-[2em] p-1 my-auto">
-                {curSort === '랭킹' && data.totalMerit ? (
-                  index === 0 ? (
-                    <img
-                      className=""
-                      src={isDark ? firstGradeBadgeDark : firstGradeBadge}
-                    />
-                  ) : index === 1 ? (
-                    <img
-                      className=""
-                      src={isDark ? secondGradeBadgeDark : secondGradeBadge}
-                    />
-                  ) : index === 2 ? (
-                    <img
-                      className=""
-                      src={isDark ? thirdGradeBadgeDark : thirdGradeBadge}
-                    />
+              <div
+                className={
+                  (curSort === '랭킹' && data.totalMerit && index < 3
+                    ? 'border-2 border-slate-300 bg-slate-100 font-bold dark:bg-darkComponent'
+                    : 'border') +
+                  (curSort === '랭킹' &&
+                  data.totalMerit - data.totalDemerit < -9
+                    ? ' border-red-400'
+                    : ' dark:border-gray-600') +
+                  ' rounded-md flex w-full mt-1 '
+                }
+              >
+                <p className="min-w-[2em] w-[2em] p-1 my-auto">
+                  {curSort === '랭킹' && data.totalMerit ? (
+                    index === 0 ? (
+                      <img
+                        className=""
+                        src={isDark ? firstGradeBadgeDark : firstGradeBadge}
+                      />
+                    ) : index === 1 ? (
+                      <img
+                        className=""
+                        src={isDark ? secondGradeBadgeDark : secondGradeBadge}
+                      />
+                    ) : index === 2 ? (
+                      <img
+                        className=""
+                        src={isDark ? thirdGradeBadgeDark : thirdGradeBadge}
+                      />
+                    ) : (
+                      index + 1
+                    )
                   ) : (
                     index + 1
-                  )
-                ) : (
-                  index + 1
-                )}
-              </p>
-              <div className="flex w-full">
-                <p className="min-w-[7em] w-full sm:w-[7em] p-1 flex items-center justify-center text-violet-400">
-                  {data.realName}
+                  )}
                 </p>
-                {/**모바일에서 내역을 클릭하면 모달창으로 사유를 띄워주도록*/}
-                <p className="hidden sm:block sm:w-full p-1 dark:text-gray-300">
-                  {Object.keys(data.detailsWithCount)
-                    .map((key) => key + ' ' + data.detailsWithCount[key] + '회')
-                    .join(', ')}
-                </p>
-                <p
-                  className={
-                    (curSort === '랭킹' && data.totalMerit && index < 3
-                      ? 'border-slate-400'
-                      : '') +
-                    (curSort === '랭킹' &&
-                    data.totalMerit - data.totalDemerit < -9
-                      ? ' border-red-400'
-                      : ' dark:border-gray-600') +
-                    ' min-w-[3em] sm:w-[6em] p-1 border-x flex items-center justify-center text-green-400'
-                  }
-                >
-                  {data.totalMerit > data.totalDemerit
-                    ? data.totalMerit - data.totalDemerit
-                    : ''}
-                </p>
-                <p className="min-w-[3em] sm:w-[6em] p-1 flex items-center justify-center text-red-400">
+                <div className="flex w-full">
+                  <p className="min-w-[7em] w-full sm:w-[7em] p-1 flex items-center justify-center text-violet-400">
+                    {data.realName}
+                  </p>
+                  {/**모바일에서 내역을 클릭하면 모달창으로 사유를 띄워주도록*/}
+                  <p className="hidden sm:block sm:w-full p-1 dark:text-gray-300">
+                    {Object.keys(data.detailsWithCount)
+                      .map(
+                        (key) => key + ' ' + data.detailsWithCount[key] + '회'
+                      )
+                      .join(', ')}
+                  </p>
+                  <p
+                    className={
+                      (curSort === '랭킹' && data.totalMerit && index < 3
+                        ? 'border-slate-400'
+                        : '') +
+                      (curSort === '랭킹' &&
+                      data.totalMerit - data.totalDemerit < -9
+                        ? ' border-red-400'
+                        : ' dark:border-gray-600') +
+                      ' min-w-[3em] sm:w-[6em] p-1 border-x flex items-center justify-center'
+                    }
+                  >
+                    {data.totalMerit}
+                  </p>
+                  <p className=" min-w-[3em] sm:w-[6em] p-1 flex items-center justify-center ">
+                    {data.totalDemerit}
+                  </p>
+                </div>
+              </div>
+              <p
+                className={
+                  (data.totalMerit < data.totalDemerit
+                    ? 'text-red-500'
+                    : 'text-green-500') +
+                  ' min-w-[3em] sm:w-[6em] flex items-center justify-center'
+                }
+              >
+                <strong className="bg-slate-100 rounded-md w-[2em] h-[2em] p-1 dark:bg-slate-600">
                   {data.totalMerit < data.totalDemerit
                     ? data.totalDemerit - data.totalMerit
-                    : ''}
-                </p>
-              </div>
+                    : data.totalMerit - data.totalDemerit}
+                </strong>
+              </p>
             </button>
           ))
         ) : (
