@@ -295,7 +295,7 @@ const TableContent = ({
           >
             <div
               className={
-                isDark
+                !isDark
                   ? 'fixed inset-0 bg-black bg-opacity-25'
                   : 'fixed inset-0 bg-white bg-opacity-25'
               }
@@ -314,7 +314,7 @@ const TableContent = ({
               >
                 <Dialog.Panel
                   className={
-                    isDark
+                    !isDark
                       ? 'w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all'
                       : 'w-full max-w-md transform overflow-hidden rounded-2xl bg-black text-violet-400 p-6 text-left align-middle shadow-xl transition-all'
                   }
@@ -326,7 +326,7 @@ const TableContent = ({
                       <div>사유</div>
                       <select
                         className={
-                          isDark
+                          !isDark
                             ? 'w-1/2 m-2 text-sm border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 rounded-md bg-mainWhite text-mainBlack'
                             : 'w-1/2 m-2 text-sm border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 rounded-md bg-mainBlack text-violet-200'
                         }
@@ -351,7 +351,7 @@ const TableContent = ({
                       placeholder="개인 사정 사유"
                       onChange={changedAbsenceExcuse}
                       className={
-                        isDark
+                        !isDark
                           ? 'border-gray-300 focus:outline-none focus:ring-violet-400 focus:border-violet-400 rounded-md bg-mainWhite text-mainBlack'
                           : 'border-gray-200 focus:outline-none focus:ring-violet-400 focus:border-violet-400 rounded-md bg-mainBlack text-violet-200'
                       }
@@ -396,7 +396,7 @@ const TableContent = ({
           >
             <div
               className={
-                isDark
+                !isDark
                   ? 'fixed inset-0 bg-black bg-opacity-25'
                   : 'fixed inset-0 bg-white bg-opacity-25'
               }
@@ -415,7 +415,7 @@ const TableContent = ({
               >
                 <Dialog.Panel
                   className={
-                    isDark
+                    !isDark
                       ? 'w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all'
                       : 'w-full max-w-md transform overflow-hidden rounded-2xl bg-black text-gray-200 p-6 text-left align-middle shadow-xl transition-all'
                   }
