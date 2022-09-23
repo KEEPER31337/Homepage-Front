@@ -264,11 +264,7 @@ const TableOfAttend = ({ member, darkMode }) => {
                             seasonStart: event.target.value,
                           }))
                         }
-                        defaultValue={
-                          semiSeason.seasonStart
-                            ? semiSeason.seasonStart
-                            : getNow()
-                        }
+                        defaultValue={semiSeason.seasonStart}
                         required
                       />
                     </div>
@@ -287,9 +283,7 @@ const TableOfAttend = ({ member, darkMode }) => {
                             seasonEnd: event.target.value,
                           }))
                         }
-                        defaultValue={
-                          semiSeason.seasonEnd ? semiSeason.seasonEnd : getNow()
-                        }
+                        defaultValue={semiSeason.seasonEnd}
                         required
                       />
                     </div>
