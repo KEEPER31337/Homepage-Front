@@ -1,6 +1,6 @@
 import React from 'react';
 import './font.css';
-import testImg from '../../assets/img/libraryImg/book.png';
+import keeper_logo_key from '../../assets/img/keeper_logo_key.png';
 import moment from 'moment';
 import 'moment/locale/ko';
 const LibraryList = ({
@@ -15,7 +15,6 @@ const LibraryList = ({
   thumbnailId,
   setMainBook,
 }) => {
-  const API_URL = process.env.REACT_APP_API_URL;
   return (
     <button
       onClick={() => {
@@ -28,70 +27,36 @@ const LibraryList = ({
           total: total,
           enable: enable,
           thumbnailId: thumbnailId,
-          registerDate: moment(registerDate).fromNow(),
+          registerDate: moment(registerDate).format('YYYY/MM/DD'),
         });
       }}
     >
-      <div
-        style={{
-          display: 'flex',
-          height: '350px',
-          width: '300px',
-          marginTop: '20px',
-          marginBottom: '20px',
-          marginLeft: '30px',
-          marginRight: '30px',
-          justifyContent: 'center',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        {thumbnailId === null ? (
-          <img
-            src={testImg}
-            style={{
-              boxShadow: '2px 2px 5px 2px #0000001A',
-              width: '200px',
-              height: '250px',
-              objectFit: 'contain',
-              background: 'white',
-            }}
-          />
-        ) : (
-          <img
-            src={`${thumbnailId}`}
-            style={{
-              boxShadow: '2px 2px 5px 2px #0000001A',
-              width: '200px',
-              height: '250px',
-              objectFit: 'contain',
-              background: 'white',
-            }}
-          />
-        )}
-        <div
-          className="font"
-          style={{
-            textShadow: '0px 0px 74px 0px #0000001A',
-            fontSize: '20px',
-            textAlign: 'start',
-            marginTop: 20,
-            marginLeft: 5,
-          }}
-        >
-          {title}
+      <div className="flex flex-row p-1">
+        <div className="">
+          {thumbnailId === null ? (
+            <img
+              className="w-[85px] h-[105px] bg-mainWhite p-2"
+              src={keeper_logo_key}
+              style={{
+                objectFit: 'contain',
+              }}
+            />
+          ) : (
+            <img
+              className="w-[85px] h-[105px] bg-mainWhite p-2"
+              src={`${thumbnailId}`}
+              style={{
+                objectFit: 'contain',
+              }}
+            />
+          )}
         </div>
-        <div
-          className="font"
-          style={{
-            textShadow: '0px 0px 74px 0px #0000001A',
-            fontSize: '15px',
-            textAlign: 'start',
-            marginLeft: 5,
-            color: 'gray',
-          }}
-        >
-          by {author}
+
+        <div className="flex flex-col truncate p-3">
+          <div className=" text-left  truncate font-semibold text-slate-800">
+            {title}
+          </div>
+          <div className="text-left truncate text-slate-500">by {author}</div>
         </div>
       </div>
     </button>

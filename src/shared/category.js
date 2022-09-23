@@ -11,18 +11,6 @@ const categoriesAll = [
         href: 'about',
         auth: null,
       },
-      // {
-      //   id: 8,
-      //   name: '이벤트',
-      //   href: 'event',
-      //   auth :null
-      // },
-      {
-        id: 9,
-        name: '동아리 일정',
-        href: 'schedule',
-        auth: null,
-      },
       {
         id: null,
         name: '스터디',
@@ -144,30 +132,12 @@ const categoriesAll = [
         href: 'library',
         auth: null,
       },
-      // {
-      //   id: 27,
-      //   name: '도서 추가',
-      //   href: 'library/add',
-      //   auth :null
-      // },
       {
         id: 28,
         name: '도서 관리',
         href: 'library/manage',
-        auth: 'ROLE_사서',
+        auth: ['ROLE_회장', 'ROLE_부회장', 'ROLE_사서'],
       },
-      // {
-      //   id: null,
-      //   name: '기자재 검색',
-      //   href: 'equipment',
-      //   auth :null
-      // },
-      // {
-      //   id: null,
-      //   name: '기자재 관리',
-      //   href: 'equipment/manage',
-      //   auth: 'ROLE_사서',
-      // },
     ],
   },
   {
@@ -191,6 +161,36 @@ const categoriesAll = [
         name: '게임',
         href: 'game',
         auth: null,
+      },
+    ],
+  },
+  {
+    id: 33,
+    name: '출석체크',
+    subs: [
+      {
+        id: 34,
+        name: '출석체크',
+        href: 'autoAttend',
+        auth: null,
+      },
+      {
+        id: 35,
+        name: '활동인원조사',
+        href: 'research',
+        auth: null,
+      },
+      {
+        id: 36,
+        name: 'admin서기',
+        href: 'clerk',
+        auth: ['ROLE_회장', 'ROLE_부회장', 'ROLE_서기'],
+      },
+      {
+        id: 37,
+        name: 'admin전산관리자',
+        href: 'itManager',
+        auth: ['ROLE_회장', 'ROLE_부회장', 'ROLE_전산관리자'],
       },
     ],
   },

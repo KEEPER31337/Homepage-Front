@@ -18,9 +18,13 @@ import UserBox from './Component/UserBox';
 
 const Header = ({ member }) => {
   const [categories, setCategories] = useState([]);
+  const jobs = member?.memberInfo?.jobs;
   useEffect(() => {
-    if (member.token) setCategories(categoriesAll);
-    else setCategories(categoriesHidden);
+    if (member.token) {
+      setCategories(categoriesAll);
+    } else {
+      setCategories(categoriesHidden);
+    }
   }, [member]);
 
   return (
@@ -40,7 +44,10 @@ const Header = ({ member }) => {
                 <MenuIcon className="h-6 w-6" aria-hidden="true" />
               </Popover.Button>
             </div>
-            <Popover.Group as="nav" className="hidden md:flex space-x-10">
+            <Popover.Group
+              as="nav"
+              className="hidden md:flex space-x-10 md:space-x-5"
+            >
               {categories.map((category, index) => (
                 <HeaderPopDown key={index} category={category} />
               ))}

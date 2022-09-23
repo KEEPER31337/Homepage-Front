@@ -34,7 +34,7 @@ const BookManage = ({ token }) => {
   const getRecentBookList = async () => {
     try {
       const { data } = await axios.get(
-        `${API_URL}/v1/recentbooks?page=${page}`
+        `${API_URL}/v1/recentbooks?page=${page}&size=8`
       );
       setBookList(data);
     } catch (err) {}

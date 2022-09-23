@@ -48,6 +48,7 @@ const Boards = ({
   const viewStyle = state.boardState.mode;
   const curPage = state.boardState.curPage;
   const searchKeyword = state.boardState.keyword;
+  const searchType = state.boardState.type;
 
   const openModal = () => {
     //비밀번호 입력창 열기
@@ -105,7 +106,7 @@ const Boards = ({
   const postingSearchRef = useRef(null);
 
   const searchHandler = () => {
-    console.log('search');
+    // console.log('search');
     initialize();
     if (currentCategoryId) {
       postAPI
@@ -117,7 +118,7 @@ const Boards = ({
           size: MAX_POSTS,
         })
         .then((res) => {
-          search(postingSearchRef.current?.value); //state 값 셋팅
+          search(selectedSearchVal, postingSearchRef.current?.value); //state 값 셋팅
           if (res?.list?.length == 0) {
           } else {
             setPageN(
@@ -133,36 +134,59 @@ const Boards = ({
 
   useEffect(() => {
     // 카테고리 값 변화에 따른 현재 페이지 번호, 총 페이지 개수 갱신
-
-    if (currentCategoryId) {
-      //카테고리 아이디가 null 값이 아닌 경우
-      postAPI //공지사항 가져오기
-        .getNoticeList({
-          category: currentCategoryId,
-        })
-        .then((res) => {
-          if (res.success) setNoticeBoardContent(res?.list.reverse());
-        });
-
-      postAPI //일반 글 가져오기
-        .getList({
-          category: currentCategoryId,
-          page: curPage - 1,
-          size: MAX_POSTS,
-        })
-        .then((res) => {
-          if (res?.list?.length == 0) {
-          } else {
-            setPageN(
-              Math.ceil(
-                (res?.list?.length != 0 ? res.list[0]?.size : 0) / MAX_POSTS
-              )
-            );
-            console.log('2');
-            changePage(curPage);
-          }
-          setBoardContent(res?.list);
-        });
+    if (searchKeyword) {
+      if (currentCategoryId) {
+        postAPI
+          .search({
+            type: searchType,
+            keyword: searchKeyword,
+            category: currentCategoryId,
+            page: 0,
+            size: MAX_POSTS,
+          })
+          .then((res) => {
+            console.log(res);
+            if (res?.list?.length == 0) {
+            } else {
+              setPageN(
+                Math.ceil(
+                  (res?.list?.length != 0 ? res.list[0]?.size : 0) / MAX_POSTS
+                )
+              );
+            }
+            setBoardContent(res?.list);
+          });
+      }
+    } else {
+      if (currentCategoryId) {
+        //카테고리 아이디가 null 값이 아닌 경우
+        postAPI //공지사항 가져오기
+          .getNoticeList({
+            category: currentCategoryId,
+          })
+          .then((res) => {
+            if (res.success) setNoticeBoardContent(res?.list.reverse());
+          });
+        postAPI //일반 글 가져오기
+          .getList({
+            category: currentCategoryId,
+            page: curPage - 1,
+            size: MAX_POSTS,
+          })
+          .then((res) => {
+            if (res?.list?.length == 0) {
+            } else {
+              setPageN(
+                Math.ceil(
+                  (res?.list?.length != 0 ? res.list[0]?.size : 0) / MAX_POSTS
+                )
+              );
+              // console.log('2');
+              changePage(curPage);
+            }
+            setBoardContent(res?.list);
+          });
+      }
     }
   }, [currentCategoryId]);
 
@@ -170,12 +194,13 @@ const Boards = ({
     // 현재 페이지 변화에 따른 총 페이지 개수 갱신
     // 검색중이면 페이지네이션을 검색으로, 검색중이 아니면 기본으로 설정
     closeModal();
-    console.log('change');
+    // console.log('change');
 
     /**/ if (searchKeyword) {
+      console.log(searchKeyword);
       postAPI
         .search({
-          type: selectedSearchVal,
+          type: searchType,
           keyword: searchKeyword,
           category: currentCategoryId,
           page: curPage - 1,
@@ -216,7 +241,7 @@ const Boards = ({
           });
       }
     }
-    console.log(curPage, viewStyle, searchKeyword);
+    // console.log(curPage, viewStyle, searchKeyword);
   }, [curPage, viewStyle, searchKeyword, commentChangeFlag]); //currentPage 값이 변경될 때마다
 
   return (
@@ -588,8 +613,8 @@ const mapDispatchToProps = (dispatch, OwnProps) => {
     changeMode: (mode) => {
       dispatch(actionBoardState.changeMode(mode));
     },
-    search: (keyword) => {
-      dispatch(actionBoardState.search(keyword));
+    search: (type, keyword) => {
+      dispatch(actionBoardState.search({ type, keyword }));
     },
     changePage: (pageN) => {
       dispatch(actionBoardState.changePage(pageN));

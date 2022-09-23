@@ -33,8 +33,12 @@ const FileUploadForm = (props) => {
           props.setThumbnail(data);
 
           const reader = new FileReader();
-          reader.onabort = () => console.log('file reading was aborted');
-          reader.onerror = () => console.log('file reading has failed');
+          reader.onabort = () => {
+            /*console.log('file reading was aborted');*/
+          };
+          reader.onerror = () => {
+            /*console.log('file reading has failed');*/
+          };
           reader.onloadend = () => {
             const base64 = reader.result;
             if (base64) {
@@ -58,8 +62,12 @@ const FileUploadForm = (props) => {
         props.setThumbnail(file);
         const reader = new FileReader();
 
-        reader.onabort = () => console.log('file reading was aborted');
-        reader.onerror = () => console.log('file reading has failed');
+        reader.onabort = () => {
+          /*console.log('file reading was aborted');*/
+        };
+        reader.onerror = () => {
+          /*console.log('file reading has failed');*/
+        };
         reader.onloadend = () => {
           const array = [];
           for (var i = 0; i < reader.result.length; i++) {
