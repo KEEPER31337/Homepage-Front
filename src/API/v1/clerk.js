@@ -50,7 +50,6 @@ async function addPoint({ token, data }) {
     const response = await axios.post(url, data, options);
     return response.data;
   } catch (error) {
-    
     return error.response;
   }
 }
@@ -68,7 +67,6 @@ async function removePoint({ token, meritId }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    
     return error.response;
   }
 }
@@ -86,7 +84,6 @@ async function getPointOfMember({ token }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    
     return error.response;
   }
 }
@@ -104,7 +101,6 @@ async function getPointOfYear({ token, year }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    
     return error.response;
   }
 }
@@ -122,7 +118,6 @@ async function getPointYearList({ token }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    
     return error.response;
   }
 }
@@ -140,7 +135,6 @@ async function getPointType({ token }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    
     return error.response;
   }
 }
@@ -158,7 +152,6 @@ async function addPointType({ token, modifyData }) {
     const response = await axios.post(url, data, options);
     return response.data;
   } catch (error) {
-    
     return error.response;
   }
 }
@@ -176,11 +169,9 @@ async function removePointType({ token, typeIds }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    
     return error.response;
   }
 }
-
 
 // 세미나 목록 조회
 async function getSeminarsList({ token }) {
@@ -254,15 +245,21 @@ async function getSeminarAttendance({ token }) {
 }
 
 // 전체 세미나 출석 목록 조회
-async function getAllSeminarAttend({ token, page, size, seasonStartDate, seasonEndDate }) {
+async function getAllSeminarAttend({
+  token,
+  page,
+  size,
+  seasonStartDate,
+  seasonEndDate,
+}) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/admin/clerk/seminars/attendances',
-    params: { 
-      page: page, 
+    params: {
+      page: page,
       size: size,
-      seasonStartDate : seasonStartDate,
-      seasonEndDate : seasonEndDate,
+      seasonStartDate: seasonStartDate,
+      seasonEndDate: seasonEndDate,
     },
     headers: {
       Authorization: token,
@@ -280,7 +277,7 @@ async function getAllSeminarAttend({ token, page, size, seasonStartDate, seasonE
 async function getSomeSeminarAttend({ token, seminarId }) {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/admin/clerk/seminars/'+seminarId+'/attendances',
+    url: API_URL + '/v1/admin/clerk/seminars/' + seminarId + '/attendances',
     headers: {
       Authorization: token,
     },
@@ -294,7 +291,12 @@ async function getSomeSeminarAttend({ token, seminarId }) {
 }
 
 //세미나 출석 수정
-async function reviseAttend({ token, attendanceId, seminarAttendanceStatusId, absenceExcuse }) {
+async function reviseAttend({
+  token,
+  attendanceId,
+  seminarAttendanceStatusId,
+  absenceExcuse,
+}) {
   const options = {
     method: 'PATCH',
     url: API_URL + '/v1/admin/clerk/seminars/attendances/' + attendanceId,
@@ -332,7 +334,12 @@ async function getRecentSeminar({ token }) {
 }
 
 // 세미나 출석 조건 조회
-async function getAttendConditions({ token, seminarId, attendanceCloseTime, latenessCloseTime }) {
+async function getAttendConditions({
+  token,
+  seminarId,
+  attendanceCloseTime,
+  latenessCloseTime,
+}) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/admin/clerk/attendance/conditions',
@@ -357,7 +364,7 @@ async function researchReply({ token, surveyId, replyId, excuse }) {
     replyId,
     excuse,
   };
-const options = {
+  const options = {
     headers: {
       Authorization: token,
     },
@@ -366,7 +373,6 @@ const options = {
     const response = await axios.post(url, data, options);
     return response.data;
   } catch (error) {
-    
     return error.response;
   }
 }
@@ -379,15 +385,14 @@ async function researchReplyModify({ token, surveyId, replyId, excuse }) {
     excuse,
   };
   const options = {
-  headers: {
+    headers: {
       Authorization: token,
     },
   };
   try {
-const response = await axios.patch(url, data, options);
- return response.data;
+    const response = await axios.patch(url, data, options);
+    return response.data;
   } catch (error) {
-    
     return error.response;
   }
 }
@@ -406,7 +411,6 @@ async function getReply({ token, surveyId, memberId }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    
     return error.response;
   }
 }
@@ -425,7 +429,6 @@ async function getRunningResearch({ token }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    
     return error.response;
   }
 }
@@ -444,7 +447,6 @@ async function getLastResearch({ token }) {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    
     return error.response;
   }
 }
@@ -474,10 +476,9 @@ async function createResearch({
   };
 
   try {
-const response = await axios.post(url, data, options);
+    const response = await axios.post(url, data, options);
     return response.data;
   } catch (error) {
-    
     return error.response;
   }
 }
@@ -500,16 +501,15 @@ async function modifyResearch({
     description,
     isVisible,
   };
- const options = {
+  const options = {
     headers: {
       Authorization: token,
     },
   };
   try {
-const response = await axios.patch(url, data, options);
-return response.data;
+    const response = await axios.patch(url, data, options);
+    return response.data;
   } catch (error) {
-    
     return error.response;
   }
 }
@@ -519,7 +519,7 @@ async function removeResearch({ token, surveyId }) {
   const options = {
     method: 'DELETE',
     url: API_URL + '/v1/admin/clerk/surveys/' + surveyId,
-headers: {
+    headers: {
       Authorization: token,
     },
   };
@@ -528,7 +528,6 @@ headers: {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    
     return error.response;
   }
 }
@@ -542,11 +541,10 @@ async function open({ token, surveyId }) {
       Authorization: token,
     },
   };
-try {
+  try {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-   
     return error.response;
   }
 }
@@ -555,15 +553,14 @@ async function close({ token, surveyId }) {
   const options = {
     method: 'PATCH',
     url: API_URL + '/v1/admin/clerk/surveys/' + surveyId + '/close',
- headers: {
+    headers: {
       Authorization: token,
     },
   };
-try {
+  try {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    
     return error.response;
   }
 }
@@ -577,11 +574,10 @@ async function getRespondents({ token, surveyId }) {
       Authorization: token,
     },
   };
-try {
+  try {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    
     return error.response;
   }
 }
@@ -590,7 +586,7 @@ async function getResearchList({ token, page, size }) {
   const options = {
     method: 'GET',
     url: API_URL + '/v1/admin/clerk/surveys?page=' + page + '&size=' + size,
-headers: {
+    headers: {
       Authorization: token,
     },
   };
@@ -598,7 +594,6 @@ headers: {
     const response = await axios(options);
     return response.data;
   } catch (error) {
-    
     return error.response;
   }
 }
@@ -619,102 +614,120 @@ async function getSeminarByDate({ token, searchDate }) {
     return error.response.data;
   }
 }
-  
+
 // 세미나 출석상태 목록 조회
 async function getSeminarAttendList({ token }) {
-    const options = {
-      method: 'GET',
-      url: API_URL + '/v1/admin/clerk/seminars/statuses',
-      headers: {
-        Authorization: token,
-      },
-    };
-    try {
-      const response = await axios(options);
-      return response.data;
-    } catch (error) {
-      return error.response.data;
-    }
+  const options = {
+    method: 'GET',
+    url: API_URL + '/v1/admin/clerk/seminars/statuses',
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
   }
+}
 
 // 전체 세미나 출석 목록 조회
-async function getEverySeminarAttendList({ token, page, size, seasonStartDate, seasonEndDate }) {
-    const options = {
-      method: 'GET',
-      url: API_URL + `/v1/admin/clerk/seminars/attendances?page=${page}&size=${size}&seasonStartDate=${seasonStartDate}&seasonEndDate=${seasonEndDate}`,
-      headers: {
-        Authorization: token,
-      },
-    };
-    try {
-      const response = await axios(options);
-      return response.data;
-    } catch (error) {
-      return error.response.data;
-    }
+async function getEverySeminarAttendList({
+  token,
+  page,
+  size,
+  seasonStartDate,
+  seasonEndDate,
+}) {
+  const options = {
+    method: 'GET',
+    url:
+      API_URL +
+      `/v1/admin/clerk/seminars/attendances?page=${page}&size=${size}&seasonStartDate=${seasonStartDate}&seasonEndDate=${seasonEndDate}`,
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
   }
-  
+}
+
 // 특정 세미나 출석 목록 조회
 async function getTheSeminarAttendList({ token, seminarId }) {
-    const options = {
-      method: 'GET',
-      url: API_URL + `/v1/admin/clerk/seminars/${seminarId}/attendances`,
-      headers: {
-        Authorization: token,
-      },
-    };
-    try {
-      const response = await axios(options);
-      return response.data;
-    } catch (error) {
-      return error.response.data;
-    }
+  const options = {
+    method: 'GET',
+    url: API_URL + `/v1/admin/clerk/seminars/${seminarId}/attendances`,
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
   }
+}
 
-  //세미나 출석시작
-async function startSeminarAttend({ seminarId, attendanceCloseTime, latenessCloseTime, token }) {
-    const options = {
-      method: 'PATCH',
-      url: API_URL + '/v1/admin/clerk/seminars/attendances/start',
-      data: {
-        seminarId, 
-        attendanceCloseTime, 
-        latenessCloseTime,
-      },
-      headers: {
-        Authorization: token,
-      },
-    };
-    try {
-      const response = await axios(options);
-      return response.data;
-    } catch (error) {
-      return error.response.data;
-    }
+//세미나 출석시작
+async function startSeminarAttend({
+  seminarId,
+  attendanceCloseTime,
+  latenessCloseTime,
+  token,
+}) {
+  const options = {
+    method: 'PATCH',
+    url: API_URL + '/v1/admin/clerk/seminars/attendances/start',
+    data: {
+      seminarId,
+      attendanceCloseTime,
+      latenessCloseTime,
+    },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
   }
+}
 
-  //세미나 출석수정
-  async function editSeminarAttend({ attendanceId, seminarAttendanceStatusId, absenceExcuse, token }) {
-    const options = {
-      method: 'PATCH',
-      url: API_URL + `/v1/admin/clerk/seminars/attendances/${attendanceId}`,
-      data: {
-        seminarAttendanceStatusId, 
-        absenceExcuse,
-      },
-      headers: {
-        Authorization: token,
-      },
-    };
-    try {
-      const response = await axios(options);
-      return response.data;
-    } catch (error) {
-      return error.response.data;
-    }
+//세미나 출석수정
+async function editSeminarAttend({
+  attendanceId,
+  seminarAttendanceStatusId,
+  absenceExcuse,
+  token,
+}) {
+  const options = {
+    method: 'PATCH',
+    url: API_URL + `/v1/admin/clerk/seminars/attendances/${attendanceId}`,
+    data: {
+      seminarAttendanceStatusId,
+      absenceExcuse,
+    },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
   }
+}
 
-  // 출석 가능 세미나 조회
+// 출석 가능 세미나 조회
 async function getSeminar({ token, searchDate }) {
   const options = {
     method: 'GET',
@@ -733,25 +746,41 @@ async function getSeminar({ token, searchDate }) {
 
 //세미나 출석
 async function AttendSeminar({ token, seminarId, attendanceCode }) {
-    const options = {
-      method: 'POST',
-      url: API_URL + '/v1/clerk/seminars/attendances/check',
-      data: {
-        seminarId,
-        attendanceCode,
-      },
-      headers: {
-        Authorization: token,
-      },
-    };
-    try {
-      const response = await axios(options);
-      return response.data;
-    } catch (error) {
-      return error.response.data;
-    }
+  const options = {
+    method: 'POST',
+    url: API_URL + '/v1/clerk/seminars/attendances/check',
+    data: {
+      seminarId,
+      attendanceCode,
+    },
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
   }
-
+}
+// 직책 일괄 변경
+async function changeAllType({ token, list }) {
+  const options = {
+    method: 'PUT',
+    url: API_URL + '/v1/admin/clerk/members/types',
+    data: list,
+    headers: {
+      Authorization: token,
+    },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
 
 /**========================= */
 
@@ -795,4 +824,5 @@ export default {
   getSeminarByDate,
   getSeminar,
   AttendSeminar,
+  changeAllType,
 };
