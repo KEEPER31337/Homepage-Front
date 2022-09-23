@@ -12,7 +12,7 @@ const TableOfAttend = ({ member, darkMode }) => {
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [date, setDate] = useState('');
   const [append, setAppend] = useState(0);
-  const isDark = darkMode?.isDark;
+  const isDark = !darkMode?.isDark;
   const [page, setPage] = useState(0);
   const [userSize, setUserSize] = useState(15);
   const [season, setSeason] = useState({
