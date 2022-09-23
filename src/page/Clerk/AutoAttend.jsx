@@ -12,8 +12,8 @@ import attendAPI from 'API/v1/clerk';
 const AutoAttend = ({state}) => {
   const [auth, setAuth] = useState(['ROLE_회장']);
   const [boss,setBoss] = useState(false);
-  const [admitT,setAdmitT] = useState(1); //현재 시각 + admitT = 출석인정시각
-  const [lateT, setLateT] = useState(1); //현재 시각 + admitT + lateT = 지각인정시각
+  const [admitT,setAdmitT] = useState(5); //현재 시각 + admitT = 출석인정시각
+  const [lateT, setLateT] = useState(5); //현재 시각 + admitT + lateT = 지각인정시각
   const [attendanceCloseTime,setACT] = useState(new Date());
   const [latenessCloseTime,setLCT] = useState(new Date());
   const [currentTime,setCT] = useState(new Date());
@@ -96,7 +96,7 @@ const AutoAttend = ({state}) => {
           let code = res.data.attendanceCode;
           navigate("/startAttend", {state: {latenessCloseTime,attendanceCloseTime,currentTime,seminarId,code}});
         }
-        else alert("세미나를 생성해주세요");
+        //else alert("세미나를 생성해주세요");
       });
     }
   },[seminarExist])
