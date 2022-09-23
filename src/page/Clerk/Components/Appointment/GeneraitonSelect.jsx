@@ -18,7 +18,7 @@ const GeneraitonSelect = ({ setGen, member }) => {
   }, []);
 
   const changeGeneration = (e) => {
-    setGen(parseInt(e.target.value));
+    setGen(Number(e.target.value));
   };
 
   return (
