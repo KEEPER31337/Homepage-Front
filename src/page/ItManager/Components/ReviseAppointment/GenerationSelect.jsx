@@ -28,7 +28,7 @@ const GenerationSelect = ({ token, gen, setGen, isDark }) => {
   }, []);
 
   const changeGeneration = (e) => {
-    setGen(parseInt(e.target.value));
+    setGen(Number(e.target.value));
   };
 
   return (
