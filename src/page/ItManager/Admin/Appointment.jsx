@@ -10,7 +10,7 @@ import itmanagerAPI from 'API/v1/itmanager';
 
 const Appointment = ({ member, isDark }) => {
   //권한없으면 경고창과 함께 메인페이지로
-  const auth = ['ROLE_회장', 'ROLE_부회장', 'ROLE_서기'];
+  const auth = ['ROLE_회장', 'ROLE_부회장', 'ROLE_전산관리자'];
   const jobs = member?.memberInfo?.jobs;
   const ModalRef = useRef({});
 
@@ -92,7 +92,7 @@ const Appointment = ({ member, isDark }) => {
           </div>
           <EditModal
             member={member}
-            isDark={isDark}
+            isDark={!isDark}
             selectJob={selectJob} //JOB id 넘겨줌
             ref={EditModalRef}
             update={update}
