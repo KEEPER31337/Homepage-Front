@@ -69,7 +69,7 @@ const AutoAttend = ({state}) => {
           //console.log("조회날짜:",getNow()),
           setSeminarId(res.data.seminarId);
         }
-        else alert("세미나를 생성해주세요");
+        //else alert("세미나를 생성해주세요");
       });
   },[startDate]);
 
@@ -96,7 +96,7 @@ const AutoAttend = ({state}) => {
           let code = res.data.attendanceCode;
           navigate("/startAttend", {state: {latenessCloseTime,attendanceCloseTime,currentTime,seminarId,code}});
         }
-        //else alert("세미나를 생성해주세요");
+        else alert("세미나를 생성해주세요");
       });
     }
   },[seminarExist])
