@@ -97,6 +97,7 @@ const TableOfAttend = ({ member, darkMode }) => {
                 page={page}
                 setPage={setPage}
                 userSize={userSize}
+                season={season}
               />
             </div>
             <TableContent
