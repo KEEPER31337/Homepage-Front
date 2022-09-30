@@ -12,20 +12,30 @@ const Header = ({
   page,
   setPage,
   userSize,
+  season,
 }) => {
   const [userLength, setUserLength] = useState(0);
   useEffect(() => {
     clerkAPI
-      .getTypeMemberList({
+      .getAllSeminarAttend({
         token: member.token,
-        typeId: 2,
+        page: 0,
+        size: 40,
+        seasonStartDate: season.seasonStart,
+        seasonEndDate: season.seasonEnd,
       })
       .then((data) => {
         if (data.success) {
-          setUserLength(data.list.length);
+          const max = data.page.content?.reduce((prev, current) => {
+            return prev.sortedSeminarAttendances.length >
+              current.sortedSeminarAttendances.length
+              ? prev
+              : current;
+          });
+          setUserLength(max.sortedSeminarAttendances.length);
         }
       });
-  }, []);
+  }, [season]);
 
   const openAppendModal = () => {
     setAppendModalOpen(true);
