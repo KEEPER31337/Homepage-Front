@@ -7,7 +7,7 @@ import reducerDarkMode from './darkMode';
 import reducerMember from './member';
 import reducerCategory from './category';
 import reducerBoardState from './boardState';
-import reducerChat from './chat';
+//import reducerChat from './chat';
 import reducerCtf from './ctf';
 import reducerVote from './vote';
 
@@ -21,7 +21,7 @@ const rootReducer = combineReducers({
   boardState: persistReducer(persistConfig, reducerBoardState),
   darkMode: persistReducer(persistConfig, reducerDarkMode),
   member: persistReducer(persistConfig, reducerMember),
-  chat: persistReducer(persistConfig, reducerChat),
+  //chat: persistReducer(persistConfig, reducerChat),
   ctf: persistReducer(persistConfig, reducerCtf),
   vote: persistReducer(persistConfig, reducerVote),
   category: reducerCategory,

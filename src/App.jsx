@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 // local
-import Chatting from 'shared/Chat/Chatting';
+//import Chatting from 'shared/Chat/Chatting';
 import Header from 'shared/Header.jsx';
 import attendanceAPI from 'API/v1/attendance';
 import actionMember from 'redux/action/member';
@@ -34,8 +34,12 @@ const BookManage = lazy(() => import('./page/Library/BookManage'));
 const Ranking = lazy(() => import('page/Ranking/Ranking'));
 const Study = lazy(() => import('page/Study/Study'));
 const AutoAttend = lazy(() => import('page/Clerk/AutoAttend'));
-const StartAttend = lazy(() => import('page/Clerk/Components/AutoAttend/StartAttend'));
-const DoAttend = lazy(() => import('page/Clerk/Components/AutoAttend/DoAttend'));
+const StartAttend = lazy(() =>
+  import('page/Clerk/Components/AutoAttend/StartAttend')
+);
+const DoAttend = lazy(() =>
+  import('page/Clerk/Components/AutoAttend/DoAttend')
+);
 const Research = lazy(() => import('page/Clerk/Research'));
 
 const App = ({ member, isDark, signOut }) => {
@@ -83,7 +87,7 @@ const App = ({ member, isDark, signOut }) => {
             <Route path="/ItManager/*" element={<ItManagerApp />} />
           </Routes>
         </Suspense>
-        <Chatting />
+        {/*<Chatting />*/}
       </>
     </div>
   );
