@@ -34,8 +34,12 @@ const BookManage = lazy(() => import('./page/Library/BookManage'));
 const Ranking = lazy(() => import('page/Ranking/Ranking'));
 const Study = lazy(() => import('page/Study/Study'));
 const AutoAttend = lazy(() => import('page/Clerk/AutoAttend'));
-const StartAttend = lazy(() => import('page/Clerk/Components/AutoAttend/StartAttend'));
-const DoAttend = lazy(() => import('page/Clerk/Components/AutoAttend/DoAttend'));
+const StartAttend = lazy(() =>
+  import('page/Clerk/Components/AutoAttend/StartAttend')
+);
+const DoAttend = lazy(() =>
+  import('page/Clerk/Components/AutoAttend/DoAttend')
+);
 const Research = lazy(() => import('page/Clerk/Research'));
 
 const App = ({ member, isDark, signOut }) => {
@@ -57,9 +61,9 @@ const App = ({ member, isDark, signOut }) => {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/attandance" element={<Attandance />} />
-            <Route path="/board/:categoryId" element={<BoardMain />} />
-            <Route path="/post/:categoryId/:postId" element={<BoardView />} />
-            <Route path="/write/:categoryId" element={<BoardWrite />} />
+            <Route path="/board/:categoryName" element={<BoardMain />} />
+            <Route path="/post/:categoryName/:postId" element={<BoardView />} />
+            <Route path="/write/:categoryName" element={<BoardWrite />} />
             <Route path="/event" element={<Event />} />
             <Route path="/game" element={<Game />} />
             <Route path="/library" element={<Library />} />

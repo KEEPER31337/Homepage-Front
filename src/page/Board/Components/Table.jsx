@@ -21,7 +21,7 @@ const Table = ({
   linkHandler,
   state,
 }) => {
-  const { categoryId, postId } = useParams();
+  const { categoryName, postId } = useParams();
 
   const getCurrentBoard = (id, currentId) => {
     //현재 게시글
@@ -46,7 +46,7 @@ const Table = ({
         </td>
         <td className="p-2 max-w-0 dark:border-darkComponent">
           <Link
-            to={`/post/${categoryId}/${board.id}`}
+            to={`/post/${categoryName}/${board.id}`}
             onClick={(e) => {
               if (
                 board.isSecret &&
@@ -145,10 +145,8 @@ const Table = ({
         </tr>
       </thead>
       <tbody>
-
         {notices?.map((board, index) => row(board, index, true))}
         {boards?.map((board, index) => row(board, index, false))}
-
       </tbody>
     </table>
   );

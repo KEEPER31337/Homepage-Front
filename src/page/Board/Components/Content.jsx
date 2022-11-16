@@ -23,7 +23,7 @@ import utilAPI from 'API/v1/util';
 const API_URL = process.env.REACT_APP_API_URL;
 
 const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
-  const { categoryId, postId } = useParams();
+  const { categoryName, postId } = useParams();
   //board는 게시글 정보가 담긴 객체
   //console.log(state.member.memberId); //(내 아이디)나중에 업데이트 될거임
   const isDark = state.darkMode?.isDark; //Dark모드 여부
@@ -76,7 +76,7 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
     if (window.confirm('정말로 해당 게시글을 삭제하시겠습니까?')) {
       postAPI.remove({ boardId: postingId, token: token }).then((res) => {
         if (res.success) {
-          navigate(`/board/${categoryId}`);
+          navigate(`/board/${categoryName}`);
         } else {
           alert('게시물 삭제 실패! 전산관리자에게 문의하세요~');
         }
@@ -153,7 +153,7 @@ const Content = ({ state, board, likeChangeFlag, setLikeChangeFlag }) => {
           <div className="rounded-lg bg-slate-100 my-2 dark:bg-darkComponent">
             <UserCircleIcon className="inline-block h-5 w-5 m-1 text-divisionGray dark:text-slate-500 " />
             <Link
-              to={`/write/${categoryId}`}
+              to={`/write/${categoryName}`}
               state={{
                 modifyFlag: true,
                 board,
