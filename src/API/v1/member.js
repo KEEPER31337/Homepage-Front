@@ -17,7 +17,7 @@ async function getAllMembers() {
 async function getMember({ token }) {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/members',
+    url: API_URL + '/v1/members/profile',
     headers: {
       Authorization: token,
     },
