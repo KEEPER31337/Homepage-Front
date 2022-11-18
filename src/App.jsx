@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 // local
-import Chatting from 'shared/Chat/Chatting';
+//import Chatting from 'shared/Chat/Chatting';
 import Header from 'shared/Header.jsx';
 import memberAPI from 'API/v1/member';
 import attendanceAPI from 'API/v1/attendance';
@@ -97,7 +97,7 @@ const App = ({ member, isDark, signOut, updateInfo }) => {
             <Route path="/ItManager/*" element={<ItManagerApp />} />
           </Routes>
         </Suspense>
-        <Chatting />
+        {/*<Chatting />*/}
       </>
     </div>
   );
