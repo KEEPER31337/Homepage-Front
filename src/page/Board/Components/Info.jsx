@@ -10,7 +10,6 @@ const fontList = ['돋움', '나눔 고딕', '바탕'];
 const Info = ({ isWrite, state }) => {
   //const [font, setFont] = useState('돋움');
   const { categoryName } = useParams();
-  useEffect(() => {}, [categoryName]);
 
   return (
     <div className=" flex px-3">
