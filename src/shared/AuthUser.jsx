@@ -20,8 +20,8 @@ const AuthUser = ({ member, signOut, children }) => {
       const reduxState = JSON.parse(
         window.localStorage.getItem('persist:root')
       );
-      const member = JSON.parse(reduxState.member);
-      if (!member.token) {
+      const token = JSON.parse(reduxState.token);
+      if (!token) {
         navigate('/signIn');
       }
     }

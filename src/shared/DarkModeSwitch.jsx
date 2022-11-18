@@ -9,7 +9,6 @@ const DarkModeSwitch = ({ state, darkModeToggle }) => {
 
   const handleChange = (e) => {
     darkModeToggle();
-    console.log('다크모드');
   };
 
   return (
