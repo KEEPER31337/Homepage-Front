@@ -239,6 +239,7 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
         })
         .then((data) => {
           if (data.success) {
+            setMemberPoint(data.data.point);
             const token = member.token;
             const memberInfo = data.data;
             updateInfo({ token, memberInfo });
