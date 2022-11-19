@@ -143,7 +143,7 @@ const FileUploadForm = (props) => {
                   <br />
                   썸네일을
                   <br />
-                  드래그해주세요
+                  드래그 해주세요
                 </div>
               </p>
             )}
