@@ -72,7 +72,7 @@ const findCategoryByCategoryName = (name) => {
   return categoryMapper[
     Object.keys(categoryMapper).find(
       (key) =>
-        categoryMapper[key].name === name && categoryMapper[key].parent != 0
+        categoryMapper[key].name === name && categoryMapper[key].parent !== 0
     )
   ];
 };
