@@ -111,7 +111,7 @@ const TextEditer = (props) => {
       })
       .then((res) => {
         setUploadAble(true);
-        if (res.success) {
+        if (res?.success) {
           navigate(`/board/${categoryId}`);
         } else {
           alert('게시물 생성 실패! 전산관리자에게 문의하세요~');
