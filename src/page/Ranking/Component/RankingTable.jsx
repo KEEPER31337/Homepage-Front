@@ -26,7 +26,6 @@ const AttandanceTable = ({ member }) => {
       // TODO : API 고쳐지면 줄이기
       size: 500,
     });
-    //console.log('result', result);
     return result.page;
   };
 
@@ -87,7 +86,6 @@ const AttandanceTable = ({ member }) => {
                     <>
                       {page?.content?.map((member, index) => (
                         <tr key={index}>
-                          //{console.log(member)}
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span className="px-2 inline-flex text-lg leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                               {member.rank ? member.rank : '?'}
