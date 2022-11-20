@@ -68,20 +68,10 @@ const formatFileSize = (size) => {
   }
 };
 
-const findCategoryByCategoryName = (name) => {
-  return categoryMapper[
-    Object.keys(categoryMapper).find(
-      (key) =>
-        categoryMapper[key].name === name && categoryMapper[key].parent !== 0
-    )
-  ];
-};
-
 export {
   getDateWithFormat,
   getDiffTimeWithFormat,
   isNewPost,
   formatFileSize,
   getDiffTimeWithFormat2,
-  findCategoryByCategoryName,
 };

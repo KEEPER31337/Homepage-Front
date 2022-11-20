@@ -166,7 +166,7 @@ const categoriesAll = [
   },
   {
     id: 33,
-    name: '출석체크',
+    name: '세미나',
     subs: [
       {
         id: 34,

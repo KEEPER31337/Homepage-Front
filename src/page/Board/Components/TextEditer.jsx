@@ -13,14 +13,14 @@ import {
 //local
 import postAPI from 'API/v1/post';
 import ResponsiveEditor from './ResponsiveEditor';
-import { findCategoryByCategoryName } from '../BoardUtil';
+import categoryMapper from './categoryMapper';
 
 const NO_TEMP = 0;
 const TEMP = 1;
 
 const TextEditer = (props) => {
   const { categoryName } = useParams();
-  const categoryId = findCategoryByCategoryName(categoryName).id;
+  const categoryId = categoryMapper[categoryName].id;
   const isDark = props.state.darkMode?.isDark; //Dark모드 여부
   const token = props.state.member.token;
   const modifyFlag = !!props.redirectData.state?.modifyFlag;

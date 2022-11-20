@@ -8,7 +8,7 @@ import Gallary from './Gallary';
 import postAPI from 'API/v1/post';
 import SecretPwdInput from './Modals/SecretPwdInput';
 import actionBoardState from '../../../redux/action/boardState';
-import { findCategoryByCategoryName } from '../BoardUtil';
+import categoryMapper from './categoryMapper';
 
 const MAX_POSTS = 4 * 2; //한 페이지당 노출시킬 최대 게시글 수(갤러리 style을 고려하여 2의 배수로 설정)
 const MAX_PAGES = 6; //한 번에 노출시킬 최대 페이지 버튼 개수
@@ -102,7 +102,7 @@ const Boards = ({
     return { startPage, endPage };
   };
 
-  const currentCategoryId = findCategoryByCategoryName(categoryName).id;
+  const currentCategoryId = categoryMapper[categoryName].id;
   const { startPage, endPage } = getStartEndPage(curPage);
   const postingSearchRef = useRef(null);
 
