@@ -15,14 +15,14 @@ import AuthUser from 'shared/AuthUser';
         ></img>
 */
 const Board = () => {
-  const { categoryId } = useParams();
+  const { categoryName } = useParams();
   return (
     <div className="font-basic dark:bg-mainBlack dark:text-mainWhite">
       <AuthUser>
         <div className="min-h-screen max-w-3xl mx-auto px-2 py-5 md:max-w-5xl sm:px-3 md:px-8 dark:bg-mainBlack">
           <div className="w-full space-y-4">
             <Info />
-            <Boards categoryId={categoryId} />
+            <Boards categoryName={categoryName} />
           </div>
         </div>
       </AuthUser>

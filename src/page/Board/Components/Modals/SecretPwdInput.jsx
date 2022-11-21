@@ -5,7 +5,7 @@ import './modal.css';
 
 const SecretPwdInput = (props) => {
   // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
-  const { open, close, categoryId, id } = props;
+  const { open, close, categoryName, id } = props;
   const [pwd, setPwd] = useState('');
 
   return (
@@ -31,7 +31,7 @@ const SecretPwdInput = (props) => {
             {props.children}
           </main>
           <footer className="px-[12px] py-[16px] text-right">
-            <Link to={`/post/${categoryId}/${id}`} state={{ password: pwd }}>
+            <Link to={`/post/${categoryName}/${id}`} state={{ password: pwd }}>
               <button
                 className="text-sm mx-1 px-2 py-1 rounded-md text-mainWhite bg-mainYellow hover:bg-pointYellow"
                 onClick={close}

@@ -15,7 +15,7 @@ import AuthUser from 'shared/AuthUser';
 import ScrollToTop from './Components/ScrollToTop';
 
 const BoardView = (props) => {
-  const { categoryId, postId } = useParams();
+  const { categoryName, postId } = useParams();
   const [board, setBoard] = useState({});
   const [prevBoard, setPrevBoard] = useState(null);
   const [commentChangeFlag, setCommentChangeFlag] = useState(false); //댓글이 추가/제거됐을 때 페이지를 재 렌더링하기 위함(굳이 필요한가?)
@@ -39,7 +39,7 @@ const BoardView = (props) => {
           setIsAuthority(res.success);
           if (res.code == -11000) {
             window.alert('비밀번호가 틀렸습니다. 게시글 목록으로 돌아갑니다.');
-            navigate(`/board/${categoryId}`);
+            navigate(`/board/${categoryName}`);
           } else {
             setBoard(res.data);
           }
@@ -98,7 +98,7 @@ const BoardView = (props) => {
 
               <Boards
                 commentChangeFlag={commentChangeFlag}
-                categoryId={categoryId}
+                categoryName={categoryName}
               />
             </div>
           </div>

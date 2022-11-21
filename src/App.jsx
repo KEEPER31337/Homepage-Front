@@ -71,9 +71,9 @@ const App = ({ member, isDark, signOut, updateInfo }) => {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/attandance" element={<Attandance />} />
-            <Route path="/board/:categoryId" element={<BoardMain />} />
-            <Route path="/post/:categoryId/:postId" element={<BoardView />} />
-            <Route path="/write/:categoryId" element={<BoardWrite />} />
+            <Route path="/board/:categoryName" element={<BoardMain />} />
+            <Route path="/post/:categoryName/:postId" element={<BoardView />} />
+            <Route path="/write/:categoryName" element={<BoardWrite />} />
             <Route path="/event" element={<Event />} />
             <Route path="/game" element={<Game />} />
             <Route path="/library" element={<Library />} />

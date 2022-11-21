@@ -45,31 +45,31 @@ const categoriesAll = [
       {
         id: 105,
         name: '공지사항',
-        href: 'board/105',
+        href: 'board/공지사항',
         auth: null,
       },
       {
         id: 6105,
         name: '건의사항',
-        href: 'board/6105',
+        href: 'board/건의사항',
         auth: null,
       },
       {
         id: 116,
         name: '자유게시판',
-        href: 'board/116',
+        href: 'board/자유게시판',
         auth: null,
       },
       {
         id: 63908,
         name: '익명게시판',
-        href: 'board/63908',
+        href: 'board/익명게시판',
         auth: null,
       },
       {
         id: 11,
         name: '졸업생게시판',
-        href: 'board/11',
+        href: 'board/졸업생게시판',
         auth: null,
       },
     ],
@@ -81,25 +81,25 @@ const categoriesAll = [
       {
         id: 117,
         name: '발표자료',
-        href: 'board/117',
+        href: 'board/발표자료',
         auth: null,
       },
       {
         id: 5424,
         name: '스터디 발표자료',
-        href: 'board/5424',
+        href: 'board/스터디 발표자료',
         auth: null,
       },
       {
         id: 2996,
         name: '기술문서',
-        href: 'board/2996',
+        href: 'board/기술문서',
         auth: null,
       },
       {
         id: 23400,
         name: '회계부',
-        href: 'board/23400',
+        href: 'board/회계부',
         auth: null,
       },
     ],
@@ -111,13 +111,13 @@ const categoriesAll = [
       {
         id: 5125,
         name: '정보',
-        href: 'board/5125',
+        href: 'board/정보',
         auth: null,
       },
       {
         id: 1377,
         name: '시험',
-        href: 'board/1377',
+        href: 'board/시험',
         auth: null,
       },
     ],
@@ -166,7 +166,7 @@ const categoriesAll = [
   },
   {
     id: 33,
-    name: '출석체크',
+    name: '세미나',
     subs: [
       {
         id: 34,

@@ -1,3 +1,5 @@
+import categoryMapper from './Components/categoryMapper';
+
 function getDateWithFormat(boardDate) {
   return boardDate.substring(2, 16).replace('T', ' ');
 }
