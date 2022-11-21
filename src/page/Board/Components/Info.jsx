@@ -4,16 +4,12 @@ import { useParams } from 'react-router-dom';
 import { ViewGridIcon } from '@heroicons/react/solid';
 
 import WriteButton from './WriteButton';
-import categoryMapper from './categoryMapper';
 
 const fontList = ['돋움', '나눔 고딕', '바탕'];
 
 const Info = ({ isWrite, state }) => {
   //const [font, setFont] = useState('돋움');
-  const { categoryId } = useParams();
-  const categoryName = categoryMapper[categoryId]?.name;
-
-  useEffect(() => {}, [categoryId]);
+  const { categoryName } = useParams();
 
   return (
     <div className=" flex px-3">

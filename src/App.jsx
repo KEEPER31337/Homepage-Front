@@ -3,8 +3,9 @@ import { Route, Routes } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 // local
-import Chatting from 'shared/Chat/Chatting';
+//import Chatting from 'shared/Chat/Chatting';
 import Header from 'shared/Header.jsx';
+import memberAPI from 'API/v1/member';
 import attendanceAPI from 'API/v1/attendance';
 import actionMember from 'redux/action/member';
 import CTFApp from 'page/CTF/CTFApp.jsx';
@@ -34,14 +35,27 @@ const BookManage = lazy(() => import('./page/Library/BookManage'));
 const Ranking = lazy(() => import('page/Ranking/Ranking'));
 const Study = lazy(() => import('page/Study/Study'));
 const AutoAttend = lazy(() => import('page/Clerk/AutoAttend'));
-const StartAttend = lazy(() => import('page/Clerk/Components/AutoAttend/StartAttend'));
-const DoAttend = lazy(() => import('page/Clerk/Components/AutoAttend/DoAttend'));
+const StartAttend = lazy(() =>
+  import('page/Clerk/Components/AutoAttend/StartAttend')
+);
+const DoAttend = lazy(() =>
+  import('page/Clerk/Components/AutoAttend/DoAttend')
+);
 const Research = lazy(() => import('page/Clerk/Research'));
 
-const App = ({ member, isDark, signOut }) => {
+const App = ({ member, isDark, signOut, updateInfo }) => {
   useEffect(() => {
     if (member.token) {
       attendanceAPI.check({ token: member.token }).then((data) => {
+        if (data.success) {
+          memberAPI.getMember({ token: member.token }).then((data) => {
+            if (data.success) {
+              const token = member.token;
+              const memberInfo = data.data;
+              updateInfo({ token, memberInfo });
+            }
+          });
+        }
         if (data.code == -1003) signOut();
       });
     }
@@ -57,9 +71,9 @@ const App = ({ member, isDark, signOut }) => {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/attandance" element={<Attandance />} />
-            <Route path="/board/:categoryId" element={<BoardMain />} />
-            <Route path="/post/:categoryId/:postId" element={<BoardView />} />
-            <Route path="/write/:categoryId" element={<BoardWrite />} />
+            <Route path="/board/:categoryName" element={<BoardMain />} />
+            <Route path="/post/:categoryName/:postId" element={<BoardView />} />
+            <Route path="/write/:categoryName" element={<BoardWrite />} />
             <Route path="/event" element={<Event />} />
             <Route path="/game" element={<Game />} />
             <Route path="/library" element={<Library />} />
@@ -83,7 +97,7 @@ const App = ({ member, isDark, signOut }) => {
             <Route path="/ItManager/*" element={<ItManagerApp />} />
           </Routes>
         </Suspense>
-        <Chatting />
+        {/*<Chatting />*/}
       </>
     </div>
   );
@@ -95,6 +109,9 @@ const mapStateToProps = (state, OwnProps) => {
 
 const mapDispatchToProps = (dispatch, OwnProps) => {
   return {
+    updateInfo: ({ token, memberInfo }) => {
+      dispatch(actionMember.updateInfo({ token, memberInfo }));
+    },
     signOut: () => {
       dispatch(actionMember.signOut());
     },

@@ -19,7 +19,7 @@ import {
 } from '../BoardUtil';
 
 const Gallary = ({ notices, boards, linkHandler, state }) => {
-  const { categoryId } = useParams();
+  const { categoryName } = useParams();
   const [thumbnails, setThumbnails] = [];
   const card = (board, index, isN) => {
     return (
@@ -32,7 +32,7 @@ const Gallary = ({ notices, boards, linkHandler, state }) => {
         }
       >
         <Link
-          to={`/post/${categoryId}/${board.id}`}
+          to={`/post/${categoryName}/${board.id}`}
           onClick={(e) => {
             if (
               board.isSecret &&

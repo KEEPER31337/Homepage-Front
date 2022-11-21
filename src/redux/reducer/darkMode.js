@@ -5,7 +5,7 @@ const initialState = { isDark: false };
 const reducerDarkMode = (state = initialState, action) => {
   switch (action.type) {
     case actionDarkMode.toggle.type:
-      return { isDark: !state?.isDark };
+      return { ...state, isDark: !state?.isDark };
   }
   return state;
 };

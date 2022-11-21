@@ -1,0 +1,79 @@
+name: Deploy Client Production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy_production:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+
+      - name: Create Env File
+        run: |
+          touch .env
+          echo "${{ secrets.PROD_ENV }}" >> .env
+
+      - name: Cache node_modules
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm i --force
+
+      - name: Build
+        run: CI= npm run build
+
+      - name: Compress
+        run: tar -zcvf ${GITHUB_SHA::8}.tar.gz build
+
+      - name: Upload to S3
+        run: |
+          aws s3 mv --region ap-northeast-2 \
+          ${GITHUB_SHA::8}.tar.gz \
+          ${{ secrets.S3_PROD_FRONT_LOCATION }}/${GITHUB_SHA::8}.tar.gz
+
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_PROD }}
+          username: ${{ secrets.USERNAME_PROD }}
+          port: ${{ secrets.PORT_PROD }}
+          key: ${{ secrets.KEY_PROD }}
+          envs: GITHUB_SHA
+          script: |
+            cd ~/keeper/deploy
+            ./deploy_client.sh ${GITHUB_SHA::8}
+
+      - name: Notify Slack
+        if: always()
+        uses: 8398a7/action-slack@v3
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        with:
+          status: ${{ job.status }}
+          author_name: Keeper Production Frontend CICD
+          fields: repo, commit, message, author, action, took
