@@ -135,14 +135,15 @@ const FileUploadForm = (props) => {
               </p>
             ) : (
               <p className="text-slate-500 flex items-center">
-                <PhotographIcon
-                  className=" h-7 w-7 inline-block "
-                  aria-hidden="true"
-                />
                 <div className=" inline-block text-center m-1">
-                  썸네일
+                  <PhotographIcon
+                    className=" h-7 w-7 inline-block "
+                    aria-hidden="true"
+                  />
                   <br />
-                  추가하기
+                  썸네일을
+                  <br />
+                  드래그 해주세요
                 </div>
               </p>
             )}

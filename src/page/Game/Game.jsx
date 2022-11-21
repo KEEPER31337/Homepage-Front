@@ -33,14 +33,16 @@ const DICE_GAME_ID = 0;
 const ROULETTE_GAME_ID = 1;
 const LOTTO_GAME_ID = 2;
 
-const Game = (props) => {
-  const isDark = props.state.darkMode?.isDark; //Dark모드 여부
+const Game = ({ darkMode }) => {
+  const isDark = darkMode?.isDark; //Dark모드 여부
   const [game, setGame] = useState(0);
   const [gameInfo, setGameInfo] = useState({});
 
   useEffect(() => {
     gameAPI.getGameInfo().then((data) => {
-      if (data.success) setGameInfo(data.data);
+      if (data.success) {
+        setGameInfo(data.data);
+      }
     });
   }, []);
 
@@ -134,6 +136,7 @@ const Game = (props) => {
 };
 
 const mapStateToProps = (state, OwnProps) => {
-  return { state };
+  return { darkMode: state.darkMode };
 };
+
 export default connect(mapStateToProps)(Game);

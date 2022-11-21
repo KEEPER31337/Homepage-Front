@@ -3,8 +3,9 @@ import { Route, Routes } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 // local
-import Chatting from 'shared/Chat/Chatting';
+//import Chatting from 'shared/Chat/Chatting';
 import Header from 'shared/Header.jsx';
+import memberAPI from 'API/v1/member';
 import attendanceAPI from 'API/v1/attendance';
 import actionMember from 'redux/action/member';
 import CTFApp from 'page/CTF/CTFApp.jsx';
@@ -42,10 +43,19 @@ const DoAttend = lazy(() =>
 );
 const Research = lazy(() => import('page/Clerk/Research'));
 
-const App = ({ member, isDark, signOut }) => {
+const App = ({ member, isDark, signOut, updateInfo }) => {
   useEffect(() => {
     if (member.token) {
       attendanceAPI.check({ token: member.token }).then((data) => {
+        if (data.success) {
+          memberAPI.getMember({ token: member.token }).then((data) => {
+            if (data.success) {
+              const token = member.token;
+              const memberInfo = data.data;
+              updateInfo({ token, memberInfo });
+            }
+          });
+        }
         if (data.code == -1003) signOut();
       });
     }
@@ -87,7 +97,7 @@ const App = ({ member, isDark, signOut }) => {
             <Route path="/ItManager/*" element={<ItManagerApp />} />
           </Routes>
         </Suspense>
-        <Chatting />
+        {/*<Chatting />*/}
       </>
     </div>
   );
@@ -99,6 +109,9 @@ const mapStateToProps = (state, OwnProps) => {
 
 const mapDispatchToProps = (dispatch, OwnProps) => {
   return {
+    updateInfo: ({ token, memberInfo }) => {
+      dispatch(actionMember.updateInfo({ token, memberInfo }));
+    },
     signOut: () => {
       dispatch(actionMember.signOut());
     },
