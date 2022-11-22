@@ -14,13 +14,21 @@ const SecondPage = ({ goToFirst, visibleArrow }) => {
   useEffect(() => {
     homeAPI.getTrends().then((data) => {
       if (data.success) {
-        setTrendPostList(data.list);
+        const trendPostList = data.list.map((item) => ({
+          ...item,
+          category: item.category.replace(' ', ''),
+        }));
+        setTrendPostList(trendPostList);
       }
     });
 
     homeAPI.getLatests().then((data) => {
       if (data.success) {
-        setLatestPostList(data.list);
+        const lastestPostList = data.list.map((item) => ({
+          ...item,
+          category: item.category.replace(' ', ''),
+        }));
+        setLatestPostList(lastestPostList);
       }
     });
   }, []);
