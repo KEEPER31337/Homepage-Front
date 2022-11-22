@@ -87,7 +87,7 @@ const categoriesAll = [
       {
         id: 5424,
         name: '스터디 발표자료',
-        href: 'board/스터디 발표자료',
+        href: 'board/스터디발표자료',
         auth: null,
       },
       {

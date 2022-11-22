@@ -41,7 +41,7 @@ function Latest({ postList }) {
               >
                 <div className="flex-shrink-0">
                   <Link
-                    to={`/post/${post.categoryId}/${post.id}`}
+                    to={`/post/${post.category}/${post.id}`}
                     className="block mt-2"
                   >
                     <img
@@ -56,14 +56,14 @@ function Latest({ postList }) {
                   <div className="flex-1">
                     <p className="text-sm font-medium text-mainYellow">
                       <Link
-                        to={`/board/${post.categoryId}`}
+                        to={`/board/${post.category}`}
                         className="hover:underline"
                       >
                         {post.category}
                       </Link>
                     </p>
                     <Link
-                      to={`/post/${post.categoryId}/${post.id}`}
+                      to={`/post/${post.category}/${post.id}`}
                       className="block mt-2"
                     >
                       <p className="truncate text-xl font-semibold dark:text-mainWhite">

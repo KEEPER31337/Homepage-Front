@@ -86,9 +86,9 @@ const OtherProfile = ({ token, memberInfo, userId }) => {
             res?.data?.content?.map((item, index) => ({
               num: index + 1,
               onClick: () => {
-                navigate(`/post/${item.category}/${item.id}`);
+                navigate(`/post/${item.category.replace(' ', '')}/${item.id}`);
               },
-              category: item.category,
+              category: item.category.replace(' ', ''),
               title: item.title,
               createdAt: formatDate({
                 origin: item.registerTime,
