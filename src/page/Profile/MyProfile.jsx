@@ -113,7 +113,7 @@ const MyProfile = ({ token, memberInfo }) => {
         mapper: (list) => {
           return list?.map((item, index) => ({
             num: index + 1,
-            point: item.point,
+            point: item.isSpent ? -item.point : item.point,
             detail: item.detail,
             time: formatDate({ origin: item.time, separator: '.' }),
           }));
