@@ -16,7 +16,7 @@ const PopDown = ({ category, member, initialize }) => {
     <Popover className="relative">
       {({ open }) => (
         <>
-          <Popover.Button className="text-mainYellow group rounded-md inline-flex items-center text-base font-semibold hover:text-mainYellow focus:outline-none">
+          <Popover.Button className="text-mainYellow group rounded-md inline-flex items-center text-sm lg:text-base font-semibold hover:text-mainYellow focus:outline-none">
             <span className="overflow-hidden whitespace-nowrap">
               {category.name}
             </span>
