@@ -533,7 +533,7 @@ const EditProfile = () => {
                         <label
                           htmlFor="nickName"
                           className="p-2 w-4/12 text-gray-500"
-                          style={{wordBreak:"keep-all"}}
+                          style={{ wordBreak: 'keep-all' }}
                         >
                           닉네임
                         </label>
@@ -566,14 +566,14 @@ const EditProfile = () => {
                       <div className="py-1 text-right flex items-center">
                         <label
                           className={`p-2 w-5/6 text-left text-${infoMsg.color} dark:text-${infoMsg.dark} text-sm`}
-                          style={{wordBreak:"keep-all"}}
+                          style={{ wordBreak: 'keep-all' }}
                         >
                           {infoMsg.text}
                         </label>
                         <button
                           onClick={saveInfo}
                           className="border bg-backGray hover:bg-gray-200 p-2 rounded text-md font-bold dark:bg-darkPoint dark:hover:bg-mainBlack"
-                          style={{wordBreak:"keep-all"}}
+                          style={{ wordBreak: 'keep-all' }}
                         >
                           저장
                         </button>
@@ -589,7 +589,7 @@ const EditProfile = () => {
                         <label
                           htmlFor="emailAddress"
                           className="p-2 w-4/12 text-gray-500"
-                          style={{wordBreak:"keep-all"}}
+                          style={{ wordBreak: 'keep-all' }}
                         >
                           이메일
                         </label>
@@ -611,7 +611,7 @@ const EditProfile = () => {
                       </div>
                       <div
                         className={`p-2 text-left text-${emailMsg.color} dark:text-${emailMsg.dark} text-sm`}
-                        style={{wordBreak:"keep-all"}}
+                        style={{ wordBreak: 'keep-all' }}
                       >
                         {emailMsg.text}
                       </div>
@@ -620,12 +620,11 @@ const EditProfile = () => {
                         <label
                           htmlFor="authCode"
                           className="p-2 w-6/12 text-gray-500"
-                          style={{wordBreak:"keep-all"}}
+                          style={{ wordBreak: 'keep-all' }}
                         >
                           인증코드
                         </label>
-                        <div className="flex justify-end w-full"
-                          >
+                        <div className="flex justify-end w-full">
                           <input
                             id="authCode"
                             type="text"
@@ -646,7 +645,7 @@ const EditProfile = () => {
                         <button
                           onClick={changeEmail}
                           className="border bg-backGray hover:bg-gray-200 p-2 rounded  text-md font-bold dark:bg-darkPoint dark:hover:bg-mainBlack"
-                          style={{wordBreak:"keep-all"}}
+                          style={{ wordBreak: 'keep-all' }}
                         >
                           저장
                         </button>
@@ -659,7 +658,7 @@ const EditProfile = () => {
                         <label
                           htmlFor="password"
                           className="p-2 w-5/12 text-gray-500"
-                          style = {{wordBreak:"keep-all"}}
+                          style={{ wordBreak: 'keep-all' }}
                         >
                           새로운 비밀번호
                         </label>
@@ -678,7 +677,7 @@ const EditProfile = () => {
                         <label
                           htmlFor="confirmPassword"
                           className="p-2 w-5/12 text-gray-500"
-                          style={{wordBreak:"keep-all"}}
+                          style={{ wordBreak: 'keep-all' }}
                         >
                           비밀번호 재입력
                         </label>
@@ -702,7 +701,7 @@ const EditProfile = () => {
                         <button
                           onClick={changePwd}
                           className="border bg-backGray hover:bg-gray-200 p-2 rounded  text-md font-bold dark:bg-darkPoint dark:hover:bg-mainBlack"
-                          style={{wordBreak:"keep-all"}}
+                          style={{ wordBreak: 'keep-all' }}
                         >
                           저장
                         </button>
