@@ -35,7 +35,10 @@ const Attandance = ({ member }) => {
   const pointModalRef = useRef({});
 
   useEffect(() => {
-    const date = dayjs();
+    const now = new Date();
+    const utc = now.getTime() + now.getTimezoneOffset() * 60 * 1000; //현재 시간의 UTC 시간
+    const KR_TIME_DIFF = 9 * 60 * 60 * 1000; //UTC 시간과 KST 시간 차(밀리초)
+    const date = dayjs(utc + KR_TIME_DIFF); //항상 현재 시간이 한국 시간 기준으로 측정되도록
     attendanceAPI
       .getAttendInfo({
         date: date.format(dateFormat),
