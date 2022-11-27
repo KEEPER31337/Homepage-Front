@@ -45,7 +45,7 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
   const [point, setPoint] = useState(0);
 
   // 게임 상에서 띄워줄 정보
-  const [memberPoint, setMemberPoint] = useState();
+  const [memberPoint, setMemberPoint] = useState(member.memberInfo.point);
   const [remainingCount, setRemainingCount] = useState();
   const [todayResult, setTodayResult] = useState(0);
   const [overCountCheck, setOverCountCheck] = useState(false);
@@ -80,16 +80,6 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
 
   // 초기 정보 세팅
   useEffect(() => {
-    memberAPI
-      .getMember({
-        token: member.token,
-      })
-      .then((data) => {
-        if (data.success) {
-          setMemberPoint(data.data.point);
-        }
-      });
-
     lottoAPI
       .getLottoInfo({
         token: member.token,
@@ -249,6 +239,7 @@ const Lotto = ({ member, gameInfo, updateInfo }) => {
         })
         .then((data) => {
           if (data.success) {
+            setMemberPoint(data.data.point);
             const token = member.token;
             const memberInfo = data.data;
             updateInfo({ token, memberInfo });

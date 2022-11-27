@@ -24,9 +24,9 @@ const AttandanceTable = ({ member }) => {
       page: pageParam,
       token: member.token,
       // TODO : API 고쳐지면 줄이기
-      size: 500
+      size: 500,
     });
-    console.log("result", result);
+    console.log('result', result);
     return result.page;
   };
 
@@ -40,8 +40,8 @@ const AttandanceTable = ({ member }) => {
     status,
   } = useInfiniteQuery('AttandanceTable', fetchRank, {
     getNextPageParam: (lastPage, pages) => {
-      const { empty, first, last, number, numberOfElements } = pages[0];
-      
+      // const { empty, first, last, number, numberOfElements } = pages[0];
+
       // NOTE : API에서 first, last가 제대로 받아오지 못해서 고쳐질 때까지 임시조치
       return undefined;
     },

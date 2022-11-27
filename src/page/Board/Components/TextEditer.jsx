@@ -13,12 +13,14 @@ import {
 //local
 import postAPI from 'API/v1/post';
 import ResponsiveEditor from './ResponsiveEditor';
+import categoryMapper from './categoryMapper';
 
 const NO_TEMP = 0;
 const TEMP = 1;
 
 const TextEditer = (props) => {
-  const { categoryId } = useParams();
+  const { categoryName } = useParams();
+  const categoryId = categoryMapper[categoryName].id;
   const isDark = props.state.darkMode?.isDark; //Dark모드 여부
   const token = props.state.member.token;
   const modifyFlag = !!props.redirectData.state?.modifyFlag;
@@ -111,8 +113,8 @@ const TextEditer = (props) => {
       })
       .then((res) => {
         setUploadAble(true);
-        if (res.success) {
-          navigate(`/board/${categoryId}`);
+        if (res?.success) {
+          navigate(`/board/${categoryName}`);
         } else {
           alert('게시물 생성 실패! 전산관리자에게 문의하세요~');
         }
@@ -148,7 +150,7 @@ const TextEditer = (props) => {
       .then((res) => {
         setUploadAble(true);
         if (res.success) {
-          navigate(`/post/${categoryId}/${board.id}`);
+          navigate(`/post/${categoryName}/${board.id}`);
         } else {
           alert('게시물 수정 실패! 전산관리자에게 문의하세요~');
         }
