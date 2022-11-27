@@ -56,7 +56,10 @@ const App = ({ member, isDark, signOut, updateInfo }) => {
             }
           });
         }
-        if (data.code == -1003) signOut();
+        if (data.code == -1003) {
+          signOut();
+          navigate('/signIn');
+        }
       });
     }
   }, [member]);
