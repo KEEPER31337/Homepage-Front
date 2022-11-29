@@ -22,6 +22,7 @@ const categoriesAll = [
         name: 'CTF',
         href: 'ctf',
         auth: null,
+        external: true,
       },
       {
         id: null,

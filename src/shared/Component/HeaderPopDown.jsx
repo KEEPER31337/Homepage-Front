@@ -46,6 +46,7 @@ const PopDown = ({ category, member, initialize }) => {
                         <a
                           key={index}
                           href={item.href}
+                          target="_blank"
                           className="-m-3 p-3 flex items-start rounded-lg hover:bg-pointYellow"
                           onClick={() => {
                             initialize();
