@@ -64,8 +64,8 @@ const Submissions = ({ member, ctfId }) => {
               <div className="p-[2px] mb-2 dark:from-purple-500 dark:via-purple-200 dark:to-amner-200 bg-gradient-to-r from-amber-500 via-amber-200 to-yellow-300  "></div>
               {/* 2.  프로필 이미지 + 팔로우 + 포인트 */}
 
-              <div className="w-full h-1/12 flex rounded overflow-auto">
-                <table className="text-center h-full w-full bg-white dark:text-white dark:bg-darkPoint">
+              <div className="w-full h-1/12 flex rounded ">
+                <table className="table-fixed  text-center h-full w-full bg-white dark:text-white dark:bg-darkPoint">
                   <thead>
                     <tr className=" h-10 w-full bg-gradient-to-r from-amber-400 via-red-800 to-black dark:from-pink-300 dark:via-purple-400 dark:to-indigo-400  text-lg text-white font-extrabold text-center ">
                       <th className="w-2/12">문제</th>
@@ -80,10 +80,9 @@ const Submissions = ({ member, ctfId }) => {
                   <tbody className="">
                     {rankList.map((info) => (
                       <tr key={info.id} className="h-10 w-full  ">
-                        {/* shadow shadow-purple-300 */}
-                        <td>{info.challengeName}</td>
-                        <td>{info.flagSubmitted}</td>
-                        <td>
+                        <td className="w-2/12 truncate">{info.challengeName}</td>
+                        <td className="w-1/12 truncate">{info.flagSubmitted}</td>
+                        <td className="w-1/12 truncate">
                           {' '}
                           {info.isCorrect === true ? (
                             <div className="bg-green-200 w-full rounded-md mx-1 dark:text-black">
@@ -96,9 +95,9 @@ const Submissions = ({ member, ctfId }) => {
                           )}
                         </td>
 
-                        <td>{info.teamName}</td>
-                        <td>{info.submitterRealname}</td>
-                        <td>{info.submitTime}</td>
+                        <td className="w-1/12 truncate">{info.teamName}</td>
+                        <td className="w-1/12 truncate">{info.submitterRealname}</td>
+                        <td className="w-4/12 truncate">{info.submitTime}</td>
                       </tr>
                     ))}
                   </tbody>
