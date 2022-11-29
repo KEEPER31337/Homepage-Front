@@ -14,6 +14,7 @@ const AuthUser = ({ member, signOut, children }) => {
       authAPI.getAuth({ token: member.token }).then((data) => {
         if (data.code === -1003) {
           signOut();
+          navigate('/signIn');
         }
       });
     } else {

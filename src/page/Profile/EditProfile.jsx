@@ -533,6 +533,7 @@ const EditProfile = () => {
                         <label
                           htmlFor="nickName"
                           className="p-2 w-4/12 text-gray-500"
+                          style={{ wordBreak: 'keep-all' }}
                         >
                           닉네임
                         </label>
@@ -565,12 +566,14 @@ const EditProfile = () => {
                       <div className="py-1 text-right flex items-center">
                         <label
                           className={`p-2 w-5/6 text-left text-${infoMsg.color} dark:text-${infoMsg.dark} text-sm`}
+                          style={{ wordBreak: 'keep-all' }}
                         >
                           {infoMsg.text}
                         </label>
                         <button
                           onClick={saveInfo}
-                          className="w-1/6 border bg-backGray hover:bg-gray-200 p-2 rounded text-md font-bold dark:bg-darkPoint dark:hover:bg-mainBlack"
+                          className="border bg-backGray hover:bg-gray-200 p-2 rounded text-md font-bold dark:bg-darkPoint dark:hover:bg-mainBlack"
+                          style={{ wordBreak: 'keep-all' }}
                         >
                           저장
                         </button>
@@ -586,6 +589,7 @@ const EditProfile = () => {
                         <label
                           htmlFor="emailAddress"
                           className="p-2 w-4/12 text-gray-500"
+                          style={{ wordBreak: 'keep-all' }}
                         >
                           이메일
                         </label>
@@ -607,6 +611,7 @@ const EditProfile = () => {
                       </div>
                       <div
                         className={`p-2 text-left text-${emailMsg.color} dark:text-${emailMsg.dark} text-sm`}
+                        style={{ wordBreak: 'keep-all' }}
                       >
                         {emailMsg.text}
                       </div>
@@ -615,6 +620,7 @@ const EditProfile = () => {
                         <label
                           htmlFor="authCode"
                           className="p-2 w-6/12 text-gray-500"
+                          style={{ wordBreak: 'keep-all' }}
                         >
                           인증코드
                         </label>
@@ -638,7 +644,8 @@ const EditProfile = () => {
                         </label>
                         <button
                           onClick={changeEmail}
-                          className="w-1/6 border bg-backGray hover:bg-gray-200 p-2 rounded  text-md font-bold dark:bg-darkPoint dark:hover:bg-mainBlack"
+                          className="border bg-backGray hover:bg-gray-200 p-2 rounded  text-md font-bold dark:bg-darkPoint dark:hover:bg-mainBlack"
+                          style={{ wordBreak: 'keep-all' }}
                         >
                           저장
                         </button>
@@ -647,10 +654,11 @@ const EditProfile = () => {
                     {/* 2-2. 비밀번호 컴포넌트 */}
                     <div>
                       {/* 2-2-1. 새로운 비밀번호*/}
-                      <div className="flex py-1 ">
+                      <div className="flex py-1 items-center">
                         <label
                           htmlFor="password"
                           className="p-2 w-5/12 text-gray-500"
+                          style={{ wordBreak: 'keep-all' }}
                         >
                           새로운 비밀번호
                         </label>
@@ -661,14 +669,15 @@ const EditProfile = () => {
                           required
                           value={password}
                           onChange={(event) => setPassword(event.target.value)}
-                          className="w-7/12 p-2 dark:bg-[#080b14] dark:border-opacity-0 border rounded-lg border-divisionGray focus:border-amber-400 focus:ring-amber-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9] dark:shadow-[inset_0_2px_0_1px_#000000]"
+                          className="w-3/4 h-11 p-2 dark:bg-[#080b14] dark:border-opacity-0 border rounded-lg border-divisionGray focus:border-amber-400 focus:ring-amber-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9] dark:shadow-[inset_0_2px_0_1px_#000000]"
                         />
                       </div>
                       {/* 2-2-2 비밀번호 재입력 */}
-                      <div className="flex py-1 ">
+                      <div className="flex py-1 items-center">
                         <label
                           htmlFor="confirmPassword"
                           className="p-2 w-5/12 text-gray-500"
+                          style={{ wordBreak: 'keep-all' }}
                         >
                           비밀번호 재입력
                         </label>
@@ -679,7 +688,7 @@ const EditProfile = () => {
                           required
                           value={confirm}
                           onChange={(event) => setConfirm(event.target.value)}
-                          className="w-7/12 p-2 dark:bg-[#080b14] dark:border-opacity-0 border rounded-lg border-divisionGray focus:border-amber-400 focus:ring-amber-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9] dark:shadow-[inset_0_2px_0_1px_#000000]"
+                          className="w-3/4 h-11 p-2 dark:bg-[#080b14] dark:border-opacity-0 border rounded-lg border-divisionGray focus:border-amber-400 focus:ring-amber-200 focus:ring-2 shadow-[inset_0_2px_0_1px_#f1f5f9] dark:shadow-[inset_0_2px_0_1px_#000000]"
                         />
                       </div>
 
@@ -691,7 +700,8 @@ const EditProfile = () => {
                         </label>
                         <button
                           onClick={changePwd}
-                          className="w-1/6 border bg-backGray hover:bg-gray-200 p-2 rounded  text-md font-bold dark:bg-darkPoint dark:hover:bg-mainBlack"
+                          className="border bg-backGray hover:bg-gray-200 p-2 rounded  text-md font-bold dark:bg-darkPoint dark:hover:bg-mainBlack"
+                          style={{ wordBreak: 'keep-all' }}
                         >
                           저장
                         </button>

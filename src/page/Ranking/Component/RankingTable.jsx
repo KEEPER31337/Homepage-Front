@@ -26,7 +26,6 @@ const AttandanceTable = ({ member }) => {
       // TODO : API 고쳐지면 줄이기
       size: 500,
     });
-    console.log('result', result);
     return result.page;
   };
 
@@ -119,9 +118,9 @@ const AttandanceTable = ({ member }) => {
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             {/* TODO : backend 업데이트 되면 동기화 */}
-                            {member.memberJobs?.map((job) => (
+                            {member.jobs?.map((job) => (
                               <span className="px-2 mx-2 inline-flex text-lg leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                {job.id ? job.id : ''}
+                                {job.substring(5) ?? ''}
                               </span>
                             ))}
                           </td>
