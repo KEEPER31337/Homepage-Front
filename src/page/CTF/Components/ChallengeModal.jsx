@@ -12,7 +12,7 @@ import { DownloadIcon, XIcon } from '@heroicons/react/outline';
 import '@toast-ui/editor/dist/toastui-editor.css'; //마크다운 편집기 뷰어 에디터
 import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
 import { Viewer } from '@toast-ui/react-editor';
-
+import Marquee from 'react-fast-marquee';
 // API
 import ctfAPI from 'API/v1/ctf';
 
@@ -125,8 +125,15 @@ const ChallengeModal = forwardRef(({ detailProbList, member }, ref) => {
                       </button>
                     </div>
 
-                    <Dialog.Title className="text-center text-xl font-medium text-gray-900 leading-loose m-8">
-                      {detailProbList.title}
+                    <Dialog.Title className="truncate text-center text-xl font-medium text-gray-900 leading-loose m-8">
+                      <Marquee
+                        gradient={false}
+                        speed={10}
+                        className="text-black"
+                      >
+                        {detailProbList.title}
+                      </Marquee>
+
                       <br />
                       {detailProbList.score}
                     </Dialog.Title>
