@@ -9,13 +9,13 @@ const compareName = (a, b) => {
   return 0;
 };
 const compareRanking = (a, b) => {
-  if (a.totalMerit - a.totalDemerit < b.totalMerit - b.totalDemerit) {
+  if (a.totalMerit < b.totalMerit) {
     return 1;
-  } else if (a.totalMerit - a.totalDemerit > b.totalMerit - b.totalDemerit) {
+  } else if (a.totalMerit > b.totalMerit) {
     return -1;
   }
-  if (a.totalMerit < b.totalMerit) return 1;
-  else if (a.totalMerit > b.totalMerit) return -1;
+  if (a.totalDemerit > b.totalDemerit) return 1;
+  else if (a.totalDemerit < b.totalDemerit) return -1;
   return 0;
 };
 function getNow() {
