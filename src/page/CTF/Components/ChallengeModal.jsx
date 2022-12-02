@@ -138,6 +138,9 @@ const ChallengeModal = forwardRef(({ detailProbList, member }, ref) => {
                           /* change={detailProbList.content} */
                           theme={isDark ? 'dark' : 'light'}
                           height="100%"
+                          linkAttributes={{
+                            target: '_blank',
+                          }}
                           /* ref={viewerRef} */
                         />
                       </div>
