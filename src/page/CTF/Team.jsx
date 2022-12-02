@@ -4,6 +4,7 @@ import Modal from 'react-awesome-modal';
 import Button from '@material-ui/core/Button';
 import actionCtf from 'redux/action/ctf';
 import { Link, useNavigate } from 'react-router-dom';
+import Marquee from 'react-fast-marquee';
 // API
 import teamAPI from 'API/v1/ctf';
 
@@ -144,8 +145,21 @@ const Team = ({ member, ctfId, updateCtfTeamName }) => {
     return (
       <>
         <div className="pt-12 text-center grid grid-cols-1 content-center dark:text-white">
-          <div className="text-5xl m-2 font-extrabold">{teamName}</div>
-          <div className="text-2xl">{teamDes}</div>
+          {/* <div className="text-5xl m-2 font-extrabold truncate">{teamName}</div> */}
+          {teamName?.length > 20 ? (
+            <Marquee
+              gradient={false}
+              speed={10}
+              className="text-5xl m-2 font-extrabold truncate"
+            >
+              {teamName}
+            </Marquee>
+          ) : (
+            <div className="text-5xl m-2 font-extrabold truncate">
+              {teamName}
+            </div>
+          )}
+          <div className="text-2xl ">{teamDes}</div>
           <div>{teamScore} points</div>
         </div>
         <div className="flex justify-center m-2">

@@ -41,9 +41,9 @@ const ContestOverview = (props) => {
         onClick={handleChange}
       >
         <div className="my-3">
-          <div className="text-xl m-4 truncate">{name}</div>
-          <div className="truncate">{description}</div>
-          <div className="truncate">{creator}</div>
+          <div className="text-xl m-2 truncate px-4">{name}</div>
+          <div className="truncate px-4">{description}</div>
+          <div className="truncate px-4">{creator}</div>
         </div>
       </button>
     </>
