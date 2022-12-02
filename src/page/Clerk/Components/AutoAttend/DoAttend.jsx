@@ -45,7 +45,7 @@ const DoAttend = ({ member, state }) => {
   const [today, setToday] = useState(location.state.currentTime.toString()); //바로 currnetT 스테이트 가져옴
   const [inputCode, setInputCode] = useState('');
   const [seminarId, setSeminarId] = useState();
-  cosnt[(attendance, setAttendance)] = useState(false);
+  const [attendance, setAttendance] = useState(false);
   useEffect(() => {
     attendAPI
       .getSeminar({
