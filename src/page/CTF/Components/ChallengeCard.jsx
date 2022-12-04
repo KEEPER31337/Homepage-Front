@@ -62,8 +62,8 @@ const ChallengeCard = (props) => {
         }
       >
         <div className="my-3">
-          <div className="text-xl m-3 font-semibold">{title}</div>
-          <div>{score}</div>
+          <div className="text-xl m-3 font-semibold truncate">{title}</div>
+          <div className="truncate">{score}</div>
         </div>
       </button>
 

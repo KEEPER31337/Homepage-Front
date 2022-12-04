@@ -66,7 +66,7 @@ const Ctf = ({ member }) => {
               </div>
               <div className="w-full">
                 <div className="w-full h-full inline-block rounded overflow-hidden text-center">
-                  <table className="w-full shadow bg-white">
+                  <table className="w-full shadow table-fixed bg-white">
                     <thead>
                       <tr className="h-10 w-full bg-gradient-to-r from-amber-400 via-red-800 to-black dark:from-pink-300 dark:via-purple-400 dark:to-indigo-400  text-lg text-white font-extrabold text-center ">
                         {tableHead.map((head, headIdx) => (

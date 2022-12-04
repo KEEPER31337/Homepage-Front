@@ -4,6 +4,7 @@ import Modal from 'react-awesome-modal';
 import Button from '@material-ui/core/Button';
 import actionCtf from 'redux/action/ctf';
 import { Link, useNavigate } from 'react-router-dom';
+import Marquee from 'react-fast-marquee';
 // API
 import teamAPI from 'API/v1/ctf';
 
@@ -144,8 +145,21 @@ const Team = ({ member, ctfId, updateCtfTeamName }) => {
     return (
       <>
         <div className="pt-12 text-center grid grid-cols-1 content-center dark:text-white">
-          <div className="text-5xl m-2 font-extrabold">{teamName}</div>
-          <div className="text-2xl">{teamDes}</div>
+          {/* <div className="text-5xl m-2 font-extrabold truncate">{teamName}</div> */}
+          {teamName?.length > 20 ? (
+            <Marquee
+              gradient={false}
+              speed={10}
+              className="text-5xl m-2 font-extrabold truncate"
+            >
+              {teamName}
+            </Marquee>
+          ) : (
+            <div className="text-5xl m-2 font-extrabold truncate">
+              {teamName}
+            </div>
+          )}
+          <div className="text-2xl ">{teamDes}</div>
           <div>{teamScore} points</div>
         </div>
         <div className="flex justify-center m-2">
@@ -198,7 +212,7 @@ const Team = ({ member, ctfId, updateCtfTeamName }) => {
           Solves
         </strong>
         <div className="flex flex-col items-center rounded overflow-hidden m-4 p-2">
-          <table className="justify-center dark:text-white w-11/12 border-2 shadow  rounded-md dark:bg-darkPoint">
+          <table className="table-fixed justify-center dark:text-white w-11/12 border-2 shadow  rounded-md dark:bg-darkPoint">
             <thead>
               <tr className="rounded w-10/12 h-10 bg-gray-100 text-lg text-black">
                 <th>Type</th>
@@ -213,9 +227,9 @@ const Team = ({ member, ctfId, updateCtfTeamName }) => {
                     key={idx}
                     className="w-11/12 h-10 text-center hover:bg-gray-100 dark:hover:bg-[#0b1523]"
                   >
-                    <td>{info.category.name}</td>
-                    <td>{info.title}</td>
-                    <td>{info.score}</td>
+                    <td className="w-1/3 truncate">{info.category.name}</td>
+                    <td className="w-1/3 truncate">{info.title}</td>
+                    <td className="w-1/3 truncate">{info.score}</td>
                   </tr>
                 );
               })}
