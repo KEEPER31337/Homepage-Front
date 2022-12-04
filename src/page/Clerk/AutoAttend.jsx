@@ -244,7 +244,6 @@ const AutoAttend = ({ state }) => {
                       hover:bg-violet-300 items-center w-full justify-center items-center font-bold focus:outline-none dark: bg-violet-400"
                     onClick={loadSeminarByDate}
                   >
-                    {' '}
                     출석시작
                   </button>
                 </form>
