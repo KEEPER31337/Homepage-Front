@@ -44,7 +44,6 @@ const Intro = ({ member }) => {
   ]);
 
   const [boss, setBoss] = useState('');
-  const titleInput = useRef();
 
   useEffect(() => {
     aboutAPI.getIntroInfo().then((data) => {
@@ -117,18 +116,15 @@ const Intro = ({ member }) => {
                 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow dark:bg-darkPoint inline-block"
                 onChange={inputNewTitle}
                 value={newTitle}
-                ref={titleInput}
               />
             )}
             {adminFlag && (
-              <>
-                <button
-                  className="text-xs text-gray-500 underline inline-block ml-2 align-top"
-                  onClick={editTitle}
-                >
-                  {editTitleMode ? '확인' : '수정'}
-                </button>
-              </>
+              <button
+                className="text-xs text-gray-500 underline inline-block ml-2 align-top"
+                onClick={editTitle}
+              >
+                {editTitleMode ? '확인' : '수정'}
+              </button>
             )}
             <div className="md:whitespace-pre-wrap px-2 lg:px-4 text-base text-black dark:text-white">
               {content}

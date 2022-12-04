@@ -76,7 +76,6 @@ const Excellence = ({ member }) => {
   /* TODO 여기부터 지울 거 */
 
   const inputRef = useRef(null);
-  const titleInput = useRef();
 
   useEffect(() => {
     if (member.token) {
@@ -182,18 +181,15 @@ const Excellence = ({ member }) => {
                 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-white text-center bg-mainYellow inline-block"
                 onChange={inputNewTitle}
                 value={newTitle}
-                ref={titleInput}
               />
             )}
             {adminFlag && (
-              <>
-                <button
-                  className="text-xs text-gray-500 underline ml-2 align-top"
-                  onClick={editTitle}
-                >
-                  {editTitleMode ? '확인' : '수정'}
-                </button>
-              </>
+              <button
+                className="text-xs text-gray-500 underline ml-2 align-top"
+                onClick={editTitle}
+              >
+                {editTitleMode ? '확인' : '수정'}
+              </button>
             )}
           </div>
           <div className="px-2 lg:px-4 text-black">

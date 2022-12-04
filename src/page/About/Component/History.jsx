@@ -119,8 +119,6 @@ const History = ({ member }) => {
     },
   ]);
 
-  const titleInput = useRef();
-
   useEffect(() => {
     if (member.token) {
       utilAPI.getAuthorization({ token: member.token }).then((response) => {
@@ -194,18 +192,15 @@ const History = ({ member }) => {
               className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow dark:bg-darkPoint inline-block"
               onChange={inputNewTitle}
               value={newTitle}
-              ref={titleInput}
             />
           )}
           {adminFlag && (
-            <>
-              <button
-                className="text-xs text-gray-500 underline inline-block ml-2 align-top"
-                onClick={editTitle}
-              >
-                {editTitleMode ? '확인' : '수정'}
-              </button>
-            </>
+            <button
+              className="text-xs text-gray-500 underline inline-block ml-2 align-top"
+              onClick={editTitle}
+            >
+              {editTitleMode ? '확인' : '수정'}
+            </button>
           )}
           <div className="px-2 lg:px-4 overflow-hidden">
             {historyInfo[0].subtitleImageResults.map((article, articleIdx) =>
