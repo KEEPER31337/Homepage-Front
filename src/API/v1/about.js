@@ -37,6 +37,23 @@ async function tmp({
   }
 }
 
+async function changeTitle({ id, title, type, token }) {
+  const options = {
+    method: 'PUT',
+    url: API_URL + '/v1/admin/about/titles/' + id,
+    headers: {
+      Authorization: token,
+    },
+    data: { title , type },
+  };
+  try {
+    const response = await axios(options);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 async function getIntroInfo() {
   const options = {
     method: 'GET',
@@ -89,10 +106,12 @@ async function getHistoryInfo() {
   }
 }
 
+
 export default {
   getIntroInfo,
   getActivityInfo,
   getExcellenceInfo,
   getHistoryInfo,
+  changeTitle,
   tmp,
 };

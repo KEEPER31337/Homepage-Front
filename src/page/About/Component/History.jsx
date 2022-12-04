@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 // API
+import utilAPI from 'API/v1/util';
 import aboutAPI from 'API/v1/about';
+import { connect } from 'react-redux';
 
 const temp = [
   {
@@ -87,7 +89,11 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function History() {
+const History = ({ member }) => {
+  const [adminFlag, setAdminFlag] = useState(false);
+  const [editTitleMode, setEditTitleMode] = useState(false);
+  const [newTitle, setNewTitle] = useState();
+  const token = member.token;
   const [historyInfo, setHistoryInfo] = useState([
     {
       id: null,
@@ -112,6 +118,16 @@ export default function History() {
       ],
     },
   ]);
+
+  const titleInput = useRef();
+
+  useEffect(() => {
+    if (member.token) {
+      utilAPI.getAuthorization({ token: member.token }).then((response) => {
+        if (response.list.includes('ROLE_회장')) setAdminFlag(true);
+      });
+    }
+  }, [member]);
 
   useEffect(() => {
     aboutAPI.getHistoryInfo().then((data) => {
@@ -143,15 +159,54 @@ export default function History() {
         setHistoryInfo(data.list);
       }
     });
-  }, []);
+  }, [historyInfo]);
+
+  const editTitle = () => {
+    setNewTitle(historyInfo[0].title);
+    if (editTitleMode) {
+      aboutAPI
+        .changeTitle({
+          id: historyInfo[0].id,
+          title: newTitle,
+          type: 'history',
+          token: token,
+        })
+        .then((res) => {});
+    }
+    setEditTitleMode(!editTitleMode);
+  };
+
+  const inputNewTitle = (e) => {
+    setNewTitle(e.target.value);
+  };
 
   return (
     <div className="py-4 lg:py-5 / my-5">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-6 lg:py-10 px-3 md:px-12 lg:px-16">
-          <h2 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow">
-            {historyInfo[0].title}
-          </h2>
+          {!editTitleMode && (
+            <h2 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow inline-block">
+              {historyInfo[0].title}
+            </h2>
+          )}
+          {editTitleMode && (
+            <input
+              className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow dark:bg-darkPoint inline-block"
+              onChange={inputNewTitle}
+              value={newTitle}
+              ref={titleInput}
+            />
+          )}
+          {adminFlag && (
+            <>
+              <button
+                className="text-xs text-gray-500 underline inline-block ml-2 align-top"
+                onClick={editTitle}
+              >
+                {editTitleMode ? '확인' : '수정'}
+              </button>
+            </>
+          )}
           <div className="px-2 lg:px-4 overflow-hidden">
             {historyInfo[0].subtitleImageResults.map((article, articleIdx) =>
               article.staticWriteContents.length ? (
@@ -204,4 +259,9 @@ export default function History() {
       </div>
     </div>
   );
-}
+};
+
+const mapStateToProps = (state, OwnProps) => {
+  return { member: state.member };
+};
+export default connect(mapStateToProps)(History);

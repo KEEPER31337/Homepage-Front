@@ -1,11 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 //import AboutBgImg from 'assets/img/AboutBgImg.png';
 
 // API
+import utilAPI from 'API/v1/util';
+import { connect } from 'react-redux';
 import aboutAPI from 'API/v1/about';
 import memberAPI from 'API/v1/member';
 
-export default function Intro() {
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ');
+}
+
+//export default function Intro() {
+const Intro = ({ member }) => {
+  // 9번 추가
+  const [adminFlag, setAdminFlag] = useState(false);
+  const [editTitleMode, setEditTitleMode] = useState(false);
+  const [newTitle, setNewTitle] = useState();
+  const token = member.token;
   const [introInfo, setIntroInfo] = useState([
     {
       id: null,
@@ -32,12 +44,12 @@ export default function Intro() {
   ]);
 
   const [boss, setBoss] = useState('');
+  const titleInput = useRef();
 
   useEffect(() => {
     aboutAPI.getIntroInfo().then((data) => {
       if (data.success) {
         setIntroInfo(data.list);
-        console.log(data);
       }
     });
     memberAPI.getCommonMembers().then((data) => {
@@ -48,10 +60,36 @@ export default function Intro() {
         );
       }
     });
-  }, []);
+  }, [introInfo]);
+
+  useEffect(() => {
+    if (member.token) {
+      utilAPI.getAuthorization({ token: member.token }).then((response) => {
+        if (response.list.includes('ROLE_회장')) setAdminFlag(true);
+      });
+    }
+  }, [member]);
+
+  const editTitle = () => {
+    setNewTitle(introInfo[0].title);
+    if (editTitleMode) {
+      aboutAPI
+        .changeTitle({
+          id: introInfo[0].id,
+          title: newTitle,
+          type: 'intro',
+          token: token,
+        })
+        .then((res) => {});
+    }
+    setEditTitleMode(!editTitleMode);
+  };
+
+  const inputNewTitle = (e) => {
+    setNewTitle(e.target.value);
+  };
 
   const pageTitle = 'KEEPER';
-  const sectionTitle = introInfo[0].title;
 
   const content =
     introInfo[0].subtitleImageResults[0].staticWriteContents[0].content;
@@ -69,9 +107,29 @@ export default function Intro() {
             {pageTitle}
           </h1>
           <div className="py-6 lg:py-10 px-3 md:px-12 lg:px-16">
-            <h2 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow">
-              {sectionTitle}
-            </h2>
+            {!editTitleMode && (
+              <h2 className="pb-6 lg:pb-10 text-2xl w-fit font-extrabold tracking-tight text-black dark:text-mainYellow inline-block">
+                {introInfo[0].title}
+              </h2>
+            )}
+            {editTitleMode && (
+              <input
+                className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow dark:bg-darkPoint inline-block"
+                onChange={inputNewTitle}
+                value={newTitle}
+                ref={titleInput}
+              />
+            )}
+            {adminFlag && (
+              <>
+                <button
+                  className="text-xs text-gray-500 underline inline-block ml-2 align-top"
+                  onClick={editTitle}
+                >
+                  {editTitleMode ? '확인' : '수정'}
+                </button>
+              </>
+            )}
             <div className="md:whitespace-pre-wrap px-2 lg:px-4 text-base text-black dark:text-white">
               {content}
               <br />
@@ -82,4 +140,9 @@ export default function Intro() {
       </div>
     </div>
   );
-}
+};
+
+const mapStateToProps = (state, OwnProps) => {
+  return { member: state.member };
+};
+export default connect(mapStateToProps)(Intro);

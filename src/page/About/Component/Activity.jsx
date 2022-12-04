@@ -63,9 +63,10 @@ function classNames(...classes) {
 }
 
 const Activity = ({ member }) => {
-  /* TODO 여기부터 지울 거 */
   const [adminFlag, setAdminFlag] = useState(false);
-  /* TODO 여기까지 지울 거 */
+  const [editTitleMode, setEditTitleMode] = useState(false);
+  const [newTitle, setNewTitle] = useState();
+  const token = member.token;
   const [activityInfo, setActivityInfo] = useState([
     {
       id: null,
@@ -93,6 +94,7 @@ const Activity = ({ member }) => {
 
   /* TODO 여기부터 지울 거 */
 
+  const titleInput = useRef();
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -150,7 +152,29 @@ const Activity = ({ member }) => {
         setActivityInfo(data.list);
       }
     });
-  }, []);
+  }, [activityInfo]);
+
+  const sectionTitle = activityInfo[0].title;
+
+  const editTitle = () => {
+    setNewTitle(activityInfo[0].title);
+    if (editTitleMode) {
+      aboutAPI
+        .changeTitle({
+          id: activityInfo[0].id,
+          title: newTitle,
+          type: 'activity',
+          token: token,
+        })
+        .then((res) => {});
+    }
+    setEditTitleMode(!editTitleMode);
+  };
+
+  const inputNewTitle = (e) => {
+    setNewTitle(e.target.value);
+  };
+
   return (
     <div className="">
       {/* TODO 여기부터 지울 거 */}
@@ -168,9 +192,29 @@ const Activity = ({ member }) => {
       {/* TODO 여기까지 지울 거 */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-6 lg:py-10 px-3 md:px-12 lg:px-16">
-          <h2 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow">
-            {activityInfo[0].title}
-          </h2>
+          {!editTitleMode && (
+            <h2 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow inline-block">
+              {activityInfo[0].title}
+            </h2>
+          )}
+          {editTitleMode && (
+            <input
+              className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow dark:bg-darkPoint inline-block"
+              onChange={inputNewTitle}
+              value={newTitle}
+              ref={titleInput}
+            />
+          )}
+          {adminFlag && (
+            <>
+              <button
+                className="text-xs text-gray-500 underline inline-block ml-2 align-top"
+                onClick={editTitle}
+              >
+                {editTitleMode ? '확인' : '수정'}
+              </button>
+            </>
+          )}
           <div className="px-2 lg:px-4 space-y-16 text-black dark:text-white">
             {activityInfo[0].subtitleImageResults.map((article, articleIdx) => (
               <div
