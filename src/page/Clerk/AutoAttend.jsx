@@ -174,7 +174,7 @@ const AutoAttend = ({ state }) => {
       .replace('T', ' ')
       .replace(/\..*/, '');
 
-    console.log(seminarId);
+    //console.log(seminarId);
     if (seminarId <= 0) alert('세미나를 생성해주세요');
 
     attendAPI
