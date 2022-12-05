@@ -1,48 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import Icon from 'assets/img/aboutImg/keyicon.png';
-
 // API
 import utilAPI from 'API/v1/util';
 import aboutAPI from 'API/v1/about';
 import ipAPI from 'API/v1/ip';
 import { connect } from 'react-redux';
-
-const temp = [
-  {
-    subtitle: '동아리 지원',
-    content: (
-      <ul>
-        <li>스터디룸 지원</li>
-        <li>책 지원</li>
-        <li>대외활동 참가 시 식비 지원</li>
-        <li>레퍼런스 참가비 지원?</li>
-      </ul>
-    ),
-    imageSrc: Icon,
-  },
-  {
-    subtitle: '이벤트',
-    content: (
-      <ul>
-        <li>
-          다양한 이벤트를 통한 동아리 사기 높이기
-          <br />
-          {'ex) 키퍼즐'}
-        </li>
-        <li>책 지원</li>
-        <li>대외활동 참가 시 식비 지원</li>
-        <li>레퍼런스 참가비 지원?</li>
-      </ul>
-    ),
-    imageSrc: Icon,
-  },
-  {
-    subtitle: '대외활동',
-    content: 'CTF 참가',
-    imageSrc: Icon,
-  },
-];
 
 const Excellence = ({ member }) => {
   const [adminFlag, setAdminFlag] = useState(false);

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-//import AboutBgImg from 'assets/img/AboutBgImg.png';
 
 // API
 import utilAPI from 'API/v1/util';
@@ -11,9 +10,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-//export default function Intro() {
 const Intro = ({ member }) => {
-  // 9번 추가
   const [adminFlag, setAdminFlag] = useState(false);
   const [editTitleMode, setEditTitleMode] = useState(false);
   const [newTitle, setNewTitle] = useState();
