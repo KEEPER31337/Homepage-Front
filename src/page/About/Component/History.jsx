@@ -157,7 +157,7 @@ const History = ({ member }) => {
         setHistoryInfo(data.list);
       }
     });
-  }, [historyInfo]);
+  }, []);
 
   const editTitle = () => {
     setNewTitle(historyInfo[0].title);
@@ -169,7 +169,13 @@ const History = ({ member }) => {
           type: 'history',
           token: token,
         })
-        .then((res) => {});
+        .then((res) => {
+          aboutAPI.getHistoryInfo().then((data) => {
+            if (data.success) {
+              setHistoryInfo(data.list);
+            }
+          });
+        });
     }
     setEditTitleMode(!editTitleMode);
   };

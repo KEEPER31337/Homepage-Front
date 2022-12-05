@@ -132,7 +132,7 @@ const Excellence = ({ member }) => {
         setExcellenceInfo(data.list);
       }
     });
-  }, [excellenceInfo]);
+  }, []);
 
   const editTitle = () => {
     setNewTitle(excellenceInfo[0].title);
@@ -144,7 +144,13 @@ const Excellence = ({ member }) => {
           type: 'excellence',
           token: token,
         })
-        .then((res) => {});
+        .then((res) => {
+          aboutAPI.getExcellenceInfo().then((data) => {
+            if (data.success) {
+              setExcellenceInfo(data.list);
+            }
+          });
+        });
     }
     setEditTitleMode(!editTitleMode);
   };

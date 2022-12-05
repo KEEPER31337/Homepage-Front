@@ -59,7 +59,7 @@ const Intro = ({ member }) => {
         );
       }
     });
-  }, [introInfo]);
+  }, []);
 
   useEffect(() => {
     if (member.token) {
@@ -79,7 +79,14 @@ const Intro = ({ member }) => {
           type: 'intro',
           token: token,
         })
-        .then((res) => {});
+        .then((res) => {
+          aboutAPI.getIntroInfo().then((data) => {
+            if (data.success) {
+              setIntroInfo(data.list);
+              console.log(data.list);
+            }
+          });
+        });
     }
     setEditTitleMode(!editTitleMode);
   };

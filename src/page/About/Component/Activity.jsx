@@ -150,7 +150,7 @@ const Activity = ({ member }) => {
         setActivityInfo(data.list);
       }
     });
-  }, [activityInfo]);
+  }, []);
 
   const editTitle = () => {
     setNewTitle(activityInfo[0].title);
@@ -162,7 +162,13 @@ const Activity = ({ member }) => {
           type: 'activity',
           token: token,
         })
-        .then((res) => {});
+        .then((res) => {
+          aboutAPI.getActivityInfo().then((data) => {
+            if (data.success) {
+              setActivityInfo(data.list);
+            }
+          });
+        });
     }
     setEditTitleMode(!editTitleMode);
   };
