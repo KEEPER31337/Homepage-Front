@@ -44,7 +44,10 @@ const Header = ({ member }) => {
                 <MenuIcon className="h-6 w-6" aria-hidden="true" />
               </Popover.Button>
             </div>
-            <Popover.Group as="nav" className="hidden md:flex lg:space-x-5">
+            <Popover.Group
+              as="nav"
+              className="hidden md:flex space-x-3 lg:space-x-5"
+            >
               {categories.map((category, index) => (
                 <HeaderPopDown key={index} category={category} />
               ))}

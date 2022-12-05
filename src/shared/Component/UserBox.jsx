@@ -17,14 +17,13 @@ const handleErrorImg = (e) => {
 
 const UserBox = ({ member, signOut }) => {
   return (
-    <div className="hidden md:flex items-center justify-end lg:w-40">
+    <div className="hidden md:flex items-center justify-end xl:w-40">
       <Menu as="div" className="relative">
         <div>
           <Menu.Button className="bg-gray-100 dark:bg-gray-800 flex text-sm rounded-full focus:outline-none ring-2 ring-divisionGray dark:ring-darkPoint">
             <span className="sr-only">Open user menu</span>
             <div className="text-lg max-w-[150px] self-center mx-5 text-mainBlack dark:text-mainWhite w-full break-words overflow-hidden whitespace-nowrap hidden xl:block">
               {member?.memberInfo?.nickName}
-              {member.memberInfo.nickName == 'test02' && '00'}
             </div>
             <img
               className="h-8 w-8 rounded-full"
