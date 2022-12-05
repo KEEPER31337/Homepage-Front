@@ -164,17 +164,17 @@ const MyProfile = ({ token, memberInfo }) => {
                 </div>
                 {/*회원 뱃지*/}
                 <div className="flex">
-                  {memberInfo.rank && (
+                  {memberInfo?.rank && (
                     <div className="mr-2">
                       <Group groupName={memberInfo.rank} />
                     </div>
                   )}
-                  {memberInfo.type && (
+                  {memberInfo?.type && (
                     <div className="mr-2">
                       <Group groupName={memberInfo.type} />
                     </div>
                   )}
-                  {memberInfo.jobs &&
+                  {memberInfo?.jobs &&
                     memberInfo.jobs.map((job, index) => (
                       <div key={index} className="mr-2">
                         <Group groupName={job} />
