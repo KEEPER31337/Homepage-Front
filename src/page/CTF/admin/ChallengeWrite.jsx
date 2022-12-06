@@ -19,6 +19,12 @@ const ChallengeWrite = ({ member, ctfId }) => {
   const jobs = member?.memberInfo?.jobs;
   const ModalRef = useRef({});
 
+  const MAX_SUBMIT_COUNT_RANGE = {
+    min: 1,
+    max: 50,
+    default: 15,
+  };
+
   // 모달
   const nameModalRef = useRef({});
   const categoryModalRef = useRef({});
@@ -56,13 +62,22 @@ const ChallengeWrite = ({ member, ctfId }) => {
     challengeName: '',
     category: 0,
     flag: '',
+    maxSubmitCount: MAX_SUBMIT_COUNT_RANGE.default,
     type: 0,
     score: '',
     maxScore: '',
     minScore: '',
   });
-  const { challengeName, category, flag, type, score, maxScore, minScore } =
-    inputs;
+  const {
+    challengeName,
+    category,
+    flag,
+    maxSubmitCount,
+    type,
+    score,
+    maxScore,
+    minScore,
+  } = inputs;
 
   const onChange = (e) => {
     const { value, name } = e.target;
@@ -167,6 +182,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
             minScore: Number(minScore),
           },
           flag: flag,
+          maxSubmitCount,
           token: member.token,
         })
         .then((data) => {
@@ -282,6 +298,23 @@ const ChallengeWrite = ({ member, ctfId }) => {
                     {/* 빈공간 주고 싶을때 어떻게 하는 지 찾아보기 귀찮아서 내용없는 빈 거 임시로 가져다놓음 */}
                   </div>
 
+                  <div className="col-span-5 sm:col-span-1">
+                    <label
+                      htmlFor="maxSubmitCount"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                    >
+                      최대 제출 횟수
+                    </label>
+                    <input
+                      type="number"
+                      name="maxSubmitCount"
+                      min={MAX_SUBMIT_COUNT_RANGE.min}
+                      max={MAX_SUBMIT_COUNT_RANGE.max}
+                      defaultValue={maxSubmitCount}
+                      onChange={onChange}
+                      className="mt-1  dark:bg-darkComponent dark:border-darkComponent focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                  </div>
                   <div className="col-span-5 sm:col-span-1">
                     <label
                       htmlFor="type"

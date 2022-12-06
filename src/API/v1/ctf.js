@@ -126,6 +126,7 @@ async function createProb({
   score,
   dynamicInfo,
   flag,
+  maxSubmitCount,
   token,
 }) {
   const options = {
@@ -141,6 +142,7 @@ async function createProb({
       score,
       dynamicInfo,
       flag,
+      maxSubmitCount,
     },
     headers: {
       Authorization: token,
