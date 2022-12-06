@@ -188,6 +188,7 @@ const ChallengeAdmin = ({ member, ctfId }) => {
 
                   <th className="w-1/12">출제자</th>
                   <th className="w-1/12">점수</th>
+                  <th className="w-2/12">최대 제출 횟수</th>
                   <th className="w-1/12">상태</th>
                   <th className="w-1/12"></th>
                 </tr>
@@ -201,6 +202,7 @@ const ChallengeAdmin = ({ member, ctfId }) => {
                     <td className="w-4/12 truncate">{info.flag}</td>
                     <td className="w-1/12 truncate">{info.creatorName}</td>
                     <td className="w-1/12 truncate">{info.score}</td>
+                    <td className="w-2/12 truncate">{info.maxSubmitCount}</td>
 
                     <td className="w-1/12 truncate dark:text-black">
                       <ProbOpenCloseBtn
