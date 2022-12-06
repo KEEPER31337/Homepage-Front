@@ -170,11 +170,7 @@ const History = ({ member }) => {
           token: token,
         })
         .then((res) => {
-          aboutAPI.getHistoryInfo().then((data) => {
-            if (data.success) {
-              setHistoryInfo(data.list);
-            }
-          });
+          setHistoryInfo([res.data]);
         });
     }
     setEditTitleMode(!editTitleMode);

@@ -80,12 +80,7 @@ const Intro = ({ member }) => {
           token: token,
         })
         .then((res) => {
-          aboutAPI.getIntroInfo().then((data) => {
-            if (data.success) {
-              setIntroInfo(data.list);
-              console.log(data.list);
-            }
-          });
+          setIntroInfo([res.data]);
         });
     }
     setEditTitleMode(!editTitleMode);

@@ -163,11 +163,7 @@ const Activity = ({ member }) => {
           token: token,
         })
         .then((res) => {
-          aboutAPI.getActivityInfo().then((data) => {
-            if (data.success) {
-              setActivityInfo(data.list);
-            }
-          });
+          setActivityInfo([res.data]);
         });
     }
     setEditTitleMode(!editTitleMode);

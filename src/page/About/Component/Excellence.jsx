@@ -145,11 +145,7 @@ const Excellence = ({ member }) => {
           token: token,
         })
         .then((res) => {
-          aboutAPI.getExcellenceInfo().then((data) => {
-            if (data.success) {
-              setExcellenceInfo(data.list);
-            }
-          });
+          setExcellenceInfo([res.data]);
         });
     }
     setEditTitleMode(!editTitleMode);
