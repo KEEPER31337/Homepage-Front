@@ -138,7 +138,7 @@ const ChallengeModal = forwardRef(({ detailProbList, member }, ref) => {
                       {detailProbList.score}
                     </Dialog.Title>
 
-                    <div className="m-5">
+                    <div className="mx-2 my-5">
                       <div className="text-base text-gray-500">
                         <Viewer
                           initialValue={detailProbList.content}
@@ -174,14 +174,15 @@ const ChallengeModal = forwardRef(({ detailProbList, member }, ref) => {
                           placeholder="KEEPER{...}"
                           defaultValue={flag}
                           onChange={onChange}
-                          className="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:w-4/5 border-gray-300 rounded-md"
+                          className="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:w-3/4 mb-2 sm:mb-0 border-gray-300 rounded-md"
                         />
                         <button
                           type="button"
-                          className="w-full justify-center rounded-md border border-transparent px-4 bg-indigo-500 hover:bg-indigo-400 font-medium text-white sm:ml-3 sm:w-1/5"
+                          className="w-full justify-center rounded-md border border-transparent px-4 py-1 bg-indigo-500 hover:bg-indigo-400 font-medium text-white sm:ml-3 sm:w-1/4"
                           onClick={submitFlagHandler}
                         >
-                          제출
+                          제출 <br className="hidden sm:block" />
+                          {`(${detailProbList.remainedSubmitCount} / ${detailProbList.maxSubmitCount})`}
                         </button>
                       </div>
                       {flagCheckMsg}
