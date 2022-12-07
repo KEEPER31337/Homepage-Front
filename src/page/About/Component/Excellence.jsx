@@ -65,7 +65,7 @@ const Excellence = ({ member }) => {
   /* TODO 여기까지 지울 거 */
 
   useEffect(() => {
-    aboutAPI.getExcellenceInfo().then((data) => {
+    aboutAPI.getInfo({ type: 'excellence' }).then((data) => {
       if (data.success) {
         data.list.map((title) => {
           // Subtitle display order 순서로 정렬

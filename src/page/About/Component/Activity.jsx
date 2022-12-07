@@ -70,7 +70,7 @@ const Activity = ({ member }) => {
   /* TODO 여기까지 지울 거 */
 
   useEffect(() => {
-    aboutAPI.getActivityInfo().then((data) => {
+    aboutAPI.getInfo({ type: 'activity' }).then((data) => {
       if (data.success) {
         data.list.map((title) => {
           // Subtitle display order 순서로 정렬

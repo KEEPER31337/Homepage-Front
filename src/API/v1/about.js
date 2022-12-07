@@ -54,10 +54,10 @@ async function changeTitle({ id, title, type, token }) {
   }
 }
 
-async function getIntroInfo() {
+async function getInfo( {type}) {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/about/titles/types/intro',
+    url: API_URL + '/v1/about/titles/types/' + type,
   };
   try {
     const response = await axios(options);
@@ -66,52 +66,9 @@ async function getIntroInfo() {
     return error.response.data;
   }
 }
-
-async function getActivityInfo() {
-  const options = {
-    method: 'GET',
-    url: API_URL + '/v1/about/titles/types/activity',
-  };
-  try {
-    const response = await axios(options);
-    return response.data;
-  } catch (error) {
-    return error.response.data;
-  }
-}
-
-async function getExcellenceInfo() {
-  const options = {
-    method: 'GET',
-    url: API_URL + '/v1/about/titles/types/excellence',
-  };
-  try {
-    const response = await axios(options);
-    return response.data;
-  } catch (error) {
-    return error.response.data;
-  }
-}
-
-async function getHistoryInfo() {
-  const options = {
-    method: 'GET',
-    url: API_URL + '/v1/about/titles/types/history',
-  };
-  try {
-    const response = await axios(options);
-    return response.data;
-  } catch (error) {
-    return error.response.data;
-  }
-}
-
 
 export default {
-  getIntroInfo,
-  getActivityInfo,
-  getExcellenceInfo,
-  getHistoryInfo,
+  getInfo,
   changeTitle,
   tmp,
 };

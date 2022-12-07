@@ -48,7 +48,7 @@ const History = ({ member }) => {
   }, [member]);
 
   useEffect(() => {
-    aboutAPI.getHistoryInfo().then((data) => {
+    aboutAPI.getInfo({ type: 'history' }).then((data) => {
       if (data.success) {
         data.list.map((title) => {
           // Subtitle display order 순서로 정렬

@@ -43,7 +43,7 @@ const Intro = ({ member }) => {
   const [boss, setBoss] = useState('');
 
   useEffect(() => {
-    aboutAPI.getIntroInfo().then((data) => {
+    aboutAPI.getInfo({ type: 'intro' }).then((data) => {
       if (data.success) {
         setIntroInfo(data.list);
       }
