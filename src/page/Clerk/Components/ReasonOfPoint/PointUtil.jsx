@@ -1,22 +1,21 @@
 //여러 파일에서 사용할 함수 모음
 const compareName = (a, b) => {
-  if (a.name < b.name) {
+  if (a.realName < b.realName) {
     return -1;
   }
-  if (a.name > b.name) {
+  if (a.realName > b.realName) {
     return 1;
   }
   return 0;
 };
 const compareRanking = (a, b) => {
-  if (a.totalMerit - a.totalDemerit < b.totalMerit - b.totalDemerit) {
-    return 1;
-  } else if (a.totalMerit - a.totalDemerit > b.totalMerit - b.totalDemerit) {
-    return -1;
+  if (a.totalMerit === b.totalMerit) {
+    if (a.totalDemerit === b.totalDemerit) {
+      return compareName(a, b);
+    }
+    return a.totalDemerit - b.totalDemerit;
   }
-  if (a.totalMerit < b.totalMerit) return 1;
-  else if (a.totalMerit > b.totalMerit) return -1;
-  return 0;
+  return b.totalMerit - a.totalMerit;
 };
 function getNow() {
   //오늘 날짜 반환
