@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 const Excellence = ({ member }) => {
   const [adminFlag, setAdminFlag] = useState(false);
-  const [editTitleMode, setEditTitleMode] = useState(false);
+  const [isTitleEditMode, setIsTitleEditMode] = useState(false);
   const [newTitle, setNewTitle] = useState();
   const token = member.token;
   const [excellenceInfo, setExcellenceInfo] = useState([
@@ -94,11 +94,11 @@ const Excellence = ({ member }) => {
         setExcellenceInfo(data.list);
       }
     });
-  }, [excellenceInfo]);
+  }, []);
 
   const editTitle = () => {
     setNewTitle(excellenceInfo[0].title);
-    if (editTitleMode) {
+    if (isTitleEditMode) {
       aboutAPI
         .changeTitle({
           id: excellenceInfo[0].id,
@@ -106,9 +106,11 @@ const Excellence = ({ member }) => {
           type: 'excellence',
           token: token,
         })
-        .then((res) => {});
+        .then((res) => {
+          setExcellenceInfo([res.data]);
+        });
     }
-    setEditTitleMode(!editTitleMode);
+    setIsTitleEditMode(!isTitleEditMode);
   };
 
   const inputNewTitle = (e) => {
@@ -133,7 +135,7 @@ const Excellence = ({ member }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-6 lg:py-10  px-3 md:px-12 lg:px-16">
           <div className="text-center">
-            {editTitleMode ? (
+            {isTitleEditMode ? (
               <input
                 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-white text-center bg-mainYellow inline-block"
                 onChange={inputNewTitle}
@@ -149,7 +151,7 @@ const Excellence = ({ member }) => {
                 className="text-xs text-gray-500 underline ml-2 align-top"
                 onClick={editTitle}
               >
-                {editTitleMode ? '확인' : '수정'}
+                {isTitleEditMode ? '확인' : '수정'}
               </button>
             )}
           </div>

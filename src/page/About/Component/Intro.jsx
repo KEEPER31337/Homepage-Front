@@ -12,7 +12,7 @@ function classNames(...classes) {
 
 const Intro = ({ member }) => {
   const [adminFlag, setAdminFlag] = useState(false);
-  const [editTitleMode, setEditTitleMode] = useState(false);
+  const [isTitleEditMode, setIsTitleEditMode] = useState(false);
   const [newTitle, setNewTitle] = useState();
   const token = member.token;
   const [introInfo, setIntroInfo] = useState([
@@ -56,7 +56,7 @@ const Intro = ({ member }) => {
         );
       }
     });
-  }, [introInfo]);
+  }, []);
 
   useEffect(() => {
     if (member.token) {
@@ -68,7 +68,7 @@ const Intro = ({ member }) => {
 
   const editTitle = () => {
     setNewTitle(introInfo[0].title);
-    if (editTitleMode) {
+    if (isTitleEditMode) {
       aboutAPI
         .changeTitle({
           id: introInfo[0].id,
@@ -76,9 +76,11 @@ const Intro = ({ member }) => {
           type: 'intro',
           token: token,
         })
-        .then((res) => {});
+        .then((res) => {
+          setIntroInfo([res.data]);
+        });
     }
-    setEditTitleMode(!editTitleMode);
+    setIsTitleEditMode(!isTitleEditMode);
   };
 
   const inputNewTitle = (e) => {
@@ -103,7 +105,7 @@ const Intro = ({ member }) => {
             {pageTitle}
           </h1>
           <div className="py-6 lg:py-10 px-3 md:px-12 lg:px-16">
-            {editTitleMode ? (
+            {isTitleEditMode ? (
               <input
                 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow dark:bg-darkPoint inline-block"
                 onChange={inputNewTitle}
@@ -119,7 +121,7 @@ const Intro = ({ member }) => {
                 className="text-xs text-gray-500 underline inline-block ml-2 align-top"
                 onClick={editTitle}
               >
-                {editTitleMode ? '확인' : '수정'}
+                {isTitleEditMode ? '확인' : '수정'}
               </button>
             )}
             <div className="md:whitespace-pre-wrap px-2 lg:px-4 text-base text-black dark:text-white">

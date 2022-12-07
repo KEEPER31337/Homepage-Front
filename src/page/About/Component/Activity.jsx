@@ -13,7 +13,7 @@ function classNames(...classes) {
 
 const Activity = ({ member }) => {
   const [adminFlag, setAdminFlag] = useState(false);
-  const [editTitleMode, setEditTitleMode] = useState(false);
+  const [isTitleEditMode, setIsTitleEditMode] = useState(false);
   const [newTitle, setNewTitle] = useState();
   const token = member.token;
   const [activityInfo, setActivityInfo] = useState([
@@ -99,11 +99,11 @@ const Activity = ({ member }) => {
         setActivityInfo(data.list);
       }
     });
-  }, [activityInfo]);
+  }, []);
 
   const editTitle = () => {
     setNewTitle(activityInfo[0].title);
-    if (editTitleMode) {
+    if (isTitleEditMode) {
       aboutAPI
         .changeTitle({
           id: activityInfo[0].id,
@@ -111,9 +111,11 @@ const Activity = ({ member }) => {
           type: 'activity',
           token: token,
         })
-        .then((res) => {});
+        .then((res) => {
+          setActivityInfo([res.data]);
+        });
     }
-    setEditTitleMode(!editTitleMode);
+    setIsTitleEditMode(!isTitleEditMode);
   };
 
   const inputNewTitle = (e) => {
@@ -137,7 +139,7 @@ const Activity = ({ member }) => {
       {/* TODO 여기까지 지울 거 */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-6 lg:py-10 px-3 md:px-12 lg:px-16">
-          {editTitleMode ? (
+          {isTitleEditMode ? (
             <input
               className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow dark:bg-darkPoint inline-block"
               onChange={inputNewTitle}
@@ -153,7 +155,7 @@ const Activity = ({ member }) => {
               className="text-xs text-gray-500 underline inline-block ml-2 align-top"
               onClick={editTitle}
             >
-              {editTitleMode ? '확인' : '수정'}
+              {isTitleEditMode ? '확인' : '수정'}
             </button>
           )}
           <div className="px-2 lg:px-4 space-y-16 text-black dark:text-white">

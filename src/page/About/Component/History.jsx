@@ -11,7 +11,7 @@ function classNames(...classes) {
 
 const History = ({ member }) => {
   const [adminFlag, setAdminFlag] = useState(false);
-  const [editTitleMode, setEditTitleMode] = useState(false);
+  const [isTitleEditMode, setIsTitleEditMode] = useState(false);
   const [newTitle, setNewTitle] = useState();
   const token = member.token;
   const [historyInfo, setHistoryInfo] = useState([
@@ -77,11 +77,11 @@ const History = ({ member }) => {
         setHistoryInfo(data.list);
       }
     });
-  }, [historyInfo]);
+  }, []);
 
   const editTitle = () => {
     setNewTitle(historyInfo[0].title);
-    if (editTitleMode) {
+    if (isTitleEditMode) {
       aboutAPI
         .changeTitle({
           id: historyInfo[0].id,
@@ -89,9 +89,11 @@ const History = ({ member }) => {
           type: 'history',
           token: token,
         })
-        .then((res) => {});
+        .then((res) => {
+          setHistoryInfo([res.data]);
+        });
     }
-    setEditTitleMode(!editTitleMode);
+    setIsTitleEditMode(!isTitleEditMode);
   };
 
   const inputNewTitle = (e) => {
@@ -102,7 +104,7 @@ const History = ({ member }) => {
     <div className="py-4 lg:py-5 / my-5">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-6 lg:py-10 px-3 md:px-12 lg:px-16">
-          {editTitleMode ? (
+          {isTitleEditMode ? (
             <input
               className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow dark:bg-darkPoint inline-block"
               onChange={inputNewTitle}
@@ -118,7 +120,7 @@ const History = ({ member }) => {
               className="text-xs text-gray-500 underline inline-block ml-2 align-top"
               onClick={editTitle}
             >
-              {editTitleMode ? '확인' : '수정'}
+              {isTitleEditMode ? '확인' : '수정'}
             </button>
           )}
           <div className="px-2 lg:px-4 overflow-hidden">
