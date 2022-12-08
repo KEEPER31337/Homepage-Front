@@ -47,7 +47,15 @@ const ChallengeModal = forwardRef(({ detailProbList, member }, ref) => {
   };
 
   const submitFlagHandler = () => {
-    // console.log(flag);
+    if (!detailProbList.remainedSubmitCount) {
+      setFlagCheckMsg(
+        <div className="border-2 border-gray-300 bg-gray-200 w-full p-1 rounded-md text-center text-gray-800">
+          No remained Submit Count
+        </div>
+      );
+      return;
+    }
+
     if (detailProbList.isSolved) {
       setFlagCheckMsg(
         <div className="border-2 border-gray-300 bg-gray-200 w-full p-1 rounded-md text-center text-gray-800">
