@@ -43,14 +43,14 @@ const ChallengeModal = forwardRef(({ detailProbList, member }, ref) => {
 
   const onClick = () => {
     setOpen(false);
-    if (flagCheckMsg.props.children === 'Correct') window.location.reload();
+    if (flagCheckMsg.props.children === '정답') window.location.reload();
   };
 
   const submitFlagHandler = () => {
     if (!detailProbList.remainedSubmitCount) {
       setFlagCheckMsg(
         <div className="border-2 border-gray-300 bg-gray-200 w-full p-1 rounded-md text-center text-gray-800">
-          No remained Submit Count
+          남은 제출 횟수가 없습니다.
         </div>
       );
       return;
@@ -59,7 +59,7 @@ const ChallengeModal = forwardRef(({ detailProbList, member }, ref) => {
     if (detailProbList.isSolved) {
       setFlagCheckMsg(
         <div className="border-2 border-gray-300 bg-gray-200 w-full p-1 rounded-md text-center text-gray-800">
-          You already solved this
+          이미 해치운 문제입니다.
         </div>
       );
     } else {
@@ -75,13 +75,13 @@ const ChallengeModal = forwardRef(({ detailProbList, member }, ref) => {
             if (data.data.isCorrect) {
               setFlagCheckMsg(
                 <div className="border-2 border-green-300 bg-green-200 w-full p-1 rounded-md text-center text-green-800">
-                  Correct
+                  정답
                 </div>
               );
             } else {
               setFlagCheckMsg(
                 <div className="border-2 border-red-300 bg-red-200 w-full p-1 rounded-md text-center text-red-800">
-                  Incorrect
+                  오답
                 </div>
               );
             }
@@ -198,8 +198,8 @@ const ChallengeModal = forwardRef(({ detailProbList, member }, ref) => {
                   </div>
                 </div>
                 <div className="bg-gray-50 px-4 py-2 sm:px-6 sm:flex sm:flex-row-reverse">
-                  <div className="text-sm text-right text-gray-500 italic">
-                    Author : {detailProbList.creatorName}
+                  <div className="text-sm text-right text-gray-500">
+                    출제자 : {detailProbList.creatorName}
                   </div>
                 </div>
               </Dialog.Panel>
