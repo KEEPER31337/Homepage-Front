@@ -13,10 +13,13 @@ import '@toast-ui/editor/dist/toastui-editor.css'; //마크다운 편집기 뷰�
 import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
 import { Viewer } from '@toast-ui/react-editor';
 import Marquee from 'react-fast-marquee';
+import dayjs from 'dayjs';
+
 // API
 import ctfAPI from 'API/v1/ctf';
 
 const API_URL = process.env.REACT_APP_API_URL;
+const FLAG_WAITING_TIME = 5;
 
 const ChallengeModal = forwardRef(({ pid, member }, ref) => {
   const [open, setOpen] = useState(false);
@@ -90,6 +93,11 @@ const ChallengeModal = forwardRef(({ pid, member }, ref) => {
 
     if (!remainedSubmitCount) {
       setFlagCheckMsg('남은 제출 횟수가 없습니다.');
+      return;
+    }
+
+    if (dayjs().diff(lastTryTime, 's') <= FLAG_WAITING_TIME) {
+      setFlagCheckMsg('잠시후 다시 시도해주세요.');
       return;
     }
 
