@@ -5,6 +5,8 @@ import Button from '@material-ui/core/Button';
 import actionCtf from 'redux/action/ctf';
 import { Link, useNavigate } from 'react-router-dom';
 import Marquee from 'react-fast-marquee';
+import dayjs from 'dayjs';
+
 // API
 import teamAPI from 'API/v1/ctf';
 
@@ -215,9 +217,10 @@ const Team = ({ member, ctfId, updateCtfTeamName }) => {
           <table className="table-fixed justify-center dark:text-white w-11/12 border-2 shadow  rounded-md dark:bg-darkPoint">
             <thead>
               <tr className="rounded w-10/12 h-10 bg-gray-100 text-lg text-black">
-                <th>Type</th>
-                <th>Title</th>
-                <th>Score</th>
+                <th>문제</th>
+                <th>카테고리</th>
+                <th>점수</th>
+                <th>해치운 시간</th>
               </tr>
             </thead>
             <tbody className="dark:text-white">
@@ -227,9 +230,14 @@ const Team = ({ member, ctfId, updateCtfTeamName }) => {
                     key={idx}
                     className="w-11/12 h-10 text-center hover:bg-gray-100 dark:hover:bg-[#0b1523]"
                   >
-                    <td className="w-1/3 truncate">{info.category.name}</td>
                     <td className="w-1/3 truncate">{info.title}</td>
+                    <td className="w-1/3 truncate">{info.category.name}</td>
                     <td className="w-1/3 truncate">{info.score}</td>
+                    <td className="w-1/3 truncate">
+                      {info.solvedTime
+                        ? dayjs(info.solvedTime).format('YYYY-MM-DD HH:mm:ss')
+                        : '-'}
+                    </td>
                   </tr>
                 );
               })}
