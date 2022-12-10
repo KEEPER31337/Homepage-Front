@@ -144,6 +144,12 @@ const ChallengeWrite = ({ member, ctfId }) => {
     else if (category == 0) setErrorMsg('유형을 선택해주세요');
     else if (content == '') setErrorMsg('문제 설명을 넣어주세요');
     else if (flag == '') setErrorMsg('플래그를 넣어주세요');
+    else if (maxSubmitCount == '') setErrorMsg('최대 제출 횟수 넣어주세요');
+    else if (
+      maxSubmitCount < MAX_SUBMIT_COUNT_RANGE.min ||
+      maxSubmitCount > MAX_SUBMIT_COUNT_RANGE.max
+    )
+      setErrorMsg('최대 제출 횟수 1이상 50이하의 값만 가능합니다.');
     else if (type == 0) setErrorMsg('타입을 선택해주세요');
     else if (score == '' && (maxScore == '' || minScore == ''))
       setErrorMsg('점수를 넣어주세요');
