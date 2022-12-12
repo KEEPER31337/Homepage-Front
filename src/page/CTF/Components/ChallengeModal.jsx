@@ -13,13 +13,31 @@ import '@toast-ui/editor/dist/toastui-editor.css'; //마크다운 편집기 뷰�
 import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
 import { Viewer } from '@toast-ui/react-editor';
 import Marquee from 'react-fast-marquee';
+import dayjs from 'dayjs';
+
 // API
 import ctfAPI from 'API/v1/ctf';
 
 const API_URL = process.env.REACT_APP_API_URL;
+const FLAG_WAITING_TIME = 5;
 
-const ChallengeModal = forwardRef(({ detailProbList, member }, ref) => {
+const ChallengeModal = forwardRef(({ pid, member }, ref) => {
   const [open, setOpen] = useState(false);
+  const [detailProbList, setDetailProbList] = useState({
+    challengeId: null,
+    title: null,
+    content: null,
+    category: {
+      id: null,
+      name: null,
+    },
+    score: null,
+    creatorName: null,
+    contestId: null,
+    solvedTeamCount: null,
+    isSolved: null,
+    file: null,
+  });
 
   useImperativeHandle(ref, () => ({
     open: () => {
@@ -36,54 +54,88 @@ const ChallengeModal = forwardRef(({ detailProbList, member }, ref) => {
   }, [detailProbList.content]); */
 
   const [flag, setFlag] = useState('');
-  const [flagCheckMsg, setFlagCheckMsg] = useState(<></>);
+  const [flagCheckMsg, setFlagCheckMsg] = useState(null);
   const onChange = (e) => {
     setFlag(e.target.value);
   };
 
+  const getMsgColor = () => {
+    let color;
+    switch (flagCheckMsg) {
+      case '정답':
+        color = 'green';
+        break;
+      case '오답':
+        color = 'red';
+        break;
+      default:
+        color = 'gray';
+    }
+
+    return `border-${color}-300 bg-${color}-200 text-${color}-800`;
+  };
+
   const onClick = () => {
+    if (flagCheckMsg === '정답') window.location.reload();
+
     setOpen(false);
-    if (flagCheckMsg.props.children === 'Correct') window.location.reload();
+    setFlagCheckMsg(null);
   };
 
   const submitFlagHandler = () => {
-    // console.log(flag);
-    if (detailProbList.isSolved) {
-      setFlagCheckMsg(
-        <div className="border-2 border-gray-300 bg-gray-200 w-full p-1 rounded-md text-center text-gray-800">
-          You already solved this
-        </div>
-      );
-    } else {
-      ctfAPI
-        .submitFlag({
-          pid: detailProbList.challengeId,
-          content: flag,
-          token: member.token,
-        })
-        .then((data) => {
-          if (data.success) {
-            // console.log(data);
-            if (data.data.isCorrect) {
-              setFlagCheckMsg(
-                <div className="border-2 border-green-300 bg-green-200 w-full p-1 rounded-md text-center text-green-800">
-                  Correct
-                </div>
-              );
-            } else {
-              setFlagCheckMsg(
-                <div className="border-2 border-red-300 bg-red-200 w-full p-1 rounded-md text-center text-red-800">
-                  Incorrect
-                </div>
-              );
-            }
-          } else {
-            // console.log(data);
-            alert('flag 제출중 오류가 발생하였습니다.');
-          }
-        });
+    const { remainedSubmitCount, lastTryTime, isSolved, challengeId } =
+      detailProbList;
+
+    if (isSolved) {
+      setFlagCheckMsg('이미 해치운 문제입니다.');
+      return;
     }
+
+    if (!remainedSubmitCount) {
+      setFlagCheckMsg('남은 제출 횟수가 없습니다.');
+      return;
+    }
+
+    if (dayjs().diff(lastTryTime, 's') <= FLAG_WAITING_TIME) {
+      setFlagCheckMsg('잠시후 다시 시도해주세요.');
+      return;
+    }
+
+    ctfAPI
+      .submitFlag({
+        pid: challengeId,
+        content: flag,
+        token: member.token,
+      })
+      .then((data) => {
+        if (data.success) {
+          if (data.data.isCorrect) {
+            setFlagCheckMsg('정답');
+          } else {
+            setFlagCheckMsg('오답');
+          }
+        } else {
+          alert('flag 제출중 오류가 발생하였습니다.');
+        }
+      });
   };
+
+  useEffect(() => {
+    if (!pid) return;
+
+    ctfAPI
+      .getDetailProbList({
+        pid,
+        token: member.token,
+      })
+      .then((data) => {
+        if (data.success) {
+          setDetailProbList(data.data);
+        } else {
+          alert('문제 세부 목록을 받아오는 중 오류가 발생하였습니다.');
+        }
+      });
+  }, [flagCheckMsg]);
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -131,7 +183,7 @@ const ChallengeModal = forwardRef(({ detailProbList, member }, ref) => {
                       {detailProbList.score}
                     </Dialog.Title>
 
-                    <div className="m-5">
+                    <div className="mx-2 my-5">
                       <div className="text-base text-gray-500">
                         <Viewer
                           initialValue={detailProbList.content}
@@ -170,23 +222,30 @@ const ChallengeModal = forwardRef(({ detailProbList, member }, ref) => {
                           placeholder="KEEPER{...}"
                           defaultValue={flag}
                           onChange={onChange}
-                          className="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:w-4/5 border-gray-300 rounded-md"
+                          className="focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:w-3/4 mb-2 sm:mb-0 border-gray-300 rounded-md"
                         />
                         <button
                           type="button"
-                          className="w-full justify-center rounded-md border border-transparent px-4 bg-indigo-500 hover:bg-indigo-400 font-medium text-white sm:ml-3 sm:w-1/5"
+                          className="w-full justify-center rounded-md border border-transparent px-4 py-1 bg-indigo-500 hover:bg-indigo-400 font-medium text-white sm:ml-3 sm:w-1/4"
                           onClick={submitFlagHandler}
                         >
-                          제출
+                          제출 <br className="hidden sm:block" />
+                          {`(${detailProbList.remainedSubmitCount} / ${detailProbList.maxSubmitCount})`}
                         </button>
                       </div>
-                      {flagCheckMsg}
+                      {flagCheckMsg && (
+                        <div
+                          className={`border-2 w-full p-1 rounded-md text-center ${getMsgColor()}`}
+                        >
+                          {flagCheckMsg}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
                 <div className="bg-gray-50 px-4 py-2 sm:px-6 sm:flex sm:flex-row-reverse">
-                  <div className="text-sm text-right text-gray-500 italic">
-                    Author : {detailProbList.creatorName}
+                  <div className="text-sm text-right text-gray-500">
+                    출제자 : {detailProbList.creatorName}
                   </div>
                 </div>
               </Dialog.Panel>

@@ -2,6 +2,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { useEffect } from 'react';
 import { Fragment, useState, forwardRef, useImperativeHandle } from 'react';
 import { useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 const OtherTeamInfoModal = forwardRef(({ otherTeamInfo }, ref) => {
   const [open, setOpen] = useState(false);
@@ -75,8 +76,16 @@ const OtherTeamInfoModal = forwardRef(({ otherTeamInfo }, ref) => {
                         </div>
                         <div className="w-full h-[15em] overflow-y-scroll bg-mainWhite dark:bg-mainBlack dark:border-darkComponent">
                           <ul className="my-5">
-                            <div className="my-1 text-purple-700 font-semibold">
-                              해치운 문제
+                            <div className="my-1 flex flex-row items-center">
+                              <div className="text-purple-700 font-semibold mr-2">
+                                해치운 문제
+                              </div>
+                              <div className="text-slate-400 text-xs">
+                                {clickTeamInfo?.lastSolvedTime &&
+                                  `(마지막 업데이트 ${dayjs(
+                                    clickTeamInfo?.lastSolvedTime
+                                  ).format('YYYY-MM-DD HH:mm:ss')})`}
+                              </div>
                             </div>
                             {clickTeamInfo?.solvedChallengeList.map(
                               (challenge) => (
@@ -88,8 +97,15 @@ const OtherTeamInfoModal = forwardRef(({ otherTeamInfo }, ref) => {
                                     <div className="text-sm font-medium">
                                       {challenge.title}
                                     </div>
-                                    <div className="text-purple-400">
-                                      {challenge.score}
+                                    <div>
+                                      <div className="text-sm text-purple-400 text-right">
+                                        {challenge.score}
+                                      </div>
+                                      <div className="text-xs text-slate-400 text-right">
+                                        {dayjs(challenge.solvedTime).format(
+                                          'MM-DD HH:mm:ss'
+                                        )}
+                                      </div>
                                     </div>
                                   </div>
                                 </li>
