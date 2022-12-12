@@ -76,4 +76,4 @@ jobs:
         with:
           status: ${{ job.status }}
           author_name: Keeper Devlopment Frontend CICD
-          fields: repo, commit, message, author, action, took
+          fields: repo, commit, message, author, job, took

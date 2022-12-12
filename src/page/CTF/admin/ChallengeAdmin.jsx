@@ -179,7 +179,7 @@ const ChallengeAdmin = ({ member, ctfId }) => {
           <div className="p-[2px] mb-2 dark:from-purple-500 dark:via-purple-200 dark:to-amner-200 bg-gradient-to-r from-amber-500 via-amber-200 to-yellow-300  "></div>
 
           <div className="w-full  flex rounded">
-            <table className="text-center h-full w-full bg-white dark:text-white dark:bg-darkPoint">
+            <table className="table-fixed text-center h-full w-full bg-white dark:text-white dark:bg-darkPoint">
               <thead>
                 <tr className=" h-10 w-full bg-gradient-to-r from-amber-400 via-red-800 to-black dark:from-pink-300 dark:via-purple-400 dark:to-indigo-400  text-lg text-white font-extrabold text-center ">
                   <th className="w-2/12">문제</th>
@@ -188,6 +188,7 @@ const ChallengeAdmin = ({ member, ctfId }) => {
 
                   <th className="w-1/12">출제자</th>
                   <th className="w-1/12">점수</th>
+                  <th className="w-2/12">최대 제출 횟수</th>
                   <th className="w-1/12">상태</th>
                   <th className="w-1/12"></th>
                 </tr>
@@ -196,19 +197,20 @@ const ChallengeAdmin = ({ member, ctfId }) => {
                 {rankList.map((info) => (
                   <tr key={info.challengeId} className="h-10 w-full  ">
                     {/* shadow shadow-purple-300 */}
-                    <td>{info.title}</td>
-                    <td>{info.category.name}</td>
-                    <td>{info.flag}</td>
-                    <td>{info.creatorName}</td>
-                    <td>{info.score}</td>
+                    <td className="w-2/12 truncate">{info.title}</td>
+                    <td className="w-2/12 truncate">{info.category.name}</td>
+                    <td className="w-4/12 truncate">{info.flag}</td>
+                    <td className="w-1/12 truncate">{info.creatorName}</td>
+                    <td className="w-1/12 truncate">{info.score}</td>
+                    <td className="w-2/12 truncate">{info.maxSubmitCount}</td>
 
-                    <td className="dark:text-black">
+                    <td className="w-1/12 truncate dark:text-black">
                       <ProbOpenCloseBtn
                         isSolvable={info.isSolvable}
                         challengeId={info.challengeId}
                       />
                     </td>
-                    <td>
+                    <td className="w-1/12 truncate">
                       <DeleteBtn
                         challengeId={info.challengeId}
                         checkedItemHandler={checkedItemHandler}

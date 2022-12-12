@@ -66,7 +66,6 @@ const PointTable = ({ curSort, pointData, setPointData, state }) => {
               벌점
             </p>
           </div>
-          <p className="min-w-[3em] sm:w-[6em] px-1">총점</p>
         </p>
         {pointData?.length !== 0 ? (
           (curSort === '명부'
@@ -149,20 +148,6 @@ const PointTable = ({ curSort, pointData, setPointData, state }) => {
                   </p>
                 </div>
               </div>
-              <p
-                className={
-                  (data.totalMerit < data.totalDemerit
-                    ? 'text-red-500'
-                    : 'text-green-500') +
-                  ' min-w-[3em] sm:w-[6em] flex items-center justify-center'
-                }
-              >
-                <strong className="bg-slate-100 rounded-md w-[2em] h-[2em] p-1 dark:bg-slate-600">
-                  {data.totalMerit < data.totalDemerit
-                    ? data.totalDemerit - data.totalMerit
-                    : data.totalMerit - data.totalDemerit}
-                </strong>
-              </p>
             </button>
           ))
         ) : (

@@ -19,15 +19,14 @@ const ChallengeWrite = ({ member, ctfId }) => {
   const jobs = member?.memberInfo?.jobs;
   const ModalRef = useRef({});
 
+  const MAX_SUBMIT_COUNT_RANGE = {
+    min: 1,
+    max: 50,
+    default: 15,
+  };
+
   // 모달
-  const nameModalRef = useRef({});
-  const categoryModalRef = useRef({});
-  const contentModalRef = useRef({});
-  const flagModalRef = useRef({});
-  const typeModalRef = useRef({});
-  const scoreModalRef = useRef({});
-  const scoreNumModalRef = useRef({});
-  const scoreMaxBiggerThanMinModalRef = useRef({});
+  const errorModalRef = useRef({});
 
   useEffect(() => {
     if (!jobs?.some((i) => auth.includes(i))) {
@@ -43,6 +42,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
 
   const [content, setContent] = useState('');
   const [solvable, setSolvable] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const updateContent = () => {
     const editorInstance = editorRef.current.getInstance();
@@ -56,13 +56,22 @@ const ChallengeWrite = ({ member, ctfId }) => {
     challengeName: '',
     category: 0,
     flag: '',
+    maxSubmitCount: MAX_SUBMIT_COUNT_RANGE.default,
     type: 0,
     score: '',
     maxScore: '',
     minScore: '',
   });
-  const { challengeName, category, flag, type, score, maxScore, minScore } =
-    inputs;
+  const {
+    challengeName,
+    category,
+    flag,
+    maxSubmitCount,
+    type,
+    score,
+    maxScore,
+    minScore,
+  } = inputs;
 
   const onChange = (e) => {
     const { value, name } = e.target;
@@ -131,69 +140,74 @@ const ChallengeWrite = ({ member, ctfId }) => {
   }
 
   const onClick = () => {
-    if (challengeName == '')
-      nameModalRef.current.open(); // 문제명 기입했는지 체크
-    else if (category == 0)
-      categoryModalRef.current.open(); // 유형 선택했는지 체크
-    else if (content == '')
-      contentModalRef.current.open(); // 문제 설명 기입했는지 체크
-    else if (flag == '') flagModalRef.current.open(); // 플래그 기입했는지 체크
-    else if (type == 0) typeModalRef.current.open(); // 타입 선택했는지 체크
+    if (challengeName == '') setErrorMsg('제목을 넣어주세요');
+    else if (category == 0) setErrorMsg('유형을 선택해주세요');
+    else if (content == '') setErrorMsg('문제 설명을 넣어주세요');
+    else if (flag == '') setErrorMsg('플래그를 넣어주세요');
+    else if (maxSubmitCount == '') setErrorMsg('최대 제출 횟수 넣어주세요');
+    else if (
+      maxSubmitCount < MAX_SUBMIT_COUNT_RANGE.min ||
+      maxSubmitCount > MAX_SUBMIT_COUNT_RANGE.max
+    )
+      setErrorMsg('최대 제출 횟수 1이상 50이하의 값만 가능합니다.');
+    else if (type == 0) setErrorMsg('타입을 선택해주세요');
     else if (score == '' && (maxScore == '' || minScore == ''))
-      // 점수 기입했는지 체크
-      scoreModalRef.current.open();
+      setErrorMsg('점수를 넣어주세요');
     else if (isNaN(score) || isNaN(maxScore) || isNaN(minScore))
-      // 점수가 숫자인지 체크
-      scoreNumModalRef.current.open();
+      setErrorMsg('점수는 숫자만 가능합니다');
     else if (Number(maxScore) < Number(minScore))
-      // maxScore가 minScore보다 큰지 체크
-      scoreMaxBiggerThanMinModalRef.current.open();
-    else {
-      ctfAPI
-        .createProb({
-          title: challengeName,
-          content: content,
-          contestId: ctfId,
-          category: {
-            id: Number(category),
-          },
-          type: {
-            id: Number(type),
-          },
-          isSolvable: solvable,
-          score: Number(score),
-          dynamicInfo: {
-            maxScore: Number(maxScore),
-            minScore: Number(minScore),
-          },
-          flag: flag,
-          token: member.token,
-        })
-        .then((data) => {
-          if (data.success) {
-            // console.log(data);
-            if (files.length != 0) {
-              ctfAPI
-                .addProbFile({
-                  challengeId: data.data.challengeId,
-                  files: files,
-                  token: member.token,
-                })
-                .then((data) => {
-                  if (data.success) {
-                    // console.log('good', data);
-                  } else {
-                    // console.log('fail', data);
-                  }
-                });
-            }
-            navigate(`/ctf/admin/challengeAdmin`);
-          } else {
-            // console.log(data);
-            alert('문제 생성 중 오류가 발생하였습니다.');
-          }
-        });
+      setErrorMsg('최고점수는 최저점수보다 더 커야합니다');
+
+    if (errorMsg.length > 0) {
+      errorModalRef.current.open();
+      return;
     }
+
+    ctfAPI
+      .createProb({
+        title: challengeName,
+        content: content,
+        contestId: ctfId,
+        category: {
+          id: Number(category),
+        },
+        type: {
+          id: Number(type),
+        },
+        isSolvable: solvable,
+        score: Number(score),
+        dynamicInfo: {
+          maxScore: Number(maxScore),
+          minScore: Number(minScore),
+        },
+        flag: flag,
+        maxSubmitCount,
+        token: member.token,
+      })
+      .then((data) => {
+        if (data.success) {
+          // console.log(data);
+          if (files.length != 0) {
+            ctfAPI
+              .addProbFile({
+                challengeId: data.data.challengeId,
+                files: files,
+                token: member.token,
+              })
+              .then((data) => {
+                if (data.success) {
+                  // console.log('good', data);
+                } else {
+                  // console.log('fail', data);
+                }
+              });
+          }
+          navigate(`/ctf/admin/challengeAdmin`);
+        } else {
+          // console.log(data);
+          alert('문제 생성 중 오류가 발생하였습니다.');
+        }
+      });
   };
 
   return (
@@ -284,6 +298,23 @@ const ChallengeWrite = ({ member, ctfId }) => {
 
                   <div className="col-span-5 sm:col-span-1">
                     <label
+                      htmlFor="maxSubmitCount"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                    >
+                      최대 제출 횟수
+                    </label>
+                    <input
+                      type="number"
+                      name="maxSubmitCount"
+                      min={MAX_SUBMIT_COUNT_RANGE.min}
+                      max={MAX_SUBMIT_COUNT_RANGE.max}
+                      defaultValue={maxSubmitCount}
+                      onChange={onChange}
+                      className="mt-1  dark:bg-darkComponent dark:border-darkComponent focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div className="col-span-5 sm:col-span-1">
+                    <label
                       htmlFor="type"
                       className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                     >
@@ -346,17 +377,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
         </div>
       </div>
       <AuthModal ref={ModalRef}>CTF관리자만 접근할 수 있습니다</AuthModal>
-
-      <AlertModal ref={nameModalRef}>제목을 넣어주세요</AlertModal>
-      <AlertModal ref={categoryModalRef}>유형을 선택해주세요</AlertModal>
-      <AlertModal ref={contentModalRef}>문제 설명을 넣어주세요</AlertModal>
-      <AlertModal ref={flagModalRef}>플래그를 넣어주세요</AlertModal>
-      <AlertModal ref={typeModalRef}>타입을 선택해주세요</AlertModal>
-      <AlertModal ref={scoreModalRef}>점수를 넣어주세요</AlertModal>
-      <AlertModal ref={scoreNumModalRef}>점수는 숫자만 가능합니다</AlertModal>
-      <AlertModal ref={scoreMaxBiggerThanMinModalRef}>
-        최고점수는 최저점수보다 더 커야합니다
-      </AlertModal>
+      <AlertModal ref={errorModalRef}>{errorMsg}</AlertModal>
     </div>
   );
 };
