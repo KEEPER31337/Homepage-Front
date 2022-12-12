@@ -125,15 +125,8 @@ const ChallengeModal = forwardRef(({ detailProbList, member }, ref) => {
                       </button>
                     </div>
 
-                    <Dialog.Title className="truncate text-center text-xl font-medium text-gray-900 leading-loose m-8">
-                      <Marquee
-                        gradient={false}
-                        speed={10}
-                        className="text-black"
-                      >
-                        {detailProbList.title}
-                      </Marquee>
-
+                    <Dialog.Title className="text-center text-xl font-medium text-gray-900 leading-loose m-8">
+                      {detailProbList.title}
                       <br />
                       {detailProbList.score}
                     </Dialog.Title>
