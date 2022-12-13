@@ -203,10 +203,10 @@ const ChallengeModal = forwardRef(({ pid, member }, ref) => {
                             '/v1/post/download/' +
                             detailProbList.file?.id
                           }
-                          className=" w-full inline-block "
+                          className="mt-14 inline-block "
                           download={detailProbList.file?.fileName}
                         >
-                          <button className="mt-14 p-3 bg-slate-500 flex text-ellipsis rounded-md text-white text-xs">
+                          <button className="p-3 bg-slate-500 flex text-ellipsis rounded-md text-white text-xs">
                             <DownloadIcon
                               className="h-4 w-4 mr-2"
                               aria-hidden="true"
