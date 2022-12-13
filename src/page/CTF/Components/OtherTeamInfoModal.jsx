@@ -102,9 +102,10 @@ const OtherTeamInfoModal = forwardRef(({ otherTeamInfo }, ref) => {
                                         {challenge.score}
                                       </div>
                                       <div className="text-xs text-slate-400 text-right">
-                                        {dayjs(challenge.solvedTime).format(
-                                          'MM-DD HH:mm:ss'
-                                        )}
+                                        {challenge?.solvedTime &&
+                                          dayjs(challenge.solvedTime).format(
+                                            'MM-DD HH:mm:ss'
+                                          )}
                                       </div>
                                     </div>
                                   </div>

@@ -230,7 +230,9 @@ const ChallengeModal = forwardRef(({ pid, member }, ref) => {
                           onClick={submitFlagHandler}
                         >
                           제출 <br className="hidden sm:block" />
-                          {`(${detailProbList.remainedSubmitCount} / ${detailProbList.maxSubmitCount})`}
+                          {detailProbList.remainedSubmitCount &&
+                            detailProbList.maxSubmitCount &&
+                            `(${detailProbList.remainedSubmitCount} / ${detailProbList.maxSubmitCount})`}
                         </button>
                       </div>
                       {flagCheckMsg && (
