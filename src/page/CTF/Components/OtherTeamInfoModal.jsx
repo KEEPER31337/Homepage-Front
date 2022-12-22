@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { Fragment, useState, forwardRef, useImperativeHandle } from 'react';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { Viewer } from '@toast-ui/react-editor';
 
 const OtherTeamInfoModal = forwardRef(({ otherTeamInfo }, ref) => {
   const [open, setOpen] = useState(false);
@@ -39,7 +40,7 @@ const OtherTeamInfoModal = forwardRef(({ otherTeamInfo }, ref) => {
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center text-center">
+            <div className="flex mt-8 min-h-full items-center justify-center text-center">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -53,11 +54,16 @@ const OtherTeamInfoModal = forwardRef(({ otherTeamInfo }, ref) => {
                   <div className="bg-white px-4 pt-5 sm:pb-2 sm:p-6">
                     <div className="mt-3 sm:mt-0 sm:ml-4">
                       <Dialog.Title className="text-center text-xl font-medium text-gray-900 leading-loose m-8">
-                        {clickTeamInfo?.name}
-                        <br />
+                        <Viewer
+                          initialValue={clickTeamInfo?.name}
+                          height="100%"
+                        />
                         {clickTeamInfo?.score}
                         <div className="text-base text-gray-500">
-                          {clickTeamInfo?.description}
+                          <Viewer
+                            initialValue={clickTeamInfo?.description}
+                            height="100%"
+                          />
                         </div>
                       </Dialog.Title>
 

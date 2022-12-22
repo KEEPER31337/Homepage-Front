@@ -96,7 +96,7 @@ const ChallengeAdmin = ({ member, ctfId }) => {
   }, [page]);
 
   return (
-    <div className="md:w-4/5 flex flex-col flex-1 p-3">
+    <div className="md:w-4/5 flex flex-col flex-1 p-3 text-sm">
       <div className="md:flex p-1 mt-2">
         <div className="w-full m-2 ">
           <div className="p-1 bg-white dark:bg-mainBlack dark:text-mainWhite">

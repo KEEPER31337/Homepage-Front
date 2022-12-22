@@ -46,7 +46,7 @@ const Submissions = ({ member, ctfId }) => {
   }, [page]);
 
   return (
-    <div className="md:w-4/5 flex flex-col flex-1 p-3">
+    <div className="md:w-4/5 flex flex-col flex-1 p-3 text-sm">
       <div className="">
         <div className=" w-full container mx-auto justify-center items-center">
           {/* 1. 커스텀 색상 팔레트 */}
@@ -80,8 +80,12 @@ const Submissions = ({ member, ctfId }) => {
                   <tbody className="">
                     {rankList.map((info) => (
                       <tr key={info.id} className="h-10 w-full  ">
-                        <td className="w-2/12 truncate">{info.challengeName}</td>
-                        <td className="w-1/12 truncate">{info.flagSubmitted}</td>
+                        <td className="w-2/12 truncate">
+                          {info.challengeName}
+                        </td>
+                        <td className="w-1/12 truncate">
+                          {info.flagSubmitted}
+                        </td>
                         <td className="w-1/12 truncate">
                           {' '}
                           {info.isCorrect === true ? (
@@ -95,8 +99,12 @@ const Submissions = ({ member, ctfId }) => {
                           )}
                         </td>
 
-                        <td className="w-1/12 truncate">{info.teamName}</td>
-                        <td className="w-1/12 truncate">{info.submitterRealname}</td>
+                        <td className="w-1/12 truncate px-2">
+                          {info.teamName}
+                        </td>
+                        <td className="w-1/12 truncate">
+                          {info.submitterRealname}
+                        </td>
                         <td className="w-4/12 truncate">{info.submitTime}</td>
                       </tr>
                     ))}

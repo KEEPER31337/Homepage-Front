@@ -123,7 +123,7 @@ const Operation = ({ member }) => {
   };
 
   return (
-    <div className="md:w-4/5 flex flex-col flex-1 p-3">
+    <div className="md:w-4/5 flex flex-col flex-1 p-3 text-sm">
       <div className="">
         <div className=" w-full container mx-auto justify-center items-center">
           {/* 1. 커스텀 색상 팔레트 */}
