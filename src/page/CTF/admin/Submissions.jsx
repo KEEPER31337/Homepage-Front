@@ -86,7 +86,7 @@ const Submissions = ({ member, ctfId }) => {
                         </td>
 
                         <TableOverflow info={info.flagSubmitted} />
-                        <td className="w-1/12 truncate">
+                        <td className="w-1/12">
                           {' '}
                           {info.isCorrect === true ? (
                             <div className="bg-green-200 w-full rounded-md mx-1 dark:text-black">
