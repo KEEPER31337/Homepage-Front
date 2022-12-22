@@ -179,8 +179,8 @@ const ChallengeAdmin = ({ member, ctfId }) => {
           </div>
           <div className="p-[2px] mb-2 dark:from-purple-500 dark:via-purple-200 dark:to-amner-200 bg-gradient-to-r from-amber-500 via-amber-200 to-yellow-300  "></div>
 
-          <div className="w-full  flex rounded">
-            <table className="table-fixed text-center h-full w-full bg-white dark:text-white dark:bg-darkPoint">
+          <div className="w-full h-[450px] flex rounded">
+            <table className="table-fixed text-center h-fit w-full bg-white dark:text-white dark:bg-darkPoint">
               <thead>
                 <tr className=" h-10 w-full bg-gradient-to-r from-amber-400 via-red-800 to-black dark:from-pink-300 dark:via-purple-400 dark:to-indigo-400  text-lg text-white font-extrabold text-center ">
                   <th className="w-2/12">문제</th>

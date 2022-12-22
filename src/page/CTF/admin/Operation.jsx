@@ -164,8 +164,8 @@ const Operation = ({ member }) => {
               {/* 2.  프로필 이미지 + 팔로우 + 포인트 */}
 
               <div className="w-full">
-                <div className="w-full h-full inline-block rounded overflow-hidden text-center">
-                  <table className="text-center h-full w-full bg-white dark:text-white dark:bg-darkPoint">
+                <div className="w-full h-[450px] inline-block rounded overflow-hidden text-center">
+                  <table className="text-center h-fit w-full bg-white dark:text-white dark:bg-darkPoint">
                     <thead>
                       <tr className="h-10 w-full bg-gradient-to-r from-amber-400 via-red-800 to-black dark:from-pink-300 dark:via-purple-400 dark:to-indigo-400  text-lg text-white font-extrabold text-center ">
                         {tableHead.map((head, headIdx) => (
