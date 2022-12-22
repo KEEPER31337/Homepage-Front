@@ -10,6 +10,7 @@ import AuthModal from '../Components/AuthModal';
 import ProbOpenCloseBtn from '../Components/ProbOpenCloseBtn';
 import DeleteBtn from '../Components/DeleteBtn';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
+import TableOverflow from '../Components/TableOverflow';
 
 const ChallengeAdmin = ({ member, ctfId }) => {
   const [rankList, setRankList] = useState([]);
@@ -199,7 +200,7 @@ const ChallengeAdmin = ({ member, ctfId }) => {
                     {/* shadow shadow-purple-300 */}
                     <td className="w-2/12 truncate">{info.title}</td>
                     <td className="w-2/12 truncate">{info.category.name}</td>
-                    <td className="w-4/12 truncate">{info.flag}</td>
+                    <TableOverflow info={info.flag} />
                     <td className="w-1/12 truncate">{info.creatorName}</td>
                     <td className="w-1/12 truncate">{info.score}</td>
                     <td className="w-2/12 truncate">{info.maxSubmitCount}</td>

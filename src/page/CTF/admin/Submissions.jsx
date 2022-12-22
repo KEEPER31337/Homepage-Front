@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
 import AuthModal from '../Components/AuthModal';
+import TableOverflow from '../Components/TableOverflow';
 
 import ctfAPI from 'API/v1/ctf';
 const Submissions = ({ member, ctfId }) => {
@@ -83,9 +84,8 @@ const Submissions = ({ member, ctfId }) => {
                         <td className="w-2/12 truncate">
                           {info.challengeName}
                         </td>
-                        <td className="w-1/12 truncate">
-                          {info.flagSubmitted}
-                        </td>
+
+                        <TableOverflow info={info.flagSubmitted} />
                         <td className="w-1/12 truncate">
                           {' '}
                           {info.isCorrect === true ? (
