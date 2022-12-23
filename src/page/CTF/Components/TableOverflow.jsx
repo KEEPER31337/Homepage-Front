@@ -9,7 +9,7 @@ const TableOverflow = ({ info }) => {
   };
   const Truncate = () => {
     return (
-      <td onClick={updateIsTruncate} className="truncate">
+      <td onClick={updateIsTruncate} className="truncate hover:bg-slate-100">
         {info}
       </td>
     );
@@ -17,7 +17,7 @@ const TableOverflow = ({ info }) => {
 
   const BreakAll = () => {
     return (
-      <td onClick={updateIsTruncate} className="break-all">
+      <td onClick={updateIsTruncate} className="break-all hover:bg-slate-100">
         {info}
       </td>
     );
