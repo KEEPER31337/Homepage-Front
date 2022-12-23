@@ -141,74 +141,87 @@ const ChallengeWrite = ({ member, ctfId }) => {
   }
 
   const onClick = () => {
-    if (challengeName == '') setErrorMsg('제목을 넣어주세요');
-    else if (categories.length === 0) setErrorMsg('유형을 선택해주세요');
-    else if (content == '') setErrorMsg('문제 설명을 넣어주세요');
-    else if (flag == '') setErrorMsg('플래그를 넣어주세요');
-    else if (flag.length > 30)
+    if (challengeName == '') {
+      setErrorMsg('제목을 넣어주세요');
+      errorModalRef.current.open();
+    } else if (categories.length === 0) {
+      setErrorMsg('유형을 선택해주세요');
+      errorModalRef.current.open();
+    } else if (content == '') {
+      setErrorMsg('문제 설명을 넣어주세요');
+      errorModalRef.current.open();
+    } else if (flag == '') {
+      setErrorMsg('플래그를 넣어주세요');
+      errorModalRef.current.open();
+    } else if (flag.length > 30) {
       setErrorMsg('플래그는 30이하의 글자수만 가능합니다.');
-    else if (maxSubmitCount == '') setErrorMsg('최대 제출 횟수 넣어주세요');
-    else if (
+      errorModalRef.current.open();
+    } else if (maxSubmitCount == '') {
+      setErrorMsg('최대 제출 횟수 넣어주세요');
+      errorModalRef.current.open();
+    } else if (
       maxSubmitCount < MAX_SUBMIT_COUNT_RANGE.min ||
       maxSubmitCount > MAX_SUBMIT_COUNT_RANGE.max
-    )
+    ) {
       setErrorMsg('최대 제출 횟수 1이상 50이하의 값만 가능합니다.');
-    else if (type == 0) setErrorMsg('타입을 선택해주세요');
-    else if (score == '' && (maxScore == '' || minScore == ''))
-      setErrorMsg('점수를 넣어주세요');
-    else if (isNaN(score) || isNaN(maxScore) || isNaN(minScore))
-      setErrorMsg('점수는 숫자만 가능합니다');
-    else if (Number(maxScore) < Number(minScore))
-      setErrorMsg('최고점수는 최저점수보다 더 커야합니다');
-
-    if (errorMsg.length > 0) {
       errorModalRef.current.open();
-      return;
-    }
-
-    ctfAPI
-      .createProb({
-        title: challengeName,
-        content: content,
-        contestId: ctfId,
-        categories: categories,
-        type: {
-          id: Number(type),
-        },
-        isSolvable: solvable,
-        score: Number(score),
-        dynamicInfo: {
-          maxScore: Number(maxScore),
-          minScore: Number(minScore),
-        },
-        flag: flag,
-        maxSubmitCount,
-        token: member.token,
-      })
-      .then((data) => {
-        if (data.success) {
-          // console.log(data);
-          if (files.length != 0) {
-            ctfAPI
-              .addProbFile({
-                challengeId: data.data.challengeId,
-                files: files,
-                token: member.token,
-              })
-              .then((data) => {
-                if (data.success) {
-                  // console.log('good', data);
-                } else {
-                  // console.log('fail', data);
-                }
-              });
+    } else if (type == 0) {
+      setErrorMsg('타입을 선택해주세요');
+      errorModalRef.current.open();
+    } else if (score == '' && (maxScore == '' || minScore == '')) {
+      setErrorMsg('점수를 넣어주세요');
+      errorModalRef.current.open();
+    } else if (isNaN(score) || isNaN(maxScore) || isNaN(minScore)) {
+      setErrorMsg('점수는 숫자만 가능합니다');
+      errorModalRef.current.open();
+    } else if (Number(maxScore) < Number(minScore)) {
+      setErrorMsg('최고점수는 최저점수보다 더 커야합니다');
+      errorModalRef.current.open();
+    } else {
+      ctfAPI
+        .createProb({
+          title: challengeName,
+          content: content,
+          contestId: ctfId,
+          categories: categories,
+          type: {
+            id: Number(type),
+          },
+          isSolvable: solvable,
+          score: Number(score),
+          dynamicInfo: {
+            maxScore: Number(maxScore),
+            minScore: Number(minScore),
+          },
+          flag: flag,
+          maxSubmitCount,
+          token: member.token,
+        })
+        .then((data) => {
+          if (data.success) {
+            // console.log(data);
+            if (files.length != 0) {
+              ctfAPI
+                .addProbFile({
+                  challengeId: data.data.challengeId,
+                  files: files,
+                  token: member.token,
+                })
+                .then((data) => {
+                  if (data.success) {
+                    // console.log('good', data);
+                  } else {
+                    // console.log('fail', data);
+                  }
+                });
+            }
+            navigate(`/ctf/admin/challengeAdmin`);
+          } else {
+            // console.log(data);
+            alert('문제 생성 중 오류가 발생하였습니다.');
           }
-          navigate(`/ctf/admin/challengeAdmin`);
-        } else {
-          // console.log(data);
-          alert('문제 생성 중 오류가 발생하였습니다.');
-        }
-      });
+        });
+    }
   };
 
   return (
