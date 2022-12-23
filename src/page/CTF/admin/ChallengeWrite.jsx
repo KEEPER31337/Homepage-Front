@@ -10,6 +10,7 @@ import AlertModal from '../Components/AlertModal';
 
 // API
 import ctfAPI from 'API/v1/ctf';
+import CategorySelector from '../Components/CategorySelector';
 
 //TODO 반응형
 
@@ -54,7 +55,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
 
   const [inputs, setInputs] = useState({
     challengeName: '',
-    category: 0,
+    categories: [],
     flag: '',
     maxSubmitCount: MAX_SUBMIT_COUNT_RANGE.default,
     type: 0,
@@ -64,7 +65,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
   });
   const {
     challengeName,
-    category,
+    categories,
     flag,
     maxSubmitCount,
     type,
@@ -141,7 +142,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
 
   const onClick = () => {
     if (challengeName == '') setErrorMsg('제목을 넣어주세요');
-    else if (category == 0) setErrorMsg('유형을 선택해주세요');
+    else if (categories.length === 0) setErrorMsg('유형을 선택해주세요');
     else if (content == '') setErrorMsg('문제 설명을 넣어주세요');
     else if (flag == '') setErrorMsg('플래그를 넣어주세요');
     else if (flag.length > 30)
@@ -170,9 +171,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
         title: challengeName,
         content: content,
         contestId: ctfId,
-        category: {
-          id: Number(category),
-        },
+        categories: categories,
         type: {
           id: Number(type),
         },
@@ -237,28 +236,10 @@ const ChallengeWrite = ({ member, ctfId }) => {
                   </div>
 
                   <div className="col-span-5 sm:col-span-1">
-                    <label
-                      htmlFor="category"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                    >
-                      유형
-                    </label>
-                    <select
-                      name="category"
+                    <CategorySelector
+                      categories={categories}
                       onChange={onChange}
-                      defaultValue={category}
-                      className="mt-1 dark:bg-darkComponent dark:border-darkComponent block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    >
-                      {/* TODO map 사용하는 걸로 수정하자! */}
-                      <option value={0}>선택</option>
-                      <option value={5}>WEB</option>
-                      <option value={2}>SYSTEM</option>
-                      <option value={3}>REVERSING</option>
-                      <option value={6}>CRYPTO</option>
-                      <option value={4}>FORENSICS</option>
-                      <option value={1}>MISC</option>
-                      <option value={7}>OSINT</option>
-                    </select>
+                    />
                   </div>
 
                   <div className="col-span-5 sm:col-span-5">

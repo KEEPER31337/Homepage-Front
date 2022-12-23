@@ -221,7 +221,14 @@ const Team = ({ member, ctfId, updateCtfTeamName }) => {
                     className="w-11/12 h-10 text-center hover:bg-gray-100 dark:hover:bg-[#0b1523]"
                   >
                     <td className="w-1/3 truncate">{info.title}</td>
-                    <td className="w-1/3 truncate">{info.category.name}</td>
+                    <td className="w-1/3 truncate">
+                      {info.categories.map((category, categoryIdx) => {
+                        if (categoryIdx === info.categories.length - 1) {
+                          return category.name;
+                        }
+                        return category.name + ', ';
+                      })}
+                    </td>
                     <td className="w-1/3 truncate">{info.score}</td>
                     <td className="w-1/3 truncate">
                       {info.solvedTime
