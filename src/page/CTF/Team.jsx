@@ -146,22 +146,12 @@ const Team = ({ member, ctfId, updateCtfTeamName }) => {
   const TopSection = () => {
     return (
       <>
-        <div className="pt-12 text-center grid grid-cols-1 content-center dark:text-white">
+        <div className="pt-12 w-full text-center grid grid-cols-1 content-center dark:text-white">
           {/* <div className="text-5xl m-2 font-extrabold truncate">{teamName}</div> */}
-          {teamName?.length > 20 ? (
-            <Marquee
-              gradient={false}
-              speed={10}
-              className="text-5xl m-2 font-extrabold truncate"
-            >
-              {teamName}
-            </Marquee>
-          ) : (
-            <div className="text-5xl m-2 font-extrabold truncate">
-              {teamName}
-            </div>
-          )}
-          <div className="text-2xl ">{teamDes}</div>
+          <div className="text-5xl m-2 font-extrabold w-full break-all">
+            {teamName}
+          </div>
+          <div className="text-2xl w-full break-all">{teamDes}</div>
           <div>{teamScore} points</div>
         </div>
         <div className="flex justify-center m-2">

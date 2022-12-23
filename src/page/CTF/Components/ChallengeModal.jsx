@@ -27,10 +27,7 @@ const ChallengeModal = forwardRef(({ pid, member }, ref) => {
     challengeId: null,
     title: null,
     content: null,
-    category: {
-      id: null,
-      name: null,
-    },
+    categories: [],
     score: null,
     creatorName: null,
     contestId: null,

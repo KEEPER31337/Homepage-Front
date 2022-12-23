@@ -26,7 +26,10 @@ const ChallengeCard = (props) => {
           <div className="truncate">{score}</div>
           <div className="flex px-3 justify-center">
             {categories?.map((category) => (
-              <div className="rounded text-xs mt-3 mx-1 px-1 bg-teal-900 text-white">
+              <div
+                key={category.id}
+                className="rounded text-xs mt-3 mx-1 px-1 bg-teal-900 text-white"
+              >
                 {category.name}
               </div>
             ))}
