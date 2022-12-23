@@ -198,7 +198,14 @@ const ChallengeAdmin = ({ member, ctfId }) => {
                   <tr key={info.challengeId} className="h-10 w-full  ">
                     {/* shadow shadow-purple-300 */}
                     <td className="w-2/12 truncate">{info.title}</td>
-                    <td className="w-2/12 truncate">{info.category.name}</td>
+                    <td className="w-2/12 truncate">
+                      {info.categories.map((category, categoryIdx) => {
+                        if (categoryIdx === info.categories.length - 1) {
+                          return category.name;
+                        }
+                        return category.name + ', ';
+                      })}
+                    </td>
                     <td className="w-4/12 truncate">{info.flag}</td>
                     <td className="w-1/12 truncate">{info.creatorName}</td>
                     <td className="w-1/12 truncate">{info.score}</td>
