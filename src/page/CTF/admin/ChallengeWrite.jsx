@@ -264,7 +264,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
                       htmlFor="flag"
                       className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                     >
-                      플래그
+                      {`플래그 (${flag.length}/30)`}
                     </label>
                     <input
                       type="text"
