@@ -21,8 +21,9 @@ const AuthUser = ({ member, signOut, children }) => {
       const reduxState = JSON.parse(
         window.localStorage.getItem('persist:root')
       );
-      const token = JSON.parse(reduxState.token ?? null);
-      if (!token) {
+      const member = JSON.parse(reduxState.member ?? null);
+      if (!member?.token) {
+        signOut();
         navigate('/signIn');
       }
     }

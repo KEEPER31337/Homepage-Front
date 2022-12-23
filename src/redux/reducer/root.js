@@ -14,17 +14,17 @@ import reducerVote from './vote';
 const persistConfig = {
   key: 'root',
   storage,
-  // TODO : whitelist
+  whitelist: ['boardState', 'darkMode', 'member', 'ctf', 'vote'],
 };
 
 const rootReducer = combineReducers({
-  boardState: persistReducer(persistConfig, reducerBoardState),
-  darkMode: persistReducer(persistConfig, reducerDarkMode),
-  member: persistReducer(persistConfig, reducerMember),
+  boardState: reducerBoardState,
+  darkMode: reducerDarkMode,
+  member: reducerMember,
   //chat: persistReducer(persistConfig, reducerChat),
-  ctf: persistReducer(persistConfig, reducerCtf),
-  vote: persistReducer(persistConfig, reducerVote),
+  ctf: reducerCtf,
+  vote: reducerVote,
   category: reducerCategory,
 });
 
-export default rootReducer;
+export default persistReducer(persistConfig, rootReducer);
