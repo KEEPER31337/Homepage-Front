@@ -13,10 +13,7 @@ const Challenge = ({ member, ctfId }) => {
     {
       challengeId: null,
       title: null,
-      category: {
-        id: null,
-        name: null,
-      },
+      categories: [],
       score: null,
       isSolved: null,
       contestId: null,
