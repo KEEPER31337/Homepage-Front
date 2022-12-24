@@ -20,7 +20,6 @@ const ScoreBoardRank = ({ state, rankList }) => {
 
   const clickTeamHandler = (info) => {
     //console.log(info, state.member.token);
-    otherTeamInfoModalRef.current.open();
     ctfAPI
       .seeTeamDetail({
         teamId: info.id,
@@ -30,6 +29,7 @@ const ScoreBoardRank = ({ state, rankList }) => {
         if (data.success) {
           //console.log(data);
           setOtherTeamInfo(data.data);
+          otherTeamInfoModalRef.current.open();
         }
       });
   };
