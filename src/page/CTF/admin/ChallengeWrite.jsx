@@ -153,8 +153,8 @@ const ChallengeWrite = ({ member, ctfId }) => {
     } else if (flag == '') {
       setErrorMsg('플래그를 넣어주세요');
       errorModalRef.current.open();
-    } else if (flag.length > 30) {
-      setErrorMsg('플래그는 30이하의 글자수만 가능합니다.');
+    } else if (flag.length > 200) {
+      setErrorMsg('플래그는 200이하의 글자수만 가능합니다.');
       errorModalRef.current.open();
     } else if (maxSubmitCount == '') {
       setErrorMsg('최대 제출 횟수 넣어주세요');
@@ -277,7 +277,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
                       htmlFor="flag"
                       className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                     >
-                      {`플래그 (${flag.length}/30)`}
+                      {`플래그 (${flag.length}/200)`}
                     </label>
                     <input
                       type="text"
