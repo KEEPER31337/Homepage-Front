@@ -7,12 +7,6 @@ import { Viewer } from '@toast-ui/react-editor';
 
 const OtherTeamInfoModal = forwardRef(({ otherTeamInfo }, ref) => {
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
-  const [clickTeamInfo, setClickTeamInfo] = useState(otherTeamInfo);
-
-  useEffect(() => {
-    setClickTeamInfo(otherTeamInfo);
-  }, [otherTeamInfo]);
 
   const closeModal = () => {
     setOpen(false);
@@ -55,13 +49,13 @@ const OtherTeamInfoModal = forwardRef(({ otherTeamInfo }, ref) => {
                     <div className="mt-3 sm:mt-0 sm:ml-4">
                       <Dialog.Title className="text-center text-xl font-medium text-gray-900 leading-loose m-8">
                         <Viewer
-                          initialValue={clickTeamInfo?.name}
+                          initialValue={otherTeamInfo?.name}
                           height="100%"
                         />
-                        {clickTeamInfo?.score}
+                        {otherTeamInfo?.score}
                         <div className="text-base text-gray-500">
                           <Viewer
-                            initialValue={clickTeamInfo?.description}
+                            initialValue={otherTeamInfo?.description}
                             height="100%"
                           />
                         </div>
@@ -72,7 +66,7 @@ const OtherTeamInfoModal = forwardRef(({ otherTeamInfo }, ref) => {
                           <div className="my-1 text-purple-700 font-semibold">
                             팀원
                           </div>
-                          {clickTeamInfo?.teamMembers.map((member) => (
+                          {otherTeamInfo?.teamMembers.map((member) => (
                             <div className="inline-block" key={member.id}>
                               <span className="flex justify-between bg-mainWhite border border-gray-300 min-w-[5em] px-2 py-1 m-[1px] text-sm rounded-full dark:bg-mainBlack">
                                 <span>{member.nickName}</span>
@@ -87,13 +81,13 @@ const OtherTeamInfoModal = forwardRef(({ otherTeamInfo }, ref) => {
                                 해치운 문제
                               </div>
                               <div className="text-slate-400 text-xs">
-                                {clickTeamInfo?.lastSolvedTime &&
+                                {otherTeamInfo?.lastSolvedTime &&
                                   `(마지막 업데이트 ${dayjs(
-                                    clickTeamInfo?.lastSolvedTime
+                                    otherTeamInfo?.lastSolvedTime
                                   ).format('YYYY-MM-DD HH:mm:ss')})`}
                               </div>
                             </div>
-                            {clickTeamInfo?.solvedChallengeList.map(
+                            {otherTeamInfo?.solvedChallengeList.map(
                               (challenge) => (
                                 <li
                                   className="border px-2 flex justify-between items-center group dark:hover:bg-gray-800 dark:border-darkComponent"
