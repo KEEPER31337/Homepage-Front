@@ -146,22 +146,12 @@ const Team = ({ member, ctfId, updateCtfTeamName }) => {
   const TopSection = () => {
     return (
       <>
-        <div className="pt-12 text-center grid grid-cols-1 content-center dark:text-white">
+        <div className="pt-12 w-full text-center grid grid-cols-1 content-center dark:text-white">
           {/* <div className="text-5xl m-2 font-extrabold truncate">{teamName}</div> */}
-          {teamName?.length > 20 ? (
-            <Marquee
-              gradient={false}
-              speed={10}
-              className="text-5xl m-2 font-extrabold truncate"
-            >
-              {teamName}
-            </Marquee>
-          ) : (
-            <div className="text-5xl m-2 font-extrabold truncate">
-              {teamName}
-            </div>
-          )}
-          <div className="text-2xl ">{teamDes}</div>
+          <div className="text-5xl m-2 font-extrabold w-full break-all">
+            {teamName}
+          </div>
+          <div className="text-2xl w-full break-all">{teamDes}</div>
           <div>{teamScore} points</div>
         </div>
         <div className="flex justify-center m-2">
@@ -231,7 +221,14 @@ const Team = ({ member, ctfId, updateCtfTeamName }) => {
                     className="w-11/12 h-10 text-center hover:bg-gray-100 dark:hover:bg-[#0b1523]"
                   >
                     <td className="w-1/3 truncate">{info.title}</td>
-                    <td className="w-1/3 truncate">{info.category.name}</td>
+                    <td className="w-1/3 truncate">
+                      {info.categories.map((category, categoryIdx) => {
+                        if (categoryIdx === info.categories.length - 1) {
+                          return category.name;
+                        }
+                        return category.name + ', ';
+                      })}
+                    </td>
                     <td className="w-1/3 truncate">{info.score}</td>
                     <td className="w-1/3 truncate">
                       {info.solvedTime

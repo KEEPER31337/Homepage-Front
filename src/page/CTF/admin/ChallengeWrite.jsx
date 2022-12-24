@@ -10,6 +10,7 @@ import AlertModal from '../Components/AlertModal';
 
 // API
 import ctfAPI from 'API/v1/ctf';
+import CategorySelector from '../Components/CategorySelector';
 
 //TODO 반응형
 
@@ -54,7 +55,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
 
   const [inputs, setInputs] = useState({
     challengeName: '',
-    category: 0,
+    categories: [],
     flag: '',
     maxSubmitCount: MAX_SUBMIT_COUNT_RANGE.default,
     type: 0,
@@ -64,7 +65,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
   });
   const {
     challengeName,
-    category,
+    categories,
     flag,
     maxSubmitCount,
     type,
@@ -140,74 +141,87 @@ const ChallengeWrite = ({ member, ctfId }) => {
   }
 
   const onClick = () => {
-    if (challengeName == '') setErrorMsg('제목을 넣어주세요');
-    else if (category == 0) setErrorMsg('유형을 선택해주세요');
-    else if (content == '') setErrorMsg('문제 설명을 넣어주세요');
-    else if (flag == '') setErrorMsg('플래그를 넣어주세요');
-    else if (maxSubmitCount == '') setErrorMsg('최대 제출 횟수 넣어주세요');
-    else if (
+    if (challengeName == '') {
+      setErrorMsg('제목을 넣어주세요');
+      errorModalRef.current.open();
+    } else if (categories.length === 0) {
+      setErrorMsg('유형을 선택해주세요');
+      errorModalRef.current.open();
+    } else if (content == '') {
+      setErrorMsg('문제 설명을 넣어주세요');
+      errorModalRef.current.open();
+    } else if (flag == '') {
+      setErrorMsg('플래그를 넣어주세요');
+      errorModalRef.current.open();
+    } else if (flag.length > 200) {
+      setErrorMsg('플래그는 200이하의 글자수만 가능합니다.');
+      errorModalRef.current.open();
+    } else if (maxSubmitCount == '') {
+      setErrorMsg('최대 제출 횟수 넣어주세요');
+      errorModalRef.current.open();
+    } else if (
       maxSubmitCount < MAX_SUBMIT_COUNT_RANGE.min ||
       maxSubmitCount > MAX_SUBMIT_COUNT_RANGE.max
-    )
+    ) {
       setErrorMsg('최대 제출 횟수 1이상 50이하의 값만 가능합니다.');
-    else if (type == 0) setErrorMsg('타입을 선택해주세요');
-    else if (score == '' && (maxScore == '' || minScore == ''))
-      setErrorMsg('점수를 넣어주세요');
-    else if (isNaN(score) || isNaN(maxScore) || isNaN(minScore))
-      setErrorMsg('점수는 숫자만 가능합니다');
-    else if (Number(maxScore) < Number(minScore))
-      setErrorMsg('최고점수는 최저점수보다 더 커야합니다');
-
-    if (errorMsg.length > 0) {
       errorModalRef.current.open();
-      return;
-    }
-
-    ctfAPI
-      .createProb({
-        title: challengeName,
-        content: content,
-        contestId: ctfId,
-        category: {
-          id: Number(category),
-        },
-        type: {
-          id: Number(type),
-        },
-        isSolvable: solvable,
-        score: Number(score),
-        dynamicInfo: {
-          maxScore: Number(maxScore),
-          minScore: Number(minScore),
-        },
-        flag: flag,
-        maxSubmitCount,
-        token: member.token,
-      })
-      .then((data) => {
-        if (data.success) {
-          // console.log(data);
-          if (files.length != 0) {
-            ctfAPI
-              .addProbFile({
-                challengeId: data.data.challengeId,
-                files: files,
-                token: member.token,
-              })
-              .then((data) => {
-                if (data.success) {
-                  // console.log('good', data);
-                } else {
-                  // console.log('fail', data);
-                }
-              });
+    } else if (type == 0) {
+      setErrorMsg('타입을 선택해주세요');
+      errorModalRef.current.open();
+    } else if (score == '' && (maxScore == '' || minScore == '')) {
+      setErrorMsg('점수를 넣어주세요');
+      errorModalRef.current.open();
+    } else if (isNaN(score) || isNaN(maxScore) || isNaN(minScore)) {
+      setErrorMsg('점수는 숫자만 가능합니다');
+      errorModalRef.current.open();
+    } else if (Number(maxScore) < Number(minScore)) {
+      setErrorMsg('최고점수는 최저점수보다 더 커야합니다');
+      errorModalRef.current.open();
+    } else {
+      ctfAPI
+        .createProb({
+          title: challengeName,
+          content: content,
+          contestId: ctfId,
+          categories: categories,
+          type: {
+            id: Number(type),
+          },
+          isSolvable: solvable,
+          score: Number(score),
+          dynamicInfo: {
+            maxScore: Number(maxScore),
+            minScore: Number(minScore),
+          },
+          flag: flag,
+          maxSubmitCount,
+          token: member.token,
+        })
+        .then((data) => {
+          if (data.success) {
+            // console.log(data);
+            if (files.length != 0) {
+              ctfAPI
+                .addProbFile({
+                  challengeId: data.data.challengeId,
+                  files: files,
+                  token: member.token,
+                })
+                .then((data) => {
+                  if (data.success) {
+                    // console.log('good', data);
+                  } else {
+                    // console.log('fail', data);
+                  }
+                });
+            }
+            navigate(`/ctf/admin/challengeAdmin`);
+          } else {
+            // console.log(data);
+            alert('문제 생성 중 오류가 발생하였습니다.');
           }
-          navigate(`/ctf/admin/challengeAdmin`);
-        } else {
-          // console.log(data);
-          alert('문제 생성 중 오류가 발생하였습니다.');
-        }
-      });
+        });
+    }
   };
 
   return (
@@ -235,28 +249,10 @@ const ChallengeWrite = ({ member, ctfId }) => {
                   </div>
 
                   <div className="col-span-5 sm:col-span-1">
-                    <label
-                      htmlFor="category"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                    >
-                      유형
-                    </label>
-                    <select
-                      name="category"
+                    <CategorySelector
+                      categories={categories}
                       onChange={onChange}
-                      defaultValue={category}
-                      className="mt-1 dark:bg-darkComponent dark:border-darkComponent block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    >
-                      {/* TODO map 사용하는 걸로 수정하자! */}
-                      <option value={0}>선택</option>
-                      <option value={5}>WEB</option>
-                      <option value={2}>SYSTEM</option>
-                      <option value={3}>REVERSING</option>
-                      <option value={6}>CRYPTO</option>
-                      <option value={4}>FORENSICS</option>
-                      <option value={1}>MISC</option>
-                      <option value={7}>OSINT</option>
-                    </select>
+                    />
                   </div>
 
                   <div className="col-span-5 sm:col-span-5">
@@ -281,7 +277,7 @@ const ChallengeWrite = ({ member, ctfId }) => {
                       htmlFor="flag"
                       className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                     >
-                      플래그
+                      {`플래그 (${flag.length}/200)`}
                     </label>
                     <input
                       type="text"

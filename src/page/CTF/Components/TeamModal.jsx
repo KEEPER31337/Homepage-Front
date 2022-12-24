@@ -38,8 +38,8 @@ const TeamModal = forwardRef((props, ref) => {
             <div className="fixed inset-0 bg-black bg-opacity-70" />
           </Transition.Child>
 
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center text-center">
+          <div className="bg-red-100 fixed inset-0 overflow-y-auto">
+            <div className="flex h-full items-center justify-center text-center">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
