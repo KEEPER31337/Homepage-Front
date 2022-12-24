@@ -31,11 +31,11 @@ const Header = ({ member }) => {
     <>
       <Popover className="relative bg-mainWhite dark:bg-mainBlack z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex justify-between items-center border-b-2 border-gray-100 dark:border-darkComponent py-6 md:justify-start md:space-x-10">
-            <div className="flex justify-start lg:w-0 lg:flex-1">
+          <div className="flex justify-between items-center border-b-2 border-gray-100 dark:border-darkComponent py-6">
+            <div className="flex justify-start">
               <Link to="/">
                 <span className="sr-only">Workflow</span>
-                <img className="h-8 w-auto sm:h-10" src={Logo} alt="" />
+                <img className="h-8 w-auto xl:h-10" src={Logo} alt="" />
               </Link>
             </div>
             <div className="-mr-2 -my-2 md:hidden">
@@ -46,7 +46,7 @@ const Header = ({ member }) => {
             </div>
             <Popover.Group
               as="nav"
-              className="hidden md:flex space-x-10 md:space-x-5"
+              className="hidden md:flex space-x-3 lg:space-x-5"
             >
               {categories.map((category, index) => (
                 <HeaderPopDown key={index} category={category} />
