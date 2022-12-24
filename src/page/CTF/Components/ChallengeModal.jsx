@@ -132,7 +132,7 @@ const ChallengeModal = forwardRef(({ pid, member }, ref) => {
           alert('문제 세부 목록을 받아오는 중 오류가 발생하였습니다.');
         }
       });
-  }, [flagCheckMsg]);
+  }, [pid, flagCheckMsg]);
 
   return (
     <Transition.Root show={open} as={Fragment}>
