@@ -14,8 +14,6 @@ import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
 import { Viewer } from '@toast-ui/react-editor';
 import Marquee from 'react-fast-marquee';
 import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
 
 // API
 import ctfAPI from 'API/v1/ctf';
@@ -95,13 +93,12 @@ const ChallengeModal = forwardRef(({ pid, member }, ref) => {
       return;
     }
 
-    dayjs.extend(utc);
-    dayjs.extend(timezone);
-    const timeDiff = dayjs().tz().diff(lastTryTime, 's');
+    const timeDiff =
+      (new Date().getTime() - new Date(lastTryTime).getTime()) / 1000;
 
     if (timeDiff <= FLAG_WAITING_TIME) {
       setFlagCheckMsg(
-        `${FLAG_WAITING_TIME - timeDiff}초 뒤 다시 시도해주세요.`
+        `${Math.ceil(FLAG_WAITING_TIME - timeDiff)}초 뒤 다시 시도해주세요.`
       );
       return;
     }
