@@ -105,13 +105,13 @@ const NavigationLayout = ({ isDark, member, ctfId, ctfName, ctfTeamName }) => {
   const cancelButtonRef = useRef();
 
   const ctfNameView1 = (
-    <div className="absolute inset-x-0 bottom-5 mx-5 px-5 items-center py-3 font-bold rounded-md border-2 border-mainYellow text-mainYellow text-center bg-amber-100 dark:bg-opacity-20  ">
+    <div className="truncate absolute inset-x-0 bottom-5 mx-5 px-5 items-center py-3 font-bold rounded-md border-2 border-mainYellow text-mainYellow text-center bg-amber-100 dark:bg-opacity-20  ">
       {ctfName}
     </div>
   );
 
   const ctfNameView2 = (
-    <div className="bottom-full mx-5 px-5 items-center py-3 font-bold rounded-md border-2 border-mainYellow text-mainYellow text-center bg-amber-100 dark:bg-opacity-20  ">
+    <div className="truncate bottom-full mx-5 px-5 items-center py-3 font-bold rounded-md border-2 border-mainYellow text-mainYellow text-center bg-amber-100 dark:bg-opacity-20  ">
       {ctfName}
     </div>
   );

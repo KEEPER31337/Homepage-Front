@@ -39,7 +39,7 @@ function Trends({ postList }) {
                 className="w-[300px] grow-0 shrink-0 flex flex-col rounded-lg shadow-lg overflow-hidden"
               >
                 <div className="flex-shrink-0">
-                  <Link to={`/post/${post.categoryId}/${post.id}`}>
+                  <Link to={`/post/${post.category}/${post.id}`}>
                     <img
                       className="h-48 w-full object-scale-down"
                       src={post.thumbnailPath ? post.thumbnailPath : StringLogo}
@@ -51,12 +51,12 @@ function Trends({ postList }) {
                 <div className="flex-1 bg-mainWhite dark:bg-mainBlack p-6 flex flex-col justify-between">
                   <div className="flex-1">
                     <Link
-                      to={`/board/${post.categoryId}`}
+                      to={`/board/${post.category}`}
                       className="text-sm font-medium text-mainYellow hover:underline"
                     >
                       {post.category}
                     </Link>
-                    <Link to={`/post/${post.categoryId}/${post.id}`}>
+                    <Link to={`/post/${post.category}/${post.id}`}>
                       <p className="block mt-2 truncate text-xl font-semibold dark:text-mainWhite">
                         {post.title}
                       </p>

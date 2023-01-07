@@ -20,7 +20,6 @@ const ScoreBoardRank = ({ state, rankList }) => {
 
   const clickTeamHandler = (info) => {
     //console.log(info, state.member.token);
-    otherTeamInfoModalRef.current.open();
     ctfAPI
       .seeTeamDetail({
         teamId: info.id,
@@ -30,12 +29,13 @@ const ScoreBoardRank = ({ state, rankList }) => {
         if (data.success) {
           //console.log(data);
           setOtherTeamInfo(data.data);
+          otherTeamInfoModalRef.current.open();
         }
       });
   };
 
   return (
-    <table className="h-auto w-full lg:w-3/5 text-left bg-white dark:text-white dark:bg-darkPoint">
+    <table className="table-fixed h-auto w-full lg:w-3/5 text-left bg-white dark:text-white dark:bg-darkPoint">
       <thead>
         <tr className="h-10 w-full bg-gradient-to-r from-amber-400 via-red-800 to-black dark:from-pink-300 dark:via-purple-400 dark:to-indigo-400  text-lg text-white font-extrabold text-center ">
           <th className="w-1/12 text-left"></th>
@@ -52,7 +52,7 @@ const ScoreBoardRank = ({ state, rankList }) => {
             className="h-12 w-full hover:bg-gray-100 dark:hover:bg-slate-700   "
           >
             {/* shadow shadow-purple-300 */}
-            <td className="h-12">
+            <td className="h-12 w-1/12 truncate">
               {info.rank === 1 ? (
                 <img
                   className="h-10"
@@ -78,9 +78,14 @@ const ScoreBoardRank = ({ state, rankList }) => {
                 ''
               )}
             </td>
-            <td>{info.rank}</td>
-            <td onClick={() => clickTeamHandler(info)}>{info.name}</td>
-            <td>
+            <td className="w-2/12 truncate">{info.rank}</td>
+            <td
+              className="w-5/12 truncate"
+              onClick={() => clickTeamHandler(info)}
+            >
+              {info.name}
+            </td>
+            <td className="w-4/12 truncate">
               <StarIcon className="inline-block h-6 w-6 m-1 text-amber-400 dark:text-purple-300" />
               {info.score}
             </td>

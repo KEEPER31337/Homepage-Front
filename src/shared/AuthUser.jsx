@@ -14,14 +14,16 @@ const AuthUser = ({ member, signOut, children }) => {
       authAPI.getAuth({ token: member.token }).then((data) => {
         if (data.code === -1003) {
           signOut();
+          navigate('/signIn');
         }
       });
     } else {
       const reduxState = JSON.parse(
         window.localStorage.getItem('persist:root')
       );
-      const token = JSON.parse(reduxState.token);
-      if (!token) {
+      const member = JSON.parse(reduxState.member ?? null);
+      if (!member?.token) {
+        signOut();
         navigate('/signIn');
       }
     }

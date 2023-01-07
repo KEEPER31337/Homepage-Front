@@ -128,7 +128,7 @@ const EditModal = forwardRef(
                         onClick={closeModal}
                         className={
                           isDark
-                            ? 'bg-white w-24 hover:bg-slate-100 cursor-pointer rounded-lg p-2'
+                            ? '  truncate bg-white w-24 hover:bg-slate-100 cursor-pointer rounded-lg p-2'
                             : 'bg-darkPoint w-24 hover:bg-black cursor-pointer rounded-lg p-2'
                         }
                       >

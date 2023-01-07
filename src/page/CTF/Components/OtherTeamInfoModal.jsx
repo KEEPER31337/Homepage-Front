@@ -2,15 +2,11 @@ import { Dialog, Transition } from '@headlessui/react';
 import { useEffect } from 'react';
 import { Fragment, useState, forwardRef, useImperativeHandle } from 'react';
 import { useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
+import { Viewer } from '@toast-ui/react-editor';
 
 const OtherTeamInfoModal = forwardRef(({ otherTeamInfo }, ref) => {
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
-  const [clickTeamInfo, setClickTeamInfo] = useState(otherTeamInfo);
-
-  useEffect(() => {
-    setClickTeamInfo(otherTeamInfo);
-  }, [otherTeamInfo]);
 
   const closeModal = () => {
     setOpen(false);
@@ -38,7 +34,7 @@ const OtherTeamInfoModal = forwardRef(({ otherTeamInfo }, ref) => {
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center text-center">
+            <div className="flex mt-8 min-h-full items-center justify-center text-center">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -52,11 +48,16 @@ const OtherTeamInfoModal = forwardRef(({ otherTeamInfo }, ref) => {
                   <div className="bg-white px-4 pt-5 sm:pb-2 sm:p-6">
                     <div className="mt-3 sm:mt-0 sm:ml-4">
                       <Dialog.Title className="text-center text-xl font-medium text-gray-900 leading-loose m-8">
-                        {clickTeamInfo?.name}
-                        <br />
-                        {clickTeamInfo?.score}
+                        <Viewer
+                          initialValue={otherTeamInfo?.name}
+                          height="100%"
+                        />
+                        {otherTeamInfo?.score}
                         <div className="text-base text-gray-500">
-                          {clickTeamInfo?.description}
+                          <Viewer
+                            initialValue={otherTeamInfo?.description}
+                            height="100%"
+                          />
                         </div>
                       </Dialog.Title>
 
@@ -65,7 +66,7 @@ const OtherTeamInfoModal = forwardRef(({ otherTeamInfo }, ref) => {
                           <div className="my-1 text-purple-700 font-semibold">
                             팀원
                           </div>
-                          {clickTeamInfo?.teamMembers.map((member) => (
+                          {otherTeamInfo?.teamMembers.map((member) => (
                             <div className="inline-block" key={member.id}>
                               <span className="flex justify-between bg-mainWhite border border-gray-300 min-w-[5em] px-2 py-1 m-[1px] text-sm rounded-full dark:bg-mainBlack">
                                 <span>{member.nickName}</span>
@@ -75,10 +76,18 @@ const OtherTeamInfoModal = forwardRef(({ otherTeamInfo }, ref) => {
                         </div>
                         <div className="w-full h-[15em] overflow-y-scroll bg-mainWhite dark:bg-mainBlack dark:border-darkComponent">
                           <ul className="my-5">
-                            <div className="my-1 text-purple-700 font-semibold">
-                              해치운 문제
+                            <div className="my-1 flex flex-row items-center">
+                              <div className="text-purple-700 font-semibold mr-2">
+                                해치운 문제
+                              </div>
+                              <div className="text-slate-400 text-xs">
+                                {otherTeamInfo?.lastSolvedTime &&
+                                  `(마지막 업데이트 ${dayjs(
+                                    otherTeamInfo?.lastSolvedTime
+                                  ).format('YYYY-MM-DD HH:mm:ss')})`}
+                              </div>
                             </div>
-                            {clickTeamInfo?.solvedChallengeList.map(
+                            {otherTeamInfo?.solvedChallengeList.map(
                               (challenge) => (
                                 <li
                                   className="border px-2 flex justify-between items-center group dark:hover:bg-gray-800 dark:border-darkComponent"
@@ -88,8 +97,16 @@ const OtherTeamInfoModal = forwardRef(({ otherTeamInfo }, ref) => {
                                     <div className="text-sm font-medium">
                                       {challenge.title}
                                     </div>
-                                    <div className="text-purple-400">
-                                      {challenge.score}
+                                    <div>
+                                      <div className="text-sm text-purple-400 text-right">
+                                        {challenge.score}
+                                      </div>
+                                      <div className="text-xs text-slate-400 text-right">
+                                        {challenge?.solvedTime &&
+                                          dayjs(challenge.solvedTime).format(
+                                            'MM-DD HH:mm:ss'
+                                          )}
+                                      </div>
                                     </div>
                                   </div>
                                 </li>

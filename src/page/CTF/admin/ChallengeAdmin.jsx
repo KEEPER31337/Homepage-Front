@@ -10,6 +10,7 @@ import AuthModal from '../Components/AuthModal';
 import ProbOpenCloseBtn from '../Components/ProbOpenCloseBtn';
 import DeleteBtn from '../Components/DeleteBtn';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
+import TableOverflow from '../Components/TableOverflow';
 
 const ChallengeAdmin = ({ member, ctfId }) => {
   const [rankList, setRankList] = useState([]);
@@ -96,7 +97,7 @@ const ChallengeAdmin = ({ member, ctfId }) => {
   }, [page]);
 
   return (
-    <div className="md:w-4/5 flex flex-col flex-1 p-3">
+    <div className="md:w-4/5 flex flex-col flex-1 p-3 text-sm">
       <div className="md:flex p-1 mt-2">
         <div className="w-full m-2 ">
           <div className="p-1 bg-white dark:bg-mainBlack dark:text-mainWhite">
@@ -178,8 +179,8 @@ const ChallengeAdmin = ({ member, ctfId }) => {
           </div>
           <div className="p-[2px] mb-2 dark:from-purple-500 dark:via-purple-200 dark:to-amner-200 bg-gradient-to-r from-amber-500 via-amber-200 to-yellow-300  "></div>
 
-          <div className="w-full  flex rounded">
-            <table className="text-center h-full w-full bg-white dark:text-white dark:bg-darkPoint">
+          <div className="w-full h-[450px] flex rounded">
+            <table className="table-fixed text-center h-fit w-full bg-white dark:text-white dark:bg-darkPoint">
               <thead>
                 <tr className=" h-10 w-full bg-gradient-to-r from-amber-400 via-red-800 to-black dark:from-pink-300 dark:via-purple-400 dark:to-indigo-400  text-lg text-white font-extrabold text-center ">
                   <th className="w-2/12">문제</th>
@@ -188,6 +189,7 @@ const ChallengeAdmin = ({ member, ctfId }) => {
 
                   <th className="w-1/12">출제자</th>
                   <th className="w-1/12">점수</th>
+                  <th className="w-2/12">최대 제출 횟수</th>
                   <th className="w-1/12">상태</th>
                   <th className="w-1/12"></th>
                 </tr>
@@ -196,19 +198,27 @@ const ChallengeAdmin = ({ member, ctfId }) => {
                 {rankList.map((info) => (
                   <tr key={info.challengeId} className="h-10 w-full  ">
                     {/* shadow shadow-purple-300 */}
-                    <td>{info.title}</td>
-                    <td>{info.category.name}</td>
-                    <td>{info.flag}</td>
-                    <td>{info.creatorName}</td>
-                    <td>{info.score}</td>
+                    <td className="w-2/12 truncate">{info.title}</td>
+                    <td className="w-2/12 truncate">
+                      {info.categories.map((category, categoryIdx) => {
+                        if (categoryIdx === info.categories.length - 1) {
+                          return category.name;
+                        }
+                        return category.name + ', ';
+                      })}
+                    </td>
+                    <TableOverflow info={info.flag} />
+                    <td className="w-1/12 truncate">{info.creatorName}</td>
+                    <td className="w-1/12 truncate">{info.score}</td>
+                    <td className="w-2/12 truncate">{info.maxSubmitCount}</td>
 
-                    <td className="dark:text-black">
+                    <td className="w-1/12 truncate dark:text-black">
                       <ProbOpenCloseBtn
                         isSolvable={info.isSolvable}
                         challengeId={info.challengeId}
                       />
                     </td>
-                    <td>
+                    <td className="w-1/12 truncate">
                       <DeleteBtn
                         challengeId={info.challengeId}
                         checkedItemHandler={checkedItemHandler}

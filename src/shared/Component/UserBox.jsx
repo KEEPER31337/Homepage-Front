@@ -17,8 +17,8 @@ const handleErrorImg = (e) => {
 
 const UserBox = ({ member, signOut }) => {
   return (
-    <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-      <Menu as="div" className="ml-3 relative">
+    <div className="hidden md:flex items-center justify-end xl:w-40">
+      <Menu as="div" className="relative">
         <div>
           <Menu.Button className="bg-gray-100 dark:bg-gray-800 flex text-sm rounded-full focus:outline-none ring-2 ring-divisionGray dark:ring-darkPoint">
             <span className="sr-only">Open user menu</span>
