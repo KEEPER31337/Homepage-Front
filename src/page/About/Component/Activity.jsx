@@ -1,71 +1,21 @@
 // TODO 화면 크기 조정 시 단어 단위로 줄바꿈 되도록 하기
 import React, { useState, useEffect, useRef } from 'react';
 
-// asset
-import seminarImg from 'assets/img/aboutImg/seminar.png';
-import mentoringImg from 'assets/img/aboutImg/mentoring.png';
-import thesisImg from 'assets/img/aboutImg/thesis.png';
-
 // API
 import utilAPI from 'API/v1/util';
 import aboutAPI from 'API/v1/about';
 import ipAPI from 'API/v1/ip';
 import { connect } from 'react-redux';
 
-// 백엔드 썸내일 저장 가능할 때까지 임시로 넣어놓는 중임당
-const temp = [
-  // TODO 이미지 넣기
-  {
-    subtitle: '세미나',
-    content: (
-      <ul>
-        <li>매주 금요일 마다 정기적으로 운영</li>
-        <li>공지사항 전달 및 건의</li>
-        <li>개인 발표 또는 팀 발표</li>
-      </ul>
-    ),
-    imageSrc: seminarImg,
-    imageAlt: 'Seminar',
-  },
-  {
-    subtitle: '스터디 & 멘토링',
-    content: (
-      <ul>
-        <li>매학기 활동 시작 전 원하는 스터디 개설 및 스터디원 구성</li>
-        <li>스터디원과의 시간 협의 후 가능한 시간에 매주 스터디 진행</li>
-        <li>
-          신입 회원의 경우 멘토링 진행
-          <br /> - 기본적인 프로그래밍, 기초 보안 학습
-        </li>
-      </ul>
-    ),
-    imageSrc: mentoringImg,
-    imageAlt: 'Study & Mentoring',
-  },
-  {
-    subtitle: '기술문서',
-    content: (
-      <ul>
-        <li>
-          여름/겨울 방학 기간에 원하는 주제로 사람을 모집하여 기술 문서 작성
-        </li>
-        <li>1년에 1건 이상 작성 요구</li>
-        <li>제안서 발표, 중간 발표, 최종 발표를 거침?</li>
-      </ul>
-    ),
-    imageSrc: thesisImg,
-    imageAlt: 'Technical document',
-  },
-];
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
 const Activity = ({ member }) => {
-  /* TODO 여기부터 지울 거 */
   const [adminFlag, setAdminFlag] = useState(false);
-  /* TODO 여기까지 지울 거 */
+  const [isTitleEditMode, setIsTitleEditMode] = useState(false);
+  const [newTitle, setNewTitle] = useState();
+  const token = member.token;
   const [activityInfo, setActivityInfo] = useState([
     {
       id: null,
@@ -92,7 +42,6 @@ const Activity = ({ member }) => {
   ]);
 
   /* TODO 여기부터 지울 거 */
-
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -121,7 +70,7 @@ const Activity = ({ member }) => {
   /* TODO 여기까지 지울 거 */
 
   useEffect(() => {
-    aboutAPI.getActivityInfo().then((data) => {
+    aboutAPI.getInfo({ type: 'activity' }).then((data) => {
       if (data.success) {
         data.list.map((title) => {
           // Subtitle display order 순서로 정렬
@@ -151,6 +100,28 @@ const Activity = ({ member }) => {
       }
     });
   }, []);
+
+  const editTitle = () => {
+    setNewTitle(activityInfo[0].title);
+    if (isTitleEditMode) {
+      aboutAPI
+        .changeTitle({
+          id: activityInfo[0].id,
+          title: newTitle,
+          type: 'activity',
+          token: token,
+        })
+        .then((res) => {
+          setActivityInfo([res.data]);
+        });
+    }
+    setIsTitleEditMode(!isTitleEditMode);
+  };
+
+  const inputNewTitle = (e) => {
+    setNewTitle(e.target.value);
+  };
+
   return (
     <div className="">
       {/* TODO 여기부터 지울 거 */}
@@ -168,9 +139,25 @@ const Activity = ({ member }) => {
       {/* TODO 여기까지 지울 거 */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-6 lg:py-10 px-3 md:px-12 lg:px-16">
-          <h2 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow">
-            {activityInfo[0].title}
-          </h2>
+          {isTitleEditMode ? (
+            <input
+              className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow dark:bg-darkPoint inline-block"
+              onChange={inputNewTitle}
+              value={newTitle}
+            />
+          ) : (
+            <h2 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow inline-block">
+              {activityInfo[0].title}
+            </h2>
+          )}
+          {adminFlag && (
+            <button
+              className="text-xs text-gray-500 underline inline-block ml-2 align-top"
+              onClick={editTitle}
+            >
+              {isTitleEditMode ? '확인' : '수정'}
+            </button>
+          )}
           <div className="px-2 lg:px-4 space-y-16 text-black dark:text-white">
             {activityInfo[0].subtitleImageResults.map((article, articleIdx) => (
               <div

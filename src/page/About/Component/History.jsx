@@ -1,93 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 // API
+import utilAPI from 'API/v1/util';
 import aboutAPI from 'API/v1/about';
-
-const temp = [
-  {
-    subtitle: '2020',
-    content: (
-      <ul>
-        <li>암호동아리 지원사업 참가</li>
-      </ul>
-    ),
-  },
-  {
-    subtitle: '2018',
-    content: (
-      <ul>
-        <li>KUCIS, 시원포럼 경남지역 연합세미나 주최</li>
-      </ul>
-    ),
-  },
-  {
-    subtitle: '2017',
-    content: (
-      <ul>
-        <li>교내 서비스 취약점 분석</li>
-      </ul>
-    ),
-  },
-  {
-    subtitle: '2016',
-    content: (
-      <ul>
-        <li>KUCIS 사업 참여</li>
-      </ul>
-    ),
-  },
-  {
-    subtitle: '2015',
-    content: (
-      <ul>
-        <li>KUCIS 사업 참여, MS(MicroSoft) Windows10 서포터즈 1등</li>
-      </ul>
-    ),
-  },
-  {
-    subtitle: '2014',
-    content: (
-      <ul>
-        <li>
-          정보보호동아리 및 정보보호 분야의 현업에 종사하고 있는 사람들까지
-          대상으로한 경남권 정보보호 세미나를 주최함
-        </li>
-        <li>
-          경남권 동아리와 함께 청소년을 대상으로 정보보호의 입문을 돕기위한
-          Security One을 주최함
-        </li>
-      </ul>
-    ),
-  },
-  {
-    subtitle: '2012',
-    content: (
-      <ul>
-        <li>
-          본교 학생회관에서 KUCIS 영남권역 세미나를 개최하여 부산 외의
-          인접지역에 있는 정보보호동아리들과 지식을 공유하고 교류함
-        </li>
-      </ul>
-    ),
-  },
-  {
-    subtitle: '2010',
-    content: (
-      <ul>
-        <li>
-          한국인터넷진흥원(KISA) 주관 대학 정보보호동아리 지원사업(KUCIS)에 대학
-          정보보호 동아리로서 참여
-        </li>
-      </ul>
-    ),
-  },
-];
+import { connect } from 'react-redux';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function History() {
+const History = ({ member }) => {
+  const [adminFlag, setAdminFlag] = useState(false);
+  const [isTitleEditMode, setIsTitleEditMode] = useState(false);
+  const [newTitle, setNewTitle] = useState();
+  const token = member.token;
   const [historyInfo, setHistoryInfo] = useState([
     {
       id: null,
@@ -114,7 +40,15 @@ export default function History() {
   ]);
 
   useEffect(() => {
-    aboutAPI.getHistoryInfo().then((data) => {
+    if (member.token) {
+      utilAPI.getAuthorization({ token: member.token }).then((response) => {
+        if (response.list.includes('ROLE_회장')) setAdminFlag(true);
+      });
+    }
+  }, [member]);
+
+  useEffect(() => {
+    aboutAPI.getInfo({ type: 'history' }).then((data) => {
       if (data.success) {
         data.list.map((title) => {
           // Subtitle display order 순서로 정렬
@@ -145,13 +79,50 @@ export default function History() {
     });
   }, []);
 
+  const editTitle = () => {
+    setNewTitle(historyInfo[0].title);
+    if (isTitleEditMode) {
+      aboutAPI
+        .changeTitle({
+          id: historyInfo[0].id,
+          title: newTitle,
+          type: 'history',
+          token: token,
+        })
+        .then((res) => {
+          setHistoryInfo([res.data]);
+        });
+    }
+    setIsTitleEditMode(!isTitleEditMode);
+  };
+
+  const inputNewTitle = (e) => {
+    setNewTitle(e.target.value);
+  };
+
   return (
     <div className="py-4 lg:py-5 / my-5">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-6 lg:py-10 px-3 md:px-12 lg:px-16">
-          <h2 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow">
-            {historyInfo[0].title}
-          </h2>
+          {isTitleEditMode ? (
+            <input
+              className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow dark:bg-darkPoint inline-block"
+              onChange={inputNewTitle}
+              value={newTitle}
+            />
+          ) : (
+            <h2 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-black dark:text-mainYellow inline-block">
+              {historyInfo[0].title}
+            </h2>
+          )}
+          {adminFlag && (
+            <button
+              className="text-xs text-gray-500 underline inline-block ml-2 align-top"
+              onClick={editTitle}
+            >
+              {isTitleEditMode ? '확인' : '수정'}
+            </button>
+          )}
           <div className="px-2 lg:px-4 overflow-hidden">
             {historyInfo[0].subtitleImageResults.map((article, articleIdx) =>
               article.staticWriteContents.length ? (
@@ -204,4 +175,9 @@ export default function History() {
       </div>
     </div>
   );
-}
+};
+
+const mapStateToProps = (state, OwnProps) => {
+  return { member: state.member };
+};
+export default connect(mapStateToProps)(History);
