@@ -1,7 +1,7 @@
 ---
 name: 버그 제보
 about: 홈페이지 사용 시 발생한 버그를 제보해주세요.
-title: "[버그]"
+title: ''
 labels: bug
 assignees: publdaze
 
