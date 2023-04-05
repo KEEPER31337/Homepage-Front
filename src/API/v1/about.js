@@ -37,10 +37,14 @@ async function tmp({
   }
 }
 
-async function getIntroInfo() {
+async function changeTitle({ id, title, type, token }) {
   const options = {
-    method: 'GET',
-    url: API_URL + '/v1/about/titles/types/intro',
+    method: 'PUT',
+    url: API_URL + '/v1/admin/about/titles/' + id,
+    headers: {
+      Authorization: token,
+    },
+    data: { title , type },
   };
   try {
     const response = await axios(options);
@@ -50,36 +54,10 @@ async function getIntroInfo() {
   }
 }
 
-async function getActivityInfo() {
+async function getInfo( {type}) {
   const options = {
     method: 'GET',
-    url: API_URL + '/v1/about/titles/types/activity',
-  };
-  try {
-    const response = await axios(options);
-    return response.data;
-  } catch (error) {
-    return error.response.data;
-  }
-}
-
-async function getExcellenceInfo() {
-  const options = {
-    method: 'GET',
-    url: API_URL + '/v1/about/titles/types/excellence',
-  };
-  try {
-    const response = await axios(options);
-    return response.data;
-  } catch (error) {
-    return error.response.data;
-  }
-}
-
-async function getHistoryInfo() {
-  const options = {
-    method: 'GET',
-    url: API_URL + '/v1/about/titles/types/history',
+    url: API_URL + '/v1/about/titles/types/' + type,
   };
   try {
     const response = await axios(options);
@@ -90,9 +68,7 @@ async function getHistoryInfo() {
 }
 
 export default {
-  getIntroInfo,
-  getActivityInfo,
-  getExcellenceInfo,
-  getHistoryInfo,
+  getInfo,
+  changeTitle,
   tmp,
 };

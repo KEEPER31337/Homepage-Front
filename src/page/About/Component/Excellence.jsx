@@ -1,53 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import Icon from 'assets/img/aboutImg/keyicon.png';
-
 // API
 import utilAPI from 'API/v1/util';
 import aboutAPI from 'API/v1/about';
 import ipAPI from 'API/v1/ip';
 import { connect } from 'react-redux';
 
-const temp = [
-  {
-    subtitle: '동아리 지원',
-    content: (
-      <ul>
-        <li>스터디룸 지원</li>
-        <li>책 지원</li>
-        <li>대외활동 참가 시 식비 지원</li>
-        <li>레퍼런스 참가비 지원?</li>
-      </ul>
-    ),
-    imageSrc: Icon,
-  },
-  {
-    subtitle: '이벤트',
-    content: (
-      <ul>
-        <li>
-          다양한 이벤트를 통한 동아리 사기 높이기
-          <br />
-          {'ex) 키퍼즐'}
-        </li>
-        <li>책 지원</li>
-        <li>대외활동 참가 시 식비 지원</li>
-        <li>레퍼런스 참가비 지원?</li>
-      </ul>
-    ),
-    imageSrc: Icon,
-  },
-  {
-    subtitle: '대외활동',
-    content: 'CTF 참가',
-    imageSrc: Icon,
-  },
-];
-
 const Excellence = ({ member }) => {
-  /* TODO 여기부터 지울 거 */
   const [adminFlag, setAdminFlag] = useState(false);
-  /* TODO 여기까지 지울 거 */
+  const [isTitleEditMode, setIsTitleEditMode] = useState(false);
+  const [newTitle, setNewTitle] = useState();
+  const token = member.token;
   const [excellenceInfo, setExcellenceInfo] = useState([
     {
       id: null,
@@ -102,7 +65,7 @@ const Excellence = ({ member }) => {
   /* TODO 여기까지 지울 거 */
 
   useEffect(() => {
-    aboutAPI.getExcellenceInfo().then((data) => {
+    aboutAPI.getInfo({ type: 'excellence' }).then((data) => {
       if (data.success) {
         data.list.map((title) => {
           // Subtitle display order 순서로 정렬
@@ -133,6 +96,27 @@ const Excellence = ({ member }) => {
     });
   }, []);
 
+  const editTitle = () => {
+    setNewTitle(excellenceInfo[0].title);
+    if (isTitleEditMode) {
+      aboutAPI
+        .changeTitle({
+          id: excellenceInfo[0].id,
+          title: newTitle,
+          type: 'excellence',
+          token: token,
+        })
+        .then((res) => {
+          setExcellenceInfo([res.data]);
+        });
+    }
+    setIsTitleEditMode(!isTitleEditMode);
+  };
+
+  const inputNewTitle = (e) => {
+    setNewTitle(e.target.value);
+  };
+
   return (
     <div className="bg-mainYellow my-5">
       {/* TODO 여기부터 지울 거 */}
@@ -150,9 +134,27 @@ const Excellence = ({ member }) => {
       {/* TODO 여기까지 지울 거 */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-6 lg:py-10  px-3 md:px-12 lg:px-16">
-          <h2 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-white text-center drop-shadow">
-            {excellenceInfo[0].title}
-          </h2>
+          <div className="text-center">
+            {isTitleEditMode ? (
+              <input
+                className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-white text-center bg-mainYellow inline-block"
+                onChange={inputNewTitle}
+                value={newTitle}
+              />
+            ) : (
+              <h2 className="pb-6 lg:pb-10 text-2xl font-extrabold tracking-tight text-white drop-shadow inline-block">
+                {excellenceInfo[0].title}
+              </h2>
+            )}
+            {adminFlag && (
+              <button
+                className="text-xs text-gray-500 underline ml-2 align-top"
+                onClick={editTitle}
+              >
+                {isTitleEditMode ? '확인' : '수정'}
+              </button>
+            )}
+          </div>
           <div className="px-2 lg:px-4 text-black">
             <div className="max-w-2xl mx-auto grid grid-cols-1 gap-8 lg:max-w-none lg:grid-cols-3">
               {excellenceInfo[0].subtitleImageResults.map(
