@@ -134,7 +134,6 @@ async function modify({
   password,
   token,
   files,
-  thumbnailFile,
 }) {
   const formData = new FormData();
   formData.append('title', title);
@@ -146,7 +145,6 @@ async function modify({
   formData.append('isTemp', isTemp);
   formData.append('password', password);
   files.forEach((file) => formData.append('file', file));
-  formData.append('thumbnail', thumbnailFile);
 
   const config = {
     headers: {
@@ -166,6 +164,28 @@ async function modify({
     return error.response?.data;
   }
 }
+
+async function modifyThumbnail({ thumbnail, boardId, token }) {
+  const formData = new FormData();
+  formData.append('thumbnail', thumbnail);
+
+  try {
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+    const response = await axios.patch(
+      API_URL + '/v1/post/' + boardId + '/thumbnail',
+      formData,
+      config
+    );
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 async function deleteFiles({ fileIdList, token }) {
   const options = {
     method: 'DELETE',
@@ -270,6 +290,7 @@ export default {
   getNoticeList,
   downloadFile,
   modify,
+  modifyThumbnail,
   deleteFiles,
   remove,
   search,

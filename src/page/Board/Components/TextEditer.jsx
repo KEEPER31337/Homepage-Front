@@ -34,6 +34,7 @@ const TextEditer = (props) => {
   const [uploadAble, setUploadAble] = useState(false);
   const [thumbnailBase64, setThumbnailBase64] = useState(null); // 파일 base64
   const [thumbnail, setThumbnail] = useState(null);
+  const [isThumbnailModify, setIsThumbnailModify] = useState(false);
   const [files, setFiles] = useState([]);
   const [originFiles, setOriginFiles] = useState([]);
   const [deleteFileIdList, setDeleteFileIdList] = useState([]); //삭제할 파일 목록
@@ -122,7 +123,7 @@ const TextEditer = (props) => {
   };
   const uploadModifyhandler = (isTemp) => {
     setUploadAble(false);
-    console.log(deleteFileIdList);
+
     postAPI
       .deleteFiles({
         fileIdList: deleteFileIdList,
@@ -145,17 +146,34 @@ const TextEditer = (props) => {
         password: password,
         token: token,
         files: files,
-        thumbnailFile: thumbnail,
       })
       .then((res) => {
         setUploadAble(true);
         if (res.success) {
+          if (isThumbnailModify) {
+            postAPI
+              .modifyThumbnail({
+                thumbnail,
+                boardId: board.id,
+                token,
+              })
+              .then((res) => {
+                if (res.success) {
+                  window.location.replace(`/post/${categoryName}/${board.id}`);
+                  return;
+                } else {
+                  alert('게시물 썸네일 수정 실패! 전산관리자에게 문의하세요~');
+                  return;
+                }
+              });
+          }
           navigate(`/post/${categoryName}/${board.id}`);
         } else {
           alert('게시물 수정 실패! 전산관리자에게 문의하세요~');
         }
       });
   };
+
   return (
     <div className="space-y-2">
       <div name="input" className="space-y-2">
@@ -200,6 +218,7 @@ const TextEditer = (props) => {
           <div className=" inline-block md:px-0 w-full md:w-fit flex justify-center">
             <FileUploadForm
               setThumbnail={setThumbnail}
+              setIsThumbnailModify={setIsThumbnailModify}
               modifyFlag={modifyFlag}
               board={board}
             />

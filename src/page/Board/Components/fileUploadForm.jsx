@@ -53,6 +53,7 @@ const FileUploadForm = (props) => {
   const deleteClickHandler = () => {
     setThumbnailBase64(null);
     props.setThumbnail(null);
+    props.setIsThumbnailModify(true);
   };
 
   const onDrop = useCallback((acceptedFiles) => {
@@ -60,6 +61,7 @@ const FileUploadForm = (props) => {
     acceptedFiles.forEach((file) => {
       if (validateName(file.name)) {
         props.setThumbnail(file);
+        props.setIsThumbnailModify(true);
         const reader = new FileReader();
 
         reader.onabort = () => {
