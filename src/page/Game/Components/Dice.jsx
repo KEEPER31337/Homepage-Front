@@ -117,7 +117,7 @@ const DiceGame = ({ gameInfo, member, updateInfo }) => {
       alertPointLackModalRef.current.open();
       return;
     }
-    if (check) {
+    if (firstCheck && check) {
       alertCountModalRef.current.open();
       return;
     }
