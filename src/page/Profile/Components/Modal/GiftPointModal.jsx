@@ -3,6 +3,10 @@ import Modal from './Modal';
 import memberAPI from 'API/v1/member';
 
 const GiftPointModal = ({ modalState, token, userId, memberInfo }) => {
+  const MIN_SEND_POINT = 1;
+  const MAX_SEND_POINT = memberInfo.point;
+
+  const [isValidPointRange, setIsValidPointRange] = useState(true);
   const [point, setPoint] = useState('');
   const [message, setMessage] = useState('');
   const [state, setState] = modalState;
@@ -13,6 +17,11 @@ const GiftPointModal = ({ modalState, token, userId, memberInfo }) => {
   };
 
   const submitGift = () => {
+    if (point < MIN_SEND_POINT || point > MAX_SEND_POINT) {
+      setIsValidPointRange(false);
+      return;
+    }
+
     setIsClosing(true);
     memberAPI
       .giftPoint({
@@ -32,9 +41,17 @@ const GiftPointModal = ({ modalState, token, userId, memberInfo }) => {
       });
   };
 
+  const handleSendPointChange = (event) => {
+    const re = /^[0-9\b]+$/;
+    if (event.target.value === '' || re.test(event.target.value)) {
+      setIsValidPointRange(true);
+      setPoint(event.target.value);
+    }
+  };
+
   return (
     <Modal modalState={modalState}>
-      <div className="inline-block p-6 text-left align-middle">
+      <div className="inline-block p-6 text-center align-middle">
         <div
           as="h3"
           className="m-2 mb-4 
@@ -45,6 +62,9 @@ const GiftPointModal = ({ modalState, token, userId, memberInfo }) => {
           포인트 선물하기
         </div>
 
+        <p className="pb-1 text-xs flex justify-end text-gray-600">
+          보유 {memberInfo.point}
+        </p>
         <div className="pb-2">
           <input
             type="point"
@@ -53,12 +73,17 @@ const GiftPointModal = ({ modalState, token, userId, memberInfo }) => {
             required
             value={point}
             placeholder="보낼 포인트 입력"
-            onChange={(event) => setPoint(event.target.value)}
+            onChange={handleSendPointChange}
             className="bg-backGray dark:bg-darkPoint 
-                        rounded-xl border-0 w-5/6 h-full 
+                        rounded-xl border-0 h-full 
                         px-3 focus:ring-0
                         text-mainBlack dark:text-mainWhite"
           />
+          {!isValidPointRange && (
+            <p className="text-xs text-red-600">
+              {MIN_SEND_POINT}~{MAX_SEND_POINT} 사이 숫자를 입력해주세요.
+            </p>
+          )}
         </div>
         <div className="pb-2">
           <input
@@ -70,7 +95,7 @@ const GiftPointModal = ({ modalState, token, userId, memberInfo }) => {
             placeholder="보낼 메세지 입력"
             onChange={(event) => setMessage(event.target.value)}
             className="bg-backGray dark:bg-darkPoint 
-                        rounded-xl border-0 w-5/6 h-full 
+                        rounded-xl border-0 h-full 
                         px-3 focus:ring-0
                         text-mainBlack dark:text-mainWhite"
           />
