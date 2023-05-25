@@ -32,6 +32,13 @@ const GiftPointModal = ({ modalState, token, userId, memberInfo }) => {
       });
   };
 
+  const handleSendPointChange = (event) => {
+    const re = /^[0-9\b]+$/;
+    if (event.target.value === '' || re.test(event.target.value)) {
+      setPoint(event.target.value);
+    }
+  };
+
   return (
     <Modal modalState={modalState}>
       <div className="inline-block p-6 text-left align-middle">
@@ -53,7 +60,7 @@ const GiftPointModal = ({ modalState, token, userId, memberInfo }) => {
             required
             value={point}
             placeholder="보낼 포인트 입력"
-            onChange={(event) => setPoint(event.target.value)}
+            onChange={handleSendPointChange}
             className="bg-backGray dark:bg-darkPoint 
                         rounded-xl border-0 w-5/6 h-full 
                         px-3 focus:ring-0
