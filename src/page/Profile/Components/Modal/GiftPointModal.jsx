@@ -3,6 +3,10 @@ import Modal from './Modal';
 import memberAPI from 'API/v1/member';
 
 const GiftPointModal = ({ modalState, token, userId, memberInfo }) => {
+  const MIN_SEND_POINT = 1;
+  const MAX_SEND_POINT = memberInfo.point;
+
+  const [isValidPointRange, setIsValidPointRange] = useState(true);
   const [point, setPoint] = useState('');
   const [message, setMessage] = useState('');
   const [state, setState] = modalState;
@@ -13,6 +17,11 @@ const GiftPointModal = ({ modalState, token, userId, memberInfo }) => {
   };
 
   const submitGift = () => {
+    if (point < MIN_SEND_POINT || point > MAX_SEND_POINT) {
+      setIsValidPointRange(false);
+      return;
+    }
+
     setIsClosing(true);
     memberAPI
       .giftPoint({
@@ -35,6 +44,7 @@ const GiftPointModal = ({ modalState, token, userId, memberInfo }) => {
   const handleSendPointChange = (event) => {
     const re = /^[0-9\b]+$/;
     if (event.target.value === '' || re.test(event.target.value)) {
+      setIsValidPointRange(true);
       setPoint(event.target.value);
     }
   };
@@ -69,6 +79,11 @@ const GiftPointModal = ({ modalState, token, userId, memberInfo }) => {
                         px-3 focus:ring-0
                         text-mainBlack dark:text-mainWhite"
           />
+          {!isValidPointRange && (
+            <p className="text-xs text-red-600">
+              {MIN_SEND_POINT}~{MAX_SEND_POINT} 사이 숫자를 입력해주세요.
+            </p>
+          )}
         </div>
         <div className="pb-2">
           <input
