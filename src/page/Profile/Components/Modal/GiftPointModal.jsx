@@ -41,7 +41,7 @@ const GiftPointModal = ({ modalState, token, userId, memberInfo }) => {
 
   return (
     <Modal modalState={modalState}>
-      <div className="inline-block p-6 text-left align-middle">
+      <div className="inline-block p-6 text-center align-middle">
         <div
           as="h3"
           className="m-2 mb-4 
@@ -52,6 +52,9 @@ const GiftPointModal = ({ modalState, token, userId, memberInfo }) => {
           포인트 선물하기
         </div>
 
+        <p className="pb-1 text-xs flex justify-end text-gray-600">
+          보유 {memberInfo.point}
+        </p>
         <div className="pb-2">
           <input
             type="point"
@@ -62,7 +65,7 @@ const GiftPointModal = ({ modalState, token, userId, memberInfo }) => {
             placeholder="보낼 포인트 입력"
             onChange={handleSendPointChange}
             className="bg-backGray dark:bg-darkPoint 
-                        rounded-xl border-0 w-5/6 h-full 
+                        rounded-xl border-0 h-full 
                         px-3 focus:ring-0
                         text-mainBlack dark:text-mainWhite"
           />
@@ -77,7 +80,7 @@ const GiftPointModal = ({ modalState, token, userId, memberInfo }) => {
             placeholder="보낼 메세지 입력"
             onChange={(event) => setMessage(event.target.value)}
             className="bg-backGray dark:bg-darkPoint 
-                        rounded-xl border-0 w-5/6 h-full 
+                        rounded-xl border-0 h-full 
                         px-3 focus:ring-0
                         text-mainBlack dark:text-mainWhite"
           />
