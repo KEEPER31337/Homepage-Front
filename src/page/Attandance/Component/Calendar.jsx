@@ -115,7 +115,7 @@ const Calendar = ({ member }) => {
     attendanceAPI
       .getAttendDate({
         startDate: firstDay.format(dateFormat),
-        endDate: lastDay.format(dateFormat),
+        endDate: lastDay.add(1, 'day').format(dateFormat),
         token: member.token,
       })
       .then((data) => {
