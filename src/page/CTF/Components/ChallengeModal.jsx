@@ -93,8 +93,11 @@ const ChallengeModal = forwardRef(({ pid, member }, ref) => {
       return;
     }
 
-    const timeDiff =
-      (new Date().getTime() - new Date(lastTryTime).getTime()) / 1000;
+    const kst = new Date(
+      new Date().toLocaleString('en', { timeZone: 'Asia/Seoul' })
+    );
+
+    const timeDiff = (kst.getTime() - new Date(lastTryTime).getTime()) / 1000;
 
     if (timeDiff <= FLAG_WAITING_TIME) {
       setFlagCheckMsg(
